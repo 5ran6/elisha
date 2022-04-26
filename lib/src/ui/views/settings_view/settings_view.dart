@@ -97,7 +97,7 @@ class _SettingsPageState extends State<SettingsPage> {
     final initialTime = TimeOfDay(hour: 9, minute: 0);
     final newTime = await showTimePicker(
       context: context,
-      initialTime: time ?? initialTime,
+      initialTime: time != null ? time : initialTime,
     );
 
     if (newTime == null) return;
