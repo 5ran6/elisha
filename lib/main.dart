@@ -17,7 +17,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:async';
+import 'package:intl/intl.dart';
 
+import 'package:dio/dio.dart';
 import 'package:elisha/src/models/book.dart';
 import 'package:elisha/src/models/verse.dart';
 import 'package:elisha/src/ui/views/about_us_view/about_us_page.dart';
@@ -50,7 +52,10 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:elisha/src/config/constants.dart';
 import 'package:elisha/src/services/authentication_services/authentication_wrapper.dart';
-Verse newverse = Verse(id: 1, chapterId: 3, verseId: 2, text: "The Lord said unto...", book: Book(), favorite: true);
+import 'dart:convert';
+
+
+
 
 void main() async {
   runZonedGuarded<Future<void>>(() async {
@@ -61,6 +66,9 @@ void main() async {
 
     await Hive.initFlutter();
     await Hive.openBox('elisha');
+
+
+
 
     if (kDebugMode) {
       await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
@@ -80,12 +88,32 @@ void main() async {
 
 class MyApp extends StatelessWidget {
 
+  void receiveData() async {
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('dd.MM.yyyy').format(now);
+
+    var dio = Dio();
+    final response = await dio.get('https://secret-place.herokuapp.com/api/devotionals?month=April2022');
+    for (int i = 0; i < response.data.length; i++) {
+      if (response.data[i]['date'] == formattedDate){
+        print('gggggggggggggggggggggggggg' + response.data[i]['title']);
+      }
+    }
+
+
+    //Map mapResponse = json.decode(response.data);
+    //print(mapResponse.keys.first);
+    //print(response.data[formattedDate]);
+
+  }
+
   const MyApp({Key? key}) : super(key: key);
 
   @override
 
   Widget build(BuildContext context) {
 
+    receiveData();
     // return ScreenUtilInit(
     //   designSize: Size(360, 690),
     //   minTextAdapt: true,
@@ -123,7 +151,15 @@ class MyApp extends StatelessWidget {
           primaryDarkColor: const Color(0xFFB97D3C),
           primaryDarkVariantColor: const Color(0xFFB97D3C),
           navigatorObservers: [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
-          home: const DevotionalNotePage()),
+          home: const SplashScreen()),
     );
   }
 }
+
+
+
+
+
+
+
+

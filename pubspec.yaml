@@ -89,6 +89,9 @@ dev_dependencies:
 
   flutter_native_splash: ^1.2.1
   import_sorter: ^4.6.0
+  dio: ^4.0.6
+  intl: ^0.17.0
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

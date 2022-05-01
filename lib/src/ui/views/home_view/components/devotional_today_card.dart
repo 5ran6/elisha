@@ -1,7 +1,10 @@
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:dio/dio.dart';
 import 'package:elisha/src/ui/views/devotional_page/devotional_page.dart';
+import 'package:intl/intl.dart';
 
 class DevotionalTodayCard extends StatefulWidget {
+
   const DevotionalTodayCard({Key? key}) : super(key: key);
 
   @override
@@ -9,6 +12,7 @@ class DevotionalTodayCard extends StatefulWidget {
 }
 
 class _DevotionalTodayCardState extends State<DevotionalTodayCard> {
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -61,5 +65,20 @@ class _DevotionalTodayCardState extends State<DevotionalTodayCard> {
         ),
       ),
     );
+  }
+  Future<String> receiveData(DateTime aDate) async {
+    aDate = DateTime.now();
+    String devTitle;
+    String formattedDate = DateFormat('dd.MM.yyyy').format(aDate);
+
+    var dio = Dio();
+    final response = await dio.get(
+        'https://secret-place.herokuapp.com/api/devotionals?month=April2022');
+    for (int i = 0; i < response.data.length; i++) {
+      if (response.data[i]['date'] == formattedDate) {
+        devTitle = response.data[i]['title'];
+      }
+    }
+    return devTitle;
   }
 }
