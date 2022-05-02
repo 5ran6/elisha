@@ -66,19 +66,4 @@ class _DevotionalTodayCardState extends State<DevotionalTodayCard> {
       ),
     );
   }
-  Future<String> receiveData(DateTime aDate) async {
-    aDate = DateTime.now();
-    String devTitle;
-    String formattedDate = DateFormat('dd.MM.yyyy').format(aDate);
-
-    var dio = Dio();
-    final response = await dio.get(
-        'https://secret-place.herokuapp.com/api/devotionals?month=April2022');
-    for (int i = 0; i < response.data.length; i++) {
-      if (response.data[i]['date'] == formattedDate) {
-        devTitle = response.data[i]['title'];
-      }
-    }
-    return devTitle;
-  }
 }

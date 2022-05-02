@@ -17,6 +17,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:async';
+import 'package:elisha/src/models/devotional.dart';
+import 'package:elisha/src/providers/api_provider.dart';
 import 'package:intl/intl.dart';
 
 import 'package:dio/dio.dart';
@@ -89,17 +91,8 @@ void main() async {
 class MyApp extends StatelessWidget {
 
   void receiveData() async {
-    DateTime now = DateTime.now();
-    String formattedDate = DateFormat('dd.MM.yyyy').format(now);
-
-    var dio = Dio();
-    final response = await dio.get('https://secret-place.herokuapp.com/api/devotionals?month=April2022');
-    for (int i = 0; i < response.data.length; i++) {
-      if (response.data[i]['date'] == formattedDate){
-        print('gggggggggggggggggggggggggg' + response.data[i]['title']);
-      }
-    }
-
+   List<DevotionalModel> listOfDevs = await RemoteAPI.getDevotionals();
+   print(listOfDevs);
 
     //Map mapResponse = json.decode(response.data);
     //print(mapResponse.keys.first);

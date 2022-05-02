@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-List<DevotionalModel> devotionsFromJson(String str) =>
-    List<DevotionalModel>.from(json.decode(str).map((x) => DevotionalModel.fromJson(x)));
+List<DevotionalModel> devotionsFromJson(List<dynamic> jsonList) =>
+    List<DevotionalModel>.from(jsonList.map((x) => DevotionalModel.fromJson(x)));
 
 String devotionsToJson(List<DevotionalModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => null)));
@@ -33,16 +33,22 @@ class DevotionalModel {
     required this.bibleInAYear,
     required this.image});
 
+  @override
+  String toString() {
+    return 'DevotionalModel{date: $date, text: $text, title: $title, author: $author, memoryVerse: $memoryVerse, memoryVersePassage: $memoryVersePassage, fullPassage: $fullPassage, fullText: $fullText, bibleInAYear: $bibleInAYear, image: $image}';
+  }
+
+
   factory DevotionalModel.fromJson(Map<String, dynamic> json) => DevotionalModel(
-    date : json['date'],
-    title : json['title'],
-    text : json['text'],
-    author : json['author'],
-    memoryVerse : json['memoryVerse'],
-    memoryVersePassage : json['memoryVersePassage'],
-    fullPassage : json['fullPassage'],
-    fullText : json['fullText'],
-    bibleInAYear : json['bibleInAYear'],
-    image : json['image'],
+    date : json['date']?? '',
+    title : json['title']?? '',
+    text : json['text']?? '',
+    author : json['author']?? '',
+    memoryVerse : json['memoryVerse']?? '',
+    memoryVersePassage : json['memoryVersePassage']?? '',
+    fullPassage : json['fullPassage']?? '',
+    fullText : json['fullText']?? '',
+    bibleInAYear : json['bibleInAYear']?? '',
+    image : json['image']?? '',
   );
 }
