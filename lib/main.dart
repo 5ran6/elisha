@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'dart:async';
 import 'package:elisha/src/models/devotional.dart';
 import 'package:elisha/src/providers/api_provider.dart';
+import 'package:elisha/src/services/devotional_helper.dart';
 import 'package:intl/intl.dart';
 
 import 'package:dio/dio.dart';
@@ -90,9 +91,21 @@ void main() async {
 
 class MyApp extends StatelessWidget {
 
+
   void receiveData() async {
-   List<DevotionalModel> listOfDevs = await RemoteAPI.getDevotionals();
-   print(listOfDevs);
+    print('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh');
+    DateTime now = DateTime.now();
+    String formattedMYName = DateFormat('MMMMyyyy').format(now);
+
+   List<Devotional> listOfDevs = await RemoteAPI.getDevotionalsForMonth(formattedMYName);
+   print(formattedMYName);
+  // print(listOfDevs);
+
+
+    DevotionalDBHelper.instance.insertDevotionalList(listOfDevs);
+
+   print( await DevotionalDBHelper.instance.getDevotionalsDB());
+
 
     //Map mapResponse = json.decode(response.data);
     //print(mapResponse.keys.first);
