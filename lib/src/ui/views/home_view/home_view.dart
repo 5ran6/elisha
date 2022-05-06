@@ -26,22 +26,41 @@ import 'package:elisha/src/ui/views/home_view/components/streaks_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:elisha/src/ui/views/home_view/components/home_view_header.dart';
+import 'package:intl/intl.dart';
 
+import '../../../../utils/dev_functions.dart';
+import '../../../models/devotional.dart';
+import '../../../services/devotional_helper.dart';
 import 'components/study_plans_listview.dart';
 
 class HomeView extends StatefulWidget {
-  const HomeView({required this.verse, Key? key}) : super(key: key);
 
-  final Verse verse;
+
+ const HomeView({ Key? key}) : super(key: key);
 
   @override
   _HomeViewState createState() => _HomeViewState();
 }
 
 class _HomeViewState extends State<HomeView> {
+  var _verse='';
+  var _versePassage='';
+  var _title='';
+  var _mainWriteUp='';
+
   @override
   Widget build(BuildContext context) {
     return _content(context);
+  }
+
+
+  @override
+  void initState() {
+
+  getVerseAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+  getVersePassageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+  getTodayTitleAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+  getTodayMainWriteUpAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
   }
 
   Widget _content(BuildContext context) {
@@ -65,9 +84,9 @@ class _HomeViewState extends State<HomeView> {
       children: [
         const StreaksCard(),
         const SizedBox(height: 15),
-        VerseOfTheDayCard(verse: widget.verse),
+        VerseOfTheDayCard(verse: _verse, versePassage: _versePassage),
         const SizedBox(height: 15),
-        DevotionalTodayCard(),
+        DevotionalTodayCard(title: _title, mainWriteUp: _mainWriteUp),
         const SizedBox(height: 15),
         BibleInAYearCard(),
         const SizedBox(height: 15),
@@ -77,4 +96,36 @@ class _HomeViewState extends State<HomeView> {
       ],
     );
   }
+
+  //final String vs;
+  getVerseAsString(String dt) async {
+    var verse =   await DevotionalItemsRetrieveClass.getTodayVerse(dt);
+    //print(verse);
+    setState(() {
+      _verse = verse;
+    });
+  }
+
+  getVersePassageAsString(String dt) async {
+    var versePassage =   await DevotionalItemsRetrieveClass.getTodayVersePassage(dt);
+    setState(() {
+      _versePassage = versePassage;
+    });
+  }
+
+  getTodayTitleAsString(String dt) async {
+    var title =   await DevotionalItemsRetrieveClass.getTodayTitle(dt);
+    setState(() {
+      _title = title;
+    });
+  }
+
+  getTodayMainWriteUpAsString(String dt) async {
+    var mainWriteUp =   await DevotionalItemsRetrieveClass.getTodayMainWriteUp(dt);
+    setState(() {
+      _mainWriteUp = mainWriteUp;
+    });
+  }
+
+
 }

@@ -116,7 +116,8 @@ class _CurrentViewState extends State<CurrentView> {
               },
               data: (readings) {
                 final _views = <Widget>[
-                  HomeView(verse: verse),
+                  //HomeView(verse: verse),
+                  HomeView(),
                   const BibleView(),
                   ChurchView(readings),
                   const ProfileView(),

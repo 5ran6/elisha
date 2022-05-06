@@ -19,7 +19,7 @@ class Devotional {
   String fullText;
   String bibleInAYear;
   String image;
-  String prayer;
+  String prayerBurden;
   String thoughtOfTheDay;
 
 
@@ -34,7 +34,7 @@ class Devotional {
     required this.fullText,
     required this.bibleInAYear,
     required this.image,
-    required this.prayer,
+    required this.prayerBurden,
     required this.thoughtOfTheDay
   });
 
@@ -50,7 +50,7 @@ class Devotional {
       'fullText': fullText,
       'bibleInAYear': bibleInAYear,
       'image': image,
-      'prayer': prayer,
+      'prayer': prayerBurden,
       'thoughtOfTheDay': thoughtOfTheDay,
     };
   }
@@ -58,7 +58,7 @@ class Devotional {
 
   @override
   String toString() {
-    return 'DevotionalModel{int: $id, date: $date, translation: $translation, title: $title, memoryVerse: $memoryVerse, memoryVersePassage: $memoryVersePassage, fullPassage: $fullPassage, fullText: $fullText, bibleInAYear: $bibleInAYear, image: $image, prayer: $prayer, thoughtOfTheDay: $thoughtOfTheDay}';
+    return 'DevotionalModel{int: $id, date: $date, translation: $translation, title: $title, memoryVerse: $memoryVerse, memoryVersePassage: $memoryVersePassage, fullPassage: $fullPassage, fullText: $fullText, bibleInAYear: $bibleInAYear, image: $image, prayerBurden: $prayerBurden, thoughtOfTheDay: $thoughtOfTheDay}';
   }
 
 
@@ -72,7 +72,7 @@ class Devotional {
     fullText : json['fullText']?? '',
     bibleInAYear : json['bibleInAYear']?? '',
     image : json['image']?? '',
-    prayer : json['prayer']?? '',
+    prayerBurden : json['prayerBurden']?? '',
     thoughtOfTheDay : json['thoughtOfTheDay']?? '',
   );
 }

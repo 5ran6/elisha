@@ -3,7 +3,10 @@ import 'package:elisha/src/ui/views/devotional_page/full_prayer_content.dart';
 import 'package:elisha/src/ui/views/devotional_page/full_thougthofday_content.dart';
 import 'package:elisha/src/ui/views/devotional_page/full_topic_memoryverse_page.dart';
 import 'package:elisha/src/ui/views/devotional_page/full_word_content.dart';
+import 'package:intl/intl.dart';
 import 'package:vertical_card_pager/vertical_card_pager.dart';
+
+import '../../../../utils/dev_functions.dart';
 
 class DevotionalPage extends StatefulWidget {
   const DevotionalPage({Key? key}) : super(key: key);
@@ -13,6 +16,24 @@ class DevotionalPage extends StatefulWidget {
 }
 
 class _DevotionalPageState extends State<DevotionalPage> {
+  var _title='';
+  var _memoryVerse='';
+  var _memoryVersePassage='';
+  var _mainWriteUp='';
+  var _prayerBurden='';
+  var _thoughtOfTheDay='';
+
+  @override
+  void initState() {
+    getTodayTitleAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+    getVersePassageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+    getVerseAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+    getTodayMainWriteUpAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+    getTodayPrayerAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+    getTodayThoughtOfTheDayAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> devotionalCards = [
@@ -29,18 +50,18 @@ class _DevotionalPageState extends State<DevotionalPage> {
                         .headline4
                         ?.copyWith(fontWeight: FontWeight.bold)),
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               Padding(
                 padding: const EdgeInsets.only(left: 15.0),
                 child: Align(
                     alignment: Alignment.topLeft,
-                    child: Text('Topic',
+                    child: Text(_title,
                         style: Theme.of(context)
                             .textTheme
                             .headline5
                             ?.copyWith(fontWeight: FontWeight.normal))),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               ListTile(
                 title: Text('Memory Verse:',
                     style: Theme.of(context)
@@ -53,7 +74,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
                 padding: const EdgeInsets.only(left: 15.0),
                 child: Align(
                     alignment: Alignment.topLeft,
-                    child: Text('Memory Verse for today, scripture and text',
+                    child: Text(_memoryVerse + " " + _memoryVersePassage,
                         style: Theme.of(context)
                             .textTheme
                             .headline5
@@ -97,12 +118,16 @@ class _DevotionalPageState extends State<DevotionalPage> {
                     ?.copyWith(fontWeight: FontWeight.normal),
               ),
             ),
-            SizedBox(height: 5),
-            Text('Write-up for today',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline6
-                    ?.copyWith(fontWeight: FontWeight.normal))
+            const SizedBox(height: 5),
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Text(_mainWriteUp,
+                  maxLines: 12,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline4
+                      ?.copyWith(fontWeight: FontWeight.normal)),
+            )
           ],
         ),
       ),
@@ -115,14 +140,14 @@ class _DevotionalPageState extends State<DevotionalPage> {
               title: Text('Prayer',
                   style: Theme.of(context)
                       .textTheme
-                      .headline4
+                      .headline5
                       ?.copyWith(fontWeight: FontWeight.bold)),
             ),
-            SizedBox(height: 5),
-            Text('Prayer for today',
+            const SizedBox(height: 5),
+            Text(_prayerBurden,
                 style: Theme.of(context)
                     .textTheme
-                    .headline5
+                    .headline3
                     ?.copyWith(fontWeight: FontWeight.normal))
           ],
         ),
@@ -139,11 +164,11 @@ class _DevotionalPageState extends State<DevotionalPage> {
                       .headline5
                       ?.copyWith(fontWeight: FontWeight.bold)),
             ),
-            SizedBox(height: 5),
-            Text('What you should ponder about today',
+            const SizedBox(height: 5),
+            Text(_thoughtOfTheDay,
                 style: Theme.of(context)
                     .textTheme
-                    .headline6
+                    .headline3
                     ?.copyWith(fontWeight: FontWeight.normal))
           ],
         ),
@@ -203,5 +228,47 @@ class _DevotionalPageState extends State<DevotionalPage> {
         ),
       ),
     );
+  }
+
+  getTodayTitleAsString(String dt) async {
+    var title =   await DevotionalItemsRetrieveClass.getTodayTitle(dt);
+    setState(() {
+      _title = title;
+    });
+  }
+  getVerseAsString(String dt) async {
+    var verse =   await DevotionalItemsRetrieveClass.getTodayVerse(dt);
+    //print(verse);
+    setState(() {
+      _memoryVerse = verse;
+    });
+  }
+
+  getVersePassageAsString(String dt) async {
+    var versePassage =   await DevotionalItemsRetrieveClass.getTodayVersePassage(dt);
+    setState(() {
+      _memoryVersePassage = versePassage;
+    });
+  }
+
+  getTodayMainWriteUpAsString(String dt) async {
+    var mainWriteUp =   await DevotionalItemsRetrieveClass.getTodayMainWriteUp(dt);
+    setState(() {
+      _mainWriteUp = mainWriteUp;
+    });
+  }
+
+  getTodayPrayerAsString(String dt) async {
+    var prayerBurden =   await DevotionalItemsRetrieveClass.getTodayPrayer(dt);
+    setState(() {
+      _prayerBurden = prayerBurden;
+    });
+  }
+
+  getTodayThoughtOfTheDayAsString(String dt) async {
+    var thoughtOfTheDay =   await DevotionalItemsRetrieveClass.getTodayThoughtOfTheDay(dt);
+    setState(() {
+      _thoughtOfTheDay = thoughtOfTheDay;
+    });
   }
 }

@@ -93,7 +93,7 @@ class MyApp extends StatelessWidget {
 
 
   void receiveData() async {
-    print('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh');
+
     DateTime now = DateTime.now();
     String formattedMYName = DateFormat('MMMMyyyy').format(now);
 
@@ -103,13 +103,8 @@ class MyApp extends StatelessWidget {
 
 
     DevotionalDBHelper.instance.insertDevotionalList(listOfDevs);
-
    print( await DevotionalDBHelper.instance.getDevotionalsDB());
 
-
-    //Map mapResponse = json.decode(response.data);
-    //print(mapResponse.keys.first);
-    //print(response.data[formattedDate]);
 
   }
 
@@ -119,7 +114,10 @@ class MyApp extends StatelessWidget {
 
   Widget build(BuildContext context) {
 
-    receiveData();
+    //receiveData();
+
+
+
     // return ScreenUtilInit(
     //   designSize: Size(360, 690),
     //   minTextAdapt: true,
