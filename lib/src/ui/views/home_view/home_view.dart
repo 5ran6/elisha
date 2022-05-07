@@ -47,6 +47,7 @@ class _HomeViewState extends State<HomeView> {
   var _versePassage='';
   var _title='';
   var _mainWriteUp='';
+  var _image='';
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +62,7 @@ class _HomeViewState extends State<HomeView> {
   getVersePassageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
   getTodayTitleAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
   getTodayMainWriteUpAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+  getImageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
   }
 
   Widget _content(BuildContext context) {
@@ -86,7 +88,7 @@ class _HomeViewState extends State<HomeView> {
         const SizedBox(height: 15),
         VerseOfTheDayCard(verse: _verse, versePassage: _versePassage),
         const SizedBox(height: 15),
-        DevotionalTodayCard(title: _title, mainWriteUp: _mainWriteUp),
+        DevotionalTodayCard(title: _title, mainWriteUp: _mainWriteUp, image: _image),
         const SizedBox(height: 15),
         BibleInAYearCard(),
         const SizedBox(height: 15),
@@ -127,5 +129,11 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
+  getImageAsString(String dt) async {
+    var image =   await DevotionalItemsRetrieveClass.getImage(dt);
+    setState(() {
+      _image = image;
+    });
+  }
 
 }

@@ -1,7 +1,8 @@
 import 'package:canton_design_system/canton_design_system.dart';
 
 class FullPrayerPage extends StatelessWidget {
-  const FullPrayerPage({Key? key}) : super(key: key);
+  final String prayer;
+  const FullPrayerPage({required this.prayer});
 
   @override
   Widget build(BuildContext context) {
@@ -14,12 +15,12 @@ class FullPrayerPage extends StatelessWidget {
                 title: Text('Prayer',
                     style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold)),
                 leading: IconButton(
-                  icon: Icon(Icons.arrow_back, color: Colors.black),
+                  icon: const Icon(Icons.arrow_back, color: Colors.black),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ),
-              SizedBox(height: 5),
-              Text('Prayer for today', style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.normal))
+              const SizedBox(height: 5),
+              Text(prayer, style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.normal))
             ],
           ),
         ),

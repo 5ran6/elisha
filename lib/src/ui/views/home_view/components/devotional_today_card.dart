@@ -5,9 +5,10 @@ import '../../devotional_page/devotional_page.dart';
 class DevotionalTodayCard  extends StatelessWidget {
   final String title;
   final String mainWriteUp;
+  final String image;
 
 
-  const DevotionalTodayCard ({required this.title, required this.mainWriteUp});
+  const DevotionalTodayCard ({required this.title, required this.mainWriteUp, required this.image});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,7 @@ class DevotionalTodayCard  extends StatelessWidget {
                   style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.normal),
                 ),
               ),
-              const SizedBox(height: 5),
+              //const SizedBox(height: 5),
               Card(
                 elevation: 0.0,
                 shape: CantonSmoothBorder.defaultBorder(),
@@ -45,8 +46,8 @@ class DevotionalTodayCard  extends StatelessWidget {
                   height: 130,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
-                      image: const DecorationImage(
-                          image: AssetImage('assets/images/bow.jpg'),
+                      image: DecorationImage(
+                          image: NetworkImage(image),
                           fit: BoxFit.fitWidth
                       ),
                       borderRadius: BorderRadius.circular(15)

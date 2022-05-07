@@ -98,12 +98,12 @@ class MyApp extends StatelessWidget {
     String formattedMYName = DateFormat('MMMMyyyy').format(now);
 
    List<Devotional> listOfDevs = await RemoteAPI.getDevotionalsForMonth(formattedMYName);
-   print(formattedMYName);
-  // print(listOfDevs);
+   //print(formattedMYName);
+   //print(listOfDevs);
 
 
-    DevotionalDBHelper.instance.insertDevotionalList(listOfDevs);
-   print( await DevotionalDBHelper.instance.getDevotionalsDB());
+    //DevotionalDBHelper.instance.insertDevotionalList(listOfDevs);
+   //print( await DevotionalDBHelper.instance.getDevotionalsDB());
 
 
   }
@@ -114,9 +114,7 @@ class MyApp extends StatelessWidget {
 
   Widget build(BuildContext context) {
 
-    //receiveData();
-
-
+    receiveData();
 
     // return ScreenUtilInit(
     //   designSize: Size(360, 690),

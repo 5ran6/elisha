@@ -14,6 +14,7 @@ class DevotionalItemsRetrieveClass {
       }
     }
     throw '';
+
   }
 
   static Future<String> getTodayVersePassage(String todayDate) async {
@@ -54,6 +55,8 @@ class DevotionalItemsRetrieveClass {
         .getDevotionalsDB();
     for (int i = 0; i < devs.length; i++) {
       if (devs[i].date == todayDate) {
+        print('kkkkkkkkkkkkkkkkkkkkkkkkkk');
+        print(devs[i].prayerBurden);
         return devs[i].prayerBurden;
       }
     }
@@ -66,6 +69,17 @@ class DevotionalItemsRetrieveClass {
     for (int i = 0; i < devs.length; i++) {
       if (devs[i].date == todayDate) {
         return devs[i].thoughtOfTheDay;
+      }
+    }
+    throw '';
+  }
+
+  static Future<String> getImage(String todayDate) async {
+    List<Devotional> devs = await DevotionalDBHelper.instance
+        .getDevotionalsDB();
+    for (int i = 0; i < devs.length; i++) {
+      if (devs[i].date == todayDate) {
+        return devs[i].image;
       }
     }
     throw '';
