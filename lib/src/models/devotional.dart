@@ -50,7 +50,7 @@ class Devotional {
       'fullText': fullText,
       'bibleInAYear': bibleInAYear,
       'image': image,
-      'prayer': prayerBurden,
+      'prayerBurden': prayerBurden,
       'thoughtOfTheDay': thoughtOfTheDay,
     };
   }

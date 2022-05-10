@@ -95,15 +95,31 @@ class MyApp extends StatelessWidget {
   void receiveData() async {
 
     DateTime now = DateTime.now();
+
     String formattedMYName = DateFormat('MMMMyyyy').format(now);
+    String date = DateFormat('dd.MM.yyyy').format(now);
 
    List<Devotional> listOfDevs = await RemoteAPI.getDevotionalsForMonth(formattedMYName);
+    for (int i = 0; i < listOfDevs.length; i++) {
+      if (listOfDevs[i].date == date) {
+        print('gggggggggggggggggggggggggg' + listOfDevs[i].prayerBurden);
+      }
+    }
    //print(formattedMYName);
    //print(listOfDevs);
 
 
-    //DevotionalDBHelper.instance.insertDevotionalList(listOfDevs);
-   //print( await DevotionalDBHelper.instance.getDevotionalsDB());
+    DevotionalDBHelper.instance.insertDevotionalList(listOfDevs);
+
+    print(await DevotionalDBHelper.instance.getDevotionalsDB());
+    print('rrrrrrrrrrrrrrrr');
+    List<Devotional> lsDv = await DevotionalDBHelper.instance.getDevotionalsDB();
+    for (int i = 0; i < lsDv.length; i++) {
+      if (listOfDevs[i].date == date) {
+        print('uuuuuuuuuuuuuuuuuuuuuu' + lsDv[i].prayerBurden);
+      }
+    }
+
 
 
   }
