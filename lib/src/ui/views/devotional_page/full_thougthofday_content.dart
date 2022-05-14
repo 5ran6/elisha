@@ -22,7 +22,10 @@ class FullThoughtOfTheDayPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 5),
-              Text(thoughtOfTheDay, style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.normal))
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Text(thoughtOfTheDay, style: Theme.of(context).textTheme.headline3?.copyWith(fontWeight: FontWeight.normal)),
+              )
             ],
           ),
         ),

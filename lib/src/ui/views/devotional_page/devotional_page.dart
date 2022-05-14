@@ -52,6 +52,13 @@ class _DevotionalPageState extends State<DevotionalPage> {
                             .textTheme
                             .headline4
                             ?.copyWith(fontWeight: FontWeight.bold)),
+                    trailing: Text(
+                      'More',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline6
+                          ?.copyWith(fontWeight: FontWeight.w100),
+                    ),
                   ),
                   const SizedBox(height: 5),
                   Padding(
@@ -71,6 +78,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
                             .textTheme
                             .headline4
                             ?.copyWith(fontWeight: FontWeight.bold)),
+
                   ),
                   const SizedBox(height: 5),
                   Padding(
@@ -123,7 +131,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
                       style: Theme.of(context)
                           .textTheme
                           .headline6
-                          ?.copyWith(fontWeight: FontWeight.normal),
+                          ?.copyWith(fontWeight: FontWeight.w100),
                     ),
                   ),
                   const SizedBox(height: 5),
@@ -158,13 +166,23 @@ class _DevotionalPageState extends State<DevotionalPage> {
                             .textTheme
                             .headline5
                             ?.copyWith(fontWeight: FontWeight.bold)),
-                  ),
-                  const SizedBox(height: 5),
-                  Text(_prayerBurden,
+                    trailing: Text(
+                      'More',
                       style: Theme.of(context)
                           .textTheme
-                          .headline3
-                          ?.copyWith(fontWeight: FontWeight.normal))
+                          .headline6
+                          ?.copyWith(fontWeight: FontWeight.w100),
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Text(_prayerBurden,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline3
+                            ?.copyWith(fontWeight: FontWeight.normal)),
+                  )
                 ],
               )
             ],
@@ -186,6 +204,13 @@ class _DevotionalPageState extends State<DevotionalPage> {
                             .textTheme
                             .headline5
                             ?.copyWith(fontWeight: FontWeight.bold)),
+                    trailing: Text(
+                      'More',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline6
+                          ?.copyWith(fontWeight: FontWeight.w100),
+                    ),
                   ),
                   const SizedBox(height: 5),
                   Padding(

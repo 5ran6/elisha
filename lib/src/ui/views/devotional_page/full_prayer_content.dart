@@ -21,7 +21,10 @@ class FullPrayerPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 5),
-              Text(prayer, style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.normal))
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Text(prayer, style: Theme.of(context).textTheme.headline3?.copyWith(fontWeight: FontWeight.normal)),
+              )
             ],
           ),
         ),

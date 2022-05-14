@@ -109,20 +109,13 @@ class MyApp extends StatelessWidget {
    //print(listOfDevs);
 
 
-    DevotionalDBHelper.instance.insertDevotionalList(listOfDevs);
-
-    print(await DevotionalDBHelper.instance.getDevotionalsDB());
-    print('rrrrrrrrrrrrrrrr');
-    List<Devotional> lsDv = await DevotionalDBHelper.instance.getDevotionalsDB();
-    for (int i = 0; i < lsDv.length; i++) {
-      if (listOfDevs[i].date == date) {
-        print('uuuuuuuuuuuuuuuuuuuuuu' + lsDv[i].prayerBurden);
-      }
+    List<Devotional> lsdv = await DevotionalDBHelper.instance.getDevotionalsDB();
+    if (lsdv.isEmpty) {
+      DevotionalDBHelper.instance.insertDevotionalList(listOfDevs);
     }
 
+    }
 
-
-  }
 
   const MyApp({Key? key}) : super(key: key);
 

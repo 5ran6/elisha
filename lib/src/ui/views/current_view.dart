@@ -119,7 +119,7 @@ class _CurrentViewState extends State<CurrentView> {
                   //HomeView(verse: verse),
                   HomeView(),
                   const BibleView(),
-                  ChurchView(readings),
+                  ChurchView(),
                   const ProfileView(),
                 ];
 

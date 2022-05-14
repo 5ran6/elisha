@@ -12,6 +12,9 @@ class DevotionalDBHelper{
   DevotionalDBHelper._privateConstructor();
   static final DevotionalDBHelper instance = DevotionalDBHelper._privateConstructor();
 
+  final String MIGRATION_STRING_IF_LESSTHAN_FIVE1 = 'ALTER TABLE devotional_table ADD COLUMN prayerBurden TEXT';
+  final String MIGRATION_STRING_IF_LESSTHAN_FIVE2 = 'INSERT INTO devotional_table (prayerBurden) SELECT prayer FROM devotional_table';
+
   static Database ?_database;
   Future<Database?> get database async {
     if (_database != null) return _database;
@@ -24,24 +27,22 @@ class DevotionalDBHelper{
     Directory directory = await getApplicationDocumentsDirectory();
     String path = join(await getDatabasesPath(), 'devotional_database.db');
 
-    return await openDatabase(path, version: 2, onCreate:_onCreate, onUpgrade: _onUpgrade);
+    return await openDatabase(path, version: 4, onCreate:_onCreate, onUpgrade: _onUpgrade);
 
   }
   Future _onCreate(Database db, int version) async {
     await db.execute(
-      'CREATE TABLE devotional_table(id INTEGER PRIMARY KEY, date TEXT, title TEXT, translation TEXT, memoryVerse TEXT, memoryVersePassage TEXT, fullPassage TEXT, fullText TEXT, bibleInAYear TEXT, image TEXT, prayer TEXT, thoughtOfTheDay TEXT)',
+      'CREATE TABLE devotional_table(id INTEGER PRIMARY KEY, date TEXT, title TEXT, translation TEXT, memoryVerse TEXT, memoryVersePassage TEXT, fullPassage TEXT, fullText TEXT, bibleInAYear TEXT, image TEXT, prayerBurden TEXT, thoughtOfTheDay TEXT)',
     );
   }
 
   void _onUpgrade(Database db, int oldVersion, int newVersion) {
-    db.execute(
-        'CREATE TABLE new_devotional_table(id INTEGER PRIMARY KEY, date TEXT, title TEXT, translation TEXT, memoryVerse TEXT, memoryVersePassage TEXT, fullPassage TEXT, fullText TEXT, bibleInAYear TEXT, image TEXT, prayerBurden TEXT, thoughtOfTheDay TEXT');
-    db.execute(
-        'INSERT INTO new_devotional_table(id, date, title, translation, memoryVerse, memoryVersePassage, fullPassage, fullText, bibleInAYear, image, prayerBurden, thoughtOfTheDay) SELECT id, date, title, translation, memoryVerse, memoryVersePassage, fullPassage, fullText, bibleInAYear, image, prayer, thoughtOfTheDay from devotional_table');
-    db.execute(
-        'DROP TABLE devotional_table');
-    db.execute(
-        'ALTER TABLE new_devotional_table RENAME devotional_table');
+    if (newVersion < 5) {
+      db.execute(MIGRATION_STRING_IF_LESSTHAN_FIVE1);
+      db.execute(MIGRATION_STRING_IF_LESSTHAN_FIVE2);
+      print('migration......................');
+    }
+
   }
 
 

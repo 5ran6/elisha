@@ -78,6 +78,7 @@ dependencies:
   page_transition: ^2.0.2
   sqflite: ^2.0.2+1
   path_provider: ^2.0.9
+  youtube_player_iframe: ^2.2.2
 
 
 
