@@ -12,8 +12,8 @@ class YouTubeVideoModel {
   String youtubeVideoId;
   String shortDesc;
   String ministering;
-  String startAt;
-  String endAt;
+  int? startAt;
+  int? endAt;
 
   YouTubeVideoModel({required this.title, required this.youtubeVideoUrl, required this.youtubeVideoId,
     required this.shortDesc, required this.ministering, required this.startAt, required this.endAt});
@@ -41,7 +41,7 @@ class YouTubeVideoModel {
       youtubeVideoId: json['youtubeVideoId']?? '',
       shortDesc: json['shortDesc']?? '',
       ministering: json['ministering']?? '',
-      startAt: json['startAt']?? '',
-      endAt: json['endAt']?? ''
+      startAt: json['startAt'],
+      endAt: json['endAt']
   );
 }
