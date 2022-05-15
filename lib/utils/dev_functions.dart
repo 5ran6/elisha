@@ -1,8 +1,6 @@
 import '../src/models/devotional.dart';
 import '../src/services/devotional_helper.dart';
 
-
-
 class DevotionalItemsRetrieveClass {
 
   static Future<String> getTodayVerse(String todayDate) async {
