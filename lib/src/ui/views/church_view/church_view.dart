@@ -44,9 +44,6 @@ class _ChurchViewState extends State<ChurchView> {
             )))
         .toList();
 
-    print("controllers");
-    print(controllers.length);
-
     setState(() {
       _controllers = controllers;
       _videoClips = videoClips;
