@@ -23,15 +23,32 @@ class ChurchView extends StatefulWidget {
 
 class _ChurchViewState extends State<ChurchView> {
   var _videoClips = List<YouTubeVideoModel>.empty();
-
+  var _controllers = List<YoutubePlayerController>.empty();
 
   Future<List<YouTubeVideoModel>> get videoClipsFuture {
     return RemoteAPI.getYouTubeVideos();
   }
 
   void fetchAndUpdateUIVideos() async {
-    List<YouTubeVideoModel> videoClips = await this.videoClipsFuture;
+    List<YouTubeVideoModel> videoClips = await videoClipsFuture;
+    List<YoutubePlayerController> controllers = videoClips
+        .map((video) => YoutubePlayerController(
+            initialVideoId: video.youtubeVideoId,
+            params: YoutubePlayerParams(
+              //startAt: Duration(minutes: 1, seconds: 36),
+              showControls: true,
+              showFullscreenButton: true,
+              //desktopMode: true,
+              //privacyEnhanced: true,
+              useHybridComposition: true,
+            )))
+        .toList();
+
+    print("controllers");
+    print(controllers.length);
+
     setState(() {
+      _controllers = controllers;
       _videoClips = videoClips;
     });
   }
@@ -43,27 +60,6 @@ class _ChurchViewState extends State<ChurchView> {
     super.initState();
 
     fetchAndUpdateUIVideos();
-
-    _controller = YoutubePlayerController(
-      initialVideoId: '',
-      params: const YoutubePlayerParams(
-        //startAt: Duration(minutes: 1, seconds: 36),
-        showControls: true,
-        showFullscreenButton: true,
-        //desktopMode: true,
-        //privacyEnhanced: true,
-        useHybridComposition: true,
-      ),
-    );
-    _controller.onEnterFullscreen = () {
-      SystemChrome.setPreferredOrientations([
-        DeviceOrientation.landscapeLeft,
-        DeviceOrientation.landscapeRight,
-        DeviceOrientation.portraitUp,
-        DeviceOrientation.portraitDown,
-      ]);
-    };
-    _controller.onExitFullscreen = () {};
   }
 
   @override
@@ -72,36 +68,40 @@ class _ChurchViewState extends State<ChurchView> {
   }
 
   Widget _content(BuildContext context) {
-
-    return  Column(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const ChurchViewHeader(),
-
         const SizedBox(height: 20),
-
-        _videoClips.isNotEmpty ? _buildVideoCard(_videoClips) :
-        Center(
-          child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
-          ),
-        ),
-
+        _videoClips.isNotEmpty && _controllers.isNotEmpty
+            ? _buildVideoCard(_videoClips, _controllers)
+            : Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                      Theme.of(context).primaryColor),
+                ),
+              ),
       ],
     );
   }
 
-  Widget _buildVideoCard(List<YouTubeVideoModel> listVid) => Expanded(
-    child: ListView.builder(
+  Widget _buildVideoCard(List<YouTubeVideoModel> listVid,
+          List<YoutubePlayerController> controllers) =>
+      Expanded(
+        child: ListView.builder(
           itemCount: listVid.length,
           itemBuilder: (context, index) {
             final video = listVid[index];
+            final controller = controllers[index];
             return GestureDetector(
               onTap: () {
                 var startTime = Duration(seconds: video.startAt ?? 0);
-                _controller.load(video.youtubeVideoId,
-                    startAt: startTime, endAt: video.endAt != null ? Duration(seconds: video.endAt!) : null);
+                controller.load(video.youtubeVideoId,
+                    startAt: startTime,
+                    endAt: video.endAt != null
+                        ? Duration(seconds: video.endAt!)
+                        : null);
               },
               child: Card(
                 color: CantonMethods.alternateCanvasColorType2(context),
@@ -115,11 +115,10 @@ class _ChurchViewState extends State<ChurchView> {
                     children: [
                       AspectRatio(
                         aspectRatio: 16 / 9,
-                        child: _controller != null
-                            ? YoutubePlayerIFrame(controller: _controller)
+                        child: controller != null
+                            ? YoutubePlayerIFrame(controller: controller)
                             : const Center(child: CircularProgressIndicator()),
                       ),
-
                       const SizedBox(height: 15),
                       Text(
                         video.title + ' by ' + video.ministering,
@@ -135,22 +134,23 @@ class _ChurchViewState extends State<ChurchView> {
                             ),
                       ),
                       const SizedBox(height: 5),
-
                       Row(
                         children: [
-                          Text('Get full message ', style: Theme.of(context).textTheme.bodyText1,),
+                          Text(
+                            'Get full message ',
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
                           RichText(
                             text: TextSpan(
                                 text: 'here',
                                 style: const TextStyle(
-                                    color: Colors.blue,
-                                    //decoration: TextDecoration.underline
+                                  color: Colors.blue,
+                                  //decoration: TextDecoration.underline
                                 ),
-                                recognizer:TapGestureRecognizer()
+                                recognizer: TapGestureRecognizer()
                                   ..onTap = () async {
                                     await launch(video.youtubeVideoUrl);
-                                  }
-                            ),
+                                  }),
                           ),
                         ],
                       ),
@@ -161,7 +161,7 @@ class _ChurchViewState extends State<ChurchView> {
             );
           },
         ),
-  );
+      );
 
   @override
   void dispose() {
