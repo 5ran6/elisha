@@ -20,6 +20,7 @@ import 'dart:async';
 import 'package:elisha/src/models/devotional.dart';
 import 'package:elisha/src/providers/api_provider.dart';
 import 'package:elisha/src/services/devotional_helper.dart';
+import 'package:elisha/src/ui/views/authentication_views/sign_in_providers_view/sign_in_providers_view.dart';
 import 'package:intl/intl.dart';
 
 import 'package:dio/dio.dart';
@@ -162,7 +163,8 @@ class MyApp extends StatelessWidget {
           primaryDarkColor: const Color(0xFFB97D3C),
           primaryDarkVariantColor: const Color(0xFFB97D3C),
           navigatorObservers: [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
-          home: const SplashScreen()),
+        //  home: const SplashScreen()),
+          home:  SignInProvidersView(()=>{})),
     );
   }
 }

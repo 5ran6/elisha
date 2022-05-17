@@ -1,41 +1,33 @@
 {
   "project_info": {
-    "project_number": "304606692724",
-    "project_id": "elisha-17e64",
-    "storage_bucket": "elisha-17e64.appspot.com"
+    "project_number": "1031171896314",
+    "project_id": "secret-place-5f5cf",
+    "storage_bucket": "secret-place-5f5cf.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:304606692724:android:98115527bebc398e6c5821",
+        "mobilesdk_app_id": "1:1031171896314:android:dbc608e4b68c7e58c5aa43",
         "android_client_info": {
-          "package_name": "com.elisha.app"
+          "package_name": "cpai.secret.place"
         }
       },
       "oauth_client": [
         {
-          "client_id": "304606692724-pivath4gfe96e0gnh08q252c2bfjvdrg.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.elisha.app",
-            "certificate_hash": "55548240b49b269ef319bf7efb4894c733b7e750"
-          }
-        },
-        {
-          "client_id": "304606692724-rugv11h16k9kl81bluij3q7fhd4q3tkl.apps.googleusercontent.com",
+          "client_id": "1031171896314-nqtf3uu3t4fvcvnt1rn8mqg2jqcn4puh.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA0f6y5IPuI4Pw7hA_lCzy0qO0b_AVBJqU"
+          "current_key": "AIzaSyDq89w9akGol8Txo7dbv-9KQYVB0OP9BD8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "304606692724-rugv11h16k9kl81bluij3q7fhd4q3tkl.apps.googleusercontent.com",
+              "client_id": "1031171896314-nqtf3uu3t4fvcvnt1rn8mqg2jqcn4puh.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

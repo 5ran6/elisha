@@ -62,7 +62,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
               PageTransition(
                   duration: Duration(milliseconds: 600),
                   type: PageTransitionType.fade,
-                  child: CurrentView()));
+                  child: CurrentView())); // TODO: Check if signed in. Then go to AUTH or not
         }));
   }
 

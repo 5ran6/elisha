@@ -26,7 +26,7 @@ class SignInViewHeader extends StatelessWidget {
     return Column(
       children: [
         Image.asset(
-          'assets/images/store_icon.png',
+          'assets/images/app_icon.png',
           height: 70,
         ),
         SizedBox(
@@ -35,7 +35,7 @@ class SignInViewHeader extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Sign In to Elisha',
+                'Sign In to Secret Place',
                 style: Theme.of(context).textTheme.headline4?.copyWith(
                       fontWeight: FontWeight.w600,
                     ),
