@@ -3,21 +3,9 @@ import 'package:elisha/src/ui/views/bibestudy_series_view/biblestudy_series_view
 import 'package:elisha/src/ui/views/opened_studyplan_view/opened_studyplan_view.dart';
 import 'package:flutter/cupertino.dart';
 
-class StudyPlansListView extends StatefulWidget {
-  const StudyPlansListView({Key? key}) : super(key: key);
+class DevotionalPlansHomePageListView extends StatelessWidget {
 
-  @override
-  _StudyPlansListViewState createState() => _StudyPlansListViewState();
-}
-
-class _StudyPlansListViewState extends State<StudyPlansListView> {
-  final List pictures =  ['assets/images/appreciate.jpeg', 'assets/images/heart.jpeg', 'assets/images/light.jpg',
-    'assets/images/master.jpg', "assets/images/bow.jpg"];
-  final List titles = ['Humility', 'Raging Battle', 'Purity', 'New Creation Man', 'Firebrands'];
-
-
-
-
+  const DevotionalPlansHomePageListView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +29,9 @@ class _StudyPlansListViewState extends State<StudyPlansListView> {
           SizedBox(
             height: 200,
             child: ListView.separated(
-              separatorBuilder: (context, index) {
-                return SizedBox(width: 10,);
-              },
+                separatorBuilder: (context, index) {
+                  return SizedBox(width: 10,);
+                },
                 physics: BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
                 itemCount: 5,
@@ -55,24 +43,24 @@ class _StudyPlansListViewState extends State<StudyPlansListView> {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => OpenedStudyPlanScreen()));
                       },
                       child: Card(
-                          color: CantonMethods.alternateCanvasColorType2(context),
-                          shape: CantonSmoothBorder.defaultBorder(),
-                          child:  Container(
-                            height: 100,
-                            width: 150,
-                            decoration: BoxDecoration(
+                        color: CantonMethods.alternateCanvasColorType2(context),
+                        shape: CantonSmoothBorder.defaultBorder(),
+                        child:  Container(
+                          height: 100,
+                          width: 150,
+                          decoration: BoxDecoration(
                               image: DecorationImage(
                                   image: AssetImage(pictures[i]),
                                   fit: BoxFit.fill
                               ),
                               borderRadius: BorderRadius.circular(10)
-                            ),
                           ),
+                        ),
                       ),
                     ),
                     SizedBox(height: 5),
                     Text(titles[i], style: TextStyle(
-                      fontSize: 15,
+                        fontSize: 15,
                         fontWeight: FontWeight.bold))
                   ],
                 )),
