@@ -54,10 +54,16 @@ class _BottomNavBarState extends State<BottomNavBar> {
           icon: Icon(LineAwesomeIcons.bible, size: _iconSize),
         ),
         BottomNavigationBarItem(
-          label: 'Church',
+          label: 'Notes',
           tooltip: '',
-          activeIcon: Icon(LineAwesomeIcons.church, size: _iconSize),
-          icon: Icon(LineAwesomeIcons.church, size: _iconSize),
+          activeIcon: Icon(LineAwesomeIcons.sticky_note, size: _iconSize),
+          icon: Icon(LineAwesomeIcons.sticky_note, size: _iconSize),
+        ),
+        BottomNavigationBarItem(
+          label: 'Message Clips',
+          tooltip: '',
+          activeIcon: Icon(LineAwesomeIcons.video, size: _iconSize),
+          icon: Icon(LineAwesomeIcons.video, size: _iconSize),
         ),
         BottomNavigationBarItem(
           label: 'Profile',

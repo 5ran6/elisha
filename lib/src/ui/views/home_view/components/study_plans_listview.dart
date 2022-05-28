@@ -16,6 +16,9 @@ class _StudyPlansListViewState extends State<StudyPlansListView> {
   final List titles = ['Humility', 'Raging Battle', 'Purity', 'New Creation Man', 'Firebrands'];
 
 
+
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,7 +26,7 @@ class _StudyPlansListViewState extends State<StudyPlansListView> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           ListTile(
-            title: Text('Study Series',
+            title: Text('Study Plans',
                 style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold)),
             trailing: GestureDetector(
               onTap: () {
@@ -39,9 +42,7 @@ class _StudyPlansListViewState extends State<StudyPlansListView> {
             height: 200,
             child: ListView.separated(
               separatorBuilder: (context, index) {
-                return SizedBox(
-                  width: 10,
-                );
+                return SizedBox(width: 10,);
               },
                 physics: BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,

@@ -18,6 +18,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/providers/verse_of_the_day_future_provider.dart';
+import 'package:elisha/src/ui/views/devotional_page/devotional_page.dart';
+import 'package:elisha/src/ui/views/note_view/note_view.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -37,8 +39,10 @@ import 'package:elisha/src/ui/views/profile_view/profile_view.dart';
 
 final _homeNavigatorKey = GlobalKey<NavigatorState>();
 final _bibleNavigatorKey = GlobalKey<NavigatorState>();
+final _noteNavigatorKey = GlobalKey<NavigatorState>();
 final _churchNavigatorKey = GlobalKey<NavigatorState>();
 final _profileNavigatorKey = GlobalKey<NavigatorState>();
+
 
 class CurrentView extends StatefulWidget {
   const CurrentView({Key? key}) : super(key: key);
@@ -63,10 +67,13 @@ class _CurrentViewState extends State<CurrentView> {
     if (index == _currentIndex && _currentIndex == 1 && _bibleNavigatorKey.currentState!.canPop()) {
       _bibleNavigatorKey.currentState!.pop();
     }
-    if (index == _currentIndex && _currentIndex == 2 && _churchNavigatorKey.currentState!.canPop()) {
+    if (index == _currentIndex && _currentIndex == 2 && _noteNavigatorKey.currentState!.canPop()) {
+      _noteNavigatorKey.currentState!.pop();
+    }
+    if (index == _currentIndex && _currentIndex == 3 && _churchNavigatorKey.currentState!.canPop()) {
       _churchNavigatorKey.currentState!.pop();
     }
-    if (index == _currentIndex && _currentIndex == 3 && _profileNavigatorKey.currentState!.canPop()) {
+    if (index == _currentIndex && _currentIndex == 4 && _profileNavigatorKey.currentState!.canPop()) {
       _profileNavigatorKey.currentState!.pop();
     }
 
@@ -116,10 +123,10 @@ class _CurrentViewState extends State<CurrentView> {
               },
               data: (readings) {
                 final _views = <Widget>[
-                  //HomeView(verse: verse),
-                  HomeView(),
+                  const HomeView(),
                   const BibleView(),
-                  ChurchView(),
+                  const DevotionalNotePage(),
+                  const ChurchView(),
                   const ProfileView(),
                 ];
 
@@ -153,6 +160,17 @@ class _CurrentViewState extends State<CurrentView> {
                       ),
                       Navigator(
                         key: _bibleNavigatorKey,
+                        observers: [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
+                        onGenerateRoute: (settings) {
+                          return MaterialPageRoute(
+                            settings: settings,
+                            fullscreenDialog: true,
+                            builder: (context) => SafeArea(child: _views[_currentIndex]),
+                          );
+                        },
+                      ),
+                      Navigator(
+                        key: _noteNavigatorKey,
                         observers: [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
                         onGenerateRoute: (settings) {
                           return MaterialPageRoute(

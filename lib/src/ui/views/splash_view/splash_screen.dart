@@ -54,13 +54,13 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
               ? Navigator.pushReplacement(
               context,
               PageTransition(
-                  duration: Duration(milliseconds: 6000),
+                  duration: const Duration(milliseconds: 600),
                   type: PageTransitionType.fade,
                   child: OnBoardingScreen()))
               : Navigator.pushReplacement(
               context,
               PageTransition(
-                  duration: Duration(milliseconds: 600),
+                  duration: const Duration(milliseconds: 600),
                   type: PageTransitionType.fade,
                   child: CurrentView()));
         }));

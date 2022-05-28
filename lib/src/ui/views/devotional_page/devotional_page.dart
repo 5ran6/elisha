@@ -3,6 +3,7 @@ import 'package:elisha/src/ui/views/devotional_page/full_prayer_content.dart';
 import 'package:elisha/src/ui/views/devotional_page/full_thougthofday_content.dart';
 import 'package:elisha/src/ui/views/devotional_page/full_topic_memoryverse_page.dart';
 import 'package:elisha/src/ui/views/devotional_page/full_word_content.dart';
+import 'package:elisha/src/ui/views/home_view/home_view.dart';
 import 'package:intl/intl.dart';
 import 'package:vertical_card_pager/vertical_card_pager.dart';
 
@@ -229,58 +230,64 @@ class _DevotionalPageState extends State<DevotionalPage> {
       ),
     ];
 
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: VerticalCardPager(
-                  images: devotionalCards,
-                  titles: const ['', '', '', ''],
-                  onPageChanged: (page) {
-                  },
-                  onSelectedItem: (index) {
-                    switch (index) {
-                      case 0:
-                        Navigator.of(context).push(PageTransition(
-                            child: FullTopicMemoryVerseVersePage(
-                                title: _title,
-                                memoryVerse: _memoryVerse,
-                                memoryVersePassage: _memoryVersePassage),
-                            type: PageTransitionType.scale,
-                            alignment: Alignment.center,
-                            duration: const Duration(milliseconds: 600)));
-                        break;
-                      case 1:
-                        Navigator.of(context).push(PageTransition(
-                            child:
-                                FullWordContentPage(mainWriteUp: _mainWriteUp),
-                            type: PageTransitionType.scale,
-                            alignment: Alignment.center,
-                            duration: const Duration(milliseconds: 600)));
-                        break;
-                      case 2:
-                        Navigator.of(context).push(PageTransition(
-                            child: FullPrayerPage(prayer: _prayerBurden),
-                            type: PageTransitionType.scale,
-                            alignment: Alignment.center,
-                            duration: const Duration(milliseconds: 600)));
-                        break;
-                      case 3:
-                        Navigator.of(context).push(PageTransition(
-                            child: FullThoughtOfTheDayPage(
-                                thoughtOfTheDay: _thoughtOfTheDay),
-                            type: PageTransitionType.scale,
-                            alignment: Alignment.center,
-                            duration: const Duration(milliseconds: 600)));
-                        break;
-                    }
-                  },
-                  initialPage: 1,
-                  // optional
-                  align: ALIGN.CENTER),
-            ),
-          ],
+    return WillPopScope(
+      onWillPop: () async {
+        //Navigator.push(context, MaterialPageRoute(builder: context) => HomeView());
+        return true;
+        },
+      child: Scaffold(
+        body: SafeArea(
+          child: Column(
+            children: [
+              Expanded(
+                child: VerticalCardPager(
+                    images: devotionalCards,
+                    titles: const ['', '', '', ''],
+                    onPageChanged: (page) {
+                    },
+                    onSelectedItem: (index) {
+                      switch (index) {
+                        case 0:
+                          Navigator.of(context).push(PageTransition(
+                              child: FullTopicMemoryVerseVersePage(
+                                  title: _title,
+                                  memoryVerse: _memoryVerse,
+                                  memoryVersePassage: _memoryVersePassage),
+                              type: PageTransitionType.scale,
+                              alignment: Alignment.center,
+                              duration: const Duration(milliseconds: 600)));
+                          break;
+                        case 1:
+                          Navigator.of(context).push(PageTransition(
+                              child:
+                                  FullWordContentPage(mainWriteUp: _mainWriteUp),
+                              type: PageTransitionType.scale,
+                              alignment: Alignment.center,
+                              duration: const Duration(milliseconds: 600)));
+                          break;
+                        case 2:
+                          Navigator.of(context).push(PageTransition(
+                              child: FullPrayerPage(prayer: _prayerBurden),
+                              type: PageTransitionType.scale,
+                              alignment: Alignment.center,
+                              duration: const Duration(milliseconds: 600)));
+                          break;
+                        case 3:
+                          Navigator.of(context).push(PageTransition(
+                              child: FullThoughtOfTheDayPage(
+                                  thoughtOfTheDay: _thoughtOfTheDay),
+                              type: PageTransitionType.scale,
+                              alignment: Alignment.center,
+                              duration: const Duration(milliseconds: 600)));
+                          break;
+                      }
+                    },
+                    initialPage: 1,
+                    // optional
+                    align: ALIGN.CENTER),
+              ),
+            ],
+          ),
         ),
       ),
     );

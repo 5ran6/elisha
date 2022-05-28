@@ -54,12 +54,11 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                     height: 40,
                     width: MediaQuery.of(context).size.width - 15,
                     color: Colors.black87,
-                    child: const Align(
+                    child: Align(
                         alignment: Alignment.center,
                         child: Text(
                           'Topic | Date',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
+                          style: Theme.of(context).textTheme.headline5,
                         )),
                   ),
                 ),
@@ -122,6 +121,7 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                           child: Text(
                             "Save",
                             style: TextStyle(
+                              color: Colors.white,
                                 fontSize: 18),
                           ))))
             ],

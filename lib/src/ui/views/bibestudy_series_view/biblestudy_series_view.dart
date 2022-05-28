@@ -1,4 +1,6 @@
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:elisha/src/ui/views/bibestudy_series_view/biblestudy_series_view_header.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class BibleStudySeriesPage extends StatefulWidget {
   const BibleStudySeriesPage({Key? key}) : super(key: key);
@@ -16,88 +18,43 @@ class _BibleStudySeriesPageState extends State<BibleStudySeriesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Daily Devotional Series',
-          style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold),
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const BibleStudySeriesHeaderView(),
+            const SizedBox(height: 10),
+           Expanded(
+             child: StaggeredGridView.countBuilder(
+               itemCount: 20,
+                 crossAxisCount: 3,
+                 mainAxisSpacing: 8,
+                 crossAxisSpacing: 8,
+                 staggeredTileBuilder: (index) => StaggeredTile.count(1, 1),
+               itemBuilder: (context, index) => buildBibleStudyPlanCardView(index),
+             ),
+           ),
+
+          ],
         ),
-        centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.black),
-        elevation: 0,
-        //backgroundColor: Colors.white,
-        //brightness: Brightness.light,
       ),
-        body: Padding(
-          padding: const EdgeInsets.only(top: 15.0),
-          child: SafeArea(
-            child:  _buildContent(context),
-          ),
-        ),
-      );
-  }
-}
-
-Widget _buildContent(BuildContext context) {
-  return ListView.separated(
-  itemCount: 5,
-    scrollDirection: Axis.vertical,
-
-    itemBuilder: (BuildContext content, int index) {
-    return _buildHorizontalList();
-    },
-    separatorBuilder: (BuildContext context, int index) {
-    return SizedBox(
-      height: 35,
     );
-  },);
+  }
+
+  buildBibleStudyPlanCardView(int index) => Card(
+    margin: EdgeInsets.zero,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    child: Container(
+        margin: EdgeInsets.all(8),
+        child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Center(child: Text('Day1', style: Theme.of(context).textTheme.headline5))
+        )
+
+    ),
+  );
 }
 
-Widget _buildHorizontalList() {
-  final List pictures =  ['assets/images/appreciate.jpeg', 'assets/images/heart.jpeg', 'assets/images/light.jpg',
-    'assets/images/master.jpg', "assets/images/bow.jpg"];
-  final List titles = ['Humility', 'Raging Battle', 'Purity', 'New Creation Man', 'Firebrands'];
-return SizedBox(
-  height: 136,
-  child: ListView.separated(
-    itemCount: 5,
-      scrollDirection: Axis.horizontal,
-      separatorBuilder: (BuildContext context, int index) {
-        return SizedBox(
-          width: 10,
-        );
-      },
-    itemBuilder: (BuildContext context, int index) {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          InkWell(
-            onTap: () {
 
-            },
-            child: Card(
-              color: CantonMethods.alternateCanvasColorType2(context),
-              shape: CantonSmoothBorder.defaultBorder(),
-              child:  Container(
-                height: 100,
-                width: 150,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage(pictures[index]),
-                        fit: BoxFit.fill
-                    ),
-                    borderRadius: BorderRadius.circular(10)
-                ),
-              ),
-            ),
-          ),
-          SizedBox(height: 5),
-          Text(titles[index], style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold))
-        ],
-      );
-    },
-    physics: BouncingScrollPhysics(),
-  ),
-);
-}
+

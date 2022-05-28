@@ -97,20 +97,11 @@ class MyApp extends StatelessWidget {
     DateTime now = DateTime.now();
 
     String formattedMYName = DateFormat('MMMMyyyy').format(now);
-    String date = DateFormat('dd.MM.yyyy').format(now);
-
-   List<Devotional> listOfDevs = await RemoteAPI.getDevotionalsForMonth(formattedMYName);
-    for (int i = 0; i < listOfDevs.length; i++) {
-      if (listOfDevs[i].date == date) {
-        print('gggggggggggggggggggggggggg' + listOfDevs[i].prayerBurden);
-      }
-    }
-   //print(formattedMYName);
-   //print(listOfDevs);
-
 
     List<Devotional> lsdv = await DevotionalDBHelper.instance.getDevotionalsDB();
     if (lsdv.isEmpty) {
+      List<Devotional> listOfDevs = await RemoteAPI.getDevotionalsForMonth(formattedMYName);
+
       DevotionalDBHelper.instance.insertDevotionalList(listOfDevs);
     }
 
@@ -162,7 +153,7 @@ class MyApp extends StatelessWidget {
           primaryDarkColor: const Color(0xFFB97D3C),
           primaryDarkVariantColor: const Color(0xFFB97D3C),
           navigatorObservers: [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
-          home: const SplashScreen()),
+          home: const BibleStudySeriesPage()),
     );
   }
 }

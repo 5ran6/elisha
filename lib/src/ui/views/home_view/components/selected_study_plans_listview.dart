@@ -19,18 +19,16 @@ class _SelectedStudyPlansListviewState extends State<SelectedStudyPlansListview>
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           ListTile(
-            title: Text('Selected Study Series',
+            title: Text('My Study Plans',
                 style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold)),
           ),
           SizedBox(
             height: 200,
             child: ListView.separated(
                 separatorBuilder: (context, index) {
-                  return SizedBox(
-                    width: 10,
-                  );
+                  return const SizedBox(width: 10,);
                 },
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
                 itemCount: 2,
                 itemBuilder: (ctx, i) => Column(
@@ -54,7 +52,7 @@ class _SelectedStudyPlansListviewState extends State<SelectedStudyPlansListview>
                         ),
                       ),
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Text(titles[i], style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold))

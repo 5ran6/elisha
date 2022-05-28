@@ -2,6 +2,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:elisha/src/models/devotional.dart';
+import 'package:elisha/src/models/devotional_plans.dart';
 import 'package:elisha/src/models/youTube_video.dart';
 import 'package:intl/intl.dart';
 
@@ -14,8 +15,6 @@ class RemoteAPI {
         followRedirects: false,
         validateStatus: (status) => true,));
 
-    print(response.data);
-    print(monthYearName);
     var json = response.data;
     return devotionsFromJson(json);
   }
@@ -27,7 +26,14 @@ class RemoteAPI {
 
    var json = response1.data;
    return youTubeVideoFromJson(json);
-
  }
 
+ static Future<List<DevotionalPlans>> getDevotionalPlans() async {
+   var dio2 = Dio();
+   final response2 = await dio2.get('https://secret-place.herokuapp.com/api/study-plans',
+   options: Options(responseType: ResponseType.json, followRedirects: false, validateStatus: (status) => true));
+
+   var json = response2.data;
+   return devotionalPlansFromJson(json);
+ }
 }
