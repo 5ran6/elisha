@@ -53,6 +53,7 @@ class _HomeViewState extends State<HomeView> {
 
   var _devPlanTitle='';
   var _devPlanImage='';
+  var _devPlansList = List<DevotionalPlans>.empty();
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +69,7 @@ class _HomeViewState extends State<HomeView> {
   getTodayTitleAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
   getTodayMainWriteUpAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
   getImageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+  getDevotionalPlansFromApi();
   }
 
   Widget _content(BuildContext context) {
@@ -99,7 +101,7 @@ class _HomeViewState extends State<HomeView> {
         const SizedBox(height: 15),
         SelectedStudyPlansListview(),
         const SizedBox(height: 15),
-        DevotionalPlansHomePageListView()
+        DevotionalPlansHomePageListView(devPlans: _devPlansList)
       ],
     );
   }
@@ -142,10 +144,19 @@ class _HomeViewState extends State<HomeView> {
   }
 
   getDevotionalPlanTitle() async {
-    List<DevotionalPlans> devPlans =  await RemoteAPI.getDevotionalPlans();
-    for(int i=0; i < devPlans.length; i++) {
-
+    List<DevotionalPlans> devPlanTitles =  await RemoteAPI.getDevotionalPlans();
+    for(int i=0; i < devPlanTitles.length; i++) {
+      setState(() {
+        _devPlanTitle = devPlanTitles[i].title;
+      });
     }
+  }
+
+  getDevotionalPlansFromApi() async {
+    List<DevotionalPlans> devPlans = await RemoteAPI.getDevotionalPlans();
+    setState(() {
+      _devPlansList = devPlans;
+    });
   }
 
 }

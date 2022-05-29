@@ -1,11 +1,13 @@
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:elisha/src/models/devotional_plans.dart';
 import 'package:elisha/src/ui/views/bibestudy_series_view/biblestudy_series_view.dart';
 import 'package:elisha/src/ui/views/opened_studyplan_view/opened_studyplan_view.dart';
 import 'package:flutter/cupertino.dart';
 
 class DevotionalPlansHomePageListView extends StatelessWidget {
+  final List<DevotionalPlans> devPlans;
 
-  const DevotionalPlansHomePageListView({Key? key}) : super(key: key);
+  const DevotionalPlansHomePageListView({required this.devPlans});
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +32,11 @@ class DevotionalPlansHomePageListView extends StatelessWidget {
             height: 200,
             child: ListView.separated(
                 separatorBuilder: (context, index) {
-                  return SizedBox(width: 10,);
+                  return const SizedBox(width: 10);
                 },
                 physics: BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
-                itemCount: 5,
+                itemCount: devPlans.length,
                 itemBuilder: (ctx, i) => Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -50,7 +52,7 @@ class DevotionalPlansHomePageListView extends StatelessWidget {
                           width: 150,
                           decoration: BoxDecoration(
                               image: DecorationImage(
-                                  image: AssetImage(pictures[i]),
+                                  image: AssetImage(devPlans[i].imageUrl),
                                   fit: BoxFit.fill
                               ),
                               borderRadius: BorderRadius.circular(10)
@@ -58,8 +60,8 @@ class DevotionalPlansHomePageListView extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(height: 5),
-                    Text(titles[i], style: TextStyle(
+                    const SizedBox(height: 5),
+                    Text(devPlans[i].title, style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold))
                   ],

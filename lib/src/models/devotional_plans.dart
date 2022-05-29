@@ -3,7 +3,10 @@ import 'dart:convert';
 
 import 'devotional.dart';
 
-List<DevotionalPlans> devotionalPlansFromJson(String str) => List<DevotionalPlans>.from(json.decode(str).map((x) => DevotionalPlans.fromJson(x)));
+//List<DevotionalPlans> devotionalPlansFromJson(String str) => List<DevotionalPlans>.from(json.decode(str).map((x) => DevotionalPlans.fromJson(x)));
+List<DevotionalPlans> devotionalPlansFromJson(List<dynamic> jsonList) =>
+    List<DevotionalPlans>.from(jsonList.map((x) => DevotionalPlans.fromJson(x)));
+
 
 String devotionalPlansToJson(List<DevotionalPlans> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 

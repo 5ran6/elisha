@@ -32,6 +32,7 @@ class RemoteAPI {
    var dio2 = Dio();
    final response2 = await dio2.get('https://secret-place.herokuapp.com/api/study-plans',
    options: Options(responseType: ResponseType.json, followRedirects: false, validateStatus: (status) => true));
+   print(response2.data);
 
    var json = response2.data;
    return devotionalPlansFromJson(json);
