@@ -51,7 +51,7 @@ class _HomeViewState extends State<HomeView> {
   var _mainWriteUp='';
   var _image='';
 
-  var _devPlansList = List<DevotionalPlans>.empty();
+  var _devPlansList = List<DevotionalPlan>.empty();
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +142,7 @@ class _HomeViewState extends State<HomeView> {
   }
 
   getDevotionalPlansFromApi() async {
-    List<DevotionalPlans> devPlans = await RemoteAPI.getDevotionalPlans();
+    List<DevotionalPlan> devPlans = await RemoteAPI.getDevotionalPlans();
     setState(() {
       _devPlansList = devPlans;
     });

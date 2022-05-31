@@ -28,7 +28,7 @@ class RemoteAPI {
    return youTubeVideoFromJson(json);
  }
 
- static Future<List<DevotionalPlans>> getDevotionalPlans() async {
+ static Future<List<DevotionalPlan>> getDevotionalPlans() async {
    var dio2 = Dio();
    final response2 = await dio2.get('https://secret-place.herokuapp.com/api/study-plans',
    options: Options(responseType: ResponseType.json, followRedirects: false, validateStatus: (status) => true));
@@ -37,7 +37,7 @@ class RemoteAPI {
    return devotionalPlansFromJson(json);
  }
 
- static Future<DevotionalPlans> getDevotionalPlansWithDevotionals(studyPlanID) async {
+ static Future<DevotionalPlan> getDevotionalPlanWithID(studyPlanID) async {
    var dio3 = Dio();
    final response3 = await dio3.get('https://secret-place.herokuapp.com/api/study-plans/${studyPlanID}',
        options: Options(responseType: ResponseType.json, followRedirects: false, validateStatus: (status) => true));

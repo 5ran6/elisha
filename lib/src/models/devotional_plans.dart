@@ -4,15 +4,15 @@ import 'dart:convert';
 import 'devotional.dart';
 
 //List<DevotionalPlans> devotionalPlansFromJson(String str) => List<DevotionalPlans>.from(json.decode(str).map((x) => DevotionalPlans.fromJson(x)));
-List<DevotionalPlans> devotionalPlansFromJson(List<dynamic> jsonList) =>
-    List<DevotionalPlans>.from(jsonList.map((x) => DevotionalPlans.fromJson(x)));
-String devotionalPlansToJson(List<DevotionalPlans> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+List<DevotionalPlan> devotionalPlansFromJson(List<dynamic> jsonList) =>
+    List<DevotionalPlan>.from(jsonList.map((x) => DevotionalPlan.fromJson(x)));
+String devotionalPlansToJson(List<DevotionalPlan> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-DevotionalPlans devotionalPlanWithIDFromJson(String str) => DevotionalPlans.fromJson(json.decode(str));
-String devotionalPlansWithIDToJson(DevotionalPlans plans) => json.encode(plans.toJson());
+DevotionalPlan devotionalPlanWithIDFromJson(var js) => DevotionalPlan.fromJson(js);
+String devotionalPlansWithIDToJson(DevotionalPlan plans) => json.encode(plans.toJson());
 
-class DevotionalPlans {
-  DevotionalPlans({
+class DevotionalPlan {
+  DevotionalPlan({
     required this.id,
     required this.title,
     required this.imageUrl,
@@ -26,7 +26,7 @@ class DevotionalPlans {
   String description;
   List<Devotional> devotionals;
 
-  factory DevotionalPlans.fromJson(Map<String, dynamic> json) => DevotionalPlans(
+  factory DevotionalPlan.fromJson(Map<String, dynamic> json) => DevotionalPlan(
     id: json["id"],
     title: json["title"],
     imageUrl: json["imageUrl"],

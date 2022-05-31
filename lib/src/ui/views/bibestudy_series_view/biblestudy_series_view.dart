@@ -15,14 +15,14 @@ class BibleStudySeriesPage extends StatefulWidget {
 
 class _BibleStudySeriesPageState extends State<BibleStudySeriesPage> {
 
-  var _devPlansList = List<DevotionalPlans>.empty();
+  var _devPlansList = List<DevotionalPlan>.empty();
 
-  Future<List<DevotionalPlans>> get devPlansFuture {
+  Future<List<DevotionalPlan>> get devPlansFuture {
     return RemoteAPI.getDevotionalPlans();
   }
 
   void fetchAndUpdateUIPlans() async {
-    List<DevotionalPlans> devPlans = await devPlansFuture;
+    List<DevotionalPlan> devPlans = await devPlansFuture;
 
     setState(() {
       _devPlansList = devPlans;
@@ -64,8 +64,7 @@ class _BibleStudySeriesPageState extends State<BibleStudySeriesPage> {
 
   buildBibleStudyPlanCardView(int index) => GestureDetector(
     onTap: () {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => OpenedStudyPlanScreen(devPlanID: _devPlansList[index].id,
-      devPlanDescription: _devPlansList[index].description, devPlanImageUrl: _devPlansList[index].imageUrl, devs: _devPlansList[index].devotionals,)));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => OpenedStudyPlanScreen(devPlanID: _devPlansList[index].id)));
     },
     child: Card(
       margin: EdgeInsets.zero,

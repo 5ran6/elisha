@@ -6,7 +6,7 @@ import 'package:elisha/src/ui/views/opened_studyplan_view/opened_studyplan_view.
 import 'package:flutter/cupertino.dart';
 
 class DevotionalPlansHomePageListView extends StatelessWidget {
-  final List<DevotionalPlans> devPlans;
+  final List<DevotionalPlan> devPlans;
 
   const DevotionalPlansHomePageListView({required this.devPlans});
 
@@ -43,8 +43,7 @@ class DevotionalPlansHomePageListView extends StatelessWidget {
                   children: [
                     InkWell(
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => OpenedStudyPlanScreen(devPlanID: devPlans[i].id,
-                            devPlanDescription: devPlans[i].description, devPlanImageUrl: devPlans[i].imageUrl, devs: devPlans[i].devotionals)));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => OpenedStudyPlanScreen(devPlanID: devPlans[i].id)));
                       },
                       child: Card(
                         color: CantonMethods.alternateCanvasColorType2(context),
