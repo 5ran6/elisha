@@ -32,9 +32,20 @@ class RemoteAPI {
    var dio2 = Dio();
    final response2 = await dio2.get('https://secret-place.herokuapp.com/api/study-plans',
    options: Options(responseType: ResponseType.json, followRedirects: false, validateStatus: (status) => true));
-   print(response2.data);
 
    var json = response2.data;
    return devotionalPlansFromJson(json);
  }
+
+ static Future<DevotionalPlans> getDevotionalPlansWithDevotionals(studyPlanID) async {
+   var dio3 = Dio();
+   final response3 = await dio3.get('https://secret-place.herokuapp.com/api/study-plans/${studyPlanID}',
+       options: Options(responseType: ResponseType.json, followRedirects: false, validateStatus: (status) => true));
+
+   print(response3.data);
+   var json = response3.data;
+   return devotionalPlanWithIDFromJson(json);
+ }
+
+
 }

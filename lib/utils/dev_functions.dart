@@ -37,6 +37,17 @@ class DevotionalItemsRetrieveClass {
     throw '';
   }
 
+  static Future<String> getTodayFullPassage(String todayDate) async {
+    List<Devotional> devs = await DevotionalDBHelper.instance
+        .getDevotionalsDB();
+    for (int i = 0; i < devs.length; i++) {
+      if (devs[i].date == todayDate) {
+        return devs[i].fullPassage;
+      }
+    }
+    throw '';
+  }
+
   static Future<String> getTodayMainWriteUp(String todayDate) async {
     List<Devotional> devs = await DevotionalDBHelper.instance
         .getDevotionalsDB();

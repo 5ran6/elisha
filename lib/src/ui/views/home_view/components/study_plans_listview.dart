@@ -1,5 +1,6 @@
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/models/devotional_plans.dart';
+import 'package:elisha/src/providers/api_provider.dart';
 import 'package:elisha/src/ui/views/bibestudy_series_view/biblestudy_series_view.dart';
 import 'package:elisha/src/ui/views/opened_studyplan_view/opened_studyplan_view.dart';
 import 'package:flutter/cupertino.dart';
@@ -42,7 +43,8 @@ class DevotionalPlansHomePageListView extends StatelessWidget {
                   children: [
                     InkWell(
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => OpenedStudyPlanScreen()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => OpenedStudyPlanScreen(devPlanID: devPlans[i].id,
+                            devPlanDescription: devPlans[i].description, devPlanImageUrl: devPlans[i].imageUrl, devs: devPlans[i].devotionals)));
                       },
                       child: Card(
                         color: CantonMethods.alternateCanvasColorType2(context),
@@ -52,7 +54,7 @@ class DevotionalPlansHomePageListView extends StatelessWidget {
                           width: 150,
                           decoration: BoxDecoration(
                               image: DecorationImage(
-                                  image: AssetImage(devPlans[i].imageUrl),
+                                  image: NetworkImage(devPlans[i].imageUrl),
                                   fit: BoxFit.fill
                               ),
                               borderRadius: BorderRadius.circular(10)

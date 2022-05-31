@@ -1,25 +1,47 @@
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:elisha/src/models/devotional.dart';
+import 'package:elisha/src/models/devotional_plans.dart';
+import 'package:elisha/src/ui/views/devotional_page/devotional_page.dart';
+import 'package:elisha/src/ui/views/devotional_page/devotional_page_fromplans.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
+import '../../../providers/api_provider.dart';
+
 
 class OpenedStudyPlanScreen extends StatefulWidget {
-  const OpenedStudyPlanScreen({Key? key}) : super(key: key);
+  final String devPlanID;
+  final String devPlanDescription;
+  final String devPlanImageUrl;
+  final List<Devotional> devs;
+
+  const OpenedStudyPlanScreen({required this.devPlanID, required this.devPlanDescription, required this.devPlanImageUrl, required this.devs});
 
   @override
   _OpenedStudyPlanScreenState createState() => _OpenedStudyPlanScreenState();
 }
 
 class _OpenedStudyPlanScreenState extends State<OpenedStudyPlanScreen> {
+  var _devPlansWithDevotionals;
+
+  // Future<DevotionalPlans> get devPlansWithDevotionalsFuture {
+  //   return RemoteAPI.getDevotionalPlansWithDevotionals(widget.devPlanID);
+  // }
+  //
+  // void getDevotionalPlanWithID() async {
+  //   DevotionalPlans devPlansWithDevs = await devPlansWithDevotionalsFuture;
+  //
+  //   setState(() {
+  //     _devPlansWithDevotionals = devPlansWithDevs;
+  //   });
+  //
+  // }
 
 
-  final List pictures =  ['assets/images/appreciate.jpeg', 'assets/images/heart.jpeg', 'assets/images/light.jpg',
-    'assets/images/master.jpg', "assets/images/bow.jpg"];
-  final List titles = ['Humility', 'Raging Battle', 'Purity', 'New Creation Man', 'Firebrands'];
-  final List days = ['Day1', 'Day2', 'Day3', 'Day4', 'Day5'];
-
-
-
+  // @override
+  // void initState() {
+  //   getDevotionalPlanWithID();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -32,20 +54,20 @@ class _OpenedStudyPlanScreenState extends State<OpenedStudyPlanScreen> {
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage("assets/images/appreciate.jpeg"),
+                      image: NetworkImage(widget.devPlanImageUrl),
                       fit: BoxFit.fill
                   ),
                 ),
               ),
               const SizedBox(height: 10),
-              Text('Description of Devotional Plan',
+              Text(widget.devPlanDescription,
               style: Theme.of(context).textTheme.headline5,
               ),
               const SizedBox(height: 10),
               Expanded(
                 child: StaggeredGridView.countBuilder(
                   staggeredTileBuilder: (index) => StaggeredTile.count(2,1),
-                  itemCount: 7,
+                  itemCount: widget.devs.length,
                       mainAxisSpacing: 8,
                       crossAxisCount: 4,
                       crossAxisSpacing: 8,
@@ -60,16 +82,22 @@ class _OpenedStudyPlanScreenState extends State<OpenedStudyPlanScreen> {
     );
   }
 
-  Widget buildDailyPlanCard(int index) => Card(
-    margin: EdgeInsets.all(15),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-    child: Container(
-      margin: EdgeInsets.all(5),
-      child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-        child: Center(child: Text('Day1', style: Theme.of(context).textTheme.headline5))
-      )
+  Widget buildDailyPlanCard(int index) => GestureDetector(
+    onTap: () {
+      //List<Devotional> devsForPlan = _devPlansWithDevotionals[index].devotionals;
+      Navigator.push(context, MaterialPageRoute(builder: (context) => DevotionalPageFromPlans(devotionalFromPlan: widget.devs[index])));
+    },
+    child: Card(
+      margin: EdgeInsets.all(15),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: Container(
+        margin: EdgeInsets.all(5),
+        child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+          child: Center(child: Text('Day$index', style: Theme.of(context).textTheme.headline5))
+        )
 
+      ),
     ),
   );
 

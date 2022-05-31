@@ -4,6 +4,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import '../../../models/devotional_plans.dart';
 import '../../../providers/api_provider.dart';
+import '../opened_studyplan_view/opened_studyplan_view.dart';
 
 class BibleStudySeriesPage extends StatefulWidget {
   const BibleStudySeriesPage({Key? key}) : super(key: key);
@@ -13,10 +14,6 @@ class BibleStudySeriesPage extends StatefulWidget {
 }
 
 class _BibleStudySeriesPageState extends State<BibleStudySeriesPage> {
-  // final List pictures =  ['assets/images/appreciate.jpeg', 'assets/images/heart.jpeg', 'assets/images/light.jpg',
-  //   'assets/images/master.jpg', "assets/images/bow.jpg"];
-  // final List titles = ['Humility', 'Raging Battle', 'Purity', 'New Creation Man', 'Firebrands'];
-
 
   var _devPlansList = List<DevotionalPlans>.empty();
 
@@ -65,16 +62,22 @@ class _BibleStudySeriesPageState extends State<BibleStudySeriesPage> {
     );
   }
 
-  buildBibleStudyPlanCardView(int index) => Card(
-    margin: EdgeInsets.zero,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-    child: Container(
-        margin: EdgeInsets.all(8),
-        child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Image.asset(_devPlansList[index].imageUrl),
-        )
+  buildBibleStudyPlanCardView(int index) => GestureDetector(
+    onTap: () {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => OpenedStudyPlanScreen(devPlanID: _devPlansList[index].id,
+      devPlanDescription: _devPlansList[index].description, devPlanImageUrl: _devPlansList[index].imageUrl, devs: _devPlansList[index].devotionals,)));
+    },
+    child: Card(
+      margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: Container(
+          margin: const EdgeInsets.all(8),
+          child: ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.network(_devPlansList[index].imageUrl),
+          )
 
+      ),
     ),
   );
 }

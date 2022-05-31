@@ -51,8 +51,6 @@ class _HomeViewState extends State<HomeView> {
   var _mainWriteUp='';
   var _image='';
 
-  var _devPlanTitle='';
-  var _devPlanImage='';
   var _devPlansList = List<DevotionalPlans>.empty();
 
   @override
@@ -141,15 +139,6 @@ class _HomeViewState extends State<HomeView> {
     setState(() {
       _image = image;
     });
-  }
-
-  getDevotionalPlanTitle() async {
-    List<DevotionalPlans> devPlanTitles =  await RemoteAPI.getDevotionalPlans();
-    for(int i=0; i < devPlanTitles.length; i++) {
-      setState(() {
-        _devPlanTitle = devPlanTitles[i].title;
-      });
-    }
   }
 
   getDevotionalPlansFromApi() async {

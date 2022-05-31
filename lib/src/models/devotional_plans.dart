@@ -6,20 +6,21 @@ import 'devotional.dart';
 //List<DevotionalPlans> devotionalPlansFromJson(String str) => List<DevotionalPlans>.from(json.decode(str).map((x) => DevotionalPlans.fromJson(x)));
 List<DevotionalPlans> devotionalPlansFromJson(List<dynamic> jsonList) =>
     List<DevotionalPlans>.from(jsonList.map((x) => DevotionalPlans.fromJson(x)));
-
-
 String devotionalPlansToJson(List<DevotionalPlans> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+DevotionalPlans devotionalPlanWithIDFromJson(String str) => DevotionalPlans.fromJson(json.decode(str));
+String devotionalPlansWithIDToJson(DevotionalPlans plans) => json.encode(plans.toJson());
 
 class DevotionalPlans {
   DevotionalPlans({
-    this.id,
+    required this.id,
     required this.title,
     required this.imageUrl,
     required this.description,
     required this.devotionals,
   });
 
-  String ?id;
+  String id;
   String title;
   String imageUrl;
   String description;
