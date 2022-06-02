@@ -95,14 +95,13 @@ class MyApp extends StatelessWidget {
   void receiveData() async {
     DateTime now = DateTime.now();
 
-    String formattedMYName = DateFormat('MMMMyyyy').format(now);
+    String formattedMYNameAPI = DateFormat('MMMMyyyy').format(now);
+    String formattedMYNameDB = DateFormat('MM.yyyy').format(now);
 
-    List<Devotional> lsdv = await DevotionalDBHelper.instance.getDevotionalsDB();
+    List<Devotional> lsdv = await DevotionalDBHelper.instance.getDevotionalsDBForMonth(formattedMYNameDB);
+    print(lsdv);
     if (lsdv.isEmpty) {
-      print('Database does not ave devs for this month');
-      List<Devotional> listOfDevs = await RemoteAPI.getDevotionalsForMonth(formattedMYName);
-      print(listOfDevs);
-      print('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy');
+      List<Devotional> listOfDevs = await RemoteAPI.getDevotionalsForMonth(formattedMYNameAPI);
       DevotionalDBHelper.instance.insertDevotionalList(listOfDevs);
     }
     }
@@ -111,7 +110,7 @@ class MyApp extends StatelessWidget {
   @override
 
   Widget build(BuildContext context) {
-       print('gggggggggggggggggggggggggggg');
+
     receiveData();
 
     // return ScreenUtilInit(

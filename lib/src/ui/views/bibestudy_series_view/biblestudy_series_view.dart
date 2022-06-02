@@ -46,22 +46,23 @@ class _BibleStudySeriesPageState extends State<BibleStudySeriesPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const BibleStudySeriesHeaderView(),
-            const SizedBox(height: 10),
-            TextField(
-              controller: controller,
-              decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search),
-                hintText: 'Plan title',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide(color: Theme.of(context).primaryColor),
-                )
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: TextField(
+                controller: controller,
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.search),
+                  hintText: 'Plan title',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                  )
+                ),
+                onChanged: searchStudyPlan,
               ),
-              onChanged: searchStudyPlan,
             ),
 
-
-            const SizedBox(height: 10),
+            const SizedBox(height: 15),
            Expanded(
              child: StaggeredGridView.countBuilder(
                itemCount: _devPlansList.length,

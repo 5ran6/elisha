@@ -7,7 +7,7 @@ class BibleStudySeriesHeaderView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 25),
+      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
       child: Column(
           children: [Text('Study Plans', style: Theme.of(context).textTheme.headline2),
       ]),
