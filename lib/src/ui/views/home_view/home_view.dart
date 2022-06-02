@@ -32,7 +32,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../utils/dev_functions.dart';
 import '../../../models/devotional.dart';
-import '../../../services/devotional_helper.dart';
+import '../../../services/devotionalDB_helper.dart';
 import 'components/study_plans_listview.dart';
 
 class HomeView extends StatefulWidget {

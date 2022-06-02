@@ -19,7 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'dart:async';
 import 'package:elisha/src/models/devotional.dart';
 import 'package:elisha/src/providers/api_provider.dart';
-import 'package:elisha/src/services/devotional_helper.dart';
+import 'package:elisha/src/services/devotionalDB_helper.dart';
 import 'package:intl/intl.dart';
 
 import 'package:dio/dio.dart';
@@ -93,27 +93,25 @@ class MyApp extends StatelessWidget {
 
 
   void receiveData() async {
-
     DateTime now = DateTime.now();
 
     String formattedMYName = DateFormat('MMMMyyyy').format(now);
 
     List<Devotional> lsdv = await DevotionalDBHelper.instance.getDevotionalsDB();
     if (lsdv.isEmpty) {
+      print('Database does not ave devs for this month');
       List<Devotional> listOfDevs = await RemoteAPI.getDevotionalsForMonth(formattedMYName);
-
+      print(listOfDevs);
+      print('yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy');
       DevotionalDBHelper.instance.insertDevotionalList(listOfDevs);
     }
-
     }
 
-
   const MyApp({Key? key}) : super(key: key);
-
   @override
 
   Widget build(BuildContext context) {
-
+       print('gggggggggggggggggggggggggggg');
     receiveData();
 
     // return ScreenUtilInit(

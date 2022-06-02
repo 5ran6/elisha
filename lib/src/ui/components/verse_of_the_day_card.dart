@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
 import '../../models/devotional.dart';
-import '../../services/devotional_helper.dart';
+import '../../services/devotionalDB_helper.dart';
 
 class VerseOfTheDayCard extends StatelessWidget {
   //const VerseOfTheDayCard({required this.verse, Key? key}) : super(key: key);

@@ -88,10 +88,9 @@ class _OpenedStudyPlanScreenState extends State<OpenedStudyPlanScreen> {
       if (_devPlanWithFullDevotionals != null) {
         Navigator.push(context, MaterialPageRoute(builder: (context) => DevotionalPageFromPlans(devotionalFromPlan: _devPlanWithFullDevotionals!.devotionals[index])));
       }
-
     },
     child: Card(
-      margin: EdgeInsets.all(15),
+      margin: EdgeInsets.all(10),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Container(
         margin: EdgeInsets.all(5),

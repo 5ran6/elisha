@@ -1,5 +1,5 @@
 import '../src/models/devotional.dart';
-import '../src/services/devotional_helper.dart';
+import '../src/services/devotionalDB_helper.dart';
 
 class DevotionalItemsRetrieveClass {
 

@@ -1,5 +1,6 @@
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/ui/views/bibestudy_series_view/biblestudy_series_view_header.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import '../../../models/devotional_plans.dart';
@@ -14,6 +15,7 @@ class BibleStudySeriesPage extends StatefulWidget {
 }
 
 class _BibleStudySeriesPageState extends State<BibleStudySeriesPage> {
+  final controller = TextEditingController();
 
   var _devPlansList = List<DevotionalPlan>.empty();
 
@@ -45,13 +47,28 @@ class _BibleStudySeriesPageState extends State<BibleStudySeriesPage> {
           children: [
             const BibleStudySeriesHeaderView(),
             const SizedBox(height: 10),
+            TextField(
+              controller: controller,
+              decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.search),
+                hintText: 'Plan title',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                )
+              ),
+              onChanged: searchStudyPlan,
+            ),
+
+
+            const SizedBox(height: 10),
            Expanded(
              child: StaggeredGridView.countBuilder(
                itemCount: _devPlansList.length,
-                 crossAxisCount: 3,
+                 crossAxisCount: 4,
                  mainAxisSpacing: 8,
                  crossAxisSpacing: 8,
-                 staggeredTileBuilder: (index) => StaggeredTile.count(1, 1),
+                 staggeredTileBuilder: (index) => StaggeredTile.count(2, 2),
                itemBuilder: (context, index) => buildBibleStudyPlanCardView(index),
              ),
            ),
@@ -62,6 +79,20 @@ class _BibleStudySeriesPageState extends State<BibleStudySeriesPage> {
     );
   }
 
+  void searchStudyPlan(String query) {
+    final planSuggestions = _devPlansList.where((plan) {
+      final planTitle = plan.title.toLowerCase();
+      final input = query.toLowerCase();
+
+      return planTitle.contains(input);
+    }).toList();
+
+    setState(() {
+      _devPlansList = planSuggestions;
+    });
+
+  }
+
   buildBibleStudyPlanCardView(int index) => GestureDetector(
     onTap: () {
       Navigator.push(context, MaterialPageRoute(builder: (context) => OpenedStudyPlanScreen(devPlanID: _devPlansList[index].id)));
@@ -69,13 +100,11 @@ class _BibleStudySeriesPageState extends State<BibleStudySeriesPage> {
     child: Card(
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: Container(
-          margin: const EdgeInsets.all(8),
-          child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.network(_devPlansList[index].imageUrl),
-          )
-
+      child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Image.network(_devPlansList[index].imageUrl,
+          fit: BoxFit.cover,
+          ),
       ),
     ),
   );
