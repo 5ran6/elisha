@@ -2,10 +2,11 @@
 import 'dart:io';
 
 import 'package:sqflite/sqflite.dart';
-
 import '../models/devotional.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+
+import '../models/devotional_plans.dart';
 
 class DevotionalDBHelper{
 
@@ -36,7 +37,8 @@ class DevotionalDBHelper{
     );
 
     await db.execute(
-        'CREATE TABLE devotionalPlan_table(id TEXT, title TEXT, imageUrl TEXT, description TEXT, )');
+        'CREATE TABLE devotionalPlan_table(id INTEGER PRIMARY KEY, planID TEXT, title TEXT, imageUrl TEXT, description TEXT, devotionals TEXT)'
+    );
   }
 
   void _onUpgrade(Database db, int oldVersion, int newVersion) {
@@ -85,5 +87,20 @@ class DevotionalDBHelper{
         ? devotionals.map((e) => Devotional.fromJson(e)).toList()
         : [];
     return devList;
+  }
+
+
+  Future<dynamic> insertDevotionalPlanList(List<DevotionalPlan> devotionalPlanList) async {
+
+    Database? db = await instance.database;
+    Batch batch = db!.batch();
+
+    for (var devotionalPlan in devotionalPlanList) {
+      batch.insert("devotionalPlan_table",
+          devotionalPlan.toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
+    }
+
+    var result  = batch.commit();
+    return result;
   }
 }

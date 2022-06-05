@@ -87,6 +87,8 @@ class _OpenedStudyPlanScreenState extends State<OpenedStudyPlanScreen> {
       //List<Devotional> devsForPlan = _devPlansWithDevotionals[index].devotionals;
       if (_devPlanWithFullDevotionals != null) {
         Navigator.push(context, MaterialPageRoute(builder: (context) => DevotionalPageFromPlans(devotionalFromPlan: _devPlanWithFullDevotionals!.devotionals[index])));
+
+
       }
     },
     child: Card(
