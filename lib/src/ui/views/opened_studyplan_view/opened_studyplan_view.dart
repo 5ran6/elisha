@@ -1,6 +1,7 @@
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/models/devotional.dart';
 import 'package:elisha/src/models/devotional_plans.dart';
+import 'package:elisha/src/services/devotionalDB_helper.dart';
 import 'package:elisha/src/ui/views/devotional_page/devotional_page.dart';
 import 'package:elisha/src/ui/views/devotional_page/devotional_page_fromplans.dart';
 import 'package:flutter/cupertino.dart';
@@ -29,10 +30,12 @@ class _OpenedStudyPlanScreenState extends State<OpenedStudyPlanScreen> {
   }
 
   void getDevotionalPlan() async {
-    DevotionalPlan devPlansWithDev = await devPlansWithDevotionalsFuture;
+    //if in db, show from db. If not, then fetch.
+    DevotionalPlan devPlanWithFullDevotionals = await devPlansWithDevotionalsFuture;
 
+    DevotionalDBHelper.instance.insertDevotionalPlan(devPlanWithFullDevotionals);
     setState(() {
-      _devPlanWithFullDevotionals = devPlansWithDev;
+      _devPlanWithFullDevotionals = devPlanWithFullDevotionals;
 
     });
   }
