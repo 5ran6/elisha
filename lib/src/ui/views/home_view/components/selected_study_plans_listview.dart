@@ -1,8 +1,11 @@
 
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:elisha/src/models/devotional_plans.dart';
 
 class SelectedStudyPlansListview extends StatefulWidget {
-  const SelectedStudyPlansListview({Key? key}) : super(key: key);
+  const SelectedStudyPlansListview({required this.devPlansFromDB});
+
+  final List<DevotionalPlan> devPlansFromDB;
 
   @override
   _SelectedStudyPlansListviewState createState() => _SelectedStudyPlansListviewState();
@@ -14,7 +17,7 @@ class _SelectedStudyPlansListviewState extends State<SelectedStudyPlansListview>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return widget.devPlansFromDB.isNotEmpty? Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -44,7 +47,7 @@ class _SelectedStudyPlansListviewState extends State<SelectedStudyPlansListview>
                           width: 150,
                           decoration: BoxDecoration(
                               image: DecorationImage(
-                                  image: AssetImage(pictures[i]),
+                                  image: AssetImage(widget.devPlansFromDB[i].imageUrl),
                                   fit: BoxFit.fill
                               ),
                               borderRadius: BorderRadius.circular(10)
@@ -53,7 +56,7 @@ class _SelectedStudyPlansListviewState extends State<SelectedStudyPlansListview>
                       ),
                     ),
                     const SizedBox(height: 5),
-                    Text(titles[i], style: TextStyle(
+                    Text(widget.devPlansFromDB[i].title, style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold))
                   ],
@@ -61,6 +64,6 @@ class _SelectedStudyPlansListviewState extends State<SelectedStudyPlansListview>
           )
         ],
       ),
-    );
+    ) : Center(child: Text('No Study Plan Selected', style: Theme.of(context).textTheme.headline5,));
   }
 }

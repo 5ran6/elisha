@@ -91,21 +91,6 @@ class DevotionalDBHelper {
     return devList;
   }
 
-  Future<dynamic> insertDevotionalPlanList(
-      List<DevotionalPlan> devotionalPlanList) async {
-    Database? db = await instance.database;
-    Batch batch = db!.batch();
-
-    for (var devotionalPlan in devotionalPlanList) {
-      print(devotionalPlan.toJson());
-
-      batch.insert("devotionalPlan_table", devotionalPlan.toJson(),
-          conflictAlgorithm: ConflictAlgorithm.replace);
-    }
-
-    var result = batch.commit();
-    return result;
-  }
 
   Future<dynamic> insertDevotionalPlan(DevotionalPlan devotionalPlan) async {
     Database? db = await instance.database;
@@ -114,5 +99,16 @@ class DevotionalDBHelper {
 
     return await db?.insert("devotionalPlan_table", devotionalPlan.toJson(),
         conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  Future<List<DevotionalPlan>> getDevotionalPlansFromDB() async {
+    Database? db = await instance.database;
+
+    var devotionalPlans = await db!.query('devotionalPlan_table');
+
+    List<DevotionalPlan> devPlanList = devotionalPlans.isNotEmpty
+        ? devotionalPlans.map((e) => DevotionalPlan.fromJson(e)).toList()
+        : [];
+    return devPlanList;
   }
 }

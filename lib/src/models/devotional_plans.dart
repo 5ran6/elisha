@@ -35,9 +35,10 @@ class DevotionalPlan {
         title: json["title"],
         imageUrl: json["imageUrl"],
         description: json["description"],
-        devotionals: List<Devotional>.from(
-            json["devotionals"].map((x) => Devotional.fromJson(x))),
-      );
+        devotionals: List<Devotional>.from(json["devotionals"].map((x) => Devotional.fromJson(x)))
+
+  );
+
 
   Map<String, dynamic> toJson() => {
         "id": id,

@@ -53,6 +53,8 @@ class _HomeViewState extends State<HomeView> {
 
   var _devPlansList = List<DevotionalPlan>.empty();
 
+  var _devPlansListFromDB = List<DevotionalPlan>.empty();
+
   @override
   Widget build(BuildContext context) {
     return _content(context);
@@ -68,6 +70,16 @@ class _HomeViewState extends State<HomeView> {
   getTodayMainWriteUpAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
   getImageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
   getDevotionalPlansFromApi();
+  getStudyPlansFromDB();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      //do your stuff
+      print('jjjjjjjjjjjjjjjjjjjjjjjjjjjjj');
+      getStudyPlansFromDB();
+    }
   }
 
   Widget _content(BuildContext context) {
@@ -97,7 +109,7 @@ class _HomeViewState extends State<HomeView> {
         const SizedBox(height: 15),
         BibleInAYearCard(),
         const SizedBox(height: 15),
-        SelectedStudyPlansListview(),
+        SelectedStudyPlansListview(devPlansFromDB: _devPlansListFromDB),
         const SizedBox(height: 15),
         DevotionalPlansHomePageListView(devPlans: _devPlansList)
       ],
@@ -147,5 +159,13 @@ class _HomeViewState extends State<HomeView> {
       _devPlansList = devPlans;
     });
   }
+
+   getStudyPlansFromDB() async {
+    List<DevotionalPlan> devPlansFromDB = await DevotionalDBHelper.instance.getDevotionalPlansFromDB();
+
+      setState(() {
+        _devPlansListFromDB = devPlansFromDB;
+      });
+    }
 
 }
