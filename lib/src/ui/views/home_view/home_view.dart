@@ -110,7 +110,7 @@ class _HomeViewState extends State<HomeView> {
         BibleInAYearCard(),
         const SizedBox(height: 15),
         SelectedStudyPlansListview(devPlansFromDB: _devPlansListFromDB),
-        const SizedBox(height: 15),
+        const SizedBox(height: 5),
         DevotionalPlansHomePageListView(devPlans: _devPlansList)
       ],
     );

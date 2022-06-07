@@ -31,13 +31,22 @@ class _OpenedStudyPlanScreenState extends State<OpenedStudyPlanScreen> {
 
   void getDevotionalPlan() async {
     //if in db, show from db. If not, then fetch.
-    DevotionalPlan devPlanWithFullDevotionals = await devPlansWithDevotionalsFuture;
+    DevotionalPlan? planFromDB = await  DevotionalDBHelper.instance.getDevotionalPlanFromDBWithID(widget.devPlanID);
 
-    DevotionalDBHelper.instance.insertDevotionalPlan(devPlanWithFullDevotionals);
-    setState(() {
-      _devPlanWithFullDevotionals = devPlanWithFullDevotionals;
+    if (planFromDB == null) {
+      DevotionalPlan devPlanWithFullDevotionals = await devPlansWithDevotionalsFuture;
 
-    });
+      DevotionalDBHelper.instance.insertDevotionalPlan(devPlanWithFullDevotionals);
+      setState(() {
+        _devPlanWithFullDevotionals = devPlanWithFullDevotionals;
+      });
+
+    } else {
+      setState(() {
+        _devPlanWithFullDevotionals = planFromDB;
+      });
+    }
+
   }
 
 

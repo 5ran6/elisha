@@ -111,4 +111,15 @@ class DevotionalDBHelper {
         : [];
     return devPlanList;
   }
+
+  Future<DevotionalPlan?> getDevotionalPlanFromDBWithID(devPlanID) async {
+    List<DevotionalPlan> devPlans = await getDevotionalPlansFromDB();
+
+    for (int i = 0; i < devPlans.length; i++) {
+      if(devPlans[i].id == devPlanID) {
+        return devPlans[i];
+      }
+    }
+   return null;
+  }
 }
