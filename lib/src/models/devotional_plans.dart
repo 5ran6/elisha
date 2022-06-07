@@ -31,20 +31,28 @@ class DevotionalPlan {
   List<Devotional> devotionals;
 
   factory DevotionalPlan.fromJson(Map<String, dynamic> json) => DevotionalPlan(
-        id: json["id"],
-        title: json["title"],
-        imageUrl: json["imageUrl"],
-        description: json["description"],
-        devotionals: List<Devotional>.from(json["devotionals"].map((x) => Devotional.fromJson(x)))
-
-  );
-
+      id: json["id"],
+      title: json["title"],
+      imageUrl: json["imageUrl"],
+      description: json["description"],
+      devotionals: extractDevotionals(json['devotionals']));
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "title": title,
         "imageUrl": imageUrl,
         "description": description,
-        "devotionals": jsonEncode(devotionals.map((e) => jsonEncode(e.toMap())).toList()),
+        "devotionals":
+            jsonEncode(devotionals.map((e) => jsonEncode(e.toMap())).toList()),
       };
+
+  static extractDevotionals(devotionals) {
+    if (devotionals.runtimeType.toString() != 'String') {
+      return List.castFrom<dynamic, Devotional>(
+          devotionals.map((e) => Devotional.fromJson(e)).toList());
+    }
+    devotionals = jsonDecode(devotionals);
+    return List.castFrom<dynamic, Devotional>(
+        devotionals.map((e) => Devotional.fromJson(jsonDecode(e))).toList());
+  }
 }
