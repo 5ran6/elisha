@@ -257,7 +257,8 @@ class _DevotionalPageState extends State<DevotionalPage> {
                               child: FullTopicMemoryVerseVersePage(
                                   title: _title,
                                   memoryVerse: _memoryVerse,
-                                  memoryVersePassage: _memoryVersePassage),
+                                  memoryVersePassage: _memoryVersePassage,
+                                fullPassage: _fullPassage,),
                               type: PageTransitionType.scale,
                               alignment: Alignment.center,
                               duration: const Duration(milliseconds: 600)));
@@ -301,14 +302,14 @@ class _DevotionalPageState extends State<DevotionalPage> {
   getTodayTitleAsString(String dt) async {
     var title = await DevotionalItemsRetrieveClass.getTodayTitle(dt);
     setState(() {
-      _title = title;
+      _title = title!;
     });
   }
 
   getTodayFullPassageAsString(String dt) async {
     var fullPassage = await DevotionalItemsRetrieveClass.getTodayFullPassage(dt);
     setState(() {
-      _fullPassage = fullPassage;
+      _fullPassage = fullPassage!;
     });
   }
 
@@ -316,7 +317,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
     var verse = await DevotionalItemsRetrieveClass.getTodayVerse(dt);
     //print(verse);
     setState(() {
-      _memoryVerse = verse;
+      _memoryVerse = verse!;
     });
   }
 
@@ -324,7 +325,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
     var versePassage =
         await DevotionalItemsRetrieveClass.getTodayVersePassage(dt);
     setState(() {
-      _memoryVersePassage = versePassage;
+      _memoryVersePassage = versePassage!;
     });
   }
 
@@ -332,14 +333,14 @@ class _DevotionalPageState extends State<DevotionalPage> {
     var mainWriteUp =
         await DevotionalItemsRetrieveClass.getTodayMainWriteUp(dt);
     setState(() {
-      _mainWriteUp = mainWriteUp;
+      _mainWriteUp = mainWriteUp!;
     });
   }
 
   getTodayPrayerAsString(String dt) async {
     var prayerBurden = await DevotionalItemsRetrieveClass.getTodayPrayer(dt);
     setState(() {
-      _prayerBurden = prayerBurden;
+      _prayerBurden = prayerBurden!;
     });
   }
 
@@ -347,7 +348,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
     var thoughtOfTheDay =
         await DevotionalItemsRetrieveClass.getTodayThoughtOfTheDay(dt);
     setState(() {
-      _thoughtOfTheDay = thoughtOfTheDay;
+      _thoughtOfTheDay = thoughtOfTheDay!;
     });
   }
 

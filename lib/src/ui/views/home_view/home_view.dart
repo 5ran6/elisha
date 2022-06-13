@@ -16,6 +16,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+import 'dart:convert';
+
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/models/devotional_plans.dart';
 import 'package:elisha/src/models/verse.dart';
@@ -77,7 +79,7 @@ class _HomeViewState extends State<HomeView> {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       //do your stuff
-      print('jjjjjjjjjjjjjjjjjjjjjjjjjjjjj');
+
       getStudyPlansFromDB();
     }
   }
@@ -121,35 +123,35 @@ class _HomeViewState extends State<HomeView> {
     var verse =   await DevotionalItemsRetrieveClass.getTodayVerse(dt);
     //print(verse);
     setState(() {
-      _verse = verse;
+      _verse = verse!;
     });
   }
 
   getVersePassageAsString(String dt) async {
     var versePassage =   await DevotionalItemsRetrieveClass.getTodayVersePassage(dt);
     setState(() {
-      _versePassage = versePassage;
+      _versePassage = versePassage!;
     });
   }
 
   getTodayTitleAsString(String dt) async {
     var title =   await DevotionalItemsRetrieveClass.getTodayTitle(dt);
     setState(() {
-      _title = title;
+      _title = title!;
     });
   }
 
   getTodayMainWriteUpAsString(String dt) async {
     var mainWriteUp =   await DevotionalItemsRetrieveClass.getTodayMainWriteUp(dt);
     setState(() {
-      _mainWriteUp = mainWriteUp;
+      _mainWriteUp = mainWriteUp!;
     });
   }
 
   getImageAsString(String dt) async {
     var image =   await DevotionalItemsRetrieveClass.getImage(dt);
     setState(() {
-      _image = image;
+      _image = image!;
     });
   }
 
@@ -168,4 +170,11 @@ class _HomeViewState extends State<HomeView> {
       });
     }
 
+  getBibleInYearAsString(String dt) async {
+    var bibleInYearString =   await DevotionalItemsRetrieveClass.getImage(dt);
+    // setState(() {
+    //   _image = image!;
+    // });
+    var bibleInYearList = json.decode(bibleInYearString!);
+  }
 }

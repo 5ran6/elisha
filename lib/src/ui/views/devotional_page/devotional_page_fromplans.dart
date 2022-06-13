@@ -242,7 +242,8 @@ class _DevotionalPageFromPlansState extends State<DevotionalPageFromPlans> {
                             child: FullTopicMemoryVerseVersePage(
                                 title: title,
                                 memoryVerse: memoryVerse,
-                                memoryVersePassage: memoryVersePassage),
+                                memoryVersePassage: memoryVersePassage,
+                            fullPassage: fullPassage,),
                             type: PageTransitionType.scale,
                             alignment: Alignment.center,
                             duration: const Duration(milliseconds: 600)));
