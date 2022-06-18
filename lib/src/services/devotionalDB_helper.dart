@@ -6,6 +6,7 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../models/devotional_plans.dart';
+import '../models/note.dart';
 
 class DevotionalDBHelper {
   DevotionalDBHelper._privateConstructor();
@@ -44,6 +45,12 @@ class DevotionalDBHelper {
 
     await db.execute(
         'CREATE TABLE devotionalPlan_table(id TEXT, title TEXT, imageUrl TEXT, description TEXT, devotionals TEXT)');
+
+    await db.execute(
+        'CREATE TABLE note_table(id INTEGER PRIMARY KEY, title TEXT, writeUp TEXT, date TEXT)');
+
+    await db.execute(
+        'CREATE TABLE bookmarked_devotional_table(id INTEGER PRIMARY KEY, date TEXT, title TEXT, translation TEXT, memoryVerse TEXT, memoryVersePassage TEXT, fullPassage TEXT, fullText TEXT, bibleInAYear TEXT, image TEXT, prayerBurden TEXT, thoughtOfTheDay TEXT)');
   }
 
   void _onUpgrade(Database db, int oldVersion, int newVersion) {
@@ -95,8 +102,6 @@ class DevotionalDBHelper {
   Future<dynamic> insertDevotionalPlan(DevotionalPlan devotionalPlan) async {
     Database? db = await instance.database;
 
-    print(devotionalPlan.toJson());
-
     return await db?.insert("devotionalPlan_table", devotionalPlan.toJson(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
@@ -121,5 +126,44 @@ class DevotionalDBHelper {
       }
     }
    return null;
+  }
+
+
+  Future<dynamic> insertBookMarkedDevotional(Devotional bookMarkedDevotional) async {
+    Database? db = await instance.database;
+
+    return await db?.insert("bookmarked_devotional_table", bookMarkedDevotional.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  Future<List<Devotional>> getBookMarkedDevotionalsFromDB() async {
+    Database? db = await instance.database;
+
+    var bookMarkedDevotionals = await db!.query('bookmarked_devotional_table');
+
+    List<Devotional> bookMarkedDevotionalList = bookMarkedDevotionals.isNotEmpty
+        ? bookMarkedDevotionals.map((e) => Devotional.fromJson(e)).toList()
+        : [];
+    return bookMarkedDevotionalList;
+  }
+
+
+  Future<dynamic> insertNote (Note note) async {
+    Database? db = await instance.database;
+
+    return await db?.insert("note_table", note.toJson(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  Future<List<Note>> getNotesFromDB() async {
+    Database? db = await instance.database;
+
+    var notes = await db!.query("note_table");
+
+    List<Note> noteList = notes.isNotEmpty
+    ? notes.map((e) => Note.fromJson(e)).toList()
+        : [];
+
+    return noteList;
   }
 }

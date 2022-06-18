@@ -40,6 +40,8 @@ dependencies:
   font_awesome_flutter: ^9.2.0
   line_awesome_flutter: ^2.0.0
   vertical_card_pager: ^1.5.0
+  cached_network_image: ^3.0.0
+
 
   # State Management
   flutter_riverpod: ^0.14.0+3

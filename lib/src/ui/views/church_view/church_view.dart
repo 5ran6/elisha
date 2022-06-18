@@ -93,14 +93,14 @@ class _ChurchViewState extends State<ChurchView> {
             final video = listVid[index];
             final controller = controllers[index];
             return GestureDetector(
-              // onTap: () {
-              //   var startTime = Duration(seconds: video.startAt ?? 2000);
-              //   controller.load(video.youtubeVideoId,
-              //       startAt: startTime,
-              //       endAt: video.endAt != null
-              //           ? Duration(seconds: video.endAt!)
-              //           : null);
-              // },
+              onTap: () {
+                var startTime = Duration(seconds: video.startAt ?? 2000);
+                controller.load(video.youtubeVideoId,
+                    startAt: startTime,
+                    endAt: video.endAt != null
+                        ? Duration(seconds: video.endAt!)
+                        : null);
+              },
               child: Card(
                 color: CantonMethods.alternateCanvasColorType2(context),
                 shape: CantonSmoothBorder.defaultBorder(),

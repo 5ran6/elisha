@@ -1,4 +1,5 @@
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/models/devotional_plans.dart';
 import 'package:elisha/src/ui/views/opened_studyplan_view/opened_studyplan_view.dart';
@@ -42,16 +43,21 @@ class _SelectedStudyPlansListviewState extends State<SelectedStudyPlansListview>
                     child: Card(
                       color: CantonMethods.alternateCanvasColorType2(context),
                       shape: CantonSmoothBorder.defaultBorder(),
-                      child:  Container(
-                        height: 100,
-                        width: 150,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: NetworkImage(widget.devPlansFromDB[i].imageUrl),
-                                fit: BoxFit.fill
-                            ),
-                            borderRadius: BorderRadius.circular(10)
+                      child:  CachedNetworkImage(
+                        imageUrl: widget.devPlansFromDB[i].imageUrl,
+                        imageBuilder: (context, imageProvider) => Container(
+                          height: 100,
+                          width: 150,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: imageProvider,
+                                fit: BoxFit.cover,
+                              ),
+                              borderRadius: BorderRadius.circular(10)
+                          ),
                         ),
+                        placeholder: (context, url) => const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
                       ),
                     ),
                   ),

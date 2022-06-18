@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/ui/views/bibestudy_series_view/biblestudy_series_view_header.dart';
 import 'package:flutter/cupertino.dart';
@@ -103,8 +104,10 @@ class _BibleStudySeriesPageState extends State<BibleStudySeriesPage> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
-          child: Image.network(_devPlansList[index].imageUrl,
-          fit: BoxFit.cover,
+          child: CachedNetworkImage(
+            imageUrl: _devPlansList[index].imageUrl,
+            placeholder: (context, url) => const CircularProgressIndicator(),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
       ),
     ),

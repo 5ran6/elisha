@@ -29,9 +29,7 @@ class VerseOfTheDayCard extends StatelessWidget {
     }
 
     return GestureDetector(
-      onTap: () {
-        CantonMethods.viewTransition(context, Container());
-      },
+      onTap: () {},
       child: Card(
         color: CantonMethods.alternateCanvasColorType2(context),
         shape: CantonSmoothBorder.defaultBorder(),

@@ -1,9 +1,11 @@
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:elisha/src/ui/views/devotional_page/full_bibleInAYear_content.dart';
 import 'package:elisha/src/ui/views/devotional_page/full_prayer_content.dart';
 import 'package:elisha/src/ui/views/devotional_page/full_thougthofday_content.dart';
 import 'package:elisha/src/ui/views/devotional_page/full_topic_memoryverse_page.dart';
 import 'package:elisha/src/ui/views/devotional_page/full_word_content.dart';
 import 'package:elisha/src/ui/views/home_view/home_view.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:vertical_card_pager/vertical_card_pager.dart';
 
@@ -24,6 +26,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
   var _prayerBurden = '';
   var _thoughtOfTheDay = '';
   var _fullPassage='';
+  var _bibleInAYear='';
 
   @override
   void initState() {
@@ -34,6 +37,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
     getTodayPrayerAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
     getTodayThoughtOfTheDayAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
     getTodayFullPassageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+    getBibleInYearAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
   }
 
   @override
@@ -233,6 +237,14 @@ class _DevotionalPageState extends State<DevotionalPage> {
           ),
         ),
       ),
+      Card(
+        color: CantonMethods.alternateCanvasColorType2(context),
+        shape: CantonSmoothBorder.defaultBorder(),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20.0),
+          child: Image.asset('assets/images/light.jpg', fit: BoxFit.cover,)
+        ),
+      ),
     ];
 
     return WillPopScope(
@@ -247,7 +259,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
               Expanded(
                 child: VerticalCardPager(
                     images: devotionalCards,
-                    titles: const ['', '', '', ''],
+                    titles: const ['', '', '', '', ''],
                     onPageChanged: (page) {
                     },
                     onSelectedItem: (index) {
@@ -286,6 +298,14 @@ class _DevotionalPageState extends State<DevotionalPage> {
                               alignment: Alignment.center,
                               duration: const Duration(milliseconds: 600)));
                           break;
+                        case 4:
+                          Navigator.of(context).push(PageTransition(
+                              child: FullBibleInAYearPage(
+                                  bibleInAYear: _bibleInAYear),
+                              type: PageTransitionType.scale,
+                              alignment: Alignment.center,
+                              duration: const Duration(milliseconds: 600)));
+                          break;
                       }
                     },
                     initialPage: 1,
@@ -310,6 +330,13 @@ class _DevotionalPageState extends State<DevotionalPage> {
     var fullPassage = await DevotionalItemsRetrieveClass.getTodayFullPassage(dt);
     setState(() {
       _fullPassage = fullPassage!;
+    });
+  }
+
+  getBibleInYearAsString(String dt) async {
+    var bibleInYearString =   await DevotionalItemsRetrieveClass.getBibleInYear(dt);
+    setState(() {
+      _bibleInAYear = bibleInYearString!;
     });
   }
 

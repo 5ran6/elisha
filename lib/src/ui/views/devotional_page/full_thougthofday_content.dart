@@ -1,5 +1,6 @@
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/ui/views/devotional_page/devotional_page.dart';
+//import 'package:share_plus/share_plus.dart';
 
 class FullThoughtOfTheDayPage extends StatelessWidget {
   final String thoughtOfTheDay;
@@ -34,6 +35,15 @@ class FullThoughtOfTheDayPage extends StatelessWidget {
                     icon: const Icon(Icons.arrow_back, color: Colors.black),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
+                  // trailing: IconButton(
+                  //   icon: const Icon(Icons.share, color: Colors.black),
+                  //   onPressed: () async {
+                  //     const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
+                  //     const appleStoreUrl = 'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
+                  //
+                  //     await Share.share("$thoughtOfTheDay\n'Get Secret Place App:'\n$playStoreUrl\n$appleStoreUrl");
+                  //   },
+                  // ),
                 ),
                 const SizedBox(height: 5),
                 Padding(

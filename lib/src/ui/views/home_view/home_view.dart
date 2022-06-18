@@ -17,6 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/models/devotional_plans.dart';
@@ -57,14 +58,30 @@ class _HomeViewState extends State<HomeView> {
 
   var _devPlansListFromDB = List<DevotionalPlan>.empty();
 
+  bool _isConnectionSuccessful = false;
+
+  Future<void> _tryConnection() async {
+    try {
+      final response = await InternetAddress.lookup('example.com');
+
+      setState(() {
+        _isConnectionSuccessful = response.isNotEmpty;
+      });
+    } on SocketException catch (e) {
+      setState(() {
+        _isConnectionSuccessful = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return _content(context);
   }
 
-
   @override
   void initState() {
+    _tryConnection();
 
   getVerseAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
   getVersePassageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
@@ -107,9 +124,7 @@ class _HomeViewState extends State<HomeView> {
         const SizedBox(height: 15),
         VerseOfTheDayCard(verse: _verse, versePassage: _versePassage),
         const SizedBox(height: 15),
-        DevotionalTodayCard(title: _title, mainWriteUp: _mainWriteUp, image: _image),
-        const SizedBox(height: 15),
-        BibleInAYearCard(),
+        DevotionalTodayCard(title: _title, mainWriteUp: _mainWriteUp, image: _image, internetInfo: _isConnectionSuccessful),
         const SizedBox(height: 15),
         SelectedStudyPlansListview(devPlansFromDB: _devPlansListFromDB),
         const SizedBox(height: 5),
@@ -169,12 +184,4 @@ class _HomeViewState extends State<HomeView> {
         _devPlansListFromDB = devPlansFromDB;
       });
     }
-
-  getBibleInYearAsString(String dt) async {
-    var bibleInYearString =   await DevotionalItemsRetrieveClass.getImage(dt);
-    // setState(() {
-    //   _image = image!;
-    // });
-    var bibleInYearList = json.decode(bibleInYearString!);
-  }
 }
