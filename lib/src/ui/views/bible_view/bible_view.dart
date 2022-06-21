@@ -39,23 +39,28 @@ import 'package:elisha/src/ui/components/error_body.dart';
 import 'package:elisha/src/ui/components/unexpected_error.dart';
 
 class BibleView extends StatefulWidget {
-  const BibleView({Key? key}) : super(key: key);
+  //const BibleView({Key? key}) : super(key: key);
+
+  final String ?biblePassage;
+
+  const BibleView({this.biblePassage});
 
   @override
   _BibleViewState createState() => _BibleViewState();
 }
 
 class _BibleViewState extends State<BibleView> {
-  var passage = "Ephesians 6:11-17";
+  //var passage = "Ephesians 6:11-17";
   bool isBookmarked = false;
   final _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
-    if(passage != null){
+
+    if(widget.biblePassage != null){
       context
           .read(bibleRepositoryProvider)
-          .changeChapter(context, BibleService.getBookIdFromPassageString(passage), BibleService.getChapterIdFromPassageString(passage));
+          .changeChapter(context, BibleService.getBookIdFromPassageString(widget.biblePassage), BibleService.getChapterIdFromPassageString(widget.biblePassage));
     }
     return Consumer(
       builder: (context, watch, child) {

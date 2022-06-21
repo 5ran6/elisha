@@ -53,6 +53,9 @@ class _HomeViewState extends State<HomeView> {
   var _title='';
   var _mainWriteUp='';
   var _image='';
+  var _fullpassage='';
+  var _prayerBurden='';
+  var _thoughtOfTheDay='';
 
   var _devPlansList = List<DevotionalPlan>.empty();
 
@@ -87,6 +90,9 @@ class _HomeViewState extends State<HomeView> {
   getVersePassageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
   getTodayTitleAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
   getTodayMainWriteUpAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+  getTodayFullPassageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+  getTodayPrayerAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+  getTodayThoughtAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
   getImageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
   getDevotionalPlansFromApi();
   getStudyPlansFromDB();
@@ -124,7 +130,8 @@ class _HomeViewState extends State<HomeView> {
         const SizedBox(height: 15),
         VerseOfTheDayCard(verse: _verse, versePassage: _versePassage),
         const SizedBox(height: 15),
-        DevotionalTodayCard(title: _title, mainWriteUp: _mainWriteUp, image: _image, internetInfo: _isConnectionSuccessful),
+        DevotionalTodayCard(title: _title, mainWriteUp: _mainWriteUp, image: _image, internetInfo: _isConnectionSuccessful,
+            biblePassage: _fullpassage, prayer: _prayerBurden, thought: _thoughtOfTheDay),
         const SizedBox(height: 15),
         SelectedStudyPlansListview(devPlansFromDB: _devPlansListFromDB),
         const SizedBox(height: 5),
@@ -160,6 +167,27 @@ class _HomeViewState extends State<HomeView> {
     var mainWriteUp =   await DevotionalItemsRetrieveClass.getTodayMainWriteUp(dt);
     setState(() {
       _mainWriteUp = mainWriteUp!;
+    });
+  }
+
+  getTodayPrayerAsString(String dt) async {
+    var prayerBurden =   await DevotionalItemsRetrieveClass.getTodayPrayer(dt);
+    setState(() {
+      _prayerBurden = prayerBurden!;
+    });
+  }
+
+  getTodayThoughtAsString(String dt) async {
+    var thought =   await DevotionalItemsRetrieveClass.getTodayThoughtOfTheDay(dt);
+    setState(() {
+      _thoughtOfTheDay = thought!;
+    });
+  }
+
+  getTodayFullPassageAsString(String dt) async {
+    var fullPassage =   await DevotionalItemsRetrieveClass.getTodayFullPassage(dt);
+    setState(() {
+      _fullpassage = fullPassage!;
     });
   }
 

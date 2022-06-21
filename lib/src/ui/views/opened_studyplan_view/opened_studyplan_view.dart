@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/models/devotional.dart';
 import 'package:elisha/src/models/devotional_plans.dart';
@@ -61,15 +62,21 @@ class _OpenedStudyPlanScreenState extends State<OpenedStudyPlanScreen> {
       body: SafeArea(
         child: _devPlanWithFullDevotionals != null ? Column(
             children: [
-              Container(
-                height: 300,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: NetworkImage(_devPlanWithFullDevotionals!.imageUrl),
-                      fit: BoxFit.fill
+              CachedNetworkImage(
+                imageUrl: _devPlanWithFullDevotionals!.imageUrl,
+                imageBuilder: (context, imageProvider) => Container(
+                  height: 300,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.fill,
+                      ),
+                      borderRadius: BorderRadius.circular(15)
                   ),
                 ),
+                placeholder: (context, url) => const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Icon(Icons.error)
               ),
               const SizedBox(height: 10),
               Text(_devPlanWithFullDevotionals?.description ?? '',

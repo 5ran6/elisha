@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../devotional_page/devotional_page.dart';
 
@@ -8,9 +9,12 @@ class DevotionalTodayCard  extends StatelessWidget {
   final String mainWriteUp;
   final String image;
   final bool internetInfo;
+  final String biblePassage;
+  final String prayer;
+  final String thought;
 
 
-  const DevotionalTodayCard ({required this.title, required this.mainWriteUp, required this.image, required this.internetInfo});
+  const DevotionalTodayCard ({required this.title, required this.mainWriteUp, required this.image, required this.internetInfo, required this.biblePassage, required this.prayer, required this.thought});
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +71,13 @@ class DevotionalTodayCard  extends StatelessWidget {
                   FlatButton(onPressed: () {},
                       child: Text('VIEW', style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.bold),)),
                   IconButton(
-                    icon: const Icon(Icons.bookmark),
-                    onPressed: () {},
+                    icon: const Icon(Icons.share),
+                    onPressed: () async {
+                      const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
+                      const appleStoreUrl = 'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
+
+                      await Share.share("Secret Place Devotional\nTopic: $title\n\nScripture: $biblePassage\n\n$mainWriteUp\n\nPrayer: $prayer\n\n Thought: $thought\n\nGet Secret Place App:\nPlayStore: $playStoreUrl\n AppleStore: $appleStoreUrl");
+                    },
                   ),
                 ],
               )

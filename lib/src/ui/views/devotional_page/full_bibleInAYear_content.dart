@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../bible_view/bible_view.dart';
+
 class FullBibleInAYearPage extends StatelessWidget {
   final String bibleInAYear;
   const FullBibleInAYearPage({required this.bibleInAYear});
@@ -34,7 +36,10 @@ class FullBibleInAYearPage extends StatelessWidget {
                 children: [
                   ...getItems().map((e) => CheckboxListTile(
                       value: _isChecked,
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => BibleView(biblePassage: e),
+                        ),);
+                      },
                       controlAffinity: ListTileControlAffinity.leading,
                     activeColor: Colors.black,
                     checkColor: Colors.white,

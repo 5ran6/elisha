@@ -156,11 +156,11 @@ class BibleService {
     }
   }
 
-  static int getBookIdFromPassageString(String passage) {
-    var ref = bible_reference_parser.parseReference(passage);
+  static int getBookIdFromPassageString(String ?passage) {
+    var ref = bible_reference_parser.parseReference(passage.toString());
     print("passage");
     print(passage);
-    print("ref");
+    print(ref);
     print(ref.book); // 'John'
     print(ref.bookNumber); // 43
     print(ref.startChapterNumber); // 3
@@ -168,8 +168,8 @@ class BibleService {
     print(ref.isValid); //
     return ref.bookNumber!;
   }
-  static int getChapterIdFromPassageString(String passage) {
-    var ref = bible_reference_parser.parseReference(passage);
+  static int getChapterIdFromPassageString(String ?passage) {
+    var ref = bible_reference_parser.parseReference(passage.toString());
     print("passage");
     print(passage);
     print("ref");

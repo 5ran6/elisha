@@ -2,6 +2,7 @@ import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/models/verse.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../models/devotional.dart';
 import '../../services/devotionalDB_helper.dart';
@@ -80,18 +81,26 @@ class VerseOfTheDayCard extends StatelessWidget {
       return CantonColors.red[400]!;
     }
 
-    return Container(
-      height: 35,
-      width: 35,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: bgColor,
-      ),
-      child: Center(
-        child: Icon(
-          FontAwesomeIcons.solidHeart,
-          size: 19,
-          color: heartColor(),
+    return GestureDetector(
+      onTap: () async {
+        const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
+        const appleStoreUrl = 'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
+
+        await Share.share("$verse\n$versePassage\n\nGet Secret Place App:\nPlayStore: $playStoreUrl\n AppleStore: $appleStoreUrl");
+      },
+      child: Container(
+        height: 35,
+        width: 35,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: bgColor,
+        ),
+        child: Center(
+          child: Icon(
+            FontAwesomeIcons.share,
+            size: 19,
+            color: heartColor(),
+          ),
         ),
       ),
     );

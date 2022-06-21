@@ -1,4 +1,5 @@
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:elisha/src/ui/views/bible_view/bible_view.dart';
 
 class FullTopicMemoryVerseVersePage extends StatelessWidget {
   final String title;
@@ -48,11 +49,19 @@ class FullTopicMemoryVerseVersePage extends StatelessWidget {
                     style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold)),
               ),
               const SizedBox(height: 5),
-              Padding(
-                padding: const EdgeInsets.only(left: 15.0),
-                child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(fullPassage, style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.normal))),
+              GestureDetector(
+                onTap: () {
+
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => BibleView(biblePassage: fullPassage),
+                  ),);
+                  print(fullPassage);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 15.0),
+                  child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(fullPassage, style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.normal))),
+                ),
               ),
             ],
           ),
