@@ -28,6 +28,7 @@ class _SettingsPageState extends State<SettingsPage> {
   List themeList = ["System Default", "Light", "Dark"];
   late Future<TimeOfDay?> selectedTime;
   String tme = "6:00";
+
   //String current
 
   @override
@@ -262,11 +263,11 @@ class _SettingsPageState extends State<SettingsPage> {
             ((value.minute < 10)
                 ? ("0" + value.minute.toString())
                 : value.minute.toString()));
-        print((value.hour - DateTime.now().hour)%24);
-        print((value.minute - DateTime.now().minute)%60);
+        print((value.hour - DateTime.now().hour) % 24);
+        print((value.minute - DateTime.now().minute) % 60);
 
-        //NotificationService().showNotification(1, "title", "body");
         Workmanager().cancelAll();
+
         print("Cancelled");
         Workmanager().registerOneOffTask("uniqueName", "taskName");
       });
@@ -279,8 +280,9 @@ class _SettingsPageState extends State<SettingsPage> {
   void scheduleTime() {
     DateTime now = DateTime.now();
     //currentTime =
-    Workmanager().registerPeriodicTask("uniqueName2", "taskName", frequency: const Duration(minutes: 15));
-}
+    Workmanager().registerPeriodicTask("uniqueName2", "taskName",
+        frequency: const Duration(minutes: 15));
+  }
 }
 
 //Card(

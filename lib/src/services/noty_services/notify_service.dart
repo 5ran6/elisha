@@ -46,7 +46,7 @@ class NotificationService {
       id,
       title,
       body,
-      tz.TZDateTime.now(detroit).add(const Duration(microseconds: 10)),
+      tz.TZDateTime.now(detroit).add(const Duration(seconds: 1)),
       //tz.TZDateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day, hour, minute).add(Duration(seconds: 2)),
       const NotificationDetails(
         android: AndroidNotificationDetails(
