@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,10 +5,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class AppTheme {
   AppTheme._();
 
-  final primaryColor = Color(0XFF70648C);
-  final whiteColor = Color(0XFFFFFFFF);
-  static final greyColor1 = Color(0XFF5B5B5B);
-  static final greyColor2 = Color(0XFF6B6B6B);
+  final primaryColor = const Color(0XFF70648C);
+  final whiteColor = const Color(0XFFFFFFFF);
+  static const greyColor1 = Color(0XFF5B5B5B);
+  static const greyColor2 = Color(0XFF6B6B6B);
   static final kHeadline1 = TextStyle(
       color: kBlackColor,
       fontSize: ScreenUtil().setSp(24),
@@ -37,36 +36,36 @@ class AppTheme {
     fontWeight: FontWeight.w700,
   );
 
-  static final String lightFontFamily = "Ubuntu-Light";
-  static final String mediumFontFamily = "Ubuntu-Medium";
+  static const String lightFontFamily = "Ubuntu-Light";
+  static const String mediumFontFamily = "Ubuntu-Medium";
   static final Color loginCard = Colors.white.withOpacity(0.98);
-  static final Color loadingColor = blueTheme;
-  static final Color blueTheme = Color(0XFFC73EF5);
+  static const Color loadingColor = blueTheme;
+  static const Color blueTheme = Color(0XFFC73EF5);
   static final Color iconContainerColor = AppTheme.blueTheme.withOpacity(0.8);
-  static final kPrimaryColor = Color(0XFFC73EF5);
-  static final kWhiteColor = Color(0XFFFFFFFF);
-  static final kBlackColor = Color(0XFF000000);
-  static final kDescriptionTextColor = Color(0XFF002434);
-  static final kDotsColor = Color(0XFF212121);
-  static final kGreyColor = Color(0XFF8F92A1);
+  static const kPrimaryColor = Color(0XFFC73EF5);
+  static const kWhiteColor = Color(0XFFFFFFFF);
+  static const kBlackColor = Color(0XFF000000);
+  static const kDescriptionTextColor = Color(0XFF002434);
+  static const kDotsColor = Color(0XFF212121);
+  static const kGreyColor = Color(0XFF8F92A1);
   static final LinearGradient loginBackPainter = LinearGradient(
     begin: Alignment.topRight,
     end: Alignment.bottomLeft,
     colors: [Colors.white.withOpacity(0.95), Colors.grey],
   );
 
-  static TextStyle whiteBold = TextStyle(
+  static TextStyle whiteBold = const TextStyle(
       color: kPrimaryColor, fontWeight: FontWeight.bold, fontFamily: 'Ubuntu');
-  static TextStyle whiteNormal = TextStyle(
+  static TextStyle whiteNormal = const TextStyle(
       color: kWhiteColor, fontWeight: FontWeight.normal, fontFamily: 'Ubuntu');
-  static TextStyle whiteBoldWithSpacing = TextStyle(
+  static TextStyle whiteBoldWithSpacing = const TextStyle(
       color: kWhiteColor,
       fontWeight: FontWeight.bold,
       letterSpacing: 2.0,
       fontFamily: 'Ubuntu');
-  static TextStyle blackBold = TextStyle(
+  static TextStyle blackBold = const TextStyle(
       color: kBlackColor, fontWeight: FontWeight.bold, fontFamily: 'Ubuntu');
-  static TextStyle blackNormal = TextStyle(
+  static TextStyle blackNormal = const TextStyle(
       color: kBlackColor, fontWeight: FontWeight.normal, fontFamily: 'Ubuntu');
 
   static ThemeData lightTheme = ThemeData(
@@ -79,12 +78,12 @@ class AppTheme {
     splashColor: Colors.transparent,
     bottomAppBarColor: kWhiteColor,
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      selectedIconTheme: IconThemeData(),
-      unselectedIconTheme: IconThemeData(),
+      selectedIconTheme: const IconThemeData(),
+      unselectedIconTheme: const IconThemeData(),
       selectedLabelStyle: kBottomLabelSelectedTextStyle,
       unselectedLabelStyle: kBottomLabelUnselectedTextStyle,
     ),
-    inputDecorationTheme: InputDecorationTheme(
+    inputDecorationTheme: const InputDecorationTheme(
       floatingLabelBehavior: FloatingLabelBehavior.auto,
       enabledBorder: UnderlineInputBorder(
         borderSide: BorderSide(color: kGreyColor),
@@ -117,20 +116,20 @@ class AppTheme {
 
   static ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
-    scaffoldBackgroundColor: Color(0xFF0B0D24),
+    scaffoldBackgroundColor: const Color(0xFF0B0D24),
     textSelectionHandleColor: Colors.white,
     textSelectionColor: Colors.grey[200],
     shadowColor: Colors.black12,
     splashColor: Colors.transparent,
-    bottomAppBarColor: Color(0xFF24174D),
-    cardColor: Color(0xFF24174D),
+    bottomAppBarColor: const Color(0xFF24174D),
+    cardColor: const Color(0xFF24174D),
     splashFactory: InkRipple.splashFactory,
     highlightColor: Colors.transparent,
     canvasColor: Colors.transparent,
     focusColor: Colors.transparent,
     hoverColor: Colors.transparent,
     primaryColor: Colors.white,
-    iconTheme: IconThemeData(
+    iconTheme: const IconThemeData(
       color: Colors.white,
     ),
   );

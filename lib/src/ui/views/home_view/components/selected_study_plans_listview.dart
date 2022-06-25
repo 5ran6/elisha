@@ -26,11 +26,11 @@ class _SelectedStudyPlansListviewState extends State<SelectedStudyPlansListview>
             height: 200,
             child: ListView.separated(
                 separatorBuilder: (context, index) {
-                  return SizedBox(
+                  return const SizedBox(
                     width: 10,
                   );
                 },
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
                 itemCount: 2,
                 itemBuilder: (ctx, i) => Column(
@@ -54,8 +54,8 @@ class _SelectedStudyPlansListviewState extends State<SelectedStudyPlansListview>
                         ),
                       ),
                     ),
-                    SizedBox(height: 5),
-                    Text(titles[i], style: TextStyle(
+                    const SizedBox(height: 5),
+                    Text(titles[i], style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold))
                   ],

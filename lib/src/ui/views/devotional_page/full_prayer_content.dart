@@ -14,11 +14,11 @@ class FullPrayerPage extends StatelessWidget {
                 title: Text('Prayer',
                     style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold)),
                 leading: IconButton(
-                  icon: Icon(Icons.arrow_back, color: Colors.black),
+                  icon: const Icon(Icons.arrow_back, color: Colors.black),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               Text('Prayer for today', style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.normal))
             ],
           ),

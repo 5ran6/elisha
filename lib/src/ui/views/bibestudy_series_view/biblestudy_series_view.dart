@@ -22,7 +22,7 @@ class _BibleStudySeriesPageState extends State<BibleStudySeriesPage> {
           style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.black),
         elevation: 0,
         //backgroundColor: Colors.white,
         //brightness: Brightness.light,
@@ -46,7 +46,7 @@ Widget _buildContent(BuildContext context) {
     return _buildHorizontalList();
     },
     separatorBuilder: (BuildContext context, int index) {
-    return SizedBox(
+    return const SizedBox(
       height: 35,
     );
   },);
@@ -62,7 +62,7 @@ return SizedBox(
     itemCount: 5,
       scrollDirection: Axis.horizontal,
       separatorBuilder: (BuildContext context, int index) {
-        return SizedBox(
+        return const SizedBox(
           width: 10,
         );
       },
@@ -90,14 +90,14 @@ return SizedBox(
               ),
             ),
           ),
-          SizedBox(height: 5),
-          Text(titles[index], style: TextStyle(
+          const SizedBox(height: 5),
+          Text(titles[index], style: const TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.bold))
         ],
       );
     },
-    physics: BouncingScrollPhysics(),
+    physics: const BouncingScrollPhysics(),
   ),
 );
 }

@@ -67,13 +67,13 @@ class _HomeViewState extends State<HomeView> {
         const SizedBox(height: 15),
         VerseOfTheDayCard(verse: widget.verse),
         const SizedBox(height: 15),
-        DevotionalTodayCard(),
+        const DevotionalTodayCard(),
         const SizedBox(height: 15),
-        BibleInAYearCard(),
+        const BibleInAYearCard(),
         const SizedBox(height: 15),
-        SelectedStudyPlansListview(),
+        const SelectedStudyPlansListview(),
         const SizedBox(height: 15),
-        StudyPlansListView()
+        const StudyPlansListView()
       ],
     );
   }

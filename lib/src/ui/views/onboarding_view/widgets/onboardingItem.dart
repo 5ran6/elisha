@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,13 +6,13 @@ class OnBoardingItem extends StatelessWidget {
   final String? imageAsset;
   final String? title;
   final String? description;
-  OnBoardingItem({this.imageAsset, this.title, this.description});
+  const OnBoardingItem({this.imageAsset, this.title, this.description});
 
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
       padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(20)),
-      duration: Duration(milliseconds: 250),
+      duration: const Duration(milliseconds: 250),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/theme/apptheme.dart';
 import 'package:elisha/src/ui/views/current_view.dart';
-import 'package:elisha/src/ui/views/home_view/home_view.dart';
-import 'package:elisha/src/ui/views/note_view/note_view.dart';
 import 'package:elisha/src/ui/views/onboarding_view/onboardingScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -35,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
     super.initState();
     _controller =
-    AnimationController(vsync: this, duration: Duration(seconds: 5))
+    AnimationController(vsync: this, duration: const Duration(seconds: 5))
       ..repeat(reverse: true);
     _animation = CurvedAnimation(parent: _controller!, curve: Curves.easeIn);
     check();
@@ -47,22 +45,22 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     //first check if is first time (for onboarding) and check if logged in.
 
     Timer(
-        Duration(seconds: 3),
+        const Duration(seconds: 3),
             () => isFirstTime().then((isFirstTime) {
           print("Is First time?: " + isFirstTime.toString());
           isFirstTime
               ? Navigator.pushReplacement(
               context,
               PageTransition(
-                  duration: Duration(milliseconds: 6000),
+                  duration: const Duration(milliseconds: 6000),
                   type: PageTransitionType.fade,
-                  child: OnBoardingScreen()))
+                  child: const OnBoardingScreen()))
               : Navigator.pushReplacement(
               context,
               PageTransition(
-                  duration: Duration(milliseconds: 600),
+                  duration: const Duration(milliseconds: 600),
                   type: PageTransitionType.fade,
-                  child: CurrentView()));
+                  child: const CurrentView()));
         }));
   }
 
@@ -78,7 +76,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       child: Stack(
         children: [
           Scaffold(
-            backgroundColor: Color.fromRGBO(3, 3, 70, 1),
+            backgroundColor: const Color.fromRGBO(3, 3, 70, 1),
             body: Column(
               children: [
                 Expanded(

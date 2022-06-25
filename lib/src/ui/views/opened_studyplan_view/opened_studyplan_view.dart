@@ -22,7 +22,7 @@ class _OpenedStudyPlanScreenState extends State<OpenedStudyPlanScreen> {
             Container(
               height: 200,
               width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage("assets/images/appreciate.jpeg"),
                     fit: BoxFit.fill
@@ -36,7 +36,7 @@ class _OpenedStudyPlanScreenState extends State<OpenedStudyPlanScreen> {
                 itemBuilder: (BuildContext context, int index) => Card(
                   color: CantonMethods.alternateCanvasColorType2(context),
                   shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Colors.white70, width: 1),
+                    side: const BorderSide(color: Colors.white70, width: 1),
                     borderRadius: BorderRadius.circular(2),
                   ),
                   // shape: RoundedRectangleBorder(

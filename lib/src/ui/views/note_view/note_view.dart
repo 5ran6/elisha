@@ -1,7 +1,6 @@
 import 'package:canton_design_system/canton_design_system.dart';
-import 'package:elisha/src/ui/views/note_view/note_header_view.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:speech_to_text/speech_to_text.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 
 class DevotionalNotePage extends StatefulWidget {
@@ -23,6 +22,7 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
     super.initState();
     _speech = SpeechToText();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -133,14 +133,14 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
           onStatus: (val) => setState(() {
                 if (val == 'listening') {
                   _islistening = true;
+                  Fluttertoast.showToast(msg: "Mic started", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
                 }
                 else if(val == 'done'){
-                  noteWidget.text = noteWidget.text == "" ? newWords + "." : noteWidget.text + "\n" + newWords + ".";
-                  //TODO: Use toasts to say "Tap microphone to speak again"
-                  //TODO: Capitalize first letter
+                  noteWidget.text = noteWidget.text == "" ? newWords: noteWidget.text + newWords;
                 }
                 else{
                   _islistening = false;
+                  Fluttertoast.showToast(msg: "Tap microphone to speak again", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
                 }
               }),
           onError: (val) => print('onError: $val'));
@@ -151,7 +151,6 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
               () => newWords = val.recognizedWords),
         );
       }
-      ;
     } else {
       setState(() => _islistening = false);
       _speech.stop();

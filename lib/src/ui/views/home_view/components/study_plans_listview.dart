@@ -1,7 +1,6 @@
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/ui/views/bibestudy_series_view/biblestudy_series_view.dart';
 import 'package:elisha/src/ui/views/opened_studyplan_view/opened_studyplan_view.dart';
-import 'package:flutter/cupertino.dart';
 
 class StudyPlansListView extends StatefulWidget {
   const StudyPlansListView({Key? key}) : super(key: key);
@@ -27,7 +26,7 @@ class _StudyPlansListViewState extends State<StudyPlansListView> {
                 style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold)),
             trailing: GestureDetector(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => BibleStudySeriesPage(),
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const BibleStudySeriesPage(),
                 ),
                 );
               },
@@ -39,11 +38,11 @@ class _StudyPlansListViewState extends State<StudyPlansListView> {
             height: 200,
             child: ListView.separated(
               separatorBuilder: (context, index) {
-                return SizedBox(
+                return const SizedBox(
                   width: 10,
                 );
               },
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
                 itemCount: 5,
                 itemBuilder: (ctx, i) => Column(
@@ -51,7 +50,7 @@ class _StudyPlansListViewState extends State<StudyPlansListView> {
                   children: [
                     InkWell(
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => OpenedStudyPlanScreen()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const OpenedStudyPlanScreen()));
                       },
                       child: Card(
                           color: CantonMethods.alternateCanvasColorType2(context),
@@ -69,8 +68,8 @@ class _StudyPlansListViewState extends State<StudyPlansListView> {
                           ),
                       ),
                     ),
-                    SizedBox(height: 5),
-                    Text(titles[i], style: TextStyle(
+                    const SizedBox(height: 5),
+                    Text(titles[i], style: const TextStyle(
                       fontSize: 15,
                         fontWeight: FontWeight.bold))
                   ],

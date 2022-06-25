@@ -29,7 +29,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
                         .headline4
                         ?.copyWith(fontWeight: FontWeight.bold)),
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               Padding(
                 padding: const EdgeInsets.only(left: 15.0),
                 child: Align(
@@ -40,7 +40,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
                             .headline5
                             ?.copyWith(fontWeight: FontWeight.normal))),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               ListTile(
                 title: Text('Memory Verse:',
                     style: Theme.of(context)
@@ -48,7 +48,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
                         .headline4
                         ?.copyWith(fontWeight: FontWeight.bold)),
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               Padding(
                 padding: const EdgeInsets.only(left: 15.0),
                 child: Align(
@@ -97,7 +97,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
                     ?.copyWith(fontWeight: FontWeight.normal),
               ),
             ),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             Text('Write-up for today',
                 style: Theme.of(context)
                     .textTheme
@@ -118,7 +118,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
                       .headline4
                       ?.copyWith(fontWeight: FontWeight.bold)),
             ),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             Text('Prayer for today',
                 style: Theme.of(context)
                     .textTheme
@@ -139,7 +139,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
                       .headline5
                       ?.copyWith(fontWeight: FontWeight.bold)),
             ),
-            SizedBox(height: 5),
+            const SizedBox(height: 5),
             Text('What you should ponder about today',
                 style: Theme.of(context)
                     .textTheme
@@ -157,40 +157,40 @@ class _DevotionalPageState extends State<DevotionalPage> {
             Expanded(
               child: VerticalCardPager(
                   images: devotionalCards,
-                  titles: ['', '', '', ''],
+                  titles: const ['', '', '', ''],
                   onPageChanged: (page) {},
                   onSelectedItem: (index) {
                     switch (index) {
                       case 0:
                         Navigator.of(context).push(PageTransition(
-                            child: FullTopicMemoryVerseVersePage(),
+                            child: const FullTopicMemoryVerseVersePage(),
                             type: PageTransitionType.scale,
                             alignment: Alignment.center,
-                            duration: Duration(milliseconds: 600)
+                            duration: const Duration(milliseconds: 600)
                         ));
                         break;
                       case 1:
                         Navigator.of(context).push(PageTransition(
-                            child: FullWordContentPage(),
+                            child: const FullWordContentPage(),
                             type: PageTransitionType.scale,
                             alignment: Alignment.center,
-                        duration: Duration(milliseconds: 600)
+                        duration: const Duration(milliseconds: 600)
                         ));
                         break;
                       case 2:
                         Navigator.of(context).push(PageTransition(
-                            child: FullPrayerPage(),
+                            child: const FullPrayerPage(),
                             type: PageTransitionType.scale,
                             alignment: Alignment.center,
-                            duration: Duration(milliseconds: 600)
+                            duration: const Duration(milliseconds: 600)
                         ));
                         break;
                       case 3:
                         Navigator.of(context).push(PageTransition(
-                            child: FullThoughtOfTheDayPage(),
+                            child: const FullThoughtOfTheDayPage(),
                             type: PageTransitionType.scale,
                             alignment: Alignment.center,
-                            duration: Duration(milliseconds: 600)
+                            duration: const Duration(milliseconds: 600)
                         ));
                         break;
                     }

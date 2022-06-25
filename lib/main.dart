@@ -20,22 +20,8 @@ import 'dart:async';
 
 import 'package:elisha/src/models/book.dart';
 import 'package:elisha/src/models/verse.dart';
-import 'package:elisha/src/ui/views/about_us_view/about_us_page.dart';
-import 'package:elisha/src/ui/views/bibestudy_series_view/biblestudy_series_view.dart';
-import 'package:elisha/src/ui/views/account_view/account_view.dart';
-import 'package:elisha/src/ui/views/bible_view/bible_view.dart';
-import 'package:elisha/src/ui/views/bookmarked_chapter_view/bookmarked_chapter_view.dart';
-import 'package:elisha/src/ui/views/bookmarked_chapters_view/bookmarked_chapters_view.dart';
-import 'package:elisha/src/ui/views/current_view.dart';
-import 'package:elisha/src/ui/views/devotional_page/devotional_page.dart';
-import 'package:elisha/src/ui/views/home_view/components/study_plans_listview.dart';
-import 'package:elisha/src/ui/views/home_view/home_view.dart';
-import 'package:elisha/src/ui/views/list_of_notes_view/list_of_notes_view.dart';
-import 'package:elisha/src/ui/views/note_view/note_view.dart';
-import 'package:elisha/src/ui/views/opened_studyplan_view/opened_studyplan_view.dart';
 import 'package:elisha/src/ui/views/profile_view/profile_view.dart';
 import 'package:elisha/src/ui/views/settings_view/settings_view.dart';
-import 'package:elisha/src/ui/views/splash_view/splash_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -47,14 +33,19 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
 import 'package:elisha/src/config/constants.dart';
-import 'package:elisha/src/services/authentication_services/authentication_wrapper.dart';
+import 'package:workmanager/workmanager.dart';
+import 'package:elisha/src/services/noty_services/notify_service.dart';
 Verse newverse = Verse(id: 1, chapterId: 3, verseId: 2, text: "The Lord said unto...", book: Book(), favorite: true);
 
+//TODO: Please refer to the readme of this flutter_local_notifications library for the release build configuration, if need be
+
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runZonedGuarded<Future<void>>(() async {
     WidgetsFlutterBinding.ensureInitialized();
+    await NotificationService().initNotification();
+    await Workmanager().initialize(callbackDispatcher);
     await MobileAds.instance.initialize();
 
     await Firebase.initializeApp();
@@ -85,45 +76,18 @@ class MyApp extends StatelessWidget {
   @override
 
   Widget build(BuildContext context) {
-
-    // return ScreenUtilInit(
-    //   designSize: Size(360, 690),
-    //   minTextAdapt: true,
-    //   splitScreenMode: true,
-    //   builder: () => MaterialApp(
-    //     //... other code
-    //     builder: (context, widget) {
-    //       //add this line
-    //       ScreenUtil.setContext(context);
-    //       return MediaQuery(
-    //         //Setting font does not change with system font size
-    //         data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-    //         child: widget!,
-    //       );
-    //     },
-    //     theme: ThemeData(
-    //       textTheme: TextTheme(
-    //           //To support the following, you need to use the first initialization method
-    //           button: TextStyle(fontSize: 45.sp)),
-    //     ),
-    //   ),
-    // );
-
-
-
-
     return ScreenUtilInit(
       designSize: const Size(360, 690),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: () => CantonApp(
+      builder: (context, child) => CantonApp(
           title: kAppTitle,
           primaryLightColor: const Color(0xFFB97D3C),
           primaryLightVariantColor: const Color(0xFFB97D3C),
           primaryDarkColor: const Color(0xFFB97D3C),
           primaryDarkVariantColor: const Color(0xFFB97D3C),
           navigatorObservers: [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
-          home: const DevotionalNotePage()),
+          home: const SettingsPage()),
     );
   }
 }

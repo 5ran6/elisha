@@ -1,5 +1,4 @@
 import 'package:canton_design_system/canton_design_system.dart';
-import 'package:flutter/cupertino.dart';
 
 class ListofNotesHeaderView extends StatelessWidget {
   const ListofNotesHeaderView({Key? key}) : super(key: key);

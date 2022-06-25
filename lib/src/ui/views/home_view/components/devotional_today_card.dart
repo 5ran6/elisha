@@ -16,7 +16,7 @@ class _DevotionalTodayCardState extends State<DevotionalTodayCard> {
       shape: CantonSmoothBorder.defaultBorder(),
       child: InkWell(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => DevotionalPage(),
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const DevotionalPage(),
               ),
           );
         },
@@ -29,9 +29,9 @@ class _DevotionalTodayCardState extends State<DevotionalTodayCard> {
                 //trailing: Icon(Icons.share),
                 title: Text('Devotional Topic',
                     style: Theme.of(context).textTheme.headline3?.copyWith(fontWeight: FontWeight.bold)),
-                subtitle: Text('Devotional preview for today'),
+                subtitle: const Text('Devotional preview for today'),
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               Card(
                 elevation: 0.0,
                 shape: CantonSmoothBorder.defaultBorder(),
@@ -40,7 +40,7 @@ class _DevotionalTodayCardState extends State<DevotionalTodayCard> {
                   height: 130,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
-                    image: DecorationImage(
+                    image: const DecorationImage(
                       image: AssetImage('assets/images/app_icon.png'),
                       fit: BoxFit.fitWidth
                     ),
@@ -53,7 +53,7 @@ class _DevotionalTodayCardState extends State<DevotionalTodayCard> {
                 children: [
                   FlatButton(onPressed: () {},
                       child: Text('VIEW', style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.bold),)),
-                  Icon(Icons.share)
+                  const Icon(Icons.share)
                 ],
               )
             ],
