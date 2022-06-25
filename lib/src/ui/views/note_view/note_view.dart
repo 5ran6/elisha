@@ -15,6 +15,7 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
   bool _islistening = false;
   double confidence = 1.0;
   var noteWidget = TextEditingController();
+  var titleWidget = TextEditingController();
   String newWords ="";
 
   @override
@@ -75,6 +76,7 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      controller: titleWidget,
                       keyboardType: TextInputType.text,
                       decoration: const InputDecoration(
                           alignLabelWithHint: true,
