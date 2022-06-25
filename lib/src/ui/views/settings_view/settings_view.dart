@@ -4,6 +4,9 @@ import 'package:elisha/src/ui/views/settings_view/settings_header_view.dart';
 import 'package:intl/intl.dart';
 import 'package:workmanager/workmanager.dart';
 
+//TODO: Change the notification audio for the alarm system
+//TODO: Implement Alarm cancel using the toggle switch
+
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
@@ -13,8 +16,8 @@ class SettingsPage extends StatefulWidget {
 
 void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
-    print("Done");
-    NotificationService().showNotification(1, "title", "body");
+    NotificationService()
+        .showNotification(1, "Reminder", "You scheduled a time with Jesus");
     return Future.value(true);
   });
 }
@@ -28,6 +31,7 @@ class _SettingsPageState extends State<SettingsPage> {
   List themeList = ["System Default", "Light", "Dark"];
   late Future<TimeOfDay?> selectedTime;
   String tme = "6:00";
+  int day = 0;
 
   //String current
 
@@ -263,13 +267,21 @@ class _SettingsPageState extends State<SettingsPage> {
             ((value.minute < 10)
                 ? ("0" + value.minute.toString())
                 : value.minute.toString()));
-        print((value.hour - DateTime.now().hour) % 24);
-        print((value.minute - DateTime.now().minute) % 60);
-
         Workmanager().cancelAll();
-
         print("Cancelled");
-        Workmanager().registerOneOffTask("uniqueName", "taskName");
+        if (DateTime.now().hour > value.hour) {
+          day = 1;
+        } else {
+          day = 0;
+        }
+        print(day);
+        Workmanager().registerPeriodicTask("Alarm", "Ring_Alarm",
+            initialDelay: Duration(
+                minutes: ((value.minute - DateTime.now().minute) % 60),
+                hours: ((value.hour - DateTime.now().hour) % 24),
+                days: day),
+            frequency: const Duration(days: 1));
+        print("Work scheduled");
       });
       reminderValue = true;
     }, onError: (error) {
@@ -279,9 +291,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
   void scheduleTime() {
     DateTime now = DateTime.now();
-    //currentTime =
-    Workmanager().registerPeriodicTask("uniqueName2", "taskName",
-        frequency: const Duration(minutes: 15));
   }
 }
 
