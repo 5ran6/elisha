@@ -1,13 +1,8 @@
-import 'dart:convert';
-
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/ui/views/note_view/note_header_view.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-
 
 class DevotionalNotePage extends StatefulWidget {
   const DevotionalNotePage({Key? key}) : super(key: key);
@@ -23,7 +18,7 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
   var noteWidget = TextEditingController();
   String? jottings;
   String? writeup;
-
+  String newWords ="";
   @override
   void initState(){
     super.initState();
@@ -31,7 +26,6 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
   }
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -43,14 +37,16 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                 child: Row(children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Note', style: Theme.of(context).textTheme.headline3),
+                    child: Text('Note',
+                        style: Theme.of(context).textTheme.headline3),
                   ),
                   Expanded(
                       child: Align(
                           alignment: Alignment.centerRight,
                           child: IconButton(
                               onPressed: _listen,
-                              icon: Icon(_islistening ? Icons.mic_off : Icons.mic))))
+                              icon: Icon(
+                                  _islistening ? Icons.mic_off : Icons.mic))))
                 ]),
               ),
               Align(
@@ -79,10 +75,6 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
                       keyboardType: TextInputType.text,
-                      //initialValue: jottings,
-                      onChanged: (value){
-                        noteWidget.text = noteWidget.text + value;
-                      },
                       decoration: const InputDecoration(
                           alignLabelWithHint: true,
                           labelText: 'Title',
@@ -114,29 +106,13 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                 height: 5,
               ),
               GestureDetector(
-                  onTap: () async {
-                    if(user == null) {
-                      //save to sqliteDB
-                    } else {
-                      //send token to api
-                      final idToken = await user.getIdToken();
-                      final response = await http.post(Uri.parse("https://secret-place.herokuapp.com/api/users/notes"), headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': 'Bearer $idToken',
-                      }, body: jsonEncode({"token": idToken})
-                      );
-                      print('Token : ${idToken}');
-                      print(response);
-                    }
-                  },
+                  onTap: () {},
                   child: Container(
                       width: MediaQuery.of(context).size.width - 40,
                       height: 50,
                       decoration: BoxDecoration(
                           color: Colors.black,
-                        borderRadius: BorderRadius.circular(15)
-                      ),
+                          borderRadius: BorderRadius.circular(15)),
                       child: const Align(
                           alignment: Alignment.center,
                           child: Text(
@@ -151,18 +127,32 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
       ),
     );
   }
+
   void _listen() async {
-    if (!_islistening){
+    if (!_islistening) {
       bool available = await _speech.initialize(
-          onStatus: (val) => print('onstatus: $val'),
-          onError: (val) => print('onError: $val')
-      );
+          onStatus: (val) => setState(() {
+                if (val == 'listening') {
+                  _islistening = true;
+                }
+                else if(val == 'done'){
+                  noteWidget.text = noteWidget.text == "" ? newWords + "." : noteWidget.text + "\n" + newWords + ".";
+                  //TODO: Use toasts to say "Tap microphone to speak again"
+                  //TODO: Capitalize first letter
+                }
+                else{
+                  _islistening = false;
+                }
+              }),
+          onError: (val) => print('onError: $val'));
       if (available) {
         setState(() => _islistening = true);
         _speech.listen(
-            onResult: (val) => setState(() => noteWidget.text = val.recognizedWords)
+          onResult: (val) => setState(
+              () => newWords = val.recognizedWords),
         );
-      };
+      }
+      ;
     } else {
       setState(() => _islistening = false);
       _speech.stop();
