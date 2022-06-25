@@ -1,8 +1,16 @@
+import 'dart:convert';
+
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:elisha/src/services/devotionalDB_helper.dart';
 import 'package:elisha/src/ui/views/note_view/note_header_view.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import '../../../models/note.dart';
 
 class DevotionalNotePage extends StatefulWidget {
   const DevotionalNotePage({Key? key}) : super(key: key);
@@ -16,9 +24,9 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
   bool _islistening = false;
   double confidence = 1.0;
   var noteWidget = TextEditingController();
-  String? jottings;
-  String? writeup;
+  var noteTitleWidget = TextEditingController();
   String newWords ="";
+
   @override
   void initState(){
     super.initState();
@@ -26,6 +34,7 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
   }
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -74,6 +83,7 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      controller: noteTitleWidget,
                       keyboardType: TextInputType.text,
                       decoration: const InputDecoration(
                           alignLabelWithHint: true,
@@ -106,7 +116,18 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                 height: 5,
               ),
               GestureDetector(
-                  onTap: () {},
+                  onTap: () async {
+                    DateTime now = DateTime.now();
+                    String todayDate = DateFormat('dd.MM.yyyy').format(now);
+                    Note note = Note(title: noteTitleWidget.text, writeUp: noteWidget.text, date: todayDate);
+
+                    DevotionalDBHelper.instance.insertNote(note);
+
+                    if (user != null) {
+                      sendPostRequest(note);
+                    }
+
+                  },
                   child: Container(
                       width: MediaQuery.of(context).size.width - 40,
                       height: 50,
@@ -128,31 +149,45 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
     );
   }
 
+  void sendPostRequest(Note note) async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    final idToken = await user?.getIdToken();
+    final response = await http.post(Uri.parse("https://secret-place.herokuapp.com/api/users/notes"), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $idToken',
+    }, body: jsonEncode({"note": note})
+    );
+    print('Note : ${note}');
+    print(response);
+  }
+
+
   void _listen() async {
     if (!_islistening) {
       bool available = await _speech.initialize(
           onStatus: (val) => setState(() {
-                if (val == 'listening') {
-                  _islistening = true;
-                }
-                else if(val == 'done'){
-                  noteWidget.text = noteWidget.text == "" ? newWords + "." : noteWidget.text + "\n" + newWords + ".";
-                  //TODO: Use toasts to say "Tap microphone to speak again"
-                  //TODO: Capitalize first letter
-                }
-                else{
-                  _islistening = false;
-                }
-              }),
+            if (val == 'listening') {
+              _islistening = true;
+              Fluttertoast.showToast(msg: "Mic started", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
+            }
+            else if(val == 'done'){
+              noteWidget.text = noteWidget.text == "" ? newWords: noteWidget.text + newWords;
+            }
+            else{
+              _islistening = false;
+              Fluttertoast.showToast(msg: "Tap microphone to speak again", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
+            }
+          }),
           onError: (val) => print('onError: $val'));
       if (available) {
         setState(() => _islistening = true);
         _speech.listen(
           onResult: (val) => setState(
-              () => newWords = val.recognizedWords),
+                  () => newWords = val.recognizedWords),
         );
       }
-      ;
     } else {
       setState(() => _islistening = false);
       _speech.stop();

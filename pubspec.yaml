@@ -41,6 +41,7 @@ dependencies:
   line_awesome_flutter: ^2.0.0
   vertical_card_pager: ^1.5.0
   cached_network_image: ^3.0.0
+  fluttertoast: ^8.0.9
 
 
   # State Management
