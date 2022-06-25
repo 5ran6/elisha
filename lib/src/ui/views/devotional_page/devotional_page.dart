@@ -242,7 +242,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
         shape: CantonSmoothBorder.defaultBorder(),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20.0),
-          child: Image.asset('assets/images/light.jpg', fit: BoxFit.cover,)
+          child: Image.asset('assets/images/bible_in_one_year.jpg', fit: BoxFit.cover,)
         ),
       ),
     ];

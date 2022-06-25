@@ -23,6 +23,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 import 'package:elisha/src/providers/authentication_providers/authentication_repository_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInAnonymouslyButton extends StatelessWidget {
   const SignInAnonymouslyButton({Key? key}) : super(key: key);
@@ -44,6 +45,9 @@ class SignInAnonymouslyButton extends StatelessWidget {
         width: 1.5,
       ),
       onPressed: () async {
+        final _prefs = await SharedPreferences.getInstance();
+
+         await _prefs.setString('key', 'anonymous');
         HapticFeedback.lightImpact();
         await context.read(authenticationRepositoryProvider).signInAnonymously();
       },

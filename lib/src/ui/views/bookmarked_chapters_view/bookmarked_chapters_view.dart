@@ -50,7 +50,7 @@ class _BookmarkedChaptersViewState extends State<BookmarkedChaptersView> {
     return Container(
       padding: const EdgeInsets.only(top: 17, left: 17, right: 17),
       child: const ViewHeaderTwo(
-        title: 'Bookmarks',
+        title: 'Bookmarked Chapters',
         backButton: true,
       ),
     );

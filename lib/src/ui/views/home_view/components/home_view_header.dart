@@ -17,6 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:elisha/src/providers/local_user_repository_provider.dart';
@@ -26,6 +27,7 @@ class HomeViewHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
     String greeting() {
       var hour = DateTime.now().hour;
       if (hour < 12) {
@@ -44,7 +46,8 @@ class HomeViewHeader extends StatelessWidget {
       return source;
     }
 
-    String? dbName = context.read(localUserRepositoryProvider).firstName;
+    String? dbName = user?.displayName!;
+        //context.read(localUserRepositoryProvider).firstName;
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 25),
@@ -62,7 +65,7 @@ class HomeViewHeader extends StatelessWidget {
               ),
               dbName != ''
                   ? Text(
-                      name(dbName),
+                      name(dbName!),
                       style: Theme.of(context).textTheme.headline2?.copyWith(
                             fontWeight: FontWeight.w700,
                           ),

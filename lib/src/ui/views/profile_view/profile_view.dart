@@ -91,7 +91,7 @@ class ProfileView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Bookmarks',
+                  'Bookmark Chapters',
                   style: Theme.of(context).textTheme.headline6,
                 ),
                 Icon(
