@@ -28,14 +28,17 @@ import 'package:elisha/src/ui/views/home_view/components/bible_in_a_year_card.da
 import 'package:elisha/src/ui/views/home_view/components/devotional_today_card.dart';
 import 'package:elisha/src/ui/views/home_view/components/selected_study_plans_listview.dart';
 import 'package:elisha/src/ui/views/home_view/components/streaks_card.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:elisha/src/ui/views/home_view/components/home_view_header.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../utils/dev_functions.dart';
 import '../../../models/devotional.dart';
 import '../../../services/devotionalDB_helper.dart';
+import '../authentication_views/sign_in_providers_view/sign_in_providers_view.dart';
 import 'components/study_plans_listview.dart';
 
 class HomeView extends StatefulWidget {
@@ -59,9 +62,24 @@ class _HomeViewState extends State<HomeView> {
 
   var _devPlansList = List<DevotionalPlan>.empty();
 
+  bool isAnonymousUser = false;
+
   var _devPlansListFromDB = List<DevotionalPlan>.empty();
 
   bool _isConnectionSuccessful = false;
+
+  bool showSignIn = true;
+
+  Future<void> isUserAnonymous() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final String? storedValue = prefs.getString('key');
+    if (storedValue != null) {
+      setState(() {
+        isAnonymousUser == true;
+      });
+    }
+  }
 
   Future<void> _tryConnection() async {
     try {
@@ -77,14 +95,36 @@ class _HomeViewState extends State<HomeView> {
     }
   }
 
+  void _toggleView() {
+    setState(() {
+      showSignIn = !showSignIn;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return _content(context);
+    return StreamBuilder (
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasData || showSignIn == false || isAnonymousUser) {
+          return _content(context);
+        } else if (snapshot.hasError) {
+          return const Center(child: Text('Something went wrong'));
+        } else {
+          return SignInProvidersView(_toggleView);
+        }
+
+      }
+    );
   }
 
   @override
   void initState() {
     _tryConnection();
+    isUserAnonymous();
+
 
   getVerseAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
   getVersePassageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
@@ -131,7 +171,7 @@ class _HomeViewState extends State<HomeView> {
         VerseOfTheDayCard(verse: _verse, versePassage: _versePassage),
         const SizedBox(height: 15),
         DevotionalTodayCard(title: _title, mainWriteUp: _mainWriteUp, image: _image, internetInfo: _isConnectionSuccessful,
-            biblePassage: _fullpassage, prayer: _prayerBurden, thought: _thoughtOfTheDay),
+            biblePassage: _fullpassage, prayer: _prayerBurden, thought: _thoughtOfTheDay ),
         const SizedBox(height: 15),
         SelectedStudyPlansListview(devPlansFromDB: _devPlansListFromDB),
         const SizedBox(height: 5),

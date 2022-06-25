@@ -42,7 +42,6 @@ class DevotionalDBHelper {
     await db.execute(
       'CREATE TABLE devotional_table(id INTEGER PRIMARY KEY, date TEXT, title TEXT, translation TEXT, memoryVerse TEXT, memoryVersePassage TEXT, fullPassage TEXT, fullText TEXT, bibleInAYear TEXT, image TEXT, prayerBurden TEXT, thoughtOfTheDay TEXT)',
     );
-
     await db.execute(
         'CREATE TABLE devotionalPlan_table(id TEXT, title TEXT, imageUrl TEXT, description TEXT, devotionals TEXT)');
 

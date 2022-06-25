@@ -1,8 +1,13 @@
+import 'dart:convert';
+
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/ui/views/note_view/note_header_view.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
 
 class DevotionalNotePage extends StatefulWidget {
   const DevotionalNotePage({Key? key}) : super(key: key);
@@ -18,6 +23,7 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
   var noteWidget = TextEditingController();
   String? jottings;
   String? writeup;
+
   @override
   void initState(){
     super.initState();
@@ -25,6 +31,7 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
   }
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -107,7 +114,21 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                 height: 5,
               ),
               GestureDetector(
-                  onTap: () {
+                  onTap: () async {
+                    if(user == null) {
+                      //save to sqliteDB
+                    } else {
+                      //send token to api
+                      final idToken = await user.getIdToken();
+                      final response = await http.post(Uri.parse("https://secret-place.herokuapp.com/api/users/notes"), headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': 'Bearer $idToken',
+                      }, body: jsonEncode({"token": idToken})
+                      );
+                      print('Token : ${idToken}');
+                      print(response);
+                    }
                   },
                   child: Container(
                       width: MediaQuery.of(context).size.width - 40,
