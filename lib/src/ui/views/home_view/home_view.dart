@@ -16,8 +16,13 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:elisha/src/models/devotional_plans.dart';
 import 'package:elisha/src/models/verse.dart';
+import 'package:elisha/src/providers/api_provider.dart';
 import 'package:elisha/src/ui/components/verse_of_the_day_card.dart';
 import 'package:elisha/src/ui/views/home_view/components/bible_in_a_year_card.dart';
 import 'package:elisha/src/ui/views/home_view/components/devotional_today_card.dart';
@@ -26,22 +31,80 @@ import 'package:elisha/src/ui/views/home_view/components/streaks_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:elisha/src/ui/views/home_view/components/home_view_header.dart';
+import 'package:intl/intl.dart';
 
+import '../../../../utils/dev_functions.dart';
+import '../../../models/devotional.dart';
+import '../../../services/devotionalDB_helper.dart';
 import 'components/study_plans_listview.dart';
 
 class HomeView extends StatefulWidget {
-  const HomeView({required this.verse, Key? key}) : super(key: key);
 
-  final Verse verse;
+
+ const HomeView({ Key? key}) : super(key: key);
 
   @override
   _HomeViewState createState() => _HomeViewState();
 }
 
 class _HomeViewState extends State<HomeView> {
+  var _verse='';
+  var _versePassage='';
+  var _title='';
+  var _mainWriteUp='';
+  var _image='';
+  var _fullpassage='';
+  var _prayerBurden='';
+  var _thoughtOfTheDay='';
+
+  var _devPlansList = List<DevotionalPlan>.empty();
+
+  var _devPlansListFromDB = List<DevotionalPlan>.empty();
+
+  bool _isConnectionSuccessful = false;
+
+  Future<void> _tryConnection() async {
+    try {
+      final response = await InternetAddress.lookup('example.com');
+
+      setState(() {
+        _isConnectionSuccessful = response.isNotEmpty;
+      });
+    } on SocketException catch (e) {
+      setState(() {
+        _isConnectionSuccessful = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return _content(context);
+  }
+
+  @override
+  void initState() {
+    _tryConnection();
+
+  getVerseAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+  getVersePassageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+  getTodayTitleAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+  getTodayMainWriteUpAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+  getTodayFullPassageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+  getTodayPrayerAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+  getTodayThoughtAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+  getImageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+  getDevotionalPlansFromApi();
+  getStudyPlansFromDB();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      //do your stuff
+
+      getStudyPlansFromDB();
+    }
   }
 
   Widget _content(BuildContext context) {
@@ -65,16 +128,88 @@ class _HomeViewState extends State<HomeView> {
       children: [
         const StreaksCard(),
         const SizedBox(height: 15),
-        VerseOfTheDayCard(verse: widget.verse),
+        VerseOfTheDayCard(verse: _verse, versePassage: _versePassage),
         const SizedBox(height: 15),
-        const DevotionalTodayCard(),
+        DevotionalTodayCard(title: _title, mainWriteUp: _mainWriteUp, image: _image, internetInfo: _isConnectionSuccessful,
+            biblePassage: _fullpassage, prayer: _prayerBurden, thought: _thoughtOfTheDay),
         const SizedBox(height: 15),
-        const BibleInAYearCard(),
-        const SizedBox(height: 15),
-        const SelectedStudyPlansListview(),
-        const SizedBox(height: 15),
-        const StudyPlansListView()
+        SelectedStudyPlansListview(devPlansFromDB: _devPlansListFromDB),
+        const SizedBox(height: 5),
+        DevotionalPlansHomePageListView(devPlans: _devPlansList)
       ],
     );
   }
+
+  //final String vs;
+  getVerseAsString(String dt) async {
+    var verse =   await DevotionalItemsRetrieveClass.getTodayVerse(dt);
+    //print(verse);
+    setState(() {
+      _verse = verse!;
+    });
+  }
+
+  getVersePassageAsString(String dt) async {
+    var versePassage =   await DevotionalItemsRetrieveClass.getTodayVersePassage(dt);
+    setState(() {
+      _versePassage = versePassage!;
+    });
+  }
+
+  getTodayTitleAsString(String dt) async {
+    var title =   await DevotionalItemsRetrieveClass.getTodayTitle(dt);
+    setState(() {
+      _title = title!;
+    });
+  }
+
+  getTodayMainWriteUpAsString(String dt) async {
+    var mainWriteUp =   await DevotionalItemsRetrieveClass.getTodayMainWriteUp(dt);
+    setState(() {
+      _mainWriteUp = mainWriteUp!;
+    });
+  }
+
+  getTodayPrayerAsString(String dt) async {
+    var prayerBurden =   await DevotionalItemsRetrieveClass.getTodayPrayer(dt);
+    setState(() {
+      _prayerBurden = prayerBurden!;
+    });
+  }
+
+  getTodayThoughtAsString(String dt) async {
+    var thought =   await DevotionalItemsRetrieveClass.getTodayThoughtOfTheDay(dt);
+    setState(() {
+      _thoughtOfTheDay = thought!;
+    });
+  }
+
+  getTodayFullPassageAsString(String dt) async {
+    var fullPassage =   await DevotionalItemsRetrieveClass.getTodayFullPassage(dt);
+    setState(() {
+      _fullpassage = fullPassage!;
+    });
+  }
+
+  getImageAsString(String dt) async {
+    var image =   await DevotionalItemsRetrieveClass.getImage(dt);
+    setState(() {
+      _image = image!;
+    });
+  }
+
+  getDevotionalPlansFromApi() async {
+    List<DevotionalPlan> devPlans = await RemoteAPI.getDevotionalPlans();
+    setState(() {
+      _devPlansList = devPlans;
+    });
+  }
+
+   getStudyPlansFromDB() async {
+    List<DevotionalPlan> devPlansFromDB = await DevotionalDBHelper.instance.getDevotionalPlansFromDB();
+
+      setState(() {
+        _devPlansListFromDB = devPlansFromDB;
+      });
+    }
 }

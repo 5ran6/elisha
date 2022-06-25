@@ -1,69 +1,126 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:elisha/src/models/devotional.dart';
+import 'package:elisha/src/models/devotional_plans.dart';
+import 'package:elisha/src/services/devotionalDB_helper.dart';
+import 'package:elisha/src/ui/views/devotional_page/devotional_page.dart';
+import 'package:elisha/src/ui/views/devotional_page/devotional_page_fromplans.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
+import '../../../providers/api_provider.dart';
+
 
 class OpenedStudyPlanScreen extends StatefulWidget {
-  const OpenedStudyPlanScreen({Key? key}) : super(key: key);
+   final String devPlanID;
+  // final String devPlanDescription;
+  // final String devPlanImageUrl;
+  // final List<Devotional> devs;
+
+  const OpenedStudyPlanScreen({required this.devPlanID});
 
   @override
   _OpenedStudyPlanScreenState createState() => _OpenedStudyPlanScreenState();
 }
 
 class _OpenedStudyPlanScreenState extends State<OpenedStudyPlanScreen> {
-  final List pictures =  ['assets/images/appreciate.jpeg', 'assets/images/heart.jpeg', 'assets/images/light.jpg',
-    'assets/images/master.jpg', "assets/images/bow.jpg"];
-  final List titles = ['Humility', 'Raging Battle', 'Purity', 'New Creation Man', 'Firebrands'];
-  final List days = ['Day1', 'Day2', 'Day3', 'Day4', 'Day5'];
+  DevotionalPlan? _devPlanWithFullDevotionals = null;
+
+  Future<DevotionalPlan> get devPlansWithDevotionalsFuture {
+    return RemoteAPI.getDevotionalPlanWithID(widget.devPlanID);
+  }
+
+  void getDevotionalPlan() async {
+    //if in db, show from db. If not, then fetch.
+    DevotionalPlan? planFromDB = await  DevotionalDBHelper.instance.getDevotionalPlanFromDBWithID(widget.devPlanID);
+
+    if (planFromDB == null) {
+      DevotionalPlan devPlanWithFullDevotionals = await devPlansWithDevotionalsFuture;
+
+      DevotionalDBHelper.instance.insertDevotionalPlan(devPlanWithFullDevotionals);
+      setState(() {
+        _devPlanWithFullDevotionals = devPlanWithFullDevotionals;
+      });
+
+    } else {
+      setState(() {
+        _devPlanWithFullDevotionals = planFromDB;
+      });
+    }
+
+  }
+
+
+  @override
+  void initState() {
+    getDevotionalPlan();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            Container(
-              height: 200,
-              width: MediaQuery.of(context).size.width,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("assets/images/appreciate.jpeg"),
-                    fit: BoxFit.fill
+        child: _devPlanWithFullDevotionals != null ? Column(
+            children: [
+              CachedNetworkImage(
+                imageUrl: _devPlanWithFullDevotionals!.imageUrl,
+                imageBuilder: (context, imageProvider) => Container(
+                  height: 300,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: imageProvider,
+                        fit: BoxFit.fill,
+                      ),
+                      borderRadius: BorderRadius.circular(15)
+                  ),
+                ),
+                placeholder: (context, url) => const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Icon(Icons.error)
+              ),
+              const SizedBox(height: 10),
+              Text(_devPlanWithFullDevotionals?.description ?? '',
+              style: Theme.of(context).textTheme.headline5,
+              ),
+              const SizedBox(height: 10),
+              Expanded(
+                child: StaggeredGridView.countBuilder(
+                  staggeredTileBuilder: (index) => StaggeredTile.count(2,1),
+                  itemCount: _devPlanWithFullDevotionals?.devotionals?.length,
+                      mainAxisSpacing: 8,
+                      crossAxisCount: 4,
+                      crossAxisSpacing: 8,
+                    itemBuilder: (context, index) => buildDailyPlanCard(index),
                 ),
               ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: 5,
-                itemBuilder: (BuildContext context, int index) => Card(
-                  color: CantonMethods.alternateCanvasColorType2(context),
-                  shape: RoundedRectangleBorder(
-                    side: const BorderSide(color: Colors.white70, width: 1),
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                  // shape: RoundedRectangleBorder(
-                  //   borderRadius: BorderRadius.circular(0.0)
-                  // ),
-                  elevation: 5.0,
-                  child: InkWell(
-                    onTap: () {},
-                    child: ListTile (
-                      leading: CircleAvatar(
-                        backgroundImage: AssetImage(pictures[index]),
-                      ),
-                      title: Text(
-                        days[index], style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Text(
-                        titles[index], style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.normal),
-                      ),
-                    ),
-                  ),
-                ),
 
-              ),
-            ),
-          ],
-        ),
+
+            ],
+          ): Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,)),
       ),
     );
   }
+
+  Widget buildDailyPlanCard(int index) => GestureDetector(
+    onTap: () {
+      //List<Devotional> devsForPlan = _devPlansWithDevotionals[index].devotionals;
+      if (_devPlanWithFullDevotionals != null) {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => DevotionalPageFromPlans(devotionalFromPlan: _devPlanWithFullDevotionals!.devotionals[index])));
+      }
+    },
+    child: Card(
+      margin: EdgeInsets.all(10),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: Container(
+        margin: EdgeInsets.all(5),
+        child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+          child: Center(child: Text('Day$index', style: Theme.of(context).textTheme.headline5))
+        )
+
+      ),
+    ),
+  );
+
 }
+

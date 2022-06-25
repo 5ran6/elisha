@@ -17,11 +17,30 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:async';
+import 'package:elisha/src/models/devotional.dart';
+import 'package:elisha/src/providers/api_provider.dart';
+import 'package:elisha/src/services/devotionalDB_helper.dart';
+import 'package:intl/intl.dart';
 
+import 'package:dio/dio.dart';
 import 'package:elisha/src/models/book.dart';
 import 'package:elisha/src/models/verse.dart';
+import 'package:elisha/src/ui/views/about_us_view/about_us_page.dart';
+import 'package:elisha/src/ui/views/bibestudy_series_view/biblestudy_series_view.dart';
+import 'package:elisha/src/ui/views/account_view/account_view.dart';
+import 'package:elisha/src/ui/views/bible_view/bible_view.dart';
+import 'package:elisha/src/ui/views/bookmarked_chapter_view/bookmarked_chapter_view.dart';
+import 'package:elisha/src/ui/views/bookmarked_chapters_view/bookmarked_chapters_view.dart';
+import 'package:elisha/src/ui/views/current_view.dart';
+import 'package:elisha/src/ui/views/devotional_page/devotional_page.dart';
+import 'package:elisha/src/ui/views/home_view/components/study_plans_listview.dart';
+import 'package:elisha/src/ui/views/home_view/home_view.dart';
+import 'package:elisha/src/ui/views/list_of_notes_view/list_of_notes_view.dart';
+import 'package:elisha/src/ui/views/note_view/note_view.dart';
+import 'package:elisha/src/ui/views/opened_studyplan_view/opened_studyplan_view.dart';
 import 'package:elisha/src/ui/views/profile_view/profile_view.dart';
 import 'package:elisha/src/ui/views/settings_view/settings_view.dart';
+import 'package:elisha/src/ui/views/splash_view/splash_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -33,12 +52,15 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
 import 'package:elisha/src/config/constants.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:elisha/src/services/noty_services/notify_service.dart';
-Verse newverse = Verse(id: 1, chapterId: 3, verseId: 2, text: "The Lord said unto...", book: Book(), favorite: true);
+import 'package:elisha/src/services/authentication_services/authentication_wrapper.dart';
+import 'dart:convert';
 
-//TODO: Please refer to the readme of this flutter_local_notifications library for the release build configuration, if need be
+
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -52,6 +74,9 @@ void main() async {
 
     await Hive.initFlutter();
     await Hive.openBox('elisha');
+
+
+
 
     if (kDebugMode) {
       await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
@@ -71,11 +96,54 @@ void main() async {
 
 class MyApp extends StatelessWidget {
 
-  const MyApp({Key? key}) : super(key: key);
 
+  void receiveData() async {
+    DateTime now = DateTime.now();
+
+    String formattedMYNameAPI = DateFormat('MMMMyyyy').format(now);
+    String formattedMYNameDB = DateFormat('MM.yyyy').format(now);
+
+    List<Devotional> lsdv = await DevotionalDBHelper.instance.getDevotionalsDBForMonth(formattedMYNameDB);
+    print(lsdv);
+    if (lsdv.isEmpty) {
+      List<Devotional> listOfDevs = await RemoteAPI.getDevotionalsForMonth(formattedMYNameAPI);
+      DevotionalDBHelper.instance.insertDevotionalList(listOfDevs);
+    }
+    }
+
+  const MyApp({Key? key}) : super(key: key);
   @override
 
   Widget build(BuildContext context) {
+
+    receiveData();
+
+    // return ScreenUtilInit(
+    //   designSize: Size(360, 690),
+    //   minTextAdapt: true,
+    //   splitScreenMode: true,
+    //   builder: () => MaterialApp(
+    //     //... other code
+    //     builder: (context, widget) {
+    //       //add this line
+    //       ScreenUtil.setContext(context);
+    //       return MediaQuery(
+    //         //Setting font does not change with system font size
+    //         data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+    //         child: widget!,
+    //       );
+    //     },
+    //     theme: ThemeData(
+    //       textTheme: TextTheme(
+    //           //To support the following, you need to use the first initialization method
+    //           button: TextStyle(fontSize: 45.sp)),
+    //     ),
+    //   ),
+    // );
+
+
+
+
     return ScreenUtilInit(
       designSize: const Size(360, 690),
       minTextAdapt: true,
@@ -91,3 +159,11 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
+
+
+
+
+
+

@@ -1,25 +1,36 @@
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/models/verse.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
+import 'package:share_plus/share_plus.dart';
+
+import '../../models/devotional.dart';
+import '../../services/devotionalDB_helper.dart';
 
 class VerseOfTheDayCard extends StatelessWidget {
-  const VerseOfTheDayCard({required this.verse, Key? key}) : super(key: key);
+  //const VerseOfTheDayCard({required this.verse, Key? key}) : super(key: key);
+//final Verse verse;
+  final String verse;
+  final String versePassage;
+  const VerseOfTheDayCard({ required this.verse, required this.versePassage});
 
-  final Verse verse;
+
+
 
   @override
   Widget build(BuildContext context) {
+
     Color bgColor() {
-      if (MediaQuery.of(context).platformBrightness == Brightness.dark) {
+      if (MediaQuery
+          .of(context)
+          .platformBrightness == Brightness.dark) {
         return CantonDarkColors.gray[300]!;
       }
       return CantonColors.gray[300]!;
     }
 
     return GestureDetector(
-      onTap: () {
-        CantonMethods.viewTransition(context, Container());
-      },
+      onTap: () {},
       child: Card(
         color: CantonMethods.alternateCanvasColorType2(context),
         shape: CantonSmoothBorder.defaultBorder(),
@@ -35,9 +46,9 @@ class VerseOfTheDayCard extends StatelessWidget {
                   children: [
                     _header(context, bgColor()),
                     const SizedBox(height: 15),
-                    _body(context, bgColor(), verse),
+                    _body(context, bgColor()),
                     const SizedBox(height: 15),
-                    _bookChapterVerse(context, verse),
+                    _bookChapterVerse(context),
                   ],
                 ),
               ),
@@ -52,36 +63,54 @@ class VerseOfTheDayCard extends StatelessWidget {
   Widget _header(BuildContext context, Color bgColor) {
     return Text(
       'Verse of the Day',
-      style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold),
+      style: Theme
+          .of(context)
+          .textTheme
+          .headline4
+          ?.copyWith(fontWeight: FontWeight.bold),
     );
   }
 
   Widget _favoriteButton(BuildContext context, Color bgColor) {
     Color heartColor() {
-      if (MediaQuery.of(context).platformBrightness == Brightness.dark) {
+      if (MediaQuery
+          .of(context)
+          .platformBrightness == Brightness.dark) {
         return CantonDarkColors.red[400]!;
       }
       return CantonColors.red[400]!;
     }
 
-    return Container(
-      height: 35,
-      width: 35,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: bgColor,
-      ),
-      child: Center(
-        child: Icon(
-          FontAwesomeIcons.solidHeart,
-          size: 19,
-          color: heartColor(),
+    return GestureDetector(
+      onTap: () async {
+        const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
+        const appleStoreUrl = 'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
+
+        await Share.share("$verse\n$versePassage\n\nGet Secret Place App:\nPlayStore: $playStoreUrl\n AppleStore: $appleStoreUrl");
+      },
+      child: Container(
+        height: 35,
+        width: 35,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: bgColor,
+        ),
+        child: Center(
+          child: Icon(
+            FontAwesomeIcons.share,
+            size: 19,
+            color: heartColor(),
+          ),
         ),
       ),
     );
   }
 
-  Widget _body(BuildContext context, Color bgColor, Verse verse) {
+  Widget _body(BuildContext context, Color bgColor) {
+
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('dd.MM.yyyy').format(now);
+
     return IntrinsicHeight(
       child: Row(
         children: [
@@ -95,8 +124,12 @@ class VerseOfTheDayCard extends StatelessWidget {
           const SizedBox(width: 17),
           Expanded(
             child: Text(
-              verse.text,
-              style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.w500),
+              verse,
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .headline4
+                  ?.copyWith(fontWeight: FontWeight.w500),
             ),
           ),
         ],
@@ -104,10 +137,22 @@ class VerseOfTheDayCard extends StatelessWidget {
     );
   }
 
-  Widget _bookChapterVerse(BuildContext context, Verse verse) {
+  Widget _bookChapterVerse(BuildContext context) {
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('dd.MM.yyyy').format(now);
+
     return Text(
-      verse.book.name! + ' ' + verse.chapterId.toString() + ':' + verse.verseId.toString(),
-      style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.w500),
+      versePassage,
+      style: Theme
+          .of(context)
+          .textTheme
+          .headline6
+          ?.copyWith(fontWeight: FontWeight.w500),
     );
   }
+
+
+
+
+
 }

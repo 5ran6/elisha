@@ -1,13 +1,15 @@
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:share_plus/share_plus.dart';
 
 class FullPrayerPage extends StatelessWidget {
-  const FullPrayerPage({Key? key}) : super(key: key);
+  final String prayer;
+  const FullPrayerPage({required this.prayer});
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Scaffold(
-        body: SafeArea(
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: SafeArea(
           child: Column(
             children: [
               ListTile(
@@ -17,9 +19,21 @@ class FullPrayerPage extends StatelessWidget {
                   icon: const Icon(Icons.arrow_back, color: Colors.black),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
+                trailing: IconButton(
+                  icon: const Icon(Icons.share, color: Colors.black),
+                  onPressed: () async {
+                    const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
+                    const appleStoreUrl = 'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
+
+                    await Share.share("$prayer\n\nGet Secret Place App:\nPlayStore: $playStoreUrl\n AppleStore: $appleStoreUrl");
+                  },
+                ),
               ),
               const SizedBox(height: 5),
-              Text('Prayer for today', style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.normal))
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Text(prayer, style: Theme.of(context).textTheme.headline3?.copyWith(fontWeight: FontWeight.normal)),
+              )
             ],
           ),
         ),

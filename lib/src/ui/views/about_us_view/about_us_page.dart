@@ -21,7 +21,7 @@ class AboutUsPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    'CPAI is a project-based learning initiative to equip the CACAF with the relevant skills and exposure necessary to thrive in our ever-changing digital age.',
+                    'CPAI(CACAF Professional Advancement Initiative) is a project-based learning initiative to equip the CACAF(Calvary Arrows College Alumni Family) with the relevant skills and exposure necessary to thrive in our ever-changing digital age.',
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                   const SizedBox(height: 20),

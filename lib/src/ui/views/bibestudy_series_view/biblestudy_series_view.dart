@@ -1,4 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:elisha/src/ui/views/bibestudy_series_view/biblestudy_series_view_header.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
+import '../../../models/devotional_plans.dart';
+import '../../../providers/api_provider.dart';
+import '../opened_studyplan_view/opened_studyplan_view.dart';
 
 class BibleStudySeriesPage extends StatefulWidget {
   const BibleStudySeriesPage({Key? key}) : super(key: key);
@@ -8,96 +16,103 @@ class BibleStudySeriesPage extends StatefulWidget {
 }
 
 class _BibleStudySeriesPageState extends State<BibleStudySeriesPage> {
-  final List pictures =  ['assets/images/appreciate.jpeg', 'assets/images/heart.jpeg', 'assets/images/light.jpg',
-    'assets/images/master.jpg', "assets/images/bow.jpg"];
-  final List titles = ['Humility', 'Raging Battle', 'Purity', 'New Creation Man', 'Firebrands'];
+  final controller = TextEditingController();
 
+  var _devPlansList = List<DevotionalPlan>.empty();
+
+  Future<List<DevotionalPlan>> get devPlansFuture {
+    return RemoteAPI.getDevotionalPlans();
+  }
+
+  void fetchAndUpdateUIPlans() async {
+    List<DevotionalPlan> devPlans = await devPlansFuture;
+
+    setState(() {
+      _devPlansList = devPlans;
+    });
+  }
+
+
+  @override
+  void initState() {
+    fetchAndUpdateUIPlans();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Daily Devotional Series',
-          style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.black),
-        elevation: 0,
-        //backgroundColor: Colors.white,
-        //brightness: Brightness.light,
-      ),
-        body: Padding(
-          padding: const EdgeInsets.only(top: 15.0),
-          child: SafeArea(
-            child:  _buildContent(context),
-          ),
-        ),
-      );
-  }
-}
-
-Widget _buildContent(BuildContext context) {
-  return ListView.separated(
-  itemCount: 5,
-    scrollDirection: Axis.vertical,
-
-    itemBuilder: (BuildContext content, int index) {
-    return _buildHorizontalList();
-    },
-    separatorBuilder: (BuildContext context, int index) {
-    return const SizedBox(
-      height: 35,
-    );
-  },);
-}
-
-Widget _buildHorizontalList() {
-  final List pictures =  ['assets/images/appreciate.jpeg', 'assets/images/heart.jpeg', 'assets/images/light.jpg',
-    'assets/images/master.jpg', "assets/images/bow.jpg"];
-  final List titles = ['Humility', 'Raging Battle', 'Purity', 'New Creation Man', 'Firebrands'];
-return SizedBox(
-  height: 136,
-  child: ListView.separated(
-    itemCount: 5,
-      scrollDirection: Axis.horizontal,
-      separatorBuilder: (BuildContext context, int index) {
-        return const SizedBox(
-          width: 10,
-        );
-      },
-    itemBuilder: (BuildContext context, int index) {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          InkWell(
-            onTap: () {
-
-            },
-            child: Card(
-              color: CantonMethods.alternateCanvasColorType2(context),
-              shape: CantonSmoothBorder.defaultBorder(),
-              child:  Container(
-                height: 100,
-                width: 150,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage(pictures[index]),
-                        fit: BoxFit.fill
-                    ),
-                    borderRadius: BorderRadius.circular(10)
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const BibleStudySeriesHeaderView(),
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: TextField(
+                controller: controller,
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.search),
+                  hintText: 'Plan title',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                  )
                 ),
+                onChanged: searchStudyPlan,
               ),
             ),
-          ),
-          const SizedBox(height: 5),
-          Text(titles[index], style: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold))
-        ],
-      );
+
+            const SizedBox(height: 15),
+           Expanded(
+             child: StaggeredGridView.countBuilder(
+               itemCount: _devPlansList.length,
+                 crossAxisCount: 4,
+                 mainAxisSpacing: 8,
+                 crossAxisSpacing: 8,
+                 staggeredTileBuilder: (index) => StaggeredTile.count(2, 2),
+               itemBuilder: (context, index) => buildBibleStudyPlanCardView(index),
+             ),
+           ),
+
+          ],
+        ),
+      ),
+    );
+  }
+
+  void searchStudyPlan(String query) {
+    final planSuggestions = _devPlansList.where((plan) {
+      final planTitle = plan.title.toLowerCase();
+      final input = query.toLowerCase();
+
+      return planTitle.contains(input);
+    }).toList();
+
+    setState(() {
+      _devPlansList = planSuggestions;
+    });
+
+  }
+
+  buildBibleStudyPlanCardView(int index) => GestureDetector(
+    onTap: () {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => OpenedStudyPlanScreen(devPlanID: _devPlansList[index].id)));
     },
-    physics: const BouncingScrollPhysics(),
-  ),
-);
+    child: Card(
+      margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: CachedNetworkImage(
+            imageUrl: _devPlansList[index].imageUrl,
+            placeholder: (context, url) => const CircularProgressIndicator(),
+            errorWidget: (context, url, error) => const Icon(Icons.error),
+          ),
+      ),
+    ),
+  );
 }
+
+
+

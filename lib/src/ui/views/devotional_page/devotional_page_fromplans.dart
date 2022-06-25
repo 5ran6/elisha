@@ -1,47 +1,33 @@
 import 'package:canton_design_system/canton_design_system.dart';
-import 'package:elisha/src/ui/views/devotional_page/full_bibleInAYear_content.dart';
-import 'package:elisha/src/ui/views/devotional_page/full_prayer_content.dart';
-import 'package:elisha/src/ui/views/devotional_page/full_thougthofday_content.dart';
-import 'package:elisha/src/ui/views/devotional_page/full_topic_memoryverse_page.dart';
-import 'package:elisha/src/ui/views/devotional_page/full_word_content.dart';
-import 'package:elisha/src/ui/views/home_view/home_view.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:intl/intl.dart';
 import 'package:vertical_card_pager/vertical_card_pager.dart';
 
-import '../../../../utils/dev_functions.dart';
+import '../../../models/devotional.dart';
+import 'full_prayer_content.dart';
+import 'full_thougthofday_content.dart';
+import 'full_topic_memoryverse_page.dart';
+import 'full_word_content.dart';
 
-class DevotionalPage extends StatefulWidget {
-  const DevotionalPage({Key? key}) : super(key: key);
+class DevotionalPageFromPlans extends StatefulWidget {
+  final Devotional devotionalFromPlan;
+
+  const DevotionalPageFromPlans({required this.devotionalFromPlan});
 
   @override
-  _DevotionalPageState createState() => _DevotionalPageState();
+  _DevotionalPageFromPlansState createState() => _DevotionalPageFromPlansState();
 }
 
-class _DevotionalPageState extends State<DevotionalPage> {
-  var _title = '';
-  var _memoryVerse = '';
-  var _memoryVersePassage = '';
-  var _mainWriteUp = '';
-  var _prayerBurden = '';
-  var _thoughtOfTheDay = '';
-  var _fullPassage='';
-  var _bibleInAYear='';
-
-  @override
-  void initState() {
-    getTodayTitleAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
-    getVersePassageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
-    getVerseAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
-    getTodayMainWriteUpAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
-    getTodayPrayerAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
-    getTodayThoughtOfTheDayAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
-    getTodayFullPassageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
-    getBibleInYearAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
-  }
-
+class _DevotionalPageFromPlansState extends State<DevotionalPageFromPlans> {
   @override
   Widget build(BuildContext context) {
+
+    String title = widget.devotionalFromPlan.title;
+    String memoryVerse = widget.devotionalFromPlan.memoryVerse;
+    String memoryVersePassage = widget.devotionalFromPlan.memoryVersePassage;
+    String fullText = widget.devotionalFromPlan.fullText;
+    String fullPassage = widget.devotionalFromPlan.fullPassage;
+    String prayerBurden = widget.devotionalFromPlan.prayerBurden;
+    String thoughtOfTheDay = widget.devotionalFromPlan.thoughtOfTheDay;
+
     final List<Widget> devotionalCards = [
       Card(
         color: CantonMethods.alternateCanvasColorType2(context),
@@ -70,7 +56,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
                     padding: const EdgeInsets.only(left: 15.0),
                     child: Align(
                         alignment: Alignment.topLeft,
-                        child: Text(_title,
+                        child: Text(title,
                             style: Theme.of(context)
                                 .textTheme
                                 .headline5
@@ -90,7 +76,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
                     padding: const EdgeInsets.only(left: 15.0),
                     child: Align(
                         alignment: Alignment.topLeft,
-                        child: Text(_memoryVerse + " " + _memoryVersePassage,
+                        child: Text(memoryVerse + " " + memoryVersePassage,
                             style: Theme.of(context)
                                 .textTheme
                                 .headline5
@@ -110,7 +96,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
                     padding: const EdgeInsets.only(left: 15.0),
                     child: Align(
                         alignment: Alignment.topLeft,
-                        child: Text(_fullPassage,
+                        child: Text(fullPassage,
                             style: Theme.of(context)
                                 .textTheme
                                 .headline5
@@ -147,7 +133,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
                   const SizedBox(height: 5),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(_mainWriteUp,
+                    child: Text(fullText,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 10,
                         style: Theme.of(context)
@@ -187,7 +173,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
                   const SizedBox(height: 5),
                   Padding(
                     padding: const EdgeInsets.all(15.0),
-                    child: Text(_prayerBurden,
+                    child: Text(prayerBurden,
                         style: Theme.of(context)
                             .textTheme
                             .headline3
@@ -225,7 +211,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
                   const SizedBox(height: 5),
                   Padding(
                     padding: const EdgeInsets.all(15.0),
-                    child: Text(_thoughtOfTheDay,
+                    child: Text(thoughtOfTheDay,
                         style: Theme.of(context)
                             .textTheme
                             .headline3
@@ -237,146 +223,63 @@ class _DevotionalPageState extends State<DevotionalPage> {
           ),
         ),
       ),
-      Card(
-        color: CantonMethods.alternateCanvasColorType2(context),
-        shape: CantonSmoothBorder.defaultBorder(),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20.0),
-          child: Image.asset('assets/images/light.jpg', fit: BoxFit.cover,)
-        ),
-      ),
     ];
 
-    return WillPopScope(
-      onWillPop: () async {
-        //Navigator.push(context, MaterialPageRoute(builder: context) => HomeView());
-        return true;
-        },
-      child: Scaffold(
-        body: SafeArea(
-          child: Column(
-            children: [
-              Expanded(
-                child: VerticalCardPager(
-                    images: devotionalCards,
-                    titles: const ['', '', '', '', ''],
-                    onPageChanged: (page) {
-                    },
-                    onSelectedItem: (index) {
-                      switch (index) {
-                        case 0:
-                          Navigator.of(context).push(PageTransition(
-                              child: FullTopicMemoryVerseVersePage(
-                                  title: _title,
-                                  memoryVerse: _memoryVerse,
-                                  memoryVersePassage: _memoryVersePassage,
-                                fullPassage: _fullPassage,),
-                              type: PageTransitionType.scale,
-                              alignment: Alignment.center,
-                              duration: const Duration(milliseconds: 600)));
-                          break;
-                        case 1:
-                          Navigator.of(context).push(PageTransition(
-                              child:
-                                  FullWordContentPage(mainWriteUp: _mainWriteUp),
-                              type: PageTransitionType.scale,
-                              alignment: Alignment.center,
-                              duration: const Duration(milliseconds: 600)));
-                          break;
-                        case 2:
-                          Navigator.of(context).push(PageTransition(
-                              child: FullPrayerPage(prayer: _prayerBurden),
-                              type: PageTransitionType.scale,
-                              alignment: Alignment.center,
-                              duration: const Duration(milliseconds: 600)));
-                          break;
-                        case 3:
-                          Navigator.of(context).push(PageTransition(
-                              child: FullThoughtOfTheDayPage(
-                                  thoughtOfTheDay: _thoughtOfTheDay),
-                              type: PageTransitionType.scale,
-                              alignment: Alignment.center,
-                              duration: const Duration(milliseconds: 600)));
-                          break;
-                        case 4:
-                          Navigator.of(context).push(PageTransition(
-                              child: FullBibleInAYearPage(
-                                  bibleInAYear: _bibleInAYear),
-                              type: PageTransitionType.scale,
-                              alignment: Alignment.center,
-                              duration: const Duration(milliseconds: 600)));
-                          break;
-                      }
-                    },
-                    initialPage: 1,
-                    // optional
-                    align: ALIGN.CENTER),
-              ),
-            ],
-          ),
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: VerticalCardPager(
+                  images: devotionalCards,
+                  titles: const ['', '', '', ''],
+                  onPageChanged: (page) {
+                  },
+                  onSelectedItem: (index) {
+                    switch (index) {
+                      case 0:
+                        Navigator.of(context).push(PageTransition(
+                            child: FullTopicMemoryVerseVersePage(
+                                title: title,
+                                memoryVerse: memoryVerse,
+                                memoryVersePassage: memoryVersePassage,
+                            fullPassage: fullPassage,),
+                            type: PageTransitionType.scale,
+                            alignment: Alignment.center,
+                            duration: const Duration(milliseconds: 600)));
+                        break;
+                      case 1:
+                        Navigator.of(context).push(PageTransition(
+                            child:
+                            FullWordContentPage(mainWriteUp: fullText),
+                            type: PageTransitionType.scale,
+                            alignment: Alignment.center,
+                            duration: const Duration(milliseconds: 600)));
+                        break;
+                      case 2:
+                        Navigator.of(context).push(PageTransition(
+                            child: FullPrayerPage(prayer: prayerBurden),
+                            type: PageTransitionType.scale,
+                            alignment: Alignment.center,
+                            duration: const Duration(milliseconds: 600)));
+                        break;
+                      case 3:
+                        Navigator.of(context).push(PageTransition(
+                            child: FullThoughtOfTheDayPage(
+                                thoughtOfTheDay: thoughtOfTheDay),
+                            type: PageTransitionType.scale,
+                            alignment: Alignment.center,
+                            duration: const Duration(milliseconds: 600)));
+                        break;
+                    }
+                  },
+                  initialPage: 1,
+                  // optional
+                  align: ALIGN.CENTER),
+            ),
+          ],
         ),
       ),
     );
   }
-
-  getTodayTitleAsString(String dt) async {
-    var title = await DevotionalItemsRetrieveClass.getTodayTitle(dt);
-    setState(() {
-      _title = title!;
-    });
-  }
-
-  getTodayFullPassageAsString(String dt) async {
-    var fullPassage = await DevotionalItemsRetrieveClass.getTodayFullPassage(dt);
-    setState(() {
-      _fullPassage = fullPassage!;
-    });
-  }
-
-  getBibleInYearAsString(String dt) async {
-    var bibleInYearString =   await DevotionalItemsRetrieveClass.getBibleInYear(dt);
-    setState(() {
-      _bibleInAYear = bibleInYearString!;
-    });
-  }
-
-  getVerseAsString(String dt) async {
-    var verse = await DevotionalItemsRetrieveClass.getTodayVerse(dt);
-    //print(verse);
-    setState(() {
-      _memoryVerse = verse!;
-    });
-  }
-
-  getVersePassageAsString(String dt) async {
-    var versePassage =
-        await DevotionalItemsRetrieveClass.getTodayVersePassage(dt);
-    setState(() {
-      _memoryVersePassage = versePassage!;
-    });
-  }
-
-  getTodayMainWriteUpAsString(String dt) async {
-    var mainWriteUp =
-        await DevotionalItemsRetrieveClass.getTodayMainWriteUp(dt);
-    setState(() {
-      _mainWriteUp = mainWriteUp!;
-    });
-  }
-
-  getTodayPrayerAsString(String dt) async {
-    var prayerBurden = await DevotionalItemsRetrieveClass.getTodayPrayer(dt);
-    setState(() {
-      _prayerBurden = prayerBurden!;
-    });
-  }
-
-  getTodayThoughtOfTheDayAsString(String dt) async {
-    var thoughtOfTheDay =
-        await DevotionalItemsRetrieveClass.getTodayThoughtOfTheDay(dt);
-    setState(() {
-      _thoughtOfTheDay = thoughtOfTheDay!;
-    });
-  }
-
 }

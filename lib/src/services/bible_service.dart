@@ -21,6 +21,8 @@ import 'package:elisha/src/repositories/bible_repository.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_performance/firebase_performance.dart';
 
+import 'package:reference_parser/reference_parser.dart' as bible_reference_parser;
+
 import 'package:elisha/src/config/exceptions.dart';
 import 'package:elisha/src/models/book.dart';
 import 'package:elisha/src/models/chapter.dart';
@@ -152,5 +154,30 @@ class BibleService {
       await FirebaseCrashlytics.instance.recordError(e, e.stackTrace);
       throw Exceptions.fromDioError(e);
     }
+  }
+
+  static int getBookIdFromPassageString(String ?passage) {
+    var ref = bible_reference_parser.parseReference(passage.toString());
+    print("passage");
+    print(passage);
+    print(ref);
+    print(ref.book); // 'John'
+    print(ref.bookNumber); // 43
+    print(ref.startChapterNumber); // 3
+    print(ref.startVerseNumber); // 16
+    print(ref.isValid); //
+    return ref.bookNumber!;
+  }
+  static int getChapterIdFromPassageString(String ?passage) {
+    var ref = bible_reference_parser.parseReference(passage.toString());
+    print("passage");
+    print(passage);
+    print("ref");
+    print(ref.book); // 'John'
+    print(ref.bookNumber); // 43
+    print(ref.startChapterNumber); // 3
+    print(ref.startVerseNumber); // 16
+    print(ref.isValid); //
+    return ref.startChapterNumber;
   }
 }
