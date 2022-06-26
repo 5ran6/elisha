@@ -14,7 +14,7 @@ final onBoardingButtonStyle = ButtonStyle(
   // minimumSize: MaterialBorder,
   backgroundColor: MaterialStateProperty.all<Color>(kPrimaryColor),
   shape: MaterialStateProperty.all<OutlinedBorder>(
-    CircleBorder(),
+    const CircleBorder(),
   ),
 );
 
@@ -24,13 +24,13 @@ final screenWidth = ScreenUtil().setWidth(360);
 
 final kTextFieldDecoration = InputDecoration(
   floatingLabelBehavior: FloatingLabelBehavior.auto,
-  enabledBorder: UnderlineInputBorder(
+  enabledBorder: const UnderlineInputBorder(
     borderSide: BorderSide(color: Colors.white70),
   ),
-  focusedBorder: UnderlineInputBorder(
+  focusedBorder: const UnderlineInputBorder(
     borderSide: BorderSide(color: Colors.white70),
   ),
-  border: UnderlineInputBorder(
+  border: const UnderlineInputBorder(
     borderSide: BorderSide(color: Colors.white70),
   ),
   labelStyle: TextStyle(
@@ -42,7 +42,7 @@ final kTextFieldDecoration = InputDecoration(
     fontSize: ScreenUtil().setSp(12),
   ),
 );
-final k2TextFieldDecoration = InputDecoration(
+const k2TextFieldDecoration = InputDecoration(
   floatingLabelBehavior: FloatingLabelBehavior.auto,
   enabledBorder: UnderlineInputBorder(
     borderSide: BorderSide(color: kPrimaryColor),
@@ -80,10 +80,10 @@ final kDrawerTextStyle = TextStyle(
 
 Widget pageIndicator(bool isActive) {
   return AnimatedContainer(
-    duration: Duration(
+    duration: const Duration(
       milliseconds: 150,
     ),
-    margin: EdgeInsets.symmetric(
+    margin: const EdgeInsets.symmetric(
       horizontal: 8.0,
     ),
     height: ScreenUtil().setHeight(10),
@@ -120,5 +120,5 @@ deviceWidth(BuildContext context) {
 // }
 
 String insertCommasInString(String value) {
-  return value.replaceAllMapped(new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => "${m[1]},");
+  return value.replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => "${m[1]},");
 }

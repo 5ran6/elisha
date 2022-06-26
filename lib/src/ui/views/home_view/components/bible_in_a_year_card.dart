@@ -1,5 +1,4 @@
 import 'package:canton_design_system/canton_design_system.dart';
-import 'package:flutter/cupertino.dart';
 
 class BibleInAYearCard extends StatefulWidget {
   const BibleInAYearCard({Key? key}) : super(key: key);
@@ -36,7 +35,7 @@ class _BibleInAYearCardState extends State<BibleInAYearCard> {
                       height: 130,
                       width: MediaQuery.of(context).size.width-250,
                       decoration: BoxDecoration(
-                          image: DecorationImage(
+                          image: const DecorationImage(
                               image: AssetImage('assets/images/app_icon.png'),
                               fit: BoxFit.fill
                           ),
@@ -48,14 +47,14 @@ class _BibleInAYearCardState extends State<BibleInAYearCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Daily Bible Reading', style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.bold)),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       //Text('You can follow this suitable plan to complete the bible in a year.', style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.normal)),
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text('Date', style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.bold)),
-                          SizedBox(width: 10),
+                          const SizedBox(width: 10),
                           Material(
                             shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(15.0) ),
                             elevation: 0.0,

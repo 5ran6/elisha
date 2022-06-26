@@ -1,11 +1,9 @@
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/theme/apptheme.dart';
 import 'package:elisha/src/ui/views/current_view.dart';
-import 'package:elisha/src/ui/views/devotional_page/devotional_page.dart';
 import 'package:elisha/src/ui/views/onboarding_view/widgets/onboardingItem.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import  'package:page_transition/page_transition.dart';
 import 'package:elisha/utils/constants.dart';
 
 
@@ -21,17 +19,17 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
   late SharedPreferences prefs;
   List<OnBoardingItem> onBoardItems = [
-    OnBoardingItem(
+    const OnBoardingItem(
       imageAsset: "assets/images/heart.jpeg",
       title: """Study""",
       description: """Let the word of God dwell in you richly.""",
     ),
-    OnBoardingItem(
+    const OnBoardingItem(
       imageAsset: "assets/images/appreciate.jpeg",
       title: """Pray""",
       description: """Pray without ceasing. The effectual fervent prayer of the righteous man makes tremendous power available.""",
     ),
-    OnBoardingItem(
+    const OnBoardingItem(
       imageAsset: "assets/images/heart.jpeg",
       title: "Without Distractions",
       description: "Avoid distractions while you focus on God in the course of your devotion",
@@ -45,7 +43,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.kWhiteColor,
-      body: Container(
+      body: SizedBox(
         height: screenHeight,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

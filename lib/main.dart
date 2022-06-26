@@ -54,6 +54,8 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:elisha/src/config/constants.dart';
+import 'package:workmanager/workmanager.dart';
+import 'package:elisha/src/services/noty_services/notify_service.dart';
 import 'package:elisha/src/services/authentication_services/authentication_wrapper.dart';
 import 'dart:convert';
 
@@ -61,8 +63,11 @@ import 'dart:convert';
 
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runZonedGuarded<Future<void>>(() async {
     WidgetsFlutterBinding.ensureInitialized();
+    await NotificationService().initNotification();
+    await Workmanager().initialize(callbackDispatcher);
     await MobileAds.instance.initialize();
 
     await Firebase.initializeApp();
@@ -143,14 +148,14 @@ class MyApp extends StatelessWidget {
       designSize: const Size(360, 690),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: () => CantonApp(
+      builder: (context, child) => CantonApp(
           title: kAppTitle,
           primaryLightColor: const Color(0xFFB97D3C),
           primaryLightVariantColor: const Color(0xFFB97D3C),
           primaryDarkColor: const Color(0xFFB97D3C),
           primaryDarkVariantColor: const Color(0xFFB97D3C),
           navigatorObservers: [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
-          home: const SplashScreen()),
+          home: const SettingsPage()),
     );
   }
 }

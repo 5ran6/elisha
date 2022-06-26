@@ -26,7 +26,6 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
   var noteWidget = TextEditingController();
   var noteTitleWidget = TextEditingController();
   String newWords ="";
-
   @override
   void initState(){
     super.initState();
@@ -66,11 +65,12 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                     height: 40,
                     width: MediaQuery.of(context).size.width - 15,
                     color: Colors.black87,
-                    child: Align(
+                    child: const Align(
                         alignment: Alignment.center,
                         child: Text(
                           'Topic | Date',
-                          style: Theme.of(context).textTheme.headline5,
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
                         )),
                   ),
                 ),
@@ -168,24 +168,24 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
     if (!_islistening) {
       bool available = await _speech.initialize(
           onStatus: (val) => setState(() {
-            if (val == 'listening') {
-              _islistening = true;
-              Fluttertoast.showToast(msg: "Mic started", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
-            }
-            else if(val == 'done'){
-              noteWidget.text = noteWidget.text == "" ? newWords: noteWidget.text + newWords;
-            }
-            else{
-              _islistening = false;
-              Fluttertoast.showToast(msg: "Tap microphone to speak again", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
-            }
-          }),
+                if (val == 'listening') {
+                  _islistening = true;
+                  Fluttertoast.showToast(msg: "Mic started", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
+                }
+                else if(val == 'done'){
+                  noteWidget.text = noteWidget.text == "" ? newWords: noteWidget.text + newWords;
+                }
+                else{
+                  _islistening = false;
+                  Fluttertoast.showToast(msg: "Tap microphone to speak again", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
+                }
+              }),
           onError: (val) => print('onError: $val'));
       if (available) {
         setState(() => _islistening = true);
         _speech.listen(
           onResult: (val) => setState(
-                  () => newWords = val.recognizedWords),
+              () => newWords = val.recognizedWords),
         );
       }
     } else {
