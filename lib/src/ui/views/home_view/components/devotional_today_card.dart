@@ -1,20 +1,43 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:elisha/src/models/devotional.dart';
+import 'package:elisha/src/services/devotionalDB_helper.dart';
+import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../devotional_page/devotional_page.dart';
 
-class DevotionalTodayCard  extends StatelessWidget {
+class DevotionalTodayCard  extends StatefulWidget {
   final String title;
   final String mainWriteUp;
   final String image;
   final bool internetInfo;
   final String biblePassage;
+  final String memoryVerse;
+  final String memoryVersePassage;
   final String prayer;
   final String thought;
+  final String bibleInAYear;
+  late  bool isBookmarked;
 
 
-  const DevotionalTodayCard ({required this.title, required this.mainWriteUp, required this.image, required this.internetInfo, required this.biblePassage, required this.prayer, required this.thought});
+  DevotionalTodayCard ({Key? key, required this.title, required this.mainWriteUp, required this.image,
+    required this.internetInfo, required this.biblePassage, required this.prayer, required this.thought,
+    required this.isBookmarked, required this.memoryVerse, required this.memoryVersePassage, required this.bibleInAYear}) : super(key: key);
+
+  @override
+  State<DevotionalTodayCard> createState() => _DevotionalTodayCardState();
+}
+
+class _DevotionalTodayCardState extends State<DevotionalTodayCard> {
+  bool isBookmarked = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    checkIfDevotionalIsBookmarked(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +57,10 @@ class DevotionalTodayCard  extends StatelessWidget {
             children: [
               ListTile(
                 //trailing: Icon(Icons.share),
-                title: Text(title,
+                title: Text(widget.title,
                     style: Theme.of(context).textTheme.headline3?.copyWith(fontWeight: FontWeight.bold)),
                 subtitle: Text(
-                  mainWriteUp,
+                  widget.mainWriteUp,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.normal),
@@ -48,8 +71,8 @@ class DevotionalTodayCard  extends StatelessWidget {
                 elevation: 0.0,
                 shape: CantonSmoothBorder.defaultBorder(),
                 margin: const EdgeInsets.all(5.0),
-                child: internetInfo == true ? CachedNetworkImage(
-                  imageUrl: image,
+                child: widget.internetInfo == true ? CachedNetworkImage(
+                  imageUrl: widget.image,
                   imageBuilder: (context, imageProvider) => Container(
                     height: 130,
                     width: MediaQuery.of(context).size.width,
@@ -68,15 +91,44 @@ class DevotionalTodayCard  extends StatelessWidget {
               ButtonBar(
                 alignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  FlatButton(onPressed: () {},
-                      child: Text('VIEW', style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.bold),)),
+                  isBookmarked ? IconButton(
+                    icon: const Icon(Icons.bookmark),
+                    onPressed: () {
+                      // setState(() {
+                      //   widget.isBookmarked = false;
+                      // });
+
+                    },
+                  ) : IconButton(
+                    icon: const Icon(Icons.bookmark_border),
+                    onPressed: () async {
+
+                      setState(() {
+                        isBookmarked = true;
+                      });
+
+                      String todayDate = DateFormat('dd.MM.yyyy').format(DateTime.now());
+
+                      Devotional dev = Devotional(date: todayDate, title: widget.title, translation: "", memoryVerse: widget.memoryVerse,
+                          memoryVersePassage: widget.memoryVersePassage, fullPassage: widget.biblePassage, fullText: widget.mainWriteUp,
+                          bibleInAYear: widget.bibleInAYear, image: widget.image, prayerBurden: widget.prayer, thoughtOfTheDay: widget.thought);
+
+                      await DevotionalDBHelper.instance.insertBookMarkedDevotional(dev);
+                      print('dev bm');
+                      print(dev);
+                      List bms = await DevotionalDBHelper.instance.getBookMarkedDevotionalsFromDB();
+                      print(bms);
+                      print(bms.length);
+
+                    },
+                  ),
                   IconButton(
                     icon: const Icon(Icons.share),
                     onPressed: () async {
                       const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
                       const appleStoreUrl = 'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
 
-                      await Share.share("Secret Place Devotional\nTopic: $title\n\nScripture: $biblePassage\n\n$mainWriteUp\n\nPrayer: $prayer\n\n Thought: $thought\n\nGet Secret Place App:\nPlayStore: $playStoreUrl\n AppleStore: $appleStoreUrl");
+                      await Share.share("Secret Place Devotional\nTopic: ${widget.title}\n\nScripture: ${widget.biblePassage}\n\n${widget.mainWriteUp}\n\nPrayer: ${widget.prayer}\n\n Thought: ${widget.thought}\n\nGet Secret Place App:\nPlayStore: $playStoreUrl\n AppleStore: $appleStoreUrl");
                     },
                   ),
                 ],
@@ -86,5 +138,21 @@ class DevotionalTodayCard  extends StatelessWidget {
         ),
       ),
     );
+  }
+  checkIfDevotionalIsBookmarked(String date) async {
+    List<Devotional> bmDevotionals = await DevotionalDBHelper.instance.getBookMarkedDevotionalsFromDB();
+    for (int i = 0; i < bmDevotionals.length; i++) {
+      if (bmDevotionals[i].date == date) {
+        setState(() {
+          isBookmarked = true;
+        });
+      } else {
+        setState(() {
+          isBookmarked = false;
+        });
+
+      }
+    }
+
   }
 }

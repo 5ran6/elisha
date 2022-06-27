@@ -1,5 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:elisha/src/services/devotionalDB_helper.dart';
+
+import '../../../models/devotional.dart';
 
 class BookMarkedDevotionalView extends StatefulWidget {
   const BookMarkedDevotionalView({Key? key}) : super(key: key);
@@ -11,6 +14,15 @@ class BookMarkedDevotionalView extends StatefulWidget {
 
 class _BookMarkedDevotionalViewState extends State<BookMarkedDevotionalView> {
   final controller = TextEditingController();
+
+  var _devBookmarkedList = List<Devotional>.empty();
+
+  void fetchAndUpdateListOfBookmarkedDevotionals() async {
+    List<Devotional> bookmarkedDevsInDatabase = await DevotionalDBHelper.instance.getBookMarkedDevotionalsFromDB();
+    setState(() {
+      _devBookmarkedList = bookmarkedDevsInDatabase;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return CantonScaffold(
@@ -24,6 +36,7 @@ class _BookMarkedDevotionalViewState extends State<BookMarkedDevotionalView> {
       children: [
         _header(),
         _searchBar(),
+        _buildBookmarkedDevotionalList()
       ],
     );
   }
@@ -47,14 +60,30 @@ class _BookMarkedDevotionalViewState extends State<BookMarkedDevotionalView> {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30),
               borderSide: BorderSide(color: Theme.of(context).primaryColor),
-            )
+            ),
         ),
-        //onChanged: searchStudyPlan,
+        onChanged: searchBookmark,
       ),
     );
   }
+
+  void searchBookmark(String query) {
+    final bookmarkSuggestions = _devBookmarkedList.where((bookmark) {
+      final bookmarkTitle = bookmark.title.toLowerCase();
+      final input = query.toLowerCase();
+
+      return bookmarkTitle.contains(input);
+    }).toList();
+
+    setState(() {
+      _devBookmarkedList = bookmarkSuggestions;
+    });
+
+  }
+
   Widget _buildBookmarkedDevotionalList() {
     return ListView.builder(
+      itemCount: _devBookmarkedList.length,
         itemBuilder: (context, index) {
           return InkWell(
             onTap: () {},
@@ -88,15 +117,15 @@ class _BookMarkedDevotionalViewState extends State<BookMarkedDevotionalView> {
                     Container(height: 10),
                     Row(
                       children: <Widget>[
-                        Text('Topic'),
-                        Spacer(),
-                        Text('Date'),
+                        Text(_devBookmarkedList[index].title, style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.bold),),
+                        const Spacer(),
+                        Text(_devBookmarkedList[index].date, style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.normal)),
                       ],
                     ),
                     Container(height: 10),
-                    Text('Brief write-up'),
+                    Text(_devBookmarkedList[index].fullText, style: Theme.of(context).textTheme.headline3?.copyWith(fontWeight: FontWeight.normal)),
                     Container(height: 10),
-                    Divider(height: 0),
+                    const Divider(height: 0),
                   ],
                 ),
               ),

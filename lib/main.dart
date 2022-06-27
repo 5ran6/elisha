@@ -155,7 +155,7 @@ class MyApp extends StatelessWidget {
           primaryDarkColor: const Color(0xFFB97D3C),
           primaryDarkVariantColor: const Color(0xFFB97D3C),
           navigatorObservers: [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
-          home: const SettingsPage()),
+          home: const HomeView()),
     );
   }
 }

@@ -59,6 +59,8 @@ class _HomeViewState extends State<HomeView> {
   var _fullpassage='';
   var _prayerBurden='';
   var _thoughtOfTheDay='';
+  var _bibleInAYear='';
+  bool _isBookmarked = false;
 
   var _devPlansList = List<DevotionalPlan>.empty();
 
@@ -103,27 +105,14 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder (
-      stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasData || showSignIn == false || isAnonymousUser) {
-          return _content(context);
-        } else if (snapshot.hasError) {
-          return const Center(child: Text('Something went wrong'));
-        } else {
-          return SignInProvidersView(_toggleView);
-        }
-
-      }
-    );
+    return  _content(context);
   }
 
   @override
   void initState() {
     _tryConnection();
     isUserAnonymous();
+    checkIfDevotionalIsBookmarked(DateFormat('dd.MM.yyyy').format(DateTime.now()));
 
 
   getVerseAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
@@ -134,6 +123,8 @@ class _HomeViewState extends State<HomeView> {
   getTodayPrayerAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
   getTodayThoughtAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
   getImageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+  getBibleInYearAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+
   getDevotionalPlansFromApi();
   getStudyPlansFromDB();
   }
@@ -170,8 +161,10 @@ class _HomeViewState extends State<HomeView> {
         const SizedBox(height: 15),
         VerseOfTheDayCard(verse: _verse, versePassage: _versePassage),
         const SizedBox(height: 15),
-        DevotionalTodayCard(title: _title, mainWriteUp: _mainWriteUp, image: _image, internetInfo: _isConnectionSuccessful,
-            biblePassage: _fullpassage, prayer: _prayerBurden, thought: _thoughtOfTheDay ),
+        DevotionalTodayCard(title: _title, mainWriteUp: _mainWriteUp,
+            image: _image, internetInfo: _isConnectionSuccessful,
+            biblePassage: _fullpassage, prayer: _prayerBurden, thought: _thoughtOfTheDay,
+            isBookmarked: _isBookmarked, memoryVersePassage: _versePassage, memoryVerse: _verse, bibleInAYear: _bibleInAYear),
         const SizedBox(height: 15),
         SelectedStudyPlansListview(devPlansFromDB: _devPlansListFromDB),
         const SizedBox(height: 5),
@@ -238,6 +231,13 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
+  getBibleInYearAsString(String dt) async {
+    var bibleInYearString =   await DevotionalItemsRetrieveClass.getBibleInYear(dt);
+    setState(() {
+      _bibleInAYear = bibleInYearString!;
+    });
+  }
+
   getDevotionalPlansFromApi() async {
     List<DevotionalPlan> devPlans = await RemoteAPI.getDevotionalPlans();
     setState(() {
@@ -252,4 +252,23 @@ class _HomeViewState extends State<HomeView> {
         _devPlansListFromDB = devPlansFromDB;
       });
     }
+
+    checkIfDevotionalIsBookmarked(String date) async {
+    List<Devotional> bmDevotionals = await DevotionalDBHelper.instance.getBookMarkedDevotionalsFromDB();
+    for (int i = 0; i < bmDevotionals.length; i++) {
+      if (bmDevotionals[i].date == date) {
+        setState(() {
+          _isBookmarked = true;
+        });
+      } else {
+        setState(() {
+          _isBookmarked = false;
+        });
+
+      }
+    }
+
+    }
+
+
 }

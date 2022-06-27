@@ -46,7 +46,8 @@ class HomeViewHeader extends StatelessWidget {
       return source;
     }
 
-    String? dbName = user?.displayName!;
+    String? dbName = context.read(localUserRepositoryProvider).firstName;
+    //user?.displayName!;
         //context.read(localUserRepositoryProvider).firstName;
 
     return Container(
@@ -65,7 +66,7 @@ class HomeViewHeader extends StatelessWidget {
               ),
               dbName != ''
                   ? Text(
-                      name(dbName!),
+                      name(dbName),
                       style: Theme.of(context).textTheme.headline2?.copyWith(
                             fontWeight: FontWeight.w700,
                           ),
