@@ -133,6 +133,9 @@ flutter:
     - assets/images/heart.jpeg
     - assets/images/master.jpg
     - assets/images/bible_in_one_year.jpg
+    - assets/images/without_distractions.jpg
+    - assets/images/pray.jpg
+    - assets/images/study.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -153,6 +156,10 @@ flutter:
           style: italic
         - asset: fonts/NewYork.ttf
           weight: 800
+    - family: Palatino
+      fonts:
+        - asset: fonts/pala.ttf
+        - asset: fonts/palab.tff
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

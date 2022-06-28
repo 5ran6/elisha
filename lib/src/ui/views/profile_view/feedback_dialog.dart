@@ -1,5 +1,7 @@
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:elisha/src/models/feedback.dart';
 import 'package:elisha/src/ui/views/profile_view/star_rating.dart';
+import 'package:intl/intl.dart';
 
 class FeedbackDialog extends StatefulWidget {
   const FeedbackDialog({Key? key}) : super(key: key);
@@ -10,6 +12,8 @@ class FeedbackDialog extends StatefulWidget {
 
 class _FeedbackDialogState extends State<FeedbackDialog> {
   double ratingValue = 1;
+  var feedbackNameController = TextEditingController();
+  var feedbackReviewController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -56,11 +60,30 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
                     ),
                     Container(height: 15),
                     Container(
+                      color: Colors.grey, height: 30,
+                      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                      child: TextFormField(
+                        controller: feedbackNameController,
+                        style: TextStyle(color: Colors.grey[600], fontSize: 14),
+                        keyboardType: TextInputType.text,
+                        maxLines: 2,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Name...',
+                          hintStyle: TextStyle(fontSize: 14),
+                        ),
+                      ),
+                    ),
+                    Container(height: 5),
+                    Container(
                       color: Colors.grey, height: 80,
                       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
-                      child: TextField(
+                      child: TextFormField(
+                        controller: feedbackReviewController,
                         style: TextStyle(color: Colors.grey[600], fontSize: 14),
-                        keyboardType: TextInputType.multiline,
+                        minLines: 30,
+                        keyboardType: TextInputType.text,
+                        maxLines: null,
                         decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Write review ...',
@@ -84,7 +107,12 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
                   TextButton(
                     style: TextButton.styleFrom(primary: Colors.transparent),
                     child: const Text("SUBMIT", style: TextStyle(color: Colors.black)),
-                    onPressed: (){},
+                    onPressed: (){
+                      String todayDate = DateFormat('dd.MM.yyyy').format(DateTime.now());
+                      FeedbackModel feedback = FeedbackModel(date: todayDate, name: feedbackNameController.text, review: feedbackReviewController.text);
+
+
+                    },
                   )
                 ],
               )
@@ -94,4 +122,17 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
       ),
     );
   }
+  // void sendFeedbackPostRequest(FeedbackModel feedback) async {
+  //   final user = FirebaseAuth.instance.currentUser;
+  //
+  //   final idToken = await user?.getIdToken();
+  //   final response = await http.post(Uri.parse("https://secret-place.herokuapp.com/api/users/notes"), headers: {
+  //     'Content-Type': 'application/json',
+  //     'Accept': 'application/json',
+  //     'Authorization': 'Bearer $idToken',
+  //   }, body: jsonEncode({"note": note})
+  //   );
+  //   print('Note : ${note}');
+  //   print(response);
+  // }
 }

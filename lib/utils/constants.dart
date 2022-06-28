@@ -81,15 +81,15 @@ final kDrawerTextStyle = TextStyle(
 Widget pageIndicator(bool isActive) {
   return AnimatedContainer(
     duration: const Duration(
-      milliseconds: 150,
+      milliseconds: 250,
     ),
     margin: const EdgeInsets.symmetric(
       horizontal: 8.0,
     ),
     height: ScreenUtil().setHeight(10),
-    width: ScreenUtil().setWidth(10),
+    width: isActive ? ScreenUtil().setWidth(20) : ScreenUtil().setWidth(10),
     decoration: BoxDecoration(
-      color: isActive ? kPrimaryColor : kDotsColor,
+      color: isActive ? kWhiteColor : kWhiteColor,
       borderRadius: BorderRadius.all(
         Radius.circular(ScreenUtil().setWidth(10)),
       ),

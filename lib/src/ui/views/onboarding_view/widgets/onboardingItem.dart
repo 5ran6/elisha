@@ -1,5 +1,6 @@
 
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class OnBoardingItem extends StatelessWidget {
@@ -14,26 +15,29 @@ class OnBoardingItem extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(20)),
       duration: const Duration(milliseconds: 250),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Image(
-            image: AssetImage(imageAsset!),
-            height: ScreenUtil().setHeight(300),
-            width: ScreenUtil().setWidth(500),
-          ),
-          SizedBox(
-            height: ScreenUtil().setHeight(50),
-          ),
-          Text(
-            title!,
-            style: Theme.of(context).textTheme.headline1,
+          Center(
+            child: Image(
+              image: AssetImage(imageAsset!),
+              height: ScreenUtil().setHeight(300),
+              width: ScreenUtil().setWidth(300),
+            ),
           ),
           SizedBox(
             height: ScreenUtil().setHeight(10),
           ),
           Text(
+            title!,
+            style: TextStyle(color: Colors.white, fontSize: 27, fontFamily: "Palatino", fontWeight: FontWeight.bold),
+          ),
+          SizedBox(
+            height: ScreenUtil().setHeight(7),
+          ),
+          Text(
             description!,
-            style: Theme.of(context).textTheme.bodyText1,
+            style: TextStyle(color: Colors.white, fontSize: 18, fontFamily: "Palatino"),
             textAlign: TextAlign.left,
           ),
         ],

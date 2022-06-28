@@ -20,17 +20,17 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   late SharedPreferences prefs;
   List<OnBoardingItem> onBoardItems = [
     const OnBoardingItem(
-      imageAsset: "assets/images/heart.jpeg",
+      imageAsset: "assets/images/study.jpg",
       title: """Study""",
       description: """Let the word of God dwell in you richly.""",
     ),
     const OnBoardingItem(
-      imageAsset: "assets/images/appreciate.jpeg",
+      imageAsset: "assets/images/pray.jpg",
       title: """Pray""",
       description: """Pray without ceasing. The effectual fervent prayer of the righteous man makes tremendous power available.""",
     ),
     const OnBoardingItem(
-      imageAsset: "assets/images/heart.jpeg",
+      imageAsset: "assets/images/without_distractions.jpg",
       title: "Without Distractions",
       description: "Avoid distractions while you focus on God in the course of your devotion",
     ),
@@ -42,7 +42,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.kWhiteColor,
+      backgroundColor: Color.fromRGBO(3, 3, 70, 1),
       body: SizedBox(
         height: screenHeight,
         child: Column(
@@ -70,7 +70,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             ),
             Container(
               height: ScreenUtil().setHeight(490),
-              color: AppTheme.kWhiteColor,
+              //color: AppTheme.kWhiteColor,
               child: PageView(
                 physics: const BouncingScrollPhysics(),
                 controller: _pageController,
@@ -87,7 +87,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               padding: EdgeInsets.symmetric(
                   horizontal: ScreenUtil().setWidth(10),
                   vertical: ScreenUtil().setHeight(10)),
-              color: AppTheme.kWhiteColor,
+              color: Color.fromRGBO(3, 3, 70, 1),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -104,7 +104,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         AnimatedContainer(
                           duration: const Duration(milliseconds: 250),
                           decoration: BoxDecoration(
-                            color: AppTheme.kPrimaryColor,
+                            color: AppTheme.kWhiteColor,
                             borderRadius: BorderRadius.circular(kDefaultButtonRadius),
                           ),
                           height: _currentPage != _numberOfPages
@@ -128,7 +128,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                       .button
                                       ?.copyWith(
                                       fontWeight: FontWeight.normal,
-                                      fontSize: ScreenUtil().setSp(11)),
+                                      fontSize: ScreenUtil().setSp(13)),
                                 ),
                               ),
                             ),

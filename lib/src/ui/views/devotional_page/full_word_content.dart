@@ -13,11 +13,12 @@ class FullWordContentPage extends StatelessWidget {
           child: Column(
             children: [
               ListTile(
-                  title: Text('Word',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline4
-                          ?.copyWith(fontWeight: FontWeight.bold)),
+                  title: const Text('Word', style: TextStyle(fontFamily: "Palatino", fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                      // style: Theme.of(context)
+                      //     .textTheme
+                      //     .headline4
+                      //     ?.copyWith(fontWeight: FontWeight.bold)
+                  ),
                   leading: IconButton(
                     icon: const Icon(Icons.arrow_back, color: Colors.black),
                     onPressed: () => Navigator.of(context).pop(),
@@ -25,11 +26,12 @@ class FullWordContentPage extends StatelessWidget {
               const SizedBox(height: 5),
               Padding(
                 padding: const EdgeInsets.all(15.0),
-                child: Text(mainWriteUp,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline5
-                        ?.copyWith(fontWeight: FontWeight.normal)),
+                child: Text(mainWriteUp, style: TextStyle(fontFamily: "Palatino", fontSize: 20, color: Colors.black),
+                    // style: Theme.of(context)
+                    //     .textTheme
+                    //     .headline5
+                    //     ?.copyWith(fontWeight: FontWeight.normal)
+                ),
               )
             ],
           ),

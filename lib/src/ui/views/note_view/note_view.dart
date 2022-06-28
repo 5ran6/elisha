@@ -124,7 +124,7 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                     DevotionalDBHelper.instance.insertNote(note);
 
                     if (user != null) {
-                      sendPostRequest(note);
+                      sendNotePostRequest(note);
                     }
 
                   },
@@ -149,7 +149,7 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
     );
   }
 
-  void sendPostRequest(Note note) async {
+  void sendNotePostRequest(Note note) async {
     final user = FirebaseAuth.instance.currentUser;
 
     final idToken = await user?.getIdToken();
