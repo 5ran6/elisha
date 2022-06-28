@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/services/devotionalDB_helper.dart';
+import 'package:elisha/src/ui/views/devotional_page/devotional_page_from_boomark.dart';
 
 import '../../../models/devotional.dart';
 
@@ -24,6 +25,13 @@ class _BookMarkedDevotionalViewState extends State<BookMarkedDevotionalView> {
     });
   }
   @override
+  void initState() {
+    // TODO: implement initState
+    fetchAndUpdateListOfBookmarkedDevotionals();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return CantonScaffold(
       backgroundColor: CantonMethods.alternateCanvasColor(context),
@@ -32,12 +40,19 @@ class _BookMarkedDevotionalViewState extends State<BookMarkedDevotionalView> {
     );
   }
   Widget _content(BuildContext context) {
-    return Column(
-      children: [
-        _header(),
-        _searchBar(),
-        _buildBookmarkedDevotionalList()
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          _header(),
+          _searchBar(),
+          _devBookmarkedList.isNotEmpty ? _buildBookmarkedDevotionalList() : Text(
+            'No Bookmarked Chapters',
+            style: Theme.of(context).textTheme.headline5?.copyWith(
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+          ),
+        ],
+      ),
     );
   }
   Widget _header() {
@@ -83,29 +98,36 @@ class _BookMarkedDevotionalViewState extends State<BookMarkedDevotionalView> {
 
   Widget _buildBookmarkedDevotionalList() {
     return ListView.builder(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
       itemCount: _devBookmarkedList.length,
+        physics: BouncingScrollPhysics(),
         itemBuilder: (context, index) {
           return InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => DevotionalPageFromBookmark(bookmarkedDevotionalDate: _devBookmarkedList[index].date))
+              );},
             child: Container(
-              height: 230,
+              height: 350,
               width: MediaQuery.of(context).size.width,
               child: Container(
                 padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
                 child: Column(
                   children: <Widget>[
                     Card(
-                        margin: EdgeInsets.all(0),
+                        margin: EdgeInsets.all(5.0),
                         elevation: 0,
                         shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(8),),
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        //clipBehavior: Clip.antiAliasWithSaveLayer,
                         child: CachedNetworkImage(
-                          imageUrl: '',
+                          imageUrl: _devBookmarkedList[index].image,
                           imageBuilder: (context, imageProvider) => Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 180,
                             decoration: BoxDecoration(
                                 image: DecorationImage(
                                   image: imageProvider,
-                                  fit: BoxFit.fitWidth,
+                                  fit: BoxFit.cover,
                                 ),
                                 borderRadius: BorderRadius.circular(15)
                             ),
@@ -123,7 +145,10 @@ class _BookMarkedDevotionalViewState extends State<BookMarkedDevotionalView> {
                       ],
                     ),
                     Container(height: 10),
-                    Text(_devBookmarkedList[index].fullText, style: Theme.of(context).textTheme.headline3?.copyWith(fontWeight: FontWeight.normal)),
+                    Text(_devBookmarkedList[index].fullText, style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.normal),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                     Container(height: 10),
                     const Divider(height: 0),
                   ],

@@ -54,7 +54,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           icon: Icon(LineAwesomeIcons.bible, size: _iconSize),
         ),
         BottomNavigationBarItem(
-          label: 'Notes',
+          label: 'Note',
           tooltip: '',
           activeIcon: Icon(LineAwesomeIcons.sticky_note, size: _iconSize),
           icon: Icon(LineAwesomeIcons.sticky_note, size: _iconSize),

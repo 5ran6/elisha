@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/providers/local_user_repository_provider.dart';
 import 'package:elisha/src/ui/views/about_us_view/about_us_page.dart';
+import 'package:elisha/src/ui/views/bookmarked_devotionals_list_view/bookmarked_devotionals_list_view.dart';
 import 'package:elisha/src/ui/views/profile_view/feedback_dialog.dart';
 import 'package:elisha/src/ui/views/settings_view/settings_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -92,7 +93,31 @@ class ProfileView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Bookmark Chapters',
+                  'Bookmarked Chapters',
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+                Icon(
+                  Iconsax.arrow_right_3,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      GestureDetector(
+        onTap: () {
+          CantonMethods.viewTransition(context, const BookMarkedDevotionalView());
+        },
+        child: Card(
+          margin: const EdgeInsets.only(bottom: 5),
+          child: Container(
+            padding: const EdgeInsets.all(15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Bookmarked Devotionals',
                   style: Theme.of(context).textTheme.headline6,
                 ),
                 Icon(

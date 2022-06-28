@@ -8,6 +8,43 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:208275060327:android:456db03c40f290d37d46c2",
+        "android_client_info": {
+          "package_name": "com.cpai.secretplaceandroidversiontwo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "208275060327-7vmqq0uqccumtf0ifp1abhbi84a5fgb4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cpai.secretplaceandroidversiontwo",
+            "certificate_hash": "8cc502a46140f0fb95facfa3571ce9ff14f359ad"
+          }
+        },
+        {
+          "client_id": "208275060327-hm3fnc6aivqkqggohusaj2botsv3qr15.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4uTBc7g6kMsJCF6NHGHnNUNh1RNSSGzc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "208275060327-hm3fnc6aivqkqggohusaj2botsv3qr15.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:208275060327:android:3ae40b767ad398f17d46c2",
         "android_client_info": {
           "package_name": "com.cpaii.secretplaceversiontwo"

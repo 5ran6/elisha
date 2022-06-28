@@ -33,7 +33,7 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        const CircleAvatar(radius: 20,
+                        const CircleAvatar(radius: 20, backgroundColor: Color.fromRGBO(3, 3, 70, 1),
                           backgroundImage: AssetImage("assets/images/app_icon.png"),
                         ),
                         Container(width: 15),
@@ -60,13 +60,15 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
                     ),
                     Container(height: 15),
                     Container(
-                      color: Colors.grey, height: 30,
+                      //color: Colors.grey,
+                    height: 30,
                       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
                       child: TextFormField(
                         controller: feedbackNameController,
                         style: TextStyle(color: Colors.grey[600], fontSize: 14),
                         keyboardType: TextInputType.text,
-                        maxLines: 2,
+                        maxLines: 1,
+                        minLines: 1,
                         decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Name...',
@@ -76,7 +78,8 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
                     ),
                     Container(height: 5),
                     Container(
-                      color: Colors.grey, height: 80,
+                      //color: Colors.grey,
+                      height: 80,
                       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
                       child: TextFormField(
                         controller: feedbackReviewController,

@@ -159,7 +159,7 @@ flutter:
     - family: Palatino
       fonts:
         - asset: fonts/pala.ttf
-        - asset: fonts/palab.tff
+        - asset: fonts/palab.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

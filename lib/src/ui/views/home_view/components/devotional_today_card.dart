@@ -74,7 +74,7 @@ class _DevotionalTodayCardState extends State<DevotionalTodayCard> {
                 child: widget.internetInfo == true ? CachedNetworkImage(
                   imageUrl: widget.image,
                   imageBuilder: (context, imageProvider) => Container(
-                    height: 130,
+                    height: 180,
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                         image: DecorationImage(
