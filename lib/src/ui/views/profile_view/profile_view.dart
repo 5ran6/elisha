@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/providers/local_user_repository_provider.dart';
 import 'package:elisha/src/ui/views/about_us_view/about_us_page.dart';
+import 'package:elisha/src/ui/views/profile_view/feedback_dialog.dart';
 import 'package:elisha/src/ui/views/settings_view/settings_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -154,6 +155,32 @@ class ProfileView extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: Text(
               'Settings',
+              style: Theme.of(context).textTheme.headline6,
+            ),
+          ),
+        ),
+      ),
+      GestureDetector(
+        onTap: () {
+          showDialog(context: context,builder: (_) => FeedbackDialog() );
+        },
+        child: Card(
+          margin: EdgeInsets.zero,
+          shape: Border(
+            left: BorderSide(
+              width: 1.5,
+              color: Theme.of(context).colorScheme.onSecondary,
+            ),
+            right: BorderSide(
+              width: 1.5,
+              color: Theme.of(context).colorScheme.onSecondary,
+            ),
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(15),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Feedback',
               style: Theme.of(context).textTheme.headline6,
             ),
           ),
