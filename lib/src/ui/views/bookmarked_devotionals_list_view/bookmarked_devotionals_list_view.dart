@@ -26,7 +26,7 @@ class _BookMarkedDevotionalViewState extends State<BookMarkedDevotionalView> {
   }
   @override
   void initState() {
-    // TODO: implement initState
+
     fetchAndUpdateListOfBookmarkedDevotionals();
     super.initState();
   }
@@ -46,7 +46,7 @@ class _BookMarkedDevotionalViewState extends State<BookMarkedDevotionalView> {
           _header(),
           _searchBar(),
           _devBookmarkedList.isNotEmpty ? _buildBookmarkedDevotionalList() : Text(
-            'No Bookmarked Chapters',
+            'No Bookmarked Devotional',
             style: Theme.of(context).textTheme.headline5?.copyWith(
               color: Theme.of(context).colorScheme.secondary,
             ),

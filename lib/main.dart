@@ -60,9 +60,6 @@ import 'package:elisha/src/services/noty_services/notify_service.dart';
 import 'package:elisha/src/services/authentication_services/authentication_wrapper.dart';
 import 'dart:convert';
 
-
-
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runZonedGuarded<Future<void>>(() async {
@@ -75,9 +72,6 @@ void main() async {
 
     await Hive.initFlutter();
     await Hive.openBox('elisha');
-
-
-
 
     if (kDebugMode) {
       await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
@@ -96,8 +90,6 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-
-
   void receiveData() async {
     DateTime now = DateTime.now();
 
@@ -110,13 +102,11 @@ class MyApp extends StatelessWidget {
       List<Devotional> listOfDevs = await RemoteAPI.getDevotionalsForMonth(formattedMYNameAPI);
       DevotionalDBHelper.instance.insertDevotionalList(listOfDevs);
     }
-    }
+  }
 
   const MyApp({Key? key}) : super(key: key);
   @override
-
   Widget build(BuildContext context) {
-
     receiveData();
 
     // return ScreenUtilInit(
@@ -142,9 +132,6 @@ class MyApp extends StatelessWidget {
     //   ),
     // );
 
-
-
-
     return ScreenUtilInit(
       designSize: const Size(360, 690),
       minTextAdapt: true,
@@ -160,11 +147,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-
-

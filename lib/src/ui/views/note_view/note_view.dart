@@ -25,12 +25,13 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
   double confidence = 1.0;
   var noteWidget = TextEditingController();
   var noteTitleWidget = TextEditingController();
-  String newWords ="";
+  String newWords = "";
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _speech = SpeechToText();
   }
+
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
@@ -45,16 +46,12 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                 child: Row(children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Note',
-                        style: Theme.of(context).textTheme.headline3),
+                    child: Text('Note', style: Theme.of(context).textTheme.headline3),
                   ),
                   Expanded(
                       child: Align(
                           alignment: Alignment.centerRight,
-                          child: IconButton(
-                              onPressed: _listen,
-                              icon: Icon(
-                                  _islistening ? Icons.mic_off : Icons.mic))))
+                          child: IconButton(onPressed: _listen, icon: Icon(_islistening ? Icons.mic_off : Icons.mic))))
                 ]),
               ),
               Align(
@@ -69,8 +66,7 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                         alignment: Alignment.center,
                         child: Text(
                           'Topic | Date',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                         )),
                   ),
                 ),
@@ -86,9 +82,7 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                       controller: noteTitleWidget,
                       keyboardType: TextInputType.text,
                       decoration: const InputDecoration(
-                          alignLabelWithHint: true,
-                          labelText: 'Title',
-                          border: OutlineInputBorder()),
+                          alignLabelWithHint: true, labelText: 'Title', border: OutlineInputBorder()),
                     ),
                   ),
                 ),
@@ -105,9 +99,7 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                       maxLines: null,
                       controller: noteWidget,
                       decoration: const InputDecoration(
-                          alignLabelWithHint: true,
-                          labelText: 'Note',
-                          border: OutlineInputBorder()),
+                          alignLabelWithHint: true, labelText: 'Note', border: OutlineInputBorder()),
                     ),
                   ),
                 ),
@@ -122,25 +114,22 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                     Note note = Note(title: noteTitleWidget.text, writeUp: noteWidget.text, date: todayDate);
 
                     DevotionalDBHelper.instance.insertNote(note);
+                    Fluttertoast.showToast(
+                        msg: "Note Saved", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
 
                     if (user != null) {
                       sendNotePostRequest(note);
                     }
-
                   },
                   child: Container(
                       width: MediaQuery.of(context).size.width - 40,
                       height: 50,
-                      decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(15)),
+                      decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(15)),
                       child: const Align(
                           alignment: Alignment.center,
                           child: Text(
                             "Save",
-                            style: TextStyle(
-                              color: Colors.white,
-                                fontSize: 18),
+                            style: TextStyle(color: Colors.white, fontSize: 18),
                           ))))
             ],
           ),
@@ -153,16 +142,14 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
     final user = FirebaseAuth.instance.currentUser;
 
     final idToken = await user?.getIdToken();
-    final response = await http.post(Uri.parse("https://secret-place.herokuapp.com/api/users/notes"), headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $idToken',
-    }, body: jsonEncode({"note": note})
-    );
-    print('Note : ${note}');
-    print(response);
+    final response = await http.post(Uri.parse("https://secret-place.herokuapp.com/api-secured/users/notes"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $idToken',
+        },
+        body: jsonEncode(note));
   }
-
 
   void _listen() async {
     if (!_islistening) {
@@ -170,22 +157,23 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
           onStatus: (val) => setState(() {
                 if (val == 'listening') {
                   _islistening = true;
-                  Fluttertoast.showToast(msg: "Mic started", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
-                }
-                else if(val == 'done'){
-                  noteWidget.text = noteWidget.text == "" ? newWords: noteWidget.text + newWords;
-                }
-                else{
+                  Fluttertoast.showToast(
+                      msg: "Mic started", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
+                } else if (val == 'done') {
+                  noteWidget.text = noteWidget.text == "" ? newWords : noteWidget.text + newWords;
+                } else {
                   _islistening = false;
-                  Fluttertoast.showToast(msg: "Tap microphone to speak again", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
+                  Fluttertoast.showToast(
+                      msg: "Tap microphone to speak again",
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.BOTTOM);
                 }
               }),
           onError: (val) => print('onError: $val'));
       if (available) {
         setState(() => _islistening = true);
         _speech.listen(
-          onResult: (val) => setState(
-              () => newWords = val.recognizedWords),
+          onResult: (val) => setState(() => newWords = val.recognizedWords),
         );
       }
     } else {

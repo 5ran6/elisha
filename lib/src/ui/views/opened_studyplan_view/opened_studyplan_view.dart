@@ -10,9 +10,8 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import '../../../providers/api_provider.dart';
 
-
 class OpenedStudyPlanScreen extends StatefulWidget {
-   final String devPlanID;
+  final String devPlanID;
   // final String devPlanDescription;
   // final String devPlanImageUrl;
   // final List<Devotional> devs;
@@ -32,7 +31,7 @@ class _OpenedStudyPlanScreenState extends State<OpenedStudyPlanScreen> {
 
   void getDevotionalPlan() async {
     //if in db, show from db. If not, then fetch.
-    DevotionalPlan? planFromDB = await  DevotionalDBHelper.instance.getDevotionalPlanFromDBWithID(widget.devPlanID);
+    DevotionalPlan? planFromDB = await DevotionalDBHelper.instance.getDevotionalPlanFromDBWithID(widget.devPlanID);
 
     if (planFromDB == null) {
       DevotionalPlan devPlanWithFullDevotionals = await devPlansWithDevotionalsFuture;
@@ -41,15 +40,12 @@ class _OpenedStudyPlanScreenState extends State<OpenedStudyPlanScreen> {
       setState(() {
         _devPlanWithFullDevotionals = devPlanWithFullDevotionals;
       });
-
     } else {
       setState(() {
         _devPlanWithFullDevotionals = planFromDB;
       });
     }
-
   }
-
 
   @override
   void initState() {
@@ -60,67 +56,68 @@ class _OpenedStudyPlanScreenState extends State<OpenedStudyPlanScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: _devPlanWithFullDevotionals != null ? Column(
-            children: [
-              CachedNetworkImage(
-                imageUrl: _devPlanWithFullDevotionals!.imageUrl,
-                imageBuilder: (context, imageProvider) => Container(
-                  height: 300,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: imageProvider,
-                        fit: BoxFit.fill,
-                      ),
-                      borderRadius: BorderRadius.circular(15)
+        child: _devPlanWithFullDevotionals != null
+            ? Column(
+                children: [
+                  CachedNetworkImage(
+                      imageUrl: _devPlanWithFullDevotionals!.imageUrl,
+                      imageBuilder: (context, imageProvider) => Container(
+                            height: 300,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: imageProvider,
+                                  fit: BoxFit.fill,
+                                ),
+                                borderRadius: BorderRadius.circular(15)),
+                          ),
+                      placeholder: (context, url) => const CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => const Icon(Icons.error)),
+                  const SizedBox(height: 10),
+                  Text(
+                    _devPlanWithFullDevotionals?.description ?? '',
+                    style: Theme.of(context).textTheme.headline5,
                   ),
-                ),
-                placeholder: (context, url) => const CircularProgressIndicator(),
-                errorWidget: (context, url, error) => const Icon(Icons.error)
-              ),
-              const SizedBox(height: 10),
-              Text(_devPlanWithFullDevotionals?.description ?? '',
-              style: Theme.of(context).textTheme.headline5,
-              ),
-              const SizedBox(height: 10),
-              Expanded(
-                child: StaggeredGridView.countBuilder(
-                  staggeredTileBuilder: (index) => StaggeredTile.count(2,1),
-                  itemCount: _devPlanWithFullDevotionals?.devotionals?.length,
+                  const SizedBox(height: 10),
+                  Expanded(
+                    child: StaggeredGridView.countBuilder(
+                      staggeredTileBuilder: (index) => StaggeredTile.count(2, 1),
+                      itemCount: _devPlanWithFullDevotionals?.devotionals?.length,
                       mainAxisSpacing: 8,
                       crossAxisCount: 4,
                       crossAxisSpacing: 8,
-                    itemBuilder: (context, index) => buildDailyPlanCard(index),
-                ),
-              ),
-
-
-            ],
-          ): Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,)),
+                      itemBuilder: (context, index) => buildDailyPlanCard(index),
+                    ),
+                  ),
+                ],
+              )
+            : Center(
+                child: CircularProgressIndicator(
+                color: Theme.of(context).primaryColor,
+              )),
       ),
     );
   }
 
   Widget buildDailyPlanCard(int index) => GestureDetector(
-    onTap: () {
-      //List<Devotional> devsForPlan = _devPlansWithDevotionals[index].devotionals;
-      if (_devPlanWithFullDevotionals != null) {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => DevotionalPageFromPlans(devotionalFromPlan: _devPlanWithFullDevotionals!.devotionals[index])));
-      }
-    },
-    child: Card(
-      margin: EdgeInsets.all(10),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: Container(
-        margin: EdgeInsets.all(5),
-        child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-          child: Center(child: Text('Day$index', style: Theme.of(context).textTheme.headline5))
-        )
-
-      ),
-    ),
-  );
-
+        onTap: () {
+          //List<Devotional> devsForPlan = _devPlansWithDevotionals[index].devotionals;
+          if (_devPlanWithFullDevotionals != null) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        DevotionalPageFromPlans(devotionalFromPlan: _devPlanWithFullDevotionals!.devotionals[index])));
+          }
+        },
+        child: Card(
+          margin: EdgeInsets.all(10),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          child: Container(
+              margin: EdgeInsets.all(5),
+              child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Center(child: Text('Day$index', style: Theme.of(context).textTheme.headline5)))),
+        ),
+      );
 }
-

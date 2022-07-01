@@ -28,6 +28,8 @@ import 'package:elisha/src/ui/views/account_view/account_view.dart';
 import 'package:elisha/src/ui/views/bookmarked_chapters_view/bookmarked_chapters_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../notes_list_view/notes_list_view.dart';
+
 class ProfileView extends StatelessWidget {
   const ProfileView({Key? key}) : super(key: key);
 
@@ -185,6 +187,34 @@ class ProfileView extends StatelessWidget {
           ),
         ),
       ),
+      const Divider(),
+      GestureDetector(
+        onTap: () {
+          CantonMethods.viewTransition(context, const NotesListView());
+        },
+        child: Card(
+          margin: EdgeInsets.zero,
+          shape: Border(
+            left: BorderSide(
+              width: 1.5,
+              color: Theme.of(context).colorScheme.onSecondary,
+            ),
+            right: BorderSide(
+              width: 1.5,
+              color: Theme.of(context).colorScheme.onSecondary,
+            ),
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(15),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Notes',
+              style: Theme.of(context).textTheme.headline6,
+            ),
+          ),
+        ),
+      ),
+      const Divider(),
       GestureDetector(
         onTap: () {
           showDialog(context: context,builder: (_) => FeedbackDialog() );
@@ -211,6 +241,7 @@ class ProfileView extends StatelessWidget {
           ),
         ),
       ),
+      const Divider(),
       GestureDetector(
         onTap: () {
           CantonMethods.viewTransition(context, const AboutUsPage());

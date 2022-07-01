@@ -1,4 +1,8 @@
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:elisha/src/ui/views/note_view/note_view_fromDB.dart';
+
+import '../../../models/note.dart';
+import '../../../services/devotionalDB_helper.dart';
 
 class NotesListView extends StatefulWidget {
   const NotesListView({Key? key}) : super(key: key);
@@ -9,7 +13,34 @@ class NotesListView extends StatefulWidget {
 
 class _NotesListViewState extends State<NotesListView> {
   final controller = TextEditingController();
-  List notes = [];
+
+  var _noteList = List<Note>.empty();
+
+  void fetchAndUpdateListOfNotes() async {
+    List<Note> noteInLocalDatabase = await DevotionalDBHelper.instance.getNotesFromDB();
+    setState(() {
+      _noteList = noteInLocalDatabase;
+    });
+  }
+
+  @override
+  void initState() {
+    fetchAndUpdateListOfNotes();
+    super.initState();
+  }
+
+  void searchNote(String query) {
+    final noteSuggestions = _noteList.where((note) {
+      final noteTitle = note.title.toLowerCase();
+      final input = query.toLowerCase();
+
+      return noteTitle.contains(input);
+    }).toList();
+
+    setState(() {
+      _noteList = noteSuggestions;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,15 +50,15 @@ class _NotesListViewState extends State<NotesListView> {
       body: _content(context),
     );
   }
+
   Widget _content(BuildContext context) {
-    return Column(
-      children: [
-        _header(),
-       _searchBar(),
-        _buildNoteList(context)
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [_header(), _searchBar(), _buildNoteList(context)],
+      ),
     );
   }
+
   Widget _header() {
     return Container(
       padding: const EdgeInsets.only(top: 17, left: 17, right: 17),
@@ -37,6 +68,7 @@ class _NotesListViewState extends State<NotesListView> {
       ),
     );
   }
+
   Widget _searchBar() {
     return Padding(
       padding: const EdgeInsets.all(15.0),
@@ -48,22 +80,40 @@ class _NotesListViewState extends State<NotesListView> {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30),
               borderSide: BorderSide(color: Theme.of(context).primaryColor),
-            )
-        ),
-        //onChanged: searchStudyPlan,
+            )),
+        onChanged: searchNote,
       ),
     );
   }
-  Widget _buildNoteList(BuildContext context) {
-    return ListView.builder(
-      itemCount: 4,
-        itemBuilder: (context, index){
-        return notes.length > 0 ? ListTile(
-          title: Text('Note Title'),
-          trailing: Text('Date'),
-          onTap: () {},
-        ) : Center(child: Text('No Notes Saved'));
 
-        });
+  Widget _buildNoteList(BuildContext context) {
+    return Column(
+      children: [
+        _noteList.isNotEmpty
+            ? ListView.separated(
+                separatorBuilder: (BuildContext context, int index) => Divider(),
+                shrinkWrap: true,
+                physics: BouncingScrollPhysics(),
+                itemCount: _noteList.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(_noteList[index].title),
+                    trailing: Text(_noteList[index].date),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => NoteViewFromDB(dateNoteWasSaved: _noteList[index].date)));
+                    },
+                  );
+                })
+            : Text(
+                'No Notes Saved',
+                style: Theme.of(context).textTheme.headline5?.copyWith(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+              ),
+      ],
+    );
   }
 }

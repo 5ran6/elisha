@@ -46,34 +46,28 @@ class HomeViewHeader extends StatelessWidget {
       return source;
     }
 
-    String? dbName = context.read(localUserRepositoryProvider).firstName;
-    //user?.displayName!;
-        //context.read(localUserRepositoryProvider).firstName;
+    String? dbName = user?.displayName;
+    //context.read(localUserRepositoryProvider).firstName;
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 25),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                'Good ' + greeting(),
-                style: Theme.of(context).textTheme.headline6?.copyWith(
-                      color: Theme.of(context).colorScheme.secondaryVariant,
-                    ),
-              ),
-              dbName != ''
-                  ? Text(
-                      name(dbName),
-                      style: Theme.of(context).textTheme.headline2?.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
-                    )
-                  : Container(),
-            ],
+          Text(
+            'Good ' + greeting() + ',' + ' ',
+            style: Theme.of(context).textTheme.headline6?.copyWith(
+                  color: Theme.of(context).colorScheme.secondaryVariant,
+                ),
           ),
+          dbName != null
+              ? Text(
+                  name(dbName),
+                  style: Theme.of(context).textTheme.headline6?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                )
+              : Container(),
         ],
       ),
     );

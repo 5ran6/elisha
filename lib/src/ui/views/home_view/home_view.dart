@@ -42,24 +42,22 @@ import '../authentication_views/sign_in_providers_view/sign_in_providers_view.da
 import 'components/study_plans_listview.dart';
 
 class HomeView extends StatefulWidget {
-
-
- const HomeView({ Key? key}) : super(key: key);
+  const HomeView({Key? key}) : super(key: key);
 
   @override
   _HomeViewState createState() => _HomeViewState();
 }
 
 class _HomeViewState extends State<HomeView> {
-  var _verse='';
-  var _versePassage='';
-  var _title='';
-  var _mainWriteUp='';
-  var _image='';
-  var _fullpassage='';
-  var _prayerBurden='';
-  var _thoughtOfTheDay='';
-  var _bibleInAYear='';
+  var _verse = '';
+  var _versePassage = '';
+  var _title = '';
+  var _mainWriteUp = '';
+  var _image = '';
+  var _fullpassage = '';
+  var _prayerBurden = '';
+  var _thoughtOfTheDay = '';
+  var _bibleInAYear = '';
   bool _isBookmarked = false;
 
   var _devPlansList = List<DevotionalPlan>.empty();
@@ -105,7 +103,19 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    return  _content(context);
+    return StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasData || showSignIn == false || isAnonymousUser) {
+            return _content(context);
+          } else if (snapshot.hasError) {
+            return const Center(child: Text('Something went wrong'));
+          } else {
+            return SignInProvidersView(_toggleView);
+          }
+        });
   }
 
   @override
@@ -114,19 +124,18 @@ class _HomeViewState extends State<HomeView> {
     isUserAnonymous();
     checkIfDevotionalIsBookmarked(DateFormat('dd.MM.yyyy').format(DateTime.now()));
 
+    getVerseAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+    getVersePassageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+    getTodayTitleAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+    getTodayMainWriteUpAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+    getTodayFullPassageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+    getTodayPrayerAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+    getTodayThoughtAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+    getImageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+    getBibleInYearAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
 
-  getVerseAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
-  getVersePassageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
-  getTodayTitleAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
-  getTodayMainWriteUpAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
-  getTodayFullPassageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
-  getTodayPrayerAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
-  getTodayThoughtAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
-  getImageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
-  getBibleInYearAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
-
-  getDevotionalPlansFromApi();
-  getStudyPlansFromDB();
+    getDevotionalPlansFromApi();
+    getStudyPlansFromDB();
   }
 
   @override
@@ -161,10 +170,18 @@ class _HomeViewState extends State<HomeView> {
         const SizedBox(height: 15),
         VerseOfTheDayCard(verse: _verse, versePassage: _versePassage),
         const SizedBox(height: 15),
-        DevotionalTodayCard(title: _title, mainWriteUp: _mainWriteUp,
-            image: _image, internetInfo: _isConnectionSuccessful,
-            biblePassage: _fullpassage, prayer: _prayerBurden, thought: _thoughtOfTheDay,
-            isBookmarked: _isBookmarked, memoryVersePassage: _versePassage, memoryVerse: _verse, bibleInAYear: _bibleInAYear),
+        DevotionalTodayCard(
+            title: _title,
+            mainWriteUp: _mainWriteUp,
+            image: _image,
+            internetInfo: _isConnectionSuccessful,
+            biblePassage: _fullpassage,
+            prayer: _prayerBurden,
+            thought: _thoughtOfTheDay,
+            isBookmarked: _isBookmarked,
+            memoryVersePassage: _versePassage,
+            memoryVerse: _verse,
+            bibleInAYear: _bibleInAYear),
         const SizedBox(height: 15),
         SelectedStudyPlansListview(devPlansFromDB: _devPlansListFromDB),
         const SizedBox(height: 5),
@@ -175,7 +192,7 @@ class _HomeViewState extends State<HomeView> {
 
   //final String vs;
   getVerseAsString(String dt) async {
-    var verse =   await DevotionalItemsRetrieveClass.getTodayVerse(dt);
+    var verse = await DevotionalItemsRetrieveClass.getTodayVerse(dt);
     //print(verse);
     setState(() {
       _verse = verse!;
@@ -183,56 +200,56 @@ class _HomeViewState extends State<HomeView> {
   }
 
   getVersePassageAsString(String dt) async {
-    var versePassage =   await DevotionalItemsRetrieveClass.getTodayVersePassage(dt);
+    var versePassage = await DevotionalItemsRetrieveClass.getTodayVersePassage(dt);
     setState(() {
       _versePassage = versePassage!;
     });
   }
 
   getTodayTitleAsString(String dt) async {
-    var title =   await DevotionalItemsRetrieveClass.getTodayTitle(dt);
+    var title = await DevotionalItemsRetrieveClass.getTodayTitle(dt);
     setState(() {
       _title = title!;
     });
   }
 
   getTodayMainWriteUpAsString(String dt) async {
-    var mainWriteUp =   await DevotionalItemsRetrieveClass.getTodayMainWriteUp(dt);
+    var mainWriteUp = await DevotionalItemsRetrieveClass.getTodayMainWriteUp(dt);
     setState(() {
       _mainWriteUp = mainWriteUp!;
     });
   }
 
   getTodayPrayerAsString(String dt) async {
-    var prayerBurden =   await DevotionalItemsRetrieveClass.getTodayPrayer(dt);
+    var prayerBurden = await DevotionalItemsRetrieveClass.getTodayPrayer(dt);
     setState(() {
       _prayerBurden = prayerBurden!;
     });
   }
 
   getTodayThoughtAsString(String dt) async {
-    var thought =   await DevotionalItemsRetrieveClass.getTodayThoughtOfTheDay(dt);
+    var thought = await DevotionalItemsRetrieveClass.getTodayThoughtOfTheDay(dt);
     setState(() {
       _thoughtOfTheDay = thought!;
     });
   }
 
   getTodayFullPassageAsString(String dt) async {
-    var fullPassage =   await DevotionalItemsRetrieveClass.getTodayFullPassage(dt);
+    var fullPassage = await DevotionalItemsRetrieveClass.getTodayFullPassage(dt);
     setState(() {
       _fullpassage = fullPassage!;
     });
   }
 
   getImageAsString(String dt) async {
-    var image =   await DevotionalItemsRetrieveClass.getImage(dt);
+    var image = await DevotionalItemsRetrieveClass.getImage(dt);
     setState(() {
       _image = image!;
     });
   }
 
   getBibleInYearAsString(String dt) async {
-    var bibleInYearString =   await DevotionalItemsRetrieveClass.getBibleInYear(dt);
+    var bibleInYearString = await DevotionalItemsRetrieveClass.getBibleInYear(dt);
     setState(() {
       _bibleInAYear = bibleInYearString!;
     });
@@ -245,15 +262,15 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
-   getStudyPlansFromDB() async {
+  getStudyPlansFromDB() async {
     List<DevotionalPlan> devPlansFromDB = await DevotionalDBHelper.instance.getDevotionalPlansFromDB();
 
-      setState(() {
-        _devPlansListFromDB = devPlansFromDB;
-      });
-    }
+    setState(() {
+      _devPlansListFromDB = devPlansFromDB;
+    });
+  }
 
-    checkIfDevotionalIsBookmarked(String date) async {
+  checkIfDevotionalIsBookmarked(String date) async {
     List<Devotional> bmDevotionals = await DevotionalDBHelper.instance.getBookMarkedDevotionalsFromDB();
     for (int i = 0; i < bmDevotionals.length; i++) {
       if (bmDevotionals[i].date == date) {
@@ -264,11 +281,7 @@ class _HomeViewState extends State<HomeView> {
         setState(() {
           _isBookmarked = false;
         });
-
       }
     }
-
-    }
-
-
+  }
 }
