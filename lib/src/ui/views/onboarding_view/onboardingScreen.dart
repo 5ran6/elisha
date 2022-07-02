@@ -1,11 +1,12 @@
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:elisha/src/services/authentication_services/authentication_wrapper.dart';
 import 'package:elisha/src/theme/apptheme.dart';
+import 'package:elisha/src/ui/views/authentication_views/auth_selection_view.dart';
 import 'package:elisha/src/ui/views/current_view.dart';
 import 'package:elisha/src/ui/views/onboarding_view/widgets/onboardingItem.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:elisha/utils/constants.dart';
-
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({Key? key}) : super(key: key);
@@ -14,9 +15,7 @@ class OnBoardingScreen extends StatefulWidget {
   _OnBoardingScreenState createState() => _OnBoardingScreenState();
 }
 
-
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
-
   late SharedPreferences prefs;
   List<OnBoardingItem> onBoardItems = [
     const OnBoardingItem(
@@ -27,7 +26,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     const OnBoardingItem(
       imageAsset: "assets/images/pray.jpg",
       title: """Pray""",
-      description: """Pray without ceasing. The effectual fervent prayer of the righteous man makes tremendous power available.""",
+      description:
+          """Pray without ceasing. The effectual fervent prayer of the righteous man makes tremendous power available.""",
     ),
     const OnBoardingItem(
       imageAsset: "assets/images/without_distractions.jpg",
@@ -60,9 +60,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     onPressed: getStarted,
                     child: Text(
                       "Skip",
-                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                          color: AppTheme.kPrimaryColor,
-                          fontWeight: FontWeight.w500),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText1
+                          ?.copyWith(color: AppTheme.kPrimaryColor, fontWeight: FontWeight.w500),
                     ),
                   )
                 ],
@@ -84,9 +85,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             ),
             Container(
               height: ScreenUtil().setHeight(90),
-              padding: EdgeInsets.symmetric(
-                  horizontal: ScreenUtil().setWidth(10),
-                  vertical: ScreenUtil().setHeight(10)),
+              padding:
+                  EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(10), vertical: ScreenUtil().setHeight(10)),
               color: Color.fromRGBO(3, 3, 70, 1),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -107,34 +107,25 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             color: AppTheme.kWhiteColor,
                             borderRadius: BorderRadius.circular(kDefaultButtonRadius),
                           ),
-                          height: _currentPage != _numberOfPages
-                              ? ScreenUtil().setHeight(55)
-                              : ScreenUtil().setHeight(55),
-                          width: _currentPage != _numberOfPages
-                              ? ScreenUtil().setWidth(60)
-                              : ScreenUtil().setWidth(120),
+                          height:
+                              _currentPage != _numberOfPages ? ScreenUtil().setHeight(55) : ScreenUtil().setHeight(55),
+                          width:
+                              _currentPage != _numberOfPages ? ScreenUtil().setWidth(60) : ScreenUtil().setWidth(120),
                           child: TextButton(
                             //style: onBoardingButtonStyle,
                             child: Center(
                               child: Padding(
-                                padding:
-                                EdgeInsets.all(ScreenUtil().setWidth(6)),
+                                padding: EdgeInsets.all(ScreenUtil().setWidth(6)),
                                 child: Text(
-                                  _currentPage != _numberOfPages
-                                      ? "Next"
-                                      : "Get Started",
+                                  _currentPage != _numberOfPages ? "Next" : "Get Started",
                                   style: Theme.of(context)
                                       .textTheme
                                       .button
-                                      ?.copyWith(
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: ScreenUtil().setSp(13)),
+                                      ?.copyWith(fontWeight: FontWeight.normal, fontSize: ScreenUtil().setSp(13)),
                                 ),
                               ),
                             ),
-                            onPressed: _currentPage != _numberOfPages
-                                ? moveToNextItem
-                                : getStarted,
+                            onPressed: _currentPage != _numberOfPages ? moveToNextItem : getStarted,
                           ),
                         ),
                       ],
@@ -158,19 +149,16 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   }
 
   moveToNextItem() {
-    _pageController.nextPage(
-        duration: const Duration(milliseconds: 750), curve: Curves.ease);
+    _pageController.nextPage(duration: const Duration(milliseconds: 750), curve: Curves.ease);
   }
 
   getStarted() async {
     prefs = await SharedPreferences.getInstance();
-    prefs
-        .setBool("onboarded", true)
-        .then((value) => Navigator.pushReplacement(
+    prefs.setBool("onboarded", true).then((value) => Navigator.pushReplacement(
         context,
         PageTransition(
             duration: const Duration(milliseconds: 600),
             type: PageTransitionType.fade,
-            child: const CurrentView())));
+            child: const AuthenticationSelectionScreen())));
   }
 }

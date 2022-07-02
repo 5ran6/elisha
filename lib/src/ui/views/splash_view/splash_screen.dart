@@ -1,14 +1,15 @@
 import 'dart:async';
 
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:elisha/src/services/authentication_services/authentication_wrapper.dart';
 import 'package:elisha/src/theme/apptheme.dart';
+import 'package:elisha/src/ui/views/authentication_views/auth_selection_view.dart';
 import 'package:elisha/src/ui/views/current_view.dart';
 import 'package:elisha/src/ui/views/onboarding_view/onboardingScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+void main() {}
 
-}
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
@@ -32,9 +33,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 //    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
 
     super.initState();
-    _controller =
-    AnimationController(vsync: this, duration: const Duration(seconds: 5))
-      ..repeat(reverse: true);
+    _controller = AnimationController(vsync: this, duration: const Duration(seconds: 5))..repeat(reverse: true);
     _animation = CurvedAnimation(parent: _controller!, curve: Curves.easeIn);
     check();
   }
@@ -46,22 +45,22 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
     Timer(
         const Duration(seconds: 3),
-            () => isFirstTime().then((isFirstTime) {
-          print("Is First time?: " + isFirstTime.toString());
-          isFirstTime
-              ? Navigator.pushReplacement(
-              context,
-              PageTransition(
-                  duration: const Duration(milliseconds: 6000),
-                  type: PageTransitionType.fade,
-                  child: const OnBoardingScreen()))
-              : Navigator.pushReplacement(
-              context,
-              PageTransition(
-                  duration: const Duration(milliseconds: 600),
-                  type: PageTransitionType.fade,
-                  child: const CurrentView()));
-        }));
+        () => isFirstTime().then((isFirstTime) {
+              print("Is First time?: " + isFirstTime.toString());
+              isFirstTime
+                  ? Navigator.pushReplacement(
+                      context,
+                      PageTransition(
+                          duration: const Duration(milliseconds: 6000),
+                          type: PageTransitionType.fade,
+                          child: const OnBoardingScreen()))
+                  : Navigator.pushReplacement(
+                      context,
+                      PageTransition(
+                          duration: const Duration(milliseconds: 600),
+                          type: PageTransitionType.fade,
+                          child: const AuthenticationSelectionScreen()));
+            }));
   }
 
   @override
@@ -98,6 +97,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       ),
     );
   }
+
   Future<bool> isFirstTime() async {
     var isFirstTime = prefs!.getBool('onboarded');
     print("Onboarded?: " + isFirstTime.toString());

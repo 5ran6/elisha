@@ -84,33 +84,32 @@ class AuthenticationRepository {
     required String firstName,
     required String lastName,
     required String email,
-    required DateTime birthDate,
     required String password,
   }) async {
     try {
       await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
 
-      final user = FirebaseAuth.instance.currentUser;
+      //final user = FirebaseAuth.instance.currentUser;
 
-      if (user != null && !user.emailVerified) {
-        CantonMethods.viewTransition(context, const VerifyEmailView());
+      // if (user != null && !user.emailVerified) {
+      //   CantonMethods.viewTransition(context, const VerifyEmailView());
 
-        var actionCodeSettings = ActionCodeSettings(
-          url: 'https://elishaapp.page.link/?email=${user.email}',
-          dynamicLinkDomain: 'elishaapp.page.link',
-          androidPackageName: 'com.elisha.app',
-          androidInstallApp: true,
-          androidMinimumVersion: '12',
-          iOSBundleId: 'com.elisha.app',
-          handleCodeInApp: true,
-        );
+      //   var actionCodeSettings = ActionCodeSettings(
+      //     url: 'https://elishaapp.page.link/?email=${user.email}',
+      //     dynamicLinkDomain: 'elishaapp.page.link',
+      //     androidPackageName: 'com.elisha.app',
+      //     androidInstallApp: true,
+      //     androidMinimumVersion: '12',
+      //     iOSBundleId: 'com.elisha.app',
+      //     handleCodeInApp: true,
+      //   );
 
-        await user.sendEmailVerification(actionCodeSettings);
-      }
+      //   await user.sendEmailVerification(actionCodeSettings);
+      // }
 
-      final localUser = LocalUser(firstName: firstName, lastName: lastName, email: email, birthDate: birthDate);
+      // final localUser = LocalUser(firstName: firstName, lastName: lastName, email: email, birthDate: birthDate);
 
-      await _updateLocalUser(localUser);
+      // await _updateLocalUser(localUser);
 
       return 'success';
     } on FirebaseAuthException catch (e) {

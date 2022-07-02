@@ -10,7 +10,7 @@
         </intent>
     </queries>
    <application
-        android:label="elisha"
+        android:label="Secret Place"
         android:icon="@mipmap/ic_launcher">
         <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data

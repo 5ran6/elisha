@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:io';
 
+import 'package:elisha/src/ui/views/authentication_views/sign_in_view/sign_in_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
@@ -46,8 +47,6 @@ class SignUpView extends StatefulWidget {
 class _SignUpViewState extends State<SignUpView> {
   var _errorMessage = '';
   var _hasError = false;
-  var birthDateText = '';
-  var _birthDateController = DateTime.now();
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -79,7 +78,6 @@ class _SignUpViewState extends State<SignUpView> {
             ),
             EmailTextInput(emailController: _emailController),
             PasswordTextInput(passwordController: _passwordController),
-            BirthDateInput(birthDateText: birthDateText, showBirthDatePicker: _showBirthDatePicker),
             _hasError ? const SizedBox(height: 15) : Container(),
             _hasError ? _errorText(context, _errorMessage) : Container(),
             _signUpButton(context),
@@ -95,6 +93,7 @@ class _SignUpViewState extends State<SignUpView> {
                 ),
                 GestureDetector(
                   onTap: () {
+                    //SignInView(widget.toggleView!());
                     widget.toggleView!();
                   },
                   child: Padding(
@@ -110,7 +109,7 @@ class _SignUpViewState extends State<SignUpView> {
               ],
             ),
             const SizedBox(height: 15),
-            const TermsAndPrivacyPolicyText(),
+            //const TermsAndPrivacyPolicyText(),
           ],
         ),
       ),
@@ -136,17 +135,10 @@ class _SignUpViewState extends State<SignUpView> {
             _passwordController.text,
             _firstNameController.text,
             _lastNameController.text,
-            birthDateText
           ].contains('')) {
             setState(() {
               _hasError = true;
               _errorMessage = 'Missing fields';
-            });
-          } else if (_birthDateController.isAtSameMomentAs(DateTime.now()) ||
-              _birthDateController.isAfter(DateTime.now())) {
-            setState(() {
-              _hasError = true;
-              _errorMessage = 'Invalid Birthday';
             });
           } else {
             var res = await context.read(authenticationRepositoryProvider).signUp(
@@ -155,7 +147,6 @@ class _SignUpViewState extends State<SignUpView> {
                   password: _passwordController.text.trim(),
                   firstName: _firstNameController.text.trim(),
                   lastName: _lastNameController.text.trim(),
-                  birthDate: _birthDateController,
                 );
 
             if (res != 'success') {
@@ -179,97 +170,97 @@ class _SignUpViewState extends State<SignUpView> {
     );
   }
 
-  Future<void> _showBirthDatePicker() async {
-    final initialDate = DateTime.now();
-    final maximumYear = DateTime.now().year;
-    final firstDate = DateTime(1900);
-    final lastDate = DateTime.now();
+  // Future<void> _showBirthDatePicker() async {
+  //   final initialDate = DateTime.now();
+  //   final maximumYear = DateTime.now().year;
+  //   final firstDate = DateTime(1900);
+  //   final lastDate = DateTime.now();
 
-    return showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      elevation: 0,
-      useRootNavigator: true,
-      builder: (context) {
-        return FractionallySizedBox(
-          heightFactor: 0.40,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                padding: const EdgeInsets.only(top: 15, left: 27, right: 27),
-                child: Container(
-                  height: 5,
-                  width: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25),
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 27),
-                child: Text(
-                  'Select Your Birthday',
-                  style: Theme.of(context).textTheme.headline5,
-                ),
-              ),
-              const Divider(),
-              SizedBox(
-                height: 200,
-                child: Platform.isIOS
-                    ? CupertinoTheme(
-                        data: CupertinoThemeData(
-                          brightness: MediaQuery.of(context).platformBrightness,
-                        ),
-                        child: CupertinoDatePicker(
-                          mode: CupertinoDatePickerMode.date,
-                          initialDateTime: initialDate,
-                          minimumDate: firstDate,
-                          minimumYear: firstDate.year,
-                          maximumDate: initialDate,
-                          maximumYear: maximumYear,
-                          onDateTimeChanged: (date) {
-                            _birthDateController = date;
-                            setState(() {
-                              birthDateText = DateFormat.yMMMd().format(date);
-                            });
-                          },
-                        ),
-                      )
-                    : DatePickerDialog(
-                        initialDate: initialDate,
-                        firstDate: firstDate,
-                        lastDate: lastDate,
-                        initialCalendarMode: DatePickerMode.day,
-                        selectableDayPredicate: (date) {
-                          _birthDateController = date;
-                          setState(() {
-                            birthDateText = DateFormat.yMMMd().format(date);
-                          });
-                          return true;
-                        },
-                      ),
-              ),
-              const SizedBox(height: 20),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Center(
-                  child: Text(
-                    'Save',
-                    style: Theme.of(context).textTheme.headline6?.copyWith(
-                          color: Theme.of(context).primaryColor,
-                        ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
+  //   return showModalBottomSheet(
+  //     context: context,
+  //     isScrollControlled: true,
+  //     elevation: 0,
+  //     useRootNavigator: true,
+  //     builder: (context) {
+  //       return FractionallySizedBox(
+  //         heightFactor: 0.40,
+  //         child: Column(
+  //           crossAxisAlignment: CrossAxisAlignment.center,
+  //           mainAxisSize: MainAxisSize.min,
+  //           children: [
+  //             Container(
+  //               padding: const EdgeInsets.only(top: 15, left: 27, right: 27),
+  //               child: Container(
+  //                 height: 5,
+  //                 width: 50,
+  //                 decoration: BoxDecoration(
+  //                   borderRadius: BorderRadius.circular(25),
+  //                   color: Theme.of(context).colorScheme.secondary,
+  //                 ),
+  //               ),
+  //             ),
+  //             Container(
+  //               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 27),
+  //               child: Text(
+  //                 'Select Your Birthday',
+  //                 style: Theme.of(context).textTheme.headline5,
+  //               ),
+  //             ),
+  //             const Divider(),
+  //             SizedBox(
+  //               height: 200,
+  //               child: Platform.isIOS
+  //                   ? CupertinoTheme(
+  //                       data: CupertinoThemeData(
+  //                         brightness: MediaQuery.of(context).platformBrightness,
+  //                       ),
+  //                       child: CupertinoDatePicker(
+  //                         mode: CupertinoDatePickerMode.date,
+  //                         initialDateTime: initialDate,
+  //                         minimumDate: firstDate,
+  //                         minimumYear: firstDate.year,
+  //                         maximumDate: initialDate,
+  //                         maximumYear: maximumYear,
+  //                         onDateTimeChanged: (date) {
+  //                           _birthDateController = date;
+  //                           setState(() {
+  //                             birthDateText = DateFormat.yMMMd().format(date);
+  //                           });
+  //                         },
+  //                       ),
+  //                     )
+  //                   : DatePickerDialog(
+  //                       initialDate: initialDate,
+  //                       firstDate: firstDate,
+  //                       lastDate: lastDate,
+  //                       initialCalendarMode: DatePickerMode.day,
+  //                       selectableDayPredicate: (date) {
+  //                         _birthDateController = date;
+  //                         setState(() {
+  //                           birthDateText = DateFormat.yMMMd().format(date);
+  //                         });
+  //                         return true;
+  //                       },
+  //                     ),
+  //             ),
+  //             const SizedBox(height: 20),
+  //             GestureDetector(
+  //               onTap: () {
+  //                 Navigator.pop(context);
+  //               },
+  //               child: Center(
+  //                 child: Text(
+  //                   'Save',
+  //                   style: Theme.of(context).textTheme.headline6?.copyWith(
+  //                         color: Theme.of(context).primaryColor,
+  //                       ),
+  //                 ),
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 }

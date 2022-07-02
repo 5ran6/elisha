@@ -30,6 +30,8 @@ import 'package:elisha/src/ui/views/bible_view/bible_view.dart';
 import 'package:elisha/src/ui/views/church_view/church_view.dart';
 import 'package:elisha/src/ui/views/home_view/home_view.dart';
 import 'package:elisha/src/ui/views/profile_view/profile_view.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final _homeNavigatorKey = GlobalKey<NavigatorState>();
 final _bibleNavigatorKey = GlobalKey<NavigatorState>();
@@ -54,29 +56,20 @@ class _CurrentViewState extends State<CurrentView> {
   }
 
   void _onTabTapped(int index) {
-    if (index == _currentIndex &&
-        _currentIndex == 0 &&
-        _homeNavigatorKey.currentState!.canPop()) {
+    if (index == _currentIndex && _currentIndex == 0 && _homeNavigatorKey.currentState!.canPop()) {
       _homeNavigatorKey.currentState!.pop();
     }
-    if (index == _currentIndex &&
-        _currentIndex == 1 &&
-        _bibleNavigatorKey.currentState!.canPop()) {
+    if (index == _currentIndex && _currentIndex == 1 && _bibleNavigatorKey.currentState!.canPop()) {
       _bibleNavigatorKey.currentState!.pop();
     }
-    if (index == _currentIndex &&
-        _currentIndex == 2 &&
-        _noteNavigatorKey.currentState!.canPop()) {
+    if (index == _currentIndex && _currentIndex == 2 && _noteNavigatorKey.currentState!.canPop()) {
       _noteNavigatorKey.currentState!.pop();
+      saveTodayDateToSharedPref();
     }
-    if (index == _currentIndex &&
-        _currentIndex == 3 &&
-        _churchNavigatorKey.currentState!.canPop()) {
+    if (index == _currentIndex && _currentIndex == 3 && _churchNavigatorKey.currentState!.canPop()) {
       _churchNavigatorKey.currentState!.pop();
     }
-    if (index == _currentIndex &&
-        _currentIndex == 4 &&
-        _profileNavigatorKey.currentState!.canPop()) {
+    if (index == _currentIndex && _currentIndex == 4 && _profileNavigatorKey.currentState!.canPop()) {
       _profileNavigatorKey.currentState!.pop();
     }
 
@@ -87,9 +80,7 @@ class _CurrentViewState extends State<CurrentView> {
 
   void _loadData() async {
     await context.read(streaksRepositoryProvider).updateStreaks();
-    context
-        .read(localRepositoryProvider.notifier)
-        .loadLastChapterAndTranslation();
+    context.read(localRepositoryProvider.notifier).loadLastChapterAndTranslation();
     context.read(bookmarkedChaptersProvider.notifier).loadData();
     context.read(localUserRepositoryProvider.notifier).loadUser();
   }
@@ -118,9 +109,7 @@ class _CurrentViewState extends State<CurrentView> {
         children: [
           Navigator(
             key: _homeNavigatorKey,
-            observers: [
-              FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
-            ],
+            observers: [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
             onGenerateRoute: (settings) {
               return MaterialPageRoute(
                 settings: settings,
@@ -136,9 +125,7 @@ class _CurrentViewState extends State<CurrentView> {
           ),
           Navigator(
             key: _bibleNavigatorKey,
-            observers: [
-              FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
-            ],
+            observers: [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
             onGenerateRoute: (settings) {
               return MaterialPageRoute(
                 settings: settings,
@@ -149,9 +136,7 @@ class _CurrentViewState extends State<CurrentView> {
           ),
           Navigator(
             key: _noteNavigatorKey,
-            observers: [
-              FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
-            ],
+            observers: [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
             onGenerateRoute: (settings) {
               return MaterialPageRoute(
                 settings: settings,
@@ -162,9 +147,7 @@ class _CurrentViewState extends State<CurrentView> {
           ),
           Navigator(
             key: _churchNavigatorKey,
-            observers: [
-              FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
-            ],
+            observers: [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
             onGenerateRoute: (settings) {
               return MaterialPageRoute(
                 settings: settings,
@@ -180,9 +163,7 @@ class _CurrentViewState extends State<CurrentView> {
           ),
           Navigator(
             key: _profileNavigatorKey,
-            observers: [
-              FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
-            ],
+            observers: [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
             onGenerateRoute: (settings) {
               return MaterialPageRoute(
                 settings: settings,
@@ -199,5 +180,14 @@ class _CurrentViewState extends State<CurrentView> {
         ],
       ),
     );
+  }
+
+  Future<void> saveTodayDateToSharedPref() async {
+    DateTime now = DateTime.now();
+    String todayDate = DateFormat('dd.MM.yyyy').format(now);
+
+    final _prefs = await SharedPreferences.getInstance();
+
+    await _prefs.setString('dateNavBarKey', todayDate);
   }
 }

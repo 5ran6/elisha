@@ -317,7 +317,7 @@ packages:
     source: hosted
     version: "5.0.2"
   flutter_lints:
-    dependency: "direct dev"
+    dependency: transitive
     description:
       name: flutter_lints
       url: "https://pub.dartlang.org"
@@ -337,13 +337,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.1"
-  flutter_native_splash:
-    dependency: "direct dev"
-    description:
-      name: flutter_native_splash
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.3.3"
   flutter_native_timezone:
     dependency: "direct main"
     description:
@@ -522,13 +515,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.3"
-  import_sorter:
-    dependency: "direct dev"
-    description:
-      name: import_sorter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.6.0"
   intl:
     dependency: "direct main"
     description:
@@ -1003,13 +989,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.7.0"
-  tint:
-    dependency: transitive
-    description:
-      name: tint
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
   typed_data:
     dependency: transitive
     description:

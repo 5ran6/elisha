@@ -24,6 +24,7 @@ import 'package:elisha/src/ui/components/something_went_wrong.dart';
 import 'package:elisha/src/ui/views/authentication_views/sign_in_providers_view/sign_in_providers_view.dart';
 import 'package:elisha/src/ui/views/authentication_views/sign_up_view/sign_up_view.dart';
 import 'package:elisha/src/ui/views/current_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationWrapper extends StatefulWidget {
   const AuthenticationWrapper({Key? key}) : super(key: key);
@@ -34,6 +35,18 @@ class AuthenticationWrapper extends StatefulWidget {
 
 class _AuthenticationWrapperState extends State<AuthenticationWrapper> {
   bool showSignIn = true;
+  bool isAnonymousUser = false;
+
+  Future<void> isUserAnonymous() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final String? storedValue = prefs.getString('key');
+    if (storedValue != null) {
+      setState(() {
+        isAnonymousUser == true;
+      });
+    }
+  }
 
   @override
   void initState() {

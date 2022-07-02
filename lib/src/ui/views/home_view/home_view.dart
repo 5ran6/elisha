@@ -70,16 +70,16 @@ class _HomeViewState extends State<HomeView> {
 
   bool showSignIn = true;
 
-  Future<void> isUserAnonymous() async {
-    final prefs = await SharedPreferences.getInstance();
+  // Future<void> isUserAnonymous() async {
+  //   final prefs = await SharedPreferences.getInstance();
 
-    final String? storedValue = prefs.getString('key');
-    if (storedValue != null) {
-      setState(() {
-        isAnonymousUser == true;
-      });
-    }
-  }
+  //   final String? storedValue = prefs.getString('key');
+  //   if (storedValue != null) {
+  //     setState(() {
+  //       isAnonymousUser == true;
+  //     });
+  //   }
+  // }
 
   Future<void> _tryConnection() async {
     try {
@@ -103,25 +103,13 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasData || showSignIn == false || isAnonymousUser) {
-            return _content(context);
-          } else if (snapshot.hasError) {
-            return const Center(child: Text('Something went wrong'));
-          } else {
-            return SignInProvidersView(_toggleView);
-          }
-        });
+    return _content(context);
   }
 
   @override
   void initState() {
     _tryConnection();
-    isUserAnonymous();
+    //isUserAnonymous();
     checkIfDevotionalIsBookmarked(DateFormat('dd.MM.yyyy').format(DateTime.now()));
 
     getVerseAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));

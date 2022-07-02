@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -26,8 +27,35 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
   var noteWidget = TextEditingController();
   var noteTitleWidget = TextEditingController();
   String newWords = "";
+
+  Future<void> getNoteTileAndContent() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final String? storedTitle = prefs.getString('titleKey');
+    final String? storedNote = prefs.getString('noteKey');
+    final String? storedClear = prefs.getString('clearKey');
+    final String? storedDateNavBar = prefs.getString('dateNavBarKey');
+    final String? storedDateSave = prefs.getString('dateSaveKey');
+
+    if (storedTitle != null || storedDateNavBar == storedDateSave) {
+      setState(() {
+        noteTitleWidget.text = storedTitle!;
+      });
+    } else {
+      noteTitleWidget.clear();
+    }
+    if (storedNote != null || storedDateNavBar == storedDateSave) {
+      setState(() {
+        noteWidget.text = storedNote!;
+      });
+    } else {
+      noteWidget.clear();
+    }
+  }
+
   @override
   void initState() {
+    getNoteTileAndContent();
     super.initState();
     _speech = SpeechToText();
   }
@@ -79,6 +107,11 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      onChanged: (String str) async {
+                        final _prefs = await SharedPreferences.getInstance();
+
+                        await _prefs.setString('titleKey', str);
+                      },
                       controller: noteTitleWidget,
                       keyboardType: TextInputType.text,
                       decoration: const InputDecoration(
@@ -94,6 +127,11 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      onChanged: (String str) async {
+                        final _prefs = await SharedPreferences.getInstance();
+
+                        await _prefs.setString('noteKey', str);
+                      },
                       minLines: 30,
                       keyboardType: TextInputType.text,
                       maxLines: null,
@@ -110,16 +148,26 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
               GestureDetector(
                   onTap: () async {
                     DateTime now = DateTime.now();
-                    String todayDate = DateFormat('dd.MM.yyyy').format(now);
-                    Note note = Note(title: noteTitleWidget.text, writeUp: noteWidget.text, date: todayDate);
+                    String todayDt = DateFormat('dd.MM.yyyy').format(now);
 
-                    DevotionalDBHelper.instance.insertNote(note);
+                    final _prefs = await SharedPreferences.getInstance();
+                    await _prefs.setString('clearKey', 'clearNoteTitleAndReview');
+                    await _prefs.setString('dateSaveKey', todayDt);
+
+                    Note note = Note(title: noteTitleWidget.text, writeUp: noteWidget.text, date: todayDt);
+
+                    List<Note> notes = await DevotionalDBHelper.instance.getNotewithDate(todayDt);
+                    if (notes.isNotEmpty) {
+                      DevotionalDBHelper.instance.updateNote(note);
+                    } else {
+                      DevotionalDBHelper.instance.insertNote(note);
+                      if (user != null) {
+                        sendNotePostRequest(note);
+                      }
+                    }
+
                     Fluttertoast.showToast(
                         msg: "Note Saved", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
-
-                    if (user != null) {
-                      sendNotePostRequest(note);
-                    }
                   },
                   child: Container(
                       width: MediaQuery.of(context).size.width - 40,

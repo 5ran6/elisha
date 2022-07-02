@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/models/feedback.dart';
 import 'package:elisha/src/ui/views/profile_view/star_rating.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 
 class FeedbackDialog extends StatefulWidget {
   const FeedbackDialog({Key? key}) : super(key: key);
@@ -21,7 +25,9 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
       backgroundColor: Colors.transparent,
       child: Container(
         child: Card(
-          shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(4),),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4),
+          ),
           color: Colors.white,
           clipBehavior: Clip.antiAliasWithSaveLayer,
           child: Column(
@@ -33,7 +39,9 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        const CircleAvatar(radius: 20, backgroundColor: Color.fromRGBO(3, 3, 70, 1),
+                        const CircleAvatar(
+                          radius: 20,
+                          backgroundColor: Color.fromRGBO(3, 3, 70, 1),
                           backgroundImage: AssetImage("assets/images/app_icon.png"),
                         ),
                         Container(width: 15),
@@ -41,9 +49,15 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text("Secret Place", style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.bold),),
+                              Text(
+                                "Secret Place",
+                                style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.bold),
+                              ),
                               Container(height: 5),
-                              Text("Feedback services", style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.normal),),
+                              Text(
+                                "Feedback services",
+                                style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.normal),
+                              ),
                             ],
                           ),
                         )
@@ -53,15 +67,20 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
                     const Divider(),
                     Container(height: 5),
                     StarRating(
-                      starCount: 5, rating : ratingValue, color: Colors.orange[300], size: 30,
-                      onRatingChanged: (value){
-                        setState(() { ratingValue = value; });
+                      starCount: 5,
+                      rating: ratingValue,
+                      color: Colors.orange[300],
+                      size: 30,
+                      onRatingChanged: (value) {
+                        setState(() {
+                          ratingValue = value;
+                        });
                       },
                     ),
                     Container(height: 15),
                     Container(
                       //color: Colors.grey,
-                    height: 30,
+                      height: 30,
                       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
                       child: TextFormField(
                         controller: feedbackNameController,
@@ -102,7 +121,7 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
                 children: <Widget>[
                   TextButton(
                     style: TextButton.styleFrom(primary: Colors.transparent),
-                    onPressed: (){
+                    onPressed: () {
                       Navigator.pop(context);
                     },
                     child: Text("CLOSE", style: TextStyle(color: Colors.pink[500])),
@@ -110,11 +129,14 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
                   TextButton(
                     style: TextButton.styleFrom(primary: Colors.transparent),
                     child: const Text("SUBMIT", style: TextStyle(color: Colors.black)),
-                    onPressed: (){
+                    onPressed: () {
                       String todayDate = DateFormat('dd.MM.yyyy').format(DateTime.now());
-                      FeedbackModel feedback = FeedbackModel(date: todayDate, name: feedbackNameController.text, review: feedbackReviewController.text);
-
-
+                      FeedbackModel feedback = FeedbackModel(
+                          feedback: feedbackReviewController.text,
+                          name: feedbackNameController.text,
+                          timeDateSent: todayDate);
+                      sendFeedbackPostRequest(feedback);
+                      Navigator.pop(context);
                     },
                   )
                 ],
@@ -125,17 +147,14 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
       ),
     );
   }
-  // void sendFeedbackPostRequest(FeedbackModel feedback) async {
-  //   final user = FirebaseAuth.instance.currentUser;
-  //
-  //   final idToken = await user?.getIdToken();
-  //   final response = await http.post(Uri.parse("https://secret-place.herokuapp.com/api/users/notes"), headers: {
-  //     'Content-Type': 'application/json',
-  //     'Accept': 'application/json',
-  //     'Authorization': 'Bearer $idToken',
-  //   }, body: jsonEncode({"note": note})
-  //   );
-  //   print('Note : ${note}');
-  //   print(response);
-  // }
+
+  void sendFeedbackPostRequest(FeedbackModel feedback) async {
+    final response = await http.post(Uri.parse("https://secret-place.herokuapp.com/api/feedbacks"),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(feedback));
+
+    print(response.statusCode);
+  }
 }

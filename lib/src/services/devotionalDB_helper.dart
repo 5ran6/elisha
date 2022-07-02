@@ -148,6 +148,12 @@ class DevotionalDBHelper {
     return noteList;
   }
 
+  Future<dynamic> updateNote(Note note) async {
+    Database? db = await instance.database;
+    return await db!.rawUpdate(
+        'UPDATE note_table SET title = ?, writeUp = ? WHERE date = ?', [note.title, note.writeUp, note.date]);
+  }
+
   Future<dynamic> insertNoteListFromApiIntoDB(List<Note> noteList) async {
     Database? db = await instance.database;
     Batch batch = db!.batch();
@@ -158,5 +164,14 @@ class DevotionalDBHelper {
 
     var result = batch.commit();
     return result;
+  }
+
+  Future<List<Note>> getNotewithDate(date) async {
+    Database? db = await instance.database;
+
+    var result = await db!.rawQuery("SELECT * FROM note_table WHERE date=?", ['$date']);
+
+    List<Note> noteList = result.isNotEmpty ? result.map((e) => Note.fromJson(e)).toList() : [];
+    return noteList;
   }
 }

@@ -99,6 +99,11 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/secret_place_logo-1.jpg"
+
   flutter_native_splash: ^1.2.1
   import_sorter: ^4.6.0
   dio: ^4.0.6

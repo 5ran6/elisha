@@ -1,16 +1,30 @@
+import 'dart:convert';
 
-class FeedbackModel{
+List<FeedbackModel> feedbackFromJson(List<dynamic> jsonList) =>
+    List<FeedbackModel>.from(jsonList.map((x) => FeedbackModel.fromJson(x)));
+String feedbackToJson(List<FeedbackModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-  String date;
+class FeedbackModel {
+  String feedback;
   String name;
-  String review;
+  String timeDateSent;
 
-  FeedbackModel({required this.date, required this.name, required this.review});
+  FeedbackModel({required this.feedback, required this.name, required this.timeDateSent});
 
+  factory FeedbackModel.fromJson(Map<String, dynamic> json) => FeedbackModel(
+        feedback: json["feedback"] ?? '',
+        name: json["name"] ?? '',
+        timeDateSent: json["timeDateSent"] ?? '',
+      );
 
+  Map<String, dynamic> toJson() => {
+        "feedback": feedback,
+        "name": name,
+        "timeDateSent": timeDateSent,
+      };
 
   @override
   String toString() {
-    return 'FeedbackModel{date: $date, name: $name, review: $review}';
+    return 'FeedbackModel{date: $feedback, name: $name, review: $timeDateSent}';
   }
 }

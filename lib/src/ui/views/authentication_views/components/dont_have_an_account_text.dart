@@ -17,9 +17,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:elisha/src/ui/views/authentication_views/sign_up_view/sign_up_view.dart';
 
 class DontHaveAnAccountText extends StatelessWidget {
-  const DontHaveAnAccountText({Key? key, this.toggleView}) : super(key: key);
+  const DontHaveAnAccountText({this.toggleView, Key? key}) : super(key: key);
 
   final Function()? toggleView;
 
@@ -37,6 +38,7 @@ class DontHaveAnAccountText extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
+            //Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpView(toggleView)));
             toggleView!();
             if (Navigator.canPop(context)) {
               Navigator.pop(context);
