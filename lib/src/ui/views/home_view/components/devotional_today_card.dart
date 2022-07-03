@@ -7,7 +7,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../devotional_page/devotional_page.dart';
 
-class DevotionalTodayCard  extends StatefulWidget {
+class DevotionalTodayCard extends StatefulWidget {
   final String title;
   final String mainWriteUp;
   final String image;
@@ -18,12 +18,22 @@ class DevotionalTodayCard  extends StatefulWidget {
   final String prayer;
   final String thought;
   final String bibleInAYear;
-  late  bool isBookmarked;
+  late bool isBookmarked;
 
-
-  DevotionalTodayCard ({Key? key, required this.title, required this.mainWriteUp, required this.image,
-    required this.internetInfo, required this.biblePassage, required this.prayer, required this.thought,
-    required this.isBookmarked, required this.memoryVerse, required this.memoryVersePassage, required this.bibleInAYear}) : super(key: key);
+  DevotionalTodayCard(
+      {Key? key,
+      required this.title,
+      required this.mainWriteUp,
+      required this.image,
+      required this.internetInfo,
+      required this.biblePassage,
+      required this.prayer,
+      required this.thought,
+      required this.isBookmarked,
+      required this.memoryVerse,
+      required this.memoryVersePassage,
+      required this.bibleInAYear})
+      : super(key: key);
 
   @override
   State<DevotionalTodayCard> createState() => _DevotionalTodayCardState();
@@ -46,8 +56,11 @@ class _DevotionalTodayCardState extends State<DevotionalTodayCard> {
       shape: CantonSmoothBorder.defaultBorder(),
       child: InkWell(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => DevotionalPage(),
-          ),
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => DevotionalPage(),
+            ),
           );
         },
         child: Container(
@@ -71,64 +84,72 @@ class _DevotionalTodayCardState extends State<DevotionalTodayCard> {
                 elevation: 0.0,
                 shape: CantonSmoothBorder.defaultBorder(),
                 margin: const EdgeInsets.all(5.0),
-                child: widget.internetInfo == true ? CachedNetworkImage(
-                  imageUrl: widget.image,
-                  imageBuilder: (context, imageProvider) => Container(
-                    height: 180,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: imageProvider,
-                          fit: BoxFit.fitWidth,
+                child: widget.internetInfo == true
+                    ? CachedNetworkImage(
+                        imageUrl: widget.image,
+                        imageBuilder: (context, imageProvider) => Container(
+                          height: 180,
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: imageProvider,
+                                fit: BoxFit.fitWidth,
+                              ),
+                              borderRadius: BorderRadius.circular(15)),
                         ),
-                        borderRadius: BorderRadius.circular(15)
-                    ),
-                  ),
-                  placeholder: (context, url) => const CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                ): Image.asset('assets/images/light.jpg'),
+                        placeholder: (context, url) => const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                      )
+                    : Image.asset('assets/images/light.jpg'),
               ),
               ButtonBar(
                 alignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  isBookmarked ? IconButton(
-                    icon: const Icon(Icons.bookmark),
-                    onPressed: () {
-                      // setState(() {
-                      //   widget.isBookmarked = false;
-                      // });
+                  isBookmarked
+                      ? IconButton(
+                          icon: const Icon(Icons.bookmark),
+                          onPressed: () {
+                            // setState(() {
+                            //   widget.isBookmarked = false;
+                            // });
+                          },
+                        )
+                      : IconButton(
+                          icon: const Icon(Icons.bookmark_border),
+                          onPressed: () async {
+                            setState(() {
+                              isBookmarked = true;
+                            });
 
-                    },
-                  ) : IconButton(
-                    icon: const Icon(Icons.bookmark_border),
-                    onPressed: () async {
+                            String todayDate = DateFormat('dd.MM.yyyy').format(DateTime.now());
 
-                      setState(() {
-                        isBookmarked = true;
-                      });
+                            Devotional dev = Devotional(
+                                date: todayDate,
+                                title: widget.title,
+                                translation: "",
+                                memoryVerse: widget.memoryVerse,
+                                memoryVersePassage: widget.memoryVersePassage,
+                                fullPassage: widget.biblePassage,
+                                fullText: widget.mainWriteUp,
+                                bibleInAYear: widget.bibleInAYear,
+                                image: widget.image,
+                                prayerBurden: widget.prayer,
+                                thoughtOfTheDay: widget.thought);
 
-                      String todayDate = DateFormat('dd.MM.yyyy').format(DateTime.now());
-
-                      Devotional dev = Devotional(date: todayDate, title: widget.title, translation: "", memoryVerse: widget.memoryVerse,
-                          memoryVersePassage: widget.memoryVersePassage, fullPassage: widget.biblePassage, fullText: widget.mainWriteUp,
-                          bibleInAYear: widget.bibleInAYear, image: widget.image, prayerBurden: widget.prayer, thoughtOfTheDay: widget.thought);
-
-                      await DevotionalDBHelper.instance.insertBookMarkedDevotional(dev);
-                      print('dev bm');
-                      print(dev);
-                      List bms = await DevotionalDBHelper.instance.getBookMarkedDevotionalsFromDB();
-                      print(bms);
-                      print(bms.length);
-
-                    },
-                  ),
+                            await DevotionalDBHelper.instance.insertBookMarkedDevotional(dev);
+                            List bms = await DevotionalDBHelper.instance.getBookMarkedDevotionalsFromDB();
+                          },
+                        ),
                   IconButton(
                     icon: const Icon(Icons.share),
                     onPressed: () async {
-                      const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
-                      const appleStoreUrl = 'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
+                      const playStoreUrl =
+                          'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
+                      const appleStoreUrl =
+                          'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
 
-                      await Share.share("<bold>Secret Place Devotional<bold>\nTopic: ${widget.title}\n\nScripture: ${widget.biblePassage}\n\nMemory Verse: ${widget.memoryVerse}\n${widget.memoryVersePassage}\n\n${widget.mainWriteUp}\n\nPrayer: ${widget.prayer}\n\n Thought: ${widget.thought}\n\nGet Secret Place App:\nPlayStore: $playStoreUrl\n AppleStore: $appleStoreUrl");
+                      await Share.share(
+                          "<bold>Secret Place Devotional<bold>\nTopic: ${widget.title}\n\nScripture: ${widget.biblePassage}\n\nMemory Verse: ${widget.memoryVerse}\n${widget.memoryVersePassage}\n\n${widget.mainWriteUp}\n\nPrayer: ${widget.prayer}\n\n Thought: ${widget.thought}\n\nGet Secret Place App:\nPlayStore: $playStoreUrl\n AppleStore: $appleStoreUrl");
                     },
                   ),
                 ],
@@ -139,6 +160,7 @@ class _DevotionalTodayCardState extends State<DevotionalTodayCard> {
       ),
     );
   }
+
   checkIfDevotionalIsBookmarked(String date) async {
     List<Devotional> bmDevotionals = await DevotionalDBHelper.instance.getBookMarkedDevotionalsFromDB();
     for (int i = 0; i < bmDevotionals.length; i++) {
@@ -150,9 +172,7 @@ class _DevotionalTodayCardState extends State<DevotionalTodayCard> {
         setState(() {
           isBookmarked = false;
         });
-
       }
     }
-
   }
 }

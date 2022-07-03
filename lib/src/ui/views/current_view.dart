@@ -79,6 +79,7 @@ class _CurrentViewState extends State<CurrentView> {
   }
 
   void _loadData() async {
+    print('second _loadData kkkkkkkkkkkkkkkkkkkkk');
     await context.read(streaksRepositoryProvider).updateStreaks();
     context.read(localRepositoryProvider.notifier).loadLastChapterAndTranslation();
     context.read(bookmarkedChaptersProvider.notifier).loadData();

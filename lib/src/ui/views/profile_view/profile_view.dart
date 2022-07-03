@@ -22,6 +22,7 @@ import 'package:elisha/src/ui/views/about_us_view/about_us_page.dart';
 import 'package:elisha/src/ui/views/bookmarked_devotionals_list_view/bookmarked_devotionals_list_view.dart';
 import 'package:elisha/src/ui/views/profile_view/feedback_dialog.dart';
 import 'package:elisha/src/ui/views/settings_view/settings_view.dart';
+import 'package:elisha/src/ui/views/users_manual/users_manual_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:elisha/src/ui/views/account_view/account_view.dart';
@@ -46,7 +47,7 @@ class ProfileView extends StatelessWidget {
 
   Widget _header(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0,30,0,0),
+      padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
       child: ViewHeaderTwo(
         title: 'Profile',
         textColor: Theme.of(context).colorScheme.primary,
@@ -217,7 +218,7 @@ class ProfileView extends StatelessWidget {
       const Divider(),
       GestureDetector(
         onTap: () {
-          showDialog(context: context,builder: (_) => FeedbackDialog() );
+          showDialog(context: context, builder: (_) => FeedbackDialog());
         },
         child: Card(
           margin: EdgeInsets.zero,
@@ -268,32 +269,28 @@ class ProfileView extends StatelessWidget {
           ),
         ),
       ),
+      const Divider(),
       GestureDetector(
-        onTap: () async {
-          const link = 'https://31carlton7.github.io/elisha/privacy_policy';
-
-          if (await canLaunch(link)) {
-            await launch(link);
-          } else {
-            throw 'Could not launch $link';
-          }
+        onTap: () {
+          CantonMethods.viewTransition(context, const UsersManualView());
         },
         child: Card(
           margin: EdgeInsets.zero,
-          shape: SquircleBorder(
-            radius: const BorderRadius.vertical(
-              bottom: Radius.circular(37),
-            ),
-            side: BorderSide(
-              color: Theme.of(context).colorScheme.onSecondary,
+          shape: Border(
+            left: BorderSide(
               width: 1.5,
+              color: Theme.of(context).colorScheme.onSecondary,
+            ),
+            right: BorderSide(
+              width: 1.5,
+              color: Theme.of(context).colorScheme.onSecondary,
             ),
           ),
           child: Container(
             padding: const EdgeInsets.all(15),
             alignment: Alignment.centerLeft,
             child: Text(
-              'Privacy Policy',
+              'User Manual',
               style: Theme.of(context).textTheme.headline6,
             ),
           ),

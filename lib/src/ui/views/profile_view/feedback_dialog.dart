@@ -21,6 +21,7 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
     return Dialog(
       backgroundColor: Colors.transparent,
       child: Container(
@@ -130,11 +131,10 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
                     style: TextButton.styleFrom(primary: Colors.transparent),
                     child: const Text("SUBMIT", style: TextStyle(color: Colors.black)),
                     onPressed: () {
-                      String todayDate = DateFormat('dd.MM.yyyy').format(DateTime.now());
                       FeedbackModel feedback = FeedbackModel(
+                          userId: user?.uid ?? '',
                           feedback: feedbackReviewController.text,
-                          name: feedbackNameController.text,
-                          timeDateSent: todayDate);
+                          name: feedbackNameController.text);
                       sendFeedbackPostRequest(feedback);
                       Navigator.pop(context);
                     },
