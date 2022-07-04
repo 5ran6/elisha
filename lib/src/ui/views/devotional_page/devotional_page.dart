@@ -44,7 +44,8 @@ class _DevotionalPageState extends State<DevotionalPage> {
   Widget build(BuildContext context) {
     final List<Widget> devotionalCards = [
       Card(
-        color: CantonMethods.alternateCanvasColorType2(context),
+        //color: CantonMethods.alternateCanvasColorType2(context),
+        color: Colors.red,
         shape: CantonSmoothBorder.defaultBorder(),
         child: ClipRRect(
             borderRadius: BorderRadius.circular(20.0),
@@ -212,7 +213,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
                     title: Text('Thought for The Day',
                         style: Theme.of(context)
                             .textTheme
-                            .headline5
+                      .headline5
                             ?.copyWith(fontWeight: FontWeight.bold)),
                     trailing: Text(
                       'More',

@@ -17,6 +17,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:async';
+import 'dart:ui';
+import 'package:flutter_background_service/flutter_background_service.dart';
+import 'package:flutter_background_service_android/flutter_background_service_android.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:elisha/src/models/devotional.dart';
 import 'package:elisha/src/providers/api_provider.dart';
 import 'package:elisha/src/services/devotionalDB_helper.dart';
@@ -52,31 +56,86 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:elisha/src/config/constants.dart';
-import 'package:workmanager/workmanager.dart';
 import 'package:elisha/src/services/noty_services/notify_service.dart';
 import 'package:elisha/src/services/authentication_services/authentication_wrapper.dart';
 import 'dart:convert';
 
+Future<void> initializeService() async {
+  final service = FlutterBackgroundService();
+  await service.configure(
+    androidConfiguration: AndroidConfiguration(
+      // this will be executed when app is in foreground or background in separated isolate
+      onStart: onStart,
+      autoStart: true,
+      isForegroundMode: false,
+    ),
+    iosConfiguration: IosConfiguration(
+      // auto start service
+      autoStart: true,
+      // this will be executed when app is in foreground in separated isolate
+      onForeground: onStart,
+      // you have to enable background fetch capability on xcode project
+      onBackground: onIosBackground,
+    ),
+  );
+  service.startService();
+}
+
+bool onIosBackground(ServiceInstance service) {
+  WidgetsFlutterBinding.ensureInitialized();
+  print('FLUTTER BACKGROUND FETCH');
+  return true;
+}
+
+void onStart(ServiceInstance service) async {
+  // Only available for flutter 3.0.0 and later
+  DartPluginRegistrant.ensureInitialized();
+  // For flutter prior to version 3.0.0
+  // We have to register the plugin manually
+
+  if (service is AndroidServiceInstance) {
+    service.on('setAsForeground').listen((event) {
+      service.setAsForegroundService();
+    });
+
+    service.on('setAsBackground').listen((event) {
+      service.setAsBackgroundService();
+    });
+  }
+
+  service.on('stopService').listen((event) {
+    service.stopSelf();
+  });
+
+  // bring to foreground
+  Timer.periodic(const Duration(seconds: 20), (timer) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    int? hello = preferences.getInt("alarmHour");
+    NotificationService().showNotification(1, "Secret place", "Hey, you scheduled a time with Jesus now ${hello}");
+
+    // if (service is AndroidServiceInstance) {
+    //   service.setForegroundNotificationInfo(
+    //     title: "My App Service",
+    //     content: "Updated at ${DateTime.now()}",
+    //   );
+    // }
+  });
+}
 
 
-
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runZonedGuarded<Future<void>>(() async {
     WidgetsFlutterBinding.ensureInitialized();
     await NotificationService().initNotification();
-    await Workmanager().initialize(callbackDispatcher);
+    await initializeService();
     await MobileAds.instance.initialize();
-
     await Firebase.initializeApp();
-
     await Hive.initFlutter();
     await Hive.openBox('elisha');
-
-
-
 
     if (kDebugMode) {
       await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
@@ -85,7 +144,8 @@ void main() async {
     }
 
     /// Lock screen orientation to vertical
-    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
+    await SystemChrome.setPreferredOrientations(
+            [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
         .then((_) {
       runApp(const ProviderScope(child: MyApp()));
     });
@@ -94,29 +154,54 @@ void main() async {
   });
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
 
+class _MyAppState extends State<MyApp> {
   void receiveData() async {
     DateTime now = DateTime.now();
 
     String formattedMYNameAPI = DateFormat('MMMMyyyy').format(now);
     String formattedMYNameDB = DateFormat('MM.yyyy').format(now);
 
-    List<Devotional> lsdv = await DevotionalDBHelper.instance.getDevotionalsDBForMonth(formattedMYNameDB);
+    List<Devotional> lsdv = await DevotionalDBHelper.instance
+        .getDevotionalsDBForMonth(formattedMYNameDB);
     print(lsdv);
     if (lsdv.isEmpty) {
-      List<Devotional> listOfDevs = await RemoteAPI.getDevotionalsForMonth(formattedMYNameAPI);
+      List<Devotional> listOfDevs =
+          await RemoteAPI.getDevotionalsForMonth(formattedMYNameAPI);
       DevotionalDBHelper.instance.insertDevotionalList(listOfDevs);
     }
-    }
+  }
 
-  const MyApp({Key? key}) : super(key: key);
   @override
-
   Widget build(BuildContext context) {
-
     receiveData();
+
+    Map setTheme(theme) {
+      var light = cantonLightTheme().copyWith(
+          primaryColor: const Color(0xFFB97D3C),
+          colorScheme: cantonLightTheme()
+              .colorScheme
+              .copyWith(primaryVariant: const Color(0xFFB97D3C)));
+      var dark = cantonLightTheme().copyWith(
+          primaryColor: const Color(0xFFB97D3C),
+          colorScheme: cantonLightTheme()
+              .colorScheme
+              .copyWith(primaryVariant: const Color(0xFFB97D3C)));
+      print(theme);
+      if (theme == "Light") {
+        return {'light': light, 'dark': light};
+      } else if (theme == "Dark") {
+        return {'light': dark, 'dark': dark};
+      } else {
+        return {'light': light, 'dark': dark};
+      }
+    }
 
     // return ScreenUtilInit(
     //   designSize: Size(360, 690),
@@ -141,9 +226,6 @@ class MyApp extends StatelessWidget {
     //   ),
     // );
 
-
-
-
     return ScreenUtilInit(
       designSize: const Size(360, 690),
       minTextAdapt: true,
@@ -154,16 +236,12 @@ class MyApp extends StatelessWidget {
           primaryLightVariantColor: const Color(0xFFB97D3C),
           primaryDarkColor: const Color(0xFFB97D3C),
           primaryDarkVariantColor: const Color(0xFFB97D3C),
-          navigatorObservers: [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
-          home: const SettingsPage()),
+          lightTheme: setTheme("Dark")['light'],
+          darkTheme: setTheme("Dark")['dark'],
+          navigatorObservers: [
+            FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
+          ],
+          home: SettingsPage()),
     );
   }
 }
-
-
-
-
-
-
-
-

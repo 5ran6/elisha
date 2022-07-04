@@ -1,179 +1,149 @@
 import 'package:canton_design_system/canton_design_system.dart';
-import 'package:elisha/src/services/noty_services/notify_service.dart';
 import 'package:elisha/src/ui/views/settings_view/settings_header_view.dart';
-import 'package:intl/intl.dart';
-import 'package:workmanager/workmanager.dart';
-
-//TODO: Change the notification audio for the alarm system
-//TODO: Implement Alarm cancel using the toggle switch
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
-
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }
 
-void callbackDispatcher() {
-  Workmanager().executeTask((task, inputData) async {
-    NotificationService()
-        .showNotification(1, "Reminder", "You scheduled a time with Jesus");
-    return Future.value(true);
-  });
-}
-
 class _SettingsPageState extends State<SettingsPage> {
-  //late TimeOfDay time = TimeOfDay.now();
-
   bool reminderValue = true;
-  bool disturbValue = false;
   int radioValue = 0;
   List themeList = ["System Default", "Light", "Dark"];
   late Future<TimeOfDay?> selectedTime;
   String tme = "6:00";
-  int day = 0;
+  int alarmHr = 0;
+  int alarmMn = 0;
 
-  //String current
+  void getPref() async {
+
+  }
 
   @override
   void initState() {
     super.initState();
+    getPref();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
-      child: Column(
-        children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15.0),
-            child: SettingsHeaderView(),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 14),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    openDialog();
-                  },
-                  child: Card(
-                    child: Container(
-                      padding: const EdgeInsets.all(15),
-                      alignment: Alignment.centerLeft,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text('Theme',
-                              style: Theme.of(context).textTheme.headline6),
-                          Text(themeList[radioValue],
-                              style: TextStyle(color: Colors.grey[600])),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 12,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    showDialogPicker(context);
-                  },
-                  child: Card(
-                    child: Container(
-                      padding: const EdgeInsets.all(15),
-                      alignment: Alignment.centerLeft,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text('Daily Remainder',
-                                  style: Theme.of(context).textTheme.headline6),
-                              Text(tme,
-                                  style: TextStyle(
-                                      color: reminderValue
-                                          ? Colors.grey[600]
-                                          : Colors.grey[800]))
-                            ],
-                          ),
-                          Transform.scale(
-                            scale: 1.2,
-                            child: Switch.adaptive(
-                                activeColor: Colors.blueGrey,
-                                activeTrackColor:
-                                    Colors.blueGrey.withOpacity(0.4),
-                                inactiveThumbColor: Colors.black87,
-                                inactiveTrackColor: Colors.black12,
-                                splashRadius: 50,
-                                value: reminderValue,
-                                onChanged: (value) {
-                                  setState(() {
-                                    reminderValue = value;
-                                  });
-                                }),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                GestureDetector(
-                  onTap: () {},
-                  child: Card(
-                    child: Container(
-                      padding: const EdgeInsets.all(15),
-                      alignment: Alignment.centerLeft,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text('Do not disturb',
-                                  style: Theme.of(context).textTheme.headline6),
-                              Text(disturbValue ? "On" : "Off",
-                                  style: TextStyle(color: Colors.grey[600]))
-                            ],
-                          ),
-                          Transform.scale(
-                            scale: 1.2,
-                            child: Switch.adaptive(
-                                activeColor: Colors.blueGrey,
-                                activeTrackColor:
-                                    Colors.blueGrey.withOpacity(0.4),
-                                inactiveThumbColor: Colors.black87,
-                                inactiveTrackColor: Colors.black12,
-                                splashRadius: 50,
-                                value: disturbValue,
-                                onChanged: (value) {
-                                  setState(() {
-                                    disturbValue = value;
-                                  });
-                                }),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10.0),
+        child: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15.0),
+              child: SettingsHeaderView(),
             ),
-          ),
-        ],
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 14),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      openDialog();
+                    },
+                    child: Card(
+                      child: Container(
+                        padding: const EdgeInsets.all(15),
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text('Theme',
+                                style: Theme.of(context).textTheme.headline6),
+                            Text(themeList[radioValue],
+                                style: TextStyle(color: Colors.grey[600])),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      showDialogPicker(context);
+                    },
+                    child: Card(
+                      child: Container(
+                        padding: const EdgeInsets.all(15),
+                        alignment: Alignment.centerLeft,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text('Daily Remainder',
+                                    style: Theme.of(context).textTheme.headline6),
+                                Text(tme,
+                                    style: TextStyle(
+                                        color: reminderValue
+                                            ? Colors.grey[600]
+                                            : Colors.grey[800]))
+                              ],
+                            ),
+                            Transform.scale(
+                              scale: 1.2,
+                              child: Switch.adaptive(
+                                  activeColor: Colors.blueGrey,
+                                  activeTrackColor:
+                                  Colors.blueGrey.withOpacity(0.4),
+                                  inactiveThumbColor: Colors.black87,
+                                  inactiveTrackColor: Colors.black12,
+                                  splashRadius: 50,
+                                  value: reminderValue,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      reminderValue = value;
+                                    });
+                                  }),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  GestureDetector(
+                    onTap: () {
+                      print("back started");
+                    },
+                    child: Card(
+                      child: Container(
+                        padding: const EdgeInsets.all(15),
+                        alignment: Alignment.centerLeft,
+                        child:
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text('Do not disturb',
+                                    style: Theme.of(context).textTheme.headline6),
+                                Text("On",
+                                    style: TextStyle(color: Colors.grey[600]))
+                              ],
+                            ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
-
   Future openDialog() => showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -242,11 +212,14 @@ class _SettingsPageState extends State<SettingsPage> {
             //Use submit to close dialog
           ));
 
-  void submit() {
+  void submit() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
     Navigator.of(context).pop(radioValue);
+    preferences.setInt("themeMode", radioValue);
   }
 
-  void showDialogPicker(BuildContext context) {
+  void showDialogPicker(BuildContext context) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
     selectedTime = showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
@@ -267,33 +240,14 @@ class _SettingsPageState extends State<SettingsPage> {
             ((value.minute < 10)
                 ? ("0" + value.minute.toString())
                 : value.minute.toString()));
-        Workmanager().cancelAll();
-        print("Cancelled");
-        if (DateTime.now().hour > value.hour) {
-          day = 1;
-        } else {
-          day = 0;
-        }
-        print(day);
-        Workmanager().registerPeriodicTask("Alarm", "Ring_Alarm",
-            initialDelay: Duration(
-                minutes: ((value.minute - DateTime.now().minute) % 60),
-                hours: ((value.hour - DateTime.now().hour) % 24),
-                days: day),
-            frequency: const Duration(days: 1));
-        print("Work scheduled");
+        alarmHr = value.hour;
+        alarmMn = value.minute;
+        preferences.setInt("alarmHour", alarmHr);
+        preferences.setInt("alarmMinute", alarmMn);
       });
       reminderValue = true;
     }, onError: (error) {
       print(error);
     });
   }
-
-  void scheduleTime() {
-    DateTime now = DateTime.now();
-  }
 }
-
-//Card(
-//color: CantonMethods.alternateCanvasColorType2(context),
-//shape: CantonSmoothBorder.defaultBorder(),
