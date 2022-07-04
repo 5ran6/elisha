@@ -64,7 +64,6 @@ import 'package:elisha/src/services/noty_services/notify_service.dart';
 import 'package:elisha/src/services/authentication_services/authentication_wrapper.dart';
 import 'dart:convert';
 
-
 //Global variable for theme. Set by settings page
 String? theme;
 dynamic lightSetting = cantonLightTheme().copyWith(
@@ -131,7 +130,6 @@ void onStart(ServiceInstance service) async {
   });
 }
 
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runZonedGuarded<Future<void>>(() async {
@@ -156,7 +154,7 @@ Future<void> main() async {
 
     /// Lock screen orientation to vertical
     await SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
+            [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
         .then((_) {
       runApp(const ProviderScope(child: MyApp()));
     });
@@ -179,35 +177,33 @@ class MyApp extends StatelessWidget {
     print(lsdv);
     if (lsdv.isEmpty) {
       List<Devotional> listOfDevs =
-      await RemoteAPI.getDevotionalsForMonth(formattedMYNameAPI);
+          await RemoteAPI.getDevotionalsForMonth(formattedMYNameAPI);
       DevotionalDBHelper.instance.insertDevotionalList(listOfDevs);
     }
   }
 
-      @override
-      Widget build(BuildContext context) {
-        receiveData();
-        print("mains theme " + theme!);
-        return ScreenUtilInit(
-          designSize: const Size(360, 690),
-          minTextAdapt: true,
-          splitScreenMode: true,
-          builder: (context, child) =>
-              CantonApp(
-                  title: kAppTitle,
-                  primaryLightColor: const Color(0xFFB97D3C),
-                  primaryLightVariantColor: const Color(0xFFB97D3C),
-                  primaryDarkColor: const Color(0xFFB97D3C),
-                  primaryDarkVariantColor: const Color(0xFFB97D3C),
-                  lightTheme: theme == "Dark" ? darkSetting : lightSetting,
-                  darkTheme: theme == "Light" ? lightSetting : darkSetting,
-                  //lightTheme: darkSetting,
-                  //darkTheme: darkSetting,
-                  navigatorObservers: [
-                    FirebaseAnalyticsObserver(
-                        analytics: FirebaseAnalytics.instance)
-                  ],
-                  home: SettingsPage()),
-        );
-      }
-    }
+  @override
+  Widget build(BuildContext context) {
+    receiveData();
+    print("mains theme " + theme!);
+    return ScreenUtilInit(
+      designSize: const Size(360, 690),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) => CantonApp(
+          title: kAppTitle,
+          primaryLightColor: const Color(0xFFB97D3C),
+          primaryLightVariantColor: const Color(0xFFB97D3C),
+          primaryDarkColor: const Color(0xFFB97D3C),
+          primaryDarkVariantColor: const Color(0xFFB97D3C),
+          lightTheme: theme == "Dark" ? darkSetting : lightSetting,
+          darkTheme: theme == "Light" ? lightSetting : darkSetting,
+          //lightTheme: darkSetting,
+          //darkTheme: darkSetting,
+          navigatorObservers: [
+            FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
+          ],
+          home: SettingsPage()),
+    );
+  }
+}

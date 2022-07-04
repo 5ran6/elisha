@@ -2,11 +2,11 @@ import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/main.dart';
 import 'package:elisha/src/ui/views/settings_view/settings_header_view.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../services/noty_services/notify_service.dart';
 
-SharedPreferences? pref;
 String? time;
 
 void runAlarm() async {
@@ -14,8 +14,8 @@ void runAlarm() async {
   final DateTime now = DateTime.now();
   SharedPreferences preferences = await SharedPreferences.getInstance();
   time = preferences.getString("alarmTime");
-  NotificationService().showNotification(1, "Secret place",
-      "Hey, you scheduled a time with Jesus");
+  NotificationService().showNotification(
+      1, "Secret place", "Hey, you scheduled a time with Jesus");
 }
 
 class SettingsPage extends StatefulWidget {
@@ -34,13 +34,22 @@ class _SettingsPageState extends State<SettingsPage> {
   String tme = "";
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    if (time == null){
+    getPrefData();
+  }
+
+  void getPrefData() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    if (preferences.containsKey("themeMode") == false) {
+      preferences.setString("themeMode", "System");
+    }
+    themeVal = preferences.getString("themeMode")!;
+    if (preferences.containsKey("alarmTime") == false){
       tme = "Off";
       reminderValue = false;
-    } else{
-      tme = time!.split(" ")[1];
+    }else{
+      tme = preferences.getString("alarmTime")!.split(" ")[1];
     }
   }
 
@@ -245,10 +254,12 @@ class _SettingsPageState extends State<SettingsPage> {
 
   void submit() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    setState((){
+    setState(() {
       Navigator.of(context).pop(radioValue);
       preferences.setString("themeMode", themeList[radioValue]);
       theme = preferences.getString("themeMode");
+      themeVal = preferences.getString("themeMode")!;
+      Fluttertoast.showToast(msg: "Restart app to see changes", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
     });
   }
 
