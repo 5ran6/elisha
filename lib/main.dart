@@ -57,6 +57,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 
 import 'package:elisha/src/config/constants.dart';
 import 'package:elisha/src/services/noty_services/notify_service.dart';
@@ -84,6 +85,14 @@ Future<void> initializeService() async {
   service.startService();
 }
 
+void printHello() async {
+  await NotificationService().initNotification();
+  final DateTime now = DateTime.now();
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  int? hello = preferences.getInt("alarmHour");
+  NotificationService().showNotification(1, "Secret place", "$now, Hey, you scheduled a time with Jesus now $hello");
+}
+
 bool onIosBackground(ServiceInstance service) {
   WidgetsFlutterBinding.ensureInitialized();
   print('FLUTTER BACKGROUND FETCH');
@@ -91,10 +100,7 @@ bool onIosBackground(ServiceInstance service) {
 }
 
 void onStart(ServiceInstance service) async {
-  // Only available for flutter 3.0.0 and later
   DartPluginRegistrant.ensureInitialized();
-  // For flutter prior to version 3.0.0
-  // We have to register the plugin manually
 
   if (service is AndroidServiceInstance) {
     service.on('setAsForeground').listen((event) {
@@ -105,23 +111,15 @@ void onStart(ServiceInstance service) async {
       service.setAsBackgroundService();
     });
   }
-
   service.on('stopService').listen((event) {
     service.stopSelf();
   });
 
-  // bring to foreground
   Timer.periodic(const Duration(seconds: 20), (timer) async {
+    await NotificationService().initNotification();
     SharedPreferences preferences = await SharedPreferences.getInstance();
     int? hello = preferences.getInt("alarmHour");
     NotificationService().showNotification(1, "Secret place", "Hey, you scheduled a time with Jesus now ${hello}");
-
-    // if (service is AndroidServiceInstance) {
-    //   service.setForegroundNotificationInfo(
-    //     title: "My App Service",
-    //     content: "Updated at ${DateTime.now()}",
-    //   );
-    // }
   });
 }
 
@@ -130,8 +128,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runZonedGuarded<Future<void>>(() async {
     WidgetsFlutterBinding.ensureInitialized();
-    await NotificationService().initNotification();
-    await initializeService();
+    await AndroidAlarmManager.initialize();
+    //await initializeService();
     await MobileAds.instance.initialize();
     await Firebase.initializeApp();
     await Hive.initFlutter();
@@ -152,6 +150,8 @@ Future<void> main() async {
   }, (error, stack) async {
     await FirebaseCrashlytics.instance.recordError(error, stack);
   });
+  const int helloAlarmID = 0;
+  await AndroidAlarmManager.periodic(const Duration(seconds: 30), helloAlarmID, printHello);
 }
 
 class MyApp extends StatefulWidget {
