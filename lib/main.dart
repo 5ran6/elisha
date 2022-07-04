@@ -64,6 +64,21 @@ import 'package:elisha/src/services/noty_services/notify_service.dart';
 import 'package:elisha/src/services/authentication_services/authentication_wrapper.dart';
 import 'dart:convert';
 
+
+//Global variable for theme. Set by settings page
+String? theme;
+dynamic lightSetting = cantonLightTheme().copyWith(
+    primaryColor: const Color(0xFFB97D3C),
+    colorScheme: cantonLightTheme()
+        .colorScheme
+        .copyWith(primaryVariant: const Color(0xFFB97D3C)));
+dynamic darkSetting = cantonDarkTheme().copyWith(
+    primaryColor: const Color(0xFFB97D3C),
+    colorScheme: cantonDarkTheme()
+        .colorScheme
+        .copyWith(primaryVariant: const Color(0xFFB97D3C)));
+
+//Notification stuff
 Future<void> initializeService() async {
   final service = FlutterBackgroundService();
   await service.configure(
@@ -83,14 +98,6 @@ Future<void> initializeService() async {
     ),
   );
   service.startService();
-}
-
-void printHello() async {
-  await NotificationService().initNotification();
-  final DateTime now = DateTime.now();
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  int? hello = preferences.getInt("alarmHour");
-  NotificationService().showNotification(1, "Secret place", "$now, Hey, you scheduled a time with Jesus now $hello");
 }
 
 bool onIosBackground(ServiceInstance service) {
@@ -119,7 +126,8 @@ void onStart(ServiceInstance service) async {
     await NotificationService().initNotification();
     SharedPreferences preferences = await SharedPreferences.getInstance();
     int? hello = preferences.getInt("alarmHour");
-    NotificationService().showNotification(1, "Secret place", "Hey, you scheduled a time with Jesus now ${hello}");
+    NotificationService().showNotification(
+        1, "Secret place", "Hey, you scheduled a time with Jesus now ${hello}");
   });
 }
 
@@ -130,6 +138,11 @@ Future<void> main() async {
     WidgetsFlutterBinding.ensureInitialized();
     await AndroidAlarmManager.initialize();
     //await initializeService();
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    if (preferences.containsKey("themeMode") == false) {
+      preferences.setString("themeMode", "System");
+    }
+    theme = preferences.getString("themeMode");
     await MobileAds.instance.initialize();
     await Firebase.initializeApp();
     await Hive.initFlutter();
@@ -143,25 +156,18 @@ Future<void> main() async {
 
     /// Lock screen orientation to vertical
     await SystemChrome.setPreferredOrientations(
-            [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
         .then((_) {
       runApp(const ProviderScope(child: MyApp()));
     });
   }, (error, stack) async {
     await FirebaseCrashlytics.instance.recordError(error, stack);
   });
-  const int helloAlarmID = 0;
-  await AndroidAlarmManager.periodic(const Duration(seconds: 30), helloAlarmID, printHello);
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
   void receiveData() async {
     DateTime now = DateTime.now();
 
@@ -173,75 +179,35 @@ class _MyAppState extends State<MyApp> {
     print(lsdv);
     if (lsdv.isEmpty) {
       List<Devotional> listOfDevs =
-          await RemoteAPI.getDevotionalsForMonth(formattedMYNameAPI);
+      await RemoteAPI.getDevotionalsForMonth(formattedMYNameAPI);
       DevotionalDBHelper.instance.insertDevotionalList(listOfDevs);
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    receiveData();
-
-    Map setTheme(theme) {
-      var light = cantonLightTheme().copyWith(
-          primaryColor: const Color(0xFFB97D3C),
-          colorScheme: cantonLightTheme()
-              .colorScheme
-              .copyWith(primaryVariant: const Color(0xFFB97D3C)));
-      var dark = cantonLightTheme().copyWith(
-          primaryColor: const Color(0xFFB97D3C),
-          colorScheme: cantonLightTheme()
-              .colorScheme
-              .copyWith(primaryVariant: const Color(0xFFB97D3C)));
-      print(theme);
-      if (theme == "Light") {
-        return {'light': light, 'dark': light};
-      } else if (theme == "Dark") {
-        return {'light': dark, 'dark': dark};
-      } else {
-        return {'light': light, 'dark': dark};
+      @override
+      Widget build(BuildContext context) {
+        receiveData();
+        print("mains theme " + theme!);
+        return ScreenUtilInit(
+          designSize: const Size(360, 690),
+          minTextAdapt: true,
+          splitScreenMode: true,
+          builder: (context, child) =>
+              CantonApp(
+                  title: kAppTitle,
+                  primaryLightColor: const Color(0xFFB97D3C),
+                  primaryLightVariantColor: const Color(0xFFB97D3C),
+                  primaryDarkColor: const Color(0xFFB97D3C),
+                  primaryDarkVariantColor: const Color(0xFFB97D3C),
+                  lightTheme: theme == "Dark" ? darkSetting : lightSetting,
+                  darkTheme: theme == "Light" ? lightSetting : darkSetting,
+                  //lightTheme: darkSetting,
+                  //darkTheme: darkSetting,
+                  navigatorObservers: [
+                    FirebaseAnalyticsObserver(
+                        analytics: FirebaseAnalytics.instance)
+                  ],
+                  home: SettingsPage()),
+        );
       }
     }
-
-    // return ScreenUtilInit(
-    //   designSize: Size(360, 690),
-    //   minTextAdapt: true,
-    //   splitScreenMode: true,
-    //   builder: () => MaterialApp(
-    //     //... other code
-    //     builder: (context, widget) {
-    //       //add this line
-    //       ScreenUtil.setContext(context);
-    //       return MediaQuery(
-    //         //Setting font does not change with system font size
-    //         data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-    //         child: widget!,
-    //       );
-    //     },
-    //     theme: ThemeData(
-    //       textTheme: TextTheme(
-    //           //To support the following, you need to use the first initialization method
-    //           button: TextStyle(fontSize: 45.sp)),
-    //     ),
-    //   ),
-    // );
-
-    return ScreenUtilInit(
-      designSize: const Size(360, 690),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      builder: (context, child) => CantonApp(
-          title: kAppTitle,
-          primaryLightColor: const Color(0xFFB97D3C),
-          primaryLightVariantColor: const Color(0xFFB97D3C),
-          primaryDarkColor: const Color(0xFFB97D3C),
-          primaryDarkVariantColor: const Color(0xFFB97D3C),
-          lightTheme: setTheme("Dark")['light'],
-          darkTheme: setTheme("Dark")['dark'],
-          navigatorObservers: [
-            FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
-          ],
-          home: SettingsPage()),
-    );
-  }
-}

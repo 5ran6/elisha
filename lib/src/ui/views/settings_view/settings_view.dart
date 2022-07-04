@@ -1,9 +1,26 @@
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:elisha/main.dart';
 import 'package:elisha/src/ui/views/settings_view/settings_header_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../services/noty_services/notify_service.dart';
+
+SharedPreferences? pref;
+String? time;
+
+void runAlarm() async {
+  await NotificationService().initNotification();
+  final DateTime now = DateTime.now();
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  time = preferences.getString("alarmTime");
+  NotificationService().showNotification(1, "Secret place",
+      "Hey, you scheduled a time with Jesus");
+}
+
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
+
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }
@@ -11,20 +28,20 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   bool reminderValue = true;
   int radioValue = 0;
-  List themeList = ["System Default", "Light", "Dark"];
+  List themeList = ["System", "Light", "Dark"];
+  String themeVal = "";
   late Future<TimeOfDay?> selectedTime;
-  String tme = "6:00";
-  int alarmHr = 0;
-  int alarmMn = 0;
-
-  void getPref() async {
-
-  }
+  String tme = "";
 
   @override
-  void initState() {
+  void initState(){
     super.initState();
-    getPref();
+    if (time == null){
+      tme = "Off";
+      reminderValue = false;
+    } else{
+      tme = time!.split(" ")[1];
+    }
   }
 
   @override
@@ -58,7 +75,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           children: [
                             Text('Theme',
                                 style: Theme.of(context).textTheme.headline6),
-                            Text(themeList[radioValue],
+                            Text(themeVal,
                                 style: TextStyle(color: Colors.grey[600])),
                           ],
                         ),
@@ -84,7 +101,8 @@ class _SettingsPageState extends State<SettingsPage> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Text('Daily Remainder',
-                                    style: Theme.of(context).textTheme.headline6),
+                                    style:
+                                        Theme.of(context).textTheme.headline6),
                                 Text(tme,
                                     style: TextStyle(
                                         color: reminderValue
@@ -97,7 +115,7 @@ class _SettingsPageState extends State<SettingsPage> {
                               child: Switch.adaptive(
                                   activeColor: Colors.blueGrey,
                                   activeTrackColor:
-                                  Colors.blueGrey.withOpacity(0.4),
+                                      Colors.blueGrey.withOpacity(0.4),
                                   inactiveThumbColor: Colors.black87,
                                   inactiveTrackColor: Colors.black12,
                                   splashRadius: 50,
@@ -105,6 +123,19 @@ class _SettingsPageState extends State<SettingsPage> {
                                   onChanged: (value) {
                                     setState(() {
                                       reminderValue = value;
+                                      if (reminderValue == false) {
+                                        AndroidAlarmManager.cancel(1);
+                                      } else {
+                                        AndroidAlarmManager.periodic(
+                                            const Duration(hours: 1),
+                                            1,
+                                            runAlarm,
+                                            allowWhileIdle: true,
+                                            rescheduleOnReboot: true,
+                                            exact: true,
+                                            wakeup: true,
+                                            startAt: DateTime.tryParse(time!));
+                                      }
                                     });
                                   }),
                             ),
@@ -122,20 +153,19 @@ class _SettingsPageState extends State<SettingsPage> {
                       child: Container(
                         padding: const EdgeInsets.all(15),
                         alignment: Alignment.centerLeft,
-                        child:
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text('Do not disturb',
-                                    style: Theme.of(context).textTheme.headline6),
-                                Text("On",
-                                    style: TextStyle(color: Colors.grey[600]))
-                              ],
-                            ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text('Do not disturb',
+                                style: Theme.of(context).textTheme.headline6),
+                            Text("On",
+                                style: TextStyle(color: Colors.grey[600]))
+                          ],
                         ),
                       ),
                     ),
+                  ),
                 ],
               ),
             ),
@@ -144,6 +174,7 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
     );
   }
+
   Future openDialog() => showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -214,8 +245,11 @@ class _SettingsPageState extends State<SettingsPage> {
 
   void submit() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    Navigator.of(context).pop(radioValue);
-    preferences.setInt("themeMode", radioValue);
+    setState((){
+      Navigator.of(context).pop(radioValue);
+      preferences.setString("themeMode", themeList[radioValue]);
+      theme = preferences.getString("themeMode");
+    });
   }
 
   void showDialogPicker(BuildContext context) async {
@@ -233,17 +267,25 @@ class _SettingsPageState extends State<SettingsPage> {
     selectedTime.then((value) {
       setState(() {
         if (value == null) return;
-        tme = (((value.hour < 10)
-                ? ("0" + value.hour.toString())
-                : value.hour.toString()) +
-            " : " +
-            ((value.minute < 10)
-                ? ("0" + value.minute.toString())
-                : value.minute.toString()));
-        alarmHr = value.hour;
-        alarmMn = value.minute;
-        preferences.setInt("alarmHour", alarmHr);
-        preferences.setInt("alarmMinute", alarmMn);
+        // tme = (((value.hour < 10)
+        //         ? ("0" + value.hour.toString())
+        //         : value.hour.toString()) +
+        //     " : " +
+        //     ((value.minute < 10)
+        //         ? ("0" + value.minute.toString())
+        //         : value.minute.toString()));
+        preferences.setString("alarmTime",
+            "${DateTime.now().year}${(((DateTime.now().month < 10) ? ("0" + DateTime.now().month.toString()) : DateTime.now().month.toString()) + ((DateTime.now().day < 10) ? ("0" + DateTime.now().day.toString()) : DateTime.now().day.toString()))} ${((value.hour < 10) ? ("0" + value.hour.toString()) : value.hour.toString())}:${((value.minute < 10) ? ("0" + value.minute.toString()) : value.minute.toString())}:00");
+        time = preferences.getString("alarmTime");
+        tme = time!.split(" ")[1];
+        print("time = " + time!);
+        AndroidAlarmManager.cancel(1);
+        AndroidAlarmManager.periodic(const Duration(hours: 1), 1, runAlarm,
+            allowWhileIdle: true,
+            rescheduleOnReboot: true,
+            exact: true,
+            wakeup: true,
+            startAt: DateTime.tryParse(time!));
       });
       reminderValue = true;
     }, onError: (error) {
