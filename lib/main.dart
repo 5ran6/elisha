@@ -101,7 +101,6 @@ Future<void> initializeService() async {
 
 bool onIosBackground(ServiceInstance service) {
   WidgetsFlutterBinding.ensureInitialized();
-  print('FLUTTER BACKGROUND FETCH');
   return true;
 }
 
@@ -123,10 +122,8 @@ void onStart(ServiceInstance service) async {
 
   Timer.periodic(const Duration(seconds: 20), (timer) async {
     await NotificationService().initNotification();
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    int? hello = preferences.getInt("alarmHour");
     NotificationService().showNotification(
-        1, "Secret place", "Hey, you scheduled a time with Jesus now ${hello}");
+        1, "Secret place", "Hey, you scheduled a time with Jesus now");
   });
 }
 
@@ -185,7 +182,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     receiveData();
-    print("mains theme " + theme!);
     return ScreenUtilInit(
       designSize: const Size(360, 690),
       minTextAdapt: true,
