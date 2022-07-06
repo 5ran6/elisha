@@ -1,0 +1,211 @@
+import 'dart:convert';
+
+import 'package:canton_design_system/canton_design_system.dart';
+import 'package:elisha/src/models/note.dart';
+import 'package:elisha/src/services/devotionalDB_helper.dart';
+import 'package:elisha/utils/note_functions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
+import 'package:speech_to_text/speech_to_text.dart';
+import 'package:http/http.dart' as http;
+
+class NoteViewFromDB extends StatefulWidget {
+  final String dateNoteWasSaved;
+
+  const NoteViewFromDB({Key? key, required this.dateNoteWasSaved}) : super(key: key);
+
+  @override
+  _NoteViewFromDBState createState() => _NoteViewFromDBState();
+}
+
+class _NoteViewFromDBState extends State<NoteViewFromDB> {
+  String _title = "";
+  String _writeUp = "";
+
+  late SpeechToText _speech;
+  bool _islistening = false;
+  double confidence = 1.0;
+  var noteWidget = TextEditingController();
+  var noteTitleWidget = TextEditingController();
+  String newWords = "";
+
+  @override
+  void initState() {
+    _speech = SpeechToText();
+    getTitleAsString(widget.dateNoteWasSaved);
+    getWriteUpAsString(widget.dateNoteWasSaved);
+
+    noteTitleWidget.text = _title;
+    noteWidget.text = _writeUp;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+    return SafeArea(
+      child: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child: Row(children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Note', style: Theme.of(context).textTheme.headline3),
+                  ),
+                  Expanded(
+                      child: Align(
+                          alignment: Alignment.centerRight,
+                          child: IconButton(onPressed: _listen, icon: Icon(_islistening ? Icons.mic_off : Icons.mic))))
+                ]),
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    height: 40,
+                    width: MediaQuery.of(context).size.width - 15,
+                    color: Colors.black87,
+                    child: const Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Topic | Date',
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        )),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Align(
+                alignment: Alignment.center,
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width - 15,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      //initialValue: _title;
+                      controller: noteTitleWidget..text = _title,
+                      keyboardType: TextInputType.text,
+                      decoration: const InputDecoration(
+                          alignLabelWithHint: true, labelText: 'Title', border: OutlineInputBorder()),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 5),
+              Expanded(
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width - 15,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      minLines: 30,
+                      keyboardType: TextInputType.text,
+                      maxLines: null,
+                      controller: noteWidget..text = _writeUp,
+                      //initialValue: _writeUp,
+                      decoration: const InputDecoration(
+                          alignLabelWithHint: true, labelText: 'Note', border: OutlineInputBorder()),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              GestureDetector(
+                  onTap: () async {
+                    DateTime now = DateTime.now();
+                    String todayDate = DateFormat('dd.MM.yyyy').format(now);
+                    Note note = Note(title: noteTitleWidget.text, writeUp: noteWidget.text, date: todayDate);
+
+                    DevotionalDBHelper.instance.insertNote(note);
+                    Fluttertoast.showToast(
+                        msg: "Note Saved", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
+
+                    if (user != null) {
+                      sendNotePostRequest(note);
+                    }
+                  },
+                  child: Container(
+                      width: MediaQuery.of(context).size.width - 40,
+                      height: 50,
+                      decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(15)),
+                      child: const Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Save",
+                            style: TextStyle(color: Colors.white, fontSize: 18),
+                          ))))
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void sendNotePostRequest(Note note) async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    final idToken = await user?.getIdToken();
+    final response = await http.post(Uri.parse("https://secret-place.herokuapp.com/api-secured/users/notes"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $idToken',
+        },
+        body: jsonEncode(note));
+  }
+
+  void _listen() async {
+    if (!_islistening) {
+      bool available = await _speech.initialize(
+          onStatus: (val) => setState(() {
+                if (val == 'listening') {
+                  _islistening = true;
+                  Fluttertoast.showToast(
+                      msg: "Mic started", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
+                } else if (val == 'done') {
+                  noteWidget.text = noteWidget.text == "" ? newWords : noteWidget.text + newWords;
+                } else {
+                  _islistening = false;
+                  Fluttertoast.showToast(
+                      msg: "Tap microphone to speak again",
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.BOTTOM);
+                }
+              }),
+          onError: (val) => print('onError: $val'));
+      if (available) {
+        setState(() => _islistening = true);
+        _speech.listen(
+          onResult: (val) => setState(() => newWords = val.recognizedWords),
+        );
+      }
+    } else {
+      setState(() => _islistening = false);
+      _speech.stop();
+    }
+  }
+
+  getTitleAsString(String dt) async {
+    var title = await NoteItemsRetrieveClass.getNoteTitleForThisDay(dt);
+    setState(() {
+      _title = title!;
+      //noteTitleWidget.text = title;
+    });
+  }
+
+  getWriteUpAsString(String dt) async {
+    var writeUp = await NoteItemsRetrieveClass.getNoteWriteUpForThisDay(dt);
+    setState(() {
+      _writeUp = writeUp!;
+      //noteWidget.text = writeUp;
+    });
+  }
+}

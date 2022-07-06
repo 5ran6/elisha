@@ -287,7 +287,7 @@ class _SettingsPageState extends State<SettingsPage> {
             "${DateTime.now().year}${(((DateTime.now().month < 10) ? ("0" + DateTime.now().month.toString()) : DateTime.now().month.toString()) + ((DateTime.now().day < 10) ? ("0" + DateTime.now().day.toString()) : DateTime.now().day.toString()))} ${((value.hour < 10) ? ("0" + value.hour.toString()) : value.hour.toString())}:${((value.minute < 10) ? ("0" + value.minute.toString()) : value.minute.toString())}:00");
         time = preferences.getString("alarmTime");
         tme = time!.split(" ")[1].substring(0, 5);
-        AndroidAlarmManager.cancel(1)
+        AndroidAlarmManager.cancel(1);
         //All the settings for the alarm manager
         AndroidAlarmManager.periodic(const Duration(days: 1), 1, runAlarm,
             allowWhileIdle: true,
