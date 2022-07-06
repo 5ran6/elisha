@@ -10,6 +10,10 @@ import 'package:elisha/src/providers/theme_manager_provider.dart';
 
 import '../../../services/noty_services/notify_service.dart';
 
+//TODO: call the "set state of the provider" function for String? theme in the main from void submit
+//getPref gets Shared pref data for the UI
+//Alarm manager is called in void showDialogPicker
+
 String? time;
 
 void runAlarm() async {
@@ -28,12 +32,12 @@ class SettingsPage extends StatefulWidget{
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  List themeList = ["System", "Light", "Dark"];
+  late Future<TimeOfDay?> selectedTime;
   bool reminderValue = true;
   int radioValue = 0;
-  List themeList = ["System", "Light", "Dark"];
-  String themeVal = "";
-  late Future<TimeOfDay?> selectedTime;
-  String tme = "";
+  late String themeVal = ""; //for UI use to update the theme card subtext
+  late String tme = ""; //for UI use to update the alarm card subtext
 
   void getPrefData() async {
     await SharedPreferences.getInstance().then((preferences) {
@@ -45,7 +49,7 @@ class _SettingsPageState extends State<SettingsPage> {
         tme = "Off";
         reminderValue = false;
       }else{
-        tme = preferences.getString("alarmTime")!.split(" ")[1];
+        tme = preferences.getString("alarmTime")!.split(" ")[1].substring(0, 5);
       }
     });
 
@@ -59,6 +63,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
+    getPrefData();
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -259,7 +264,7 @@ class _SettingsPageState extends State<SettingsPage> {
       preferences.setString("themeMode", themeList[radioValue]);
       theme = preferences.getString("themeMode");
       themeVal = preferences.getString("themeMode")!;
-      //Fluttertoast.showToast(msg: "Restart app to see changes", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
+      Fluttertoast.showToast(msg: "Restart app to see changes", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
     });
   }
 
@@ -281,9 +286,10 @@ class _SettingsPageState extends State<SettingsPage> {
         preferences.setString("alarmTime",
             "${DateTime.now().year}${(((DateTime.now().month < 10) ? ("0" + DateTime.now().month.toString()) : DateTime.now().month.toString()) + ((DateTime.now().day < 10) ? ("0" + DateTime.now().day.toString()) : DateTime.now().day.toString()))} ${((value.hour < 10) ? ("0" + value.hour.toString()) : value.hour.toString())}:${((value.minute < 10) ? ("0" + value.minute.toString()) : value.minute.toString())}:00");
         time = preferences.getString("alarmTime");
-        tme = time!.split(" ")[1];
-        AndroidAlarmManager.cancel(1);
-        AndroidAlarmManager.periodic(const Duration(hours: 1), 1, runAlarm,
+        tme = time!.split(" ")[1].substring(0, 5);
+        AndroidAlarmManager.cancel(1)
+        //All the settings for the alarm manager
+        AndroidAlarmManager.periodic(const Duration(days: 1), 1, runAlarm,
             allowWhileIdle: true,
             rescheduleOnReboot: true,
             exact: true,

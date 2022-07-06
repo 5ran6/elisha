@@ -64,6 +64,13 @@ import 'package:elisha/src/services/noty_services/notify_service.dart';
 import 'package:elisha/src/services/authentication_services/authentication_wrapper.dart';
 import 'dart:convert';
 
+
+//Future<void> initializeService, bool onIosBackground and void onStart are used for the flutter background service and is initialized in the main with await initializeService()
+//Android alarm manager has its only initialization in the main and is called in the settings_view.dart
+//TODO: Use providers to listen to String? theme once it changes...
+//String? theme is used to get the themeMode value from the Sharedpreferences
+
+
 //Global variable for theme. Set by settings page
 String? theme;
 dynamic lightSetting = cantonLightTheme().copyWith(
