@@ -26,7 +26,7 @@ class SignInViewHeader extends StatelessWidget {
     return Column(
       children: [
         Image.asset(
-          'assets/images/store_icon.png',
+          'assets/images/secret_place_Store_icon.png',
           height: 70,
         ),
         SizedBox(

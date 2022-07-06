@@ -13,6 +13,7 @@ class FullBibleInAYearPage extends StatelessWidget {
     var bibleInAYearList = json.decode(bibleInAYear);
     return bibleInAYearList;
   }
+
   final bool _isChecked = true;
 
   @override
@@ -24,7 +25,7 @@ class FullBibleInAYearPage extends StatelessWidget {
             children: [
               ListTile(
                 title: Text('Scriptures For Today',
-                    style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold)),
+                    style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold, fontSize: 21)),
                 leading: IconButton(
                   icon: const Icon(Icons.arrow_back, color: Colors.black),
                   onPressed: () => Navigator.of(context).pop(),
@@ -35,16 +36,24 @@ class FullBibleInAYearPage extends StatelessWidget {
                 shrinkWrap: true,
                 children: [
                   ...getItems().map((e) => CheckboxListTile(
-                      value: _isChecked,
-                      onChanged: (value) {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => BibleView(biblePassage: e),
-                        ),);
-                      },
-                      controlAffinity: ListTileControlAffinity.leading,
-                    activeColor: Colors.black,
-                    checkColor: Colors.white,
-                      title: Text(e, style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.normal)),
-                  ))
+                        value: _isChecked,
+                        onChanged: (value) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => BibleView(biblePassage: e),
+                            ),
+                          );
+                        },
+                        controlAffinity: ListTileControlAffinity.leading,
+                        activeColor: Colors.black,
+                        checkColor: Colors.white,
+                        title: Text(e,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline4
+                                ?.copyWith(fontWeight: FontWeight.normal, fontSize: 25)),
+                      ))
                 ],
               ),
             ],
@@ -53,5 +62,4 @@ class FullBibleInAYearPage extends StatelessWidget {
       ),
     );
   }
-
 }

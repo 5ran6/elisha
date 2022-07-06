@@ -43,7 +43,7 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
                         const CircleAvatar(
                           radius: 20,
                           backgroundColor: Color.fromRGBO(3, 3, 70, 1),
-                          backgroundImage: AssetImage("assets/images/app_icon.png"),
+                          backgroundImage: AssetImage("assets/images/secret_place_logo_white_background.png"),
                         ),
                         Container(width: 15),
                         Expanded(

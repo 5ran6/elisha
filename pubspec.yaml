@@ -144,6 +144,8 @@ flutter:
     - assets/images/without_distractions.jpg
     - assets/images/pray.jpg
     - assets/images/study.jpg
+    - assets/images/secret_place_Store_icon.png
+    - assets/images/secret_place_logo_with_background_color.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
