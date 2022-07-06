@@ -67,6 +67,12 @@ class _BibleViewState extends State<BibleView> {
         final translationRepo = watch(bibleTranslationsProvider);
         final booksRepo = watch(bibleBooksProvider);
         final chaptersRepo = watch(bibleChaptersProvider);
+        final themeProvider = ChangeNotifierProvider<ThemeRepository>((ref) {
+          return ThemeRepository();
+        });
+
+        final repo = watch(themeProvider);
+        print (repo.themeMode);
 
         return translationRepo.when(
           error: (e, s) {
@@ -123,11 +129,15 @@ class _BibleViewState extends State<BibleView> {
           TextSpan(
             children: spans,
           ),
-          style: Theme.of(context).textTheme.headline5!.copyWith(
-                fontWeight: FontWeight.w400,
-                fontSize: 21,
-                height: 1.97,
-              ),
+          style: Theme
+              .of(context)
+              .textTheme
+              .headline5!
+              .copyWith(
+            fontWeight: FontWeight.w400,
+            fontSize: 21,
+            height: 1.97,
+          ),
         ),
       ),
     );
@@ -137,9 +147,16 @@ class _BibleViewState extends State<BibleView> {
       spans.add(
         TextSpan(
           text: item.verseId.toString() + ' ',
-          style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                color: Theme.of(context).colorScheme.secondaryVariant,
-              ),
+          style: Theme
+              .of(context)
+              .textTheme
+              .bodyText1
+              ?.copyWith(
+            color: Theme
+                .of(context)
+                .colorScheme
+                .secondaryVariant,
+          ),
         ),
       );
 
@@ -193,7 +210,10 @@ class _BibleViewState extends State<BibleView> {
               child: Icon(
                 Iconsax.arrow_left_2,
                 size: 20,
-                color: Theme.of(context).colorScheme.secondaryVariant,
+                color: Theme
+                    .of(context)
+                    .colorScheme
+                    .secondaryVariant,
               ),
             ),
           ),
@@ -209,7 +229,10 @@ class _BibleViewState extends State<BibleView> {
               child: Icon(
                 Iconsax.arrow_right_3,
                 size: 20,
-                color: Theme.of(context).colorScheme.secondaryVariant,
+                color: Theme
+                    .of(context)
+                    .colorScheme
+                    .secondaryVariant,
               ),
             ),
           ),
@@ -227,7 +250,10 @@ class _BibleViewState extends State<BibleView> {
         child: Icon(
           FeatherIcons.chevronLeft,
           size: 27,
-          color: Theme.of(context).colorScheme.secondaryVariant,
+          color: Theme
+              .of(context)
+              .colorScheme
+              .secondaryVariant,
         ),
       );
     }
@@ -244,7 +270,10 @@ class _BibleViewState extends State<BibleView> {
           child: Icon(
             FeatherIcons.chevronRight,
             size: 27,
-            color: Theme.of(context).colorScheme.secondaryVariant,
+            color: Theme
+                .of(context)
+                .colorScheme
+                .secondaryVariant,
           ),
         ),
       );
@@ -275,11 +304,18 @@ class _BibleViewState extends State<BibleView> {
                 shape: const SquircleBorder(
                   radius: BorderRadius.horizontal(left: Radius.circular(20)),
                 ),
-                color: Theme.of(context).inputDecorationTheme.fillColor,
+                color: Theme
+                    .of(context)
+                    .inputDecorationTheme
+                    .fillColor,
               ),
               child: Text(
                 bookChapterTitle,
-                style: Theme.of(context).textTheme.bodyText1?.copyWith(fontWeight: FontWeight.w600),
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .bodyText1
+                    ?.copyWith(fontWeight: FontWeight.w600),
               ),
             ),
           ),
@@ -296,11 +332,18 @@ class _BibleViewState extends State<BibleView> {
                 shape: const SquircleBorder(
                   radius: BorderRadius.horizontal(right: Radius.circular(20)),
                 ),
-                color: Theme.of(context).inputDecorationTheme.fillColor,
+                color: Theme
+                    .of(context)
+                    .inputDecorationTheme
+                    .fillColor,
               ),
               child: Text(
                 translations[int.parse(translationID)].abbreviation!,
-                style: Theme.of(context).textTheme.bodyText1?.copyWith(fontWeight: FontWeight.w600),
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .bodyText1
+                    ?.copyWith(fontWeight: FontWeight.w600),
               ),
             ),
           ),
@@ -342,7 +385,14 @@ class _BibleViewState extends State<BibleView> {
         child: Icon(
           isBookmarked ? CupertinoIcons.bookmark_fill : CupertinoIcons.bookmark,
           size: 24,
-          color: isBookmarked ? Theme.of(context).primaryColor : Theme.of(context).colorScheme.secondaryVariant,
+          color: isBookmarked
+              ? Theme
+              .of(context)
+              .primaryColor
+              : Theme
+              .of(context)
+              .colorScheme
+              .secondaryVariant,
         ),
       ),
     );
@@ -358,7 +408,10 @@ class _BibleViewState extends State<BibleView> {
         child: Icon(
           FeatherIcons.settings,
           size: 24,
-          color: Theme.of(context).colorScheme.secondaryVariant,
+          color: Theme
+              .of(context)
+              .colorScheme
+              .secondaryVariant,
         ),
       ),
     );
@@ -380,14 +433,20 @@ class _BibleViewState extends State<BibleView> {
                 radius: BorderRadius.circular(20),
                 side: BorderSide(
                   width: 1.5,
-                  color: Theme.of(context).colorScheme.onSecondary,
+                  color: Theme
+                      .of(context)
+                      .colorScheme
+                      .onSecondary,
                 ),
               ),
             ),
             child: Center(
               child: Text(
                 chapter.id.toString(),
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .headline6,
               ),
             ),
           ),
@@ -396,7 +455,10 @@ class _BibleViewState extends State<BibleView> {
 
       return CantonExpansionTile(
         childrenPadding: const EdgeInsets.symmetric(horizontal: 17),
-        title: Text(book.name!, style: Theme.of(context).textTheme.headline6),
+        title: Text(book.name!, style: Theme
+            .of(context)
+            .textTheme
+            .headline6),
         children: [
           Container(
             margin: const EdgeInsets.only(bottom: 12),
@@ -436,7 +498,10 @@ class _BibleViewState extends State<BibleView> {
                   width: 50,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25),
-                    color: Theme.of(context).colorScheme.secondary,
+                    color: Theme
+                        .of(context)
+                        .colorScheme
+                        .secondary,
                   ),
                 ),
               ),
@@ -450,15 +515,25 @@ class _BibleViewState extends State<BibleView> {
                       },
                       child: Text(
                         'Cancel',
-                        style: Theme.of(context).textTheme.headline6?.copyWith(
-                              color: Theme.of(context).colorScheme.secondaryVariant,
-                            ),
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .headline6
+                            ?.copyWith(
+                          color: Theme
+                              .of(context)
+                              .colorScheme
+                              .secondaryVariant,
+                        ),
                       ),
                     ),
                     const Spacer(flex: 6),
                     Text(
                       'Books',
-                      style: Theme.of(context).textTheme.headline5,
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .headline5,
                     ),
                     const Spacer(flex: 9),
                   ],
@@ -505,13 +580,23 @@ class _BibleViewState extends State<BibleView> {
           contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 17),
           title: Text(
             translation.name!,
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme
+                .of(context)
+                .textTheme
+                .headline6,
           ),
           trailing: Text(
             translation.abbreviation!,
-            style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                  color: Theme.of(context).colorScheme.secondaryVariant,
-                ),
+            style: Theme
+                .of(context)
+                .textTheme
+                .bodyText1
+                ?.copyWith(
+              color: Theme
+                  .of(context)
+                  .colorScheme
+                  .secondaryVariant,
+            ),
           ),
         ),
       );
@@ -536,7 +621,10 @@ class _BibleViewState extends State<BibleView> {
                   width: 50,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25),
-                    color: Theme.of(context).colorScheme.secondary,
+                    color: Theme
+                        .of(context)
+                        .colorScheme
+                        .secondary,
                   ),
                 ),
               ),
@@ -550,15 +638,25 @@ class _BibleViewState extends State<BibleView> {
                       },
                       child: Text(
                         'Cancel',
-                        style: Theme.of(context).textTheme.headline6?.copyWith(
-                              color: Theme.of(context).colorScheme.secondaryVariant,
-                            ),
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .headline6
+                            ?.copyWith(
+                          color: Theme
+                              .of(context)
+                              .colorScheme
+                              .secondaryVariant,
+                        ),
                       ),
                     ),
                     const Spacer(flex: 6),
                     Text(
                       'Versions',
-                      style: Theme.of(context).textTheme.headline5,
+                      style: Theme
+                          .of(context)
+                          .textTheme
+                          .headline5,
                     ),
                     const Spacer(flex: 9),
                   ],

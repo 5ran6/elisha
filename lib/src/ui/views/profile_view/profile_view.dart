@@ -164,7 +164,7 @@ class ProfileView extends StatelessWidget {
       ),
       GestureDetector(
         onTap: () {
-          CantonMethods.viewTransition(context, const SettingsPage());
+          CantonMethods.viewTransition(context, SettingsPage());
         },
         child: Card(
           margin: EdgeInsets.zero,

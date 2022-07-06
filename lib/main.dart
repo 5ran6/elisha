@@ -17,6 +17,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:async';
+import 'dart:ui';
+import 'package:flutter_background_service/flutter_background_service.dart';
+import 'package:flutter_background_service_android/flutter_background_service_android.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:elisha/src/models/devotional.dart';
 import 'package:elisha/src/providers/api_provider.dart';
 import 'package:elisha/src/services/devotionalDB_helper.dart';
@@ -53,23 +57,97 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 
 import 'package:elisha/src/config/constants.dart';
-import 'package:workmanager/workmanager.dart';
 import 'package:elisha/src/services/noty_services/notify_service.dart';
 import 'package:elisha/src/services/authentication_services/authentication_wrapper.dart';
 import 'dart:convert';
 
-void main() async {
+
+//Future<void> initializeService, bool onIosBackground and void onStart are used for the flutter background service and is initialized in the main with await initializeService()
+//Android alarm manager has its only initialization in the main and is called in the settings_view.dart
+//TODO: Use providers to listen to String? theme once it changes...
+//String? theme is used to get the themeMode value from the Sharedpreferences
+
+
+//Global variable for theme. Set by settings page
+String? theme;
+dynamic lightSetting = cantonLightTheme().copyWith(
+    primaryColor: const Color(0xFFB97D3C),
+    colorScheme: cantonLightTheme()
+        .colorScheme
+        .copyWith(primaryVariant: const Color(0xFFB97D3C)));
+dynamic darkSetting = cantonDarkTheme().copyWith(
+    primaryColor: const Color(0xFFB97D3C),
+    colorScheme: cantonDarkTheme()
+        .colorScheme
+        .copyWith(primaryVariant: const Color(0xFFB97D3C)));
+
+//Notification stuff
+Future<void> initializeService() async {
+  final service = FlutterBackgroundService();
+  await service.configure(
+    androidConfiguration: AndroidConfiguration(
+      // this will be executed when app is in foreground or background in separated isolate
+      onStart: onStart,
+      autoStart: true,
+      isForegroundMode: false,
+    ),
+    iosConfiguration: IosConfiguration(
+      // auto start service
+      autoStart: true,
+      // this will be executed when app is in foreground in separated isolate
+      onForeground: onStart,
+      // you have to enable background fetch capability on xcode project
+      onBackground: onIosBackground,
+    ),
+  );
+  service.startService();
+}
+
+bool onIosBackground(ServiceInstance service) {
+  WidgetsFlutterBinding.ensureInitialized();
+  return true;
+}
+
+void onStart(ServiceInstance service) async {
+  DartPluginRegistrant.ensureInitialized();
+
+  if (service is AndroidServiceInstance) {
+    service.on('setAsForeground').listen((event) {
+      service.setAsForegroundService();
+    });
+
+    service.on('setAsBackground').listen((event) {
+      service.setAsBackgroundService();
+    });
+  }
+  service.on('stopService').listen((event) {
+    service.stopSelf();
+  });
+
+  Timer.periodic(const Duration(seconds: 20), (timer) async {
+    await NotificationService().initNotification();
+    NotificationService().showNotification(
+        1, "Secret place", "Hey, you scheduled a time with Jesus now");
+  });
+}
+
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runZonedGuarded<Future<void>>(() async {
     WidgetsFlutterBinding.ensureInitialized();
-    await NotificationService().initNotification();
-    await Workmanager().initialize(callbackDispatcher);
+    await AndroidAlarmManager.initialize();
+    //await initializeService();
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    if (preferences.containsKey("themeMode") == false) {
+      preferences.setString("themeMode", "System");
+    }
+    theme = preferences.getString("themeMode");
     await MobileAds.instance.initialize();
-
     await Firebase.initializeApp();
-
     await Hive.initFlutter();
     await Hive.openBox('elisha');
 
@@ -80,7 +158,8 @@ void main() async {
     }
 
     /// Lock screen orientation to vertical
-    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
+    await SystemChrome.setPreferredOrientations(
+            [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
         .then((_) {
       runApp(const ProviderScope(child: MyApp()));
     });
@@ -90,48 +169,27 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   void receiveData() async {
     DateTime now = DateTime.now();
 
     String formattedMYNameAPI = DateFormat('MMMMyyyy').format(now);
     String formattedMYNameDB = DateFormat('MM.yyyy').format(now);
 
-    List<Devotional> lsdv = await DevotionalDBHelper.instance.getDevotionalsDBForMonth(formattedMYNameDB);
+    List<Devotional> lsdv = await DevotionalDBHelper.instance
+        .getDevotionalsDBForMonth(formattedMYNameDB);
     print(lsdv);
     if (lsdv.isEmpty) {
-      List<Devotional> listOfDevs = await RemoteAPI.getDevotionalsForMonth(formattedMYNameAPI);
+      List<Devotional> listOfDevs =
+          await RemoteAPI.getDevotionalsForMonth(formattedMYNameAPI);
       DevotionalDBHelper.instance.insertDevotionalList(listOfDevs);
     }
   }
 
-  const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     receiveData();
-
-    // return ScreenUtilInit(
-    //   designSize: Size(360, 690),
-    //   minTextAdapt: true,
-    //   splitScreenMode: true,
-    //   builder: () => MaterialApp(
-    //     //... other code
-    //     builder: (context, widget) {
-    //       //add this line
-    //       ScreenUtil.setContext(context);
-    //       return MediaQuery(
-    //         //Setting font does not change with system font size
-    //         data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-    //         child: widget!,
-    //       );
-    //     },
-    //     theme: ThemeData(
-    //       textTheme: TextTheme(
-    //           //To support the following, you need to use the first initialization method
-    //           button: TextStyle(fontSize: 45.sp)),
-    //     ),
-    //   ),
-    // );
-
     return ScreenUtilInit(
       designSize: const Size(360, 690),
       minTextAdapt: true,
@@ -142,7 +200,13 @@ class MyApp extends StatelessWidget {
           primaryLightVariantColor: const Color(0xFFB97D3C),
           primaryDarkColor: const Color(0xFFB97D3C),
           primaryDarkVariantColor: const Color(0xFFB97D3C),
-          navigatorObservers: [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
+          lightTheme: theme == "Dark" ? darkSetting : lightSetting,
+          darkTheme: theme == "Light" ? lightSetting : darkSetting,
+          //lightTheme: darkSetting,
+          //darkTheme: darkSetting,
+          navigatorObservers: [
+            FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
+          ],
           home: const SplashScreen()),
     );
   }
