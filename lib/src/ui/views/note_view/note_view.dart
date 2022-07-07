@@ -71,15 +71,23 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
             children: [
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Row(children: [
+                child: Row(
+                    children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text('Note', style: Theme.of(context).textTheme.headline3),
                   ),
                   Expanded(
-                      child: Align(
-                          alignment: Alignment.centerRight,
-                          child: IconButton(onPressed: _listen, icon: Icon(_islistening ? Icons.mic_off : Icons.mic))))
+                      child: Row(
+                        children: [
+                          Align(
+                              alignment: Alignment.centerRight,
+                              child: IconButton(onPressed: _listen, icon: Icon(_islistening ? Icons.mic_off : Icons.mic))),
+                          Align(
+                              alignment: Alignment.centerRight,
+                              child: IconButton(onPressed: () {}, icon: Icon(Icons.notes)))
+                        ],
+                      ))
                 ]),
               ),
               Align(

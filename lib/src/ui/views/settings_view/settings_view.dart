@@ -163,10 +163,15 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                   ),
                   const SizedBox(height: 12),
+
                   GestureDetector(
                     onTap: () async {
-                      if (!await FlutterDnd.isNotificationPolicyAccessGranted) {
-                        FlutterDnd.gotoPolicySettings();
+                      FlutterDnd.gotoPolicySettings();
+
+                      if (await FlutterDnd.isNotificationPolicyAccessGranted) {
+                        await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_NONE);
+                      } else {
+                        await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
                       }
 
                     },
