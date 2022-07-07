@@ -164,7 +164,11 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   const SizedBox(height: 12),
                   GestureDetector(
-                    onTap: () {
+                    onTap: () async {
+                      if (!await FlutterDnd.isNotificationPolicyAccessGranted) {
+                        FlutterDnd.gotoPolicySettings();
+                      }
+
                     },
                     child: Card(
                       child: Container(
