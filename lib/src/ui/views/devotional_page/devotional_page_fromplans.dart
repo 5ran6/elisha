@@ -27,6 +27,7 @@ class _DevotionalPageFromPlansState extends State<DevotionalPageFromPlans> {
     String fullPassage = widget.devotionalFromPlan.fullPassage;
     String prayerBurden = widget.devotionalFromPlan.prayerBurden;
     String thoughtOfTheDay = widget.devotionalFromPlan.thoughtOfTheDay;
+    String bibleInAYear = widget.devotionalFromPlan.bibleInAYear;
 
     final List<Widget> devotionalCards = [
       Card(
@@ -223,6 +224,14 @@ class _DevotionalPageFromPlansState extends State<DevotionalPageFromPlans> {
           ),
         ),
       ),
+      Card(
+        color: CantonMethods.alternateCanvasColorType2(context),
+        shape: CantonSmoothBorder.defaultBorder(),
+        child: ClipRRect(
+            borderRadius: BorderRadius.circular(20.0),
+            child: Image.asset('assets/images/bible_in_one_year.jpg', fit: BoxFit.cover,)
+        ),
+      ),
     ];
 
     return Scaffold(
@@ -232,7 +241,7 @@ class _DevotionalPageFromPlansState extends State<DevotionalPageFromPlans> {
             Expanded(
               child: VerticalCardPager(
                   images: devotionalCards,
-                  titles: const ['', '', '', ''],
+                  titles: const ['', '', '', '', ''],
                   onPageChanged: (page) {
                   },
                   onSelectedItem: (index) {
@@ -267,6 +276,14 @@ class _DevotionalPageFromPlansState extends State<DevotionalPageFromPlans> {
                         Navigator.of(context).push(PageTransition(
                             child: FullThoughtOfTheDayPage(
                                 thoughtOfTheDay: thoughtOfTheDay),
+                            type: PageTransitionType.scale,
+                            alignment: Alignment.center,
+                            duration: const Duration(milliseconds: 600)));
+                        break;
+                      case 4:
+                        Navigator.of(context).push(PageTransition(
+                            child: FullBibleInAYearPage(
+                                bibleInAYear: bibleInAYear),
                             type: PageTransitionType.scale,
                             alignment: Alignment.center,
                             duration: const Duration(milliseconds: 600)));

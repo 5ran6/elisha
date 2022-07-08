@@ -47,14 +47,42 @@ class CurrentView extends StatefulWidget {
   _CurrentViewState createState() => _CurrentViewState();
 }
 
-class _CurrentViewState extends State<CurrentView> {
+class _CurrentViewState extends State<CurrentView> with WidgetsBindingObserver {
   int _currentIndex = 0;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _loadData();
   }
+
+  @override
+  void dispose() {
+    WidgetBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifeCycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    if(state == AppLifecycleState.inactive) return;
+
+    final isBackground = state == AppLifecycleState.paused;
+    final isClosed  = state == AppLifecycleState.detached;
+
+    if(isBackground) {
+      setDoNotDisturbOffWIthAppOnBackground();
+    } else if (isClosed) {
+      setDoNotDisturbOffWIthAppOnBackground();
+    } else {
+      setDoNotDisturbOnWIthAppOnForeground();
+    }
+
+  }
+
+
 
   void _onTabTapped(int index) {
     if (index == _currentIndex && _currentIndex == 0 && _homeNavigatorKey.currentState!.canPop()) {
@@ -206,4 +234,23 @@ class _CurrentViewState extends State<CurrentView> {
     }
 
   }
+
+  Future<void> setDoNotDisturbOffWIthAppOnBackground() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final bool dndStatus = prefs.getBool('sharedPrefStatus') ?? false;
+    if(dndStatus) {
+      await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
+    }
+  }
+
+  Future<void> setDoNotDisturbOnWIthAppOnForeground() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final bool dndStatus = prefs.getBool('sharedPrefStatus') ?? false;
+    if(dndStatus) {
+      await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_NONE);
+    }
+  }
+
 }

@@ -189,33 +189,33 @@ class ProfileView extends StatelessWidget {
         ),
       ),
       const Divider(),
-      GestureDetector(
-        onTap: () {
-          CantonMethods.viewTransition(context, const NotesListView());
-        },
-        child: Card(
-          margin: EdgeInsets.zero,
-          shape: Border(
-            left: BorderSide(
-              width: 1.5,
-              color: Theme.of(context).colorScheme.onSecondary,
-            ),
-            right: BorderSide(
-              width: 1.5,
-              color: Theme.of(context).colorScheme.onSecondary,
-            ),
-          ),
-          child: Container(
-            padding: const EdgeInsets.all(15),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Notes',
-              style: Theme.of(context).textTheme.headline6,
-            ),
-          ),
-        ),
-      ),
-      const Divider(),
+      // GestureDetector(
+      //   onTap: () {
+      //     CantonMethods.viewTransition(context, const NotesListView());
+      //   },
+      //   child: Card(
+      //     margin: EdgeInsets.zero,
+      //     shape: Border(
+      //       left: BorderSide(
+      //         width: 1.5,
+      //         color: Theme.of(context).colorScheme.onSecondary,
+      //       ),
+      //       right: BorderSide(
+      //         width: 1.5,
+      //         color: Theme.of(context).colorScheme.onSecondary,
+      //       ),
+      //     ),
+      //     child: Container(
+      //       padding: const EdgeInsets.all(15),
+      //       alignment: Alignment.centerLeft,
+      //       child: Text(
+      //         'Notes',
+      //         style: Theme.of(context).textTheme.headline6,
+      //       ),
+      //     ),
+      //   ),
+      // ),
+      // const Divider(),
       GestureDetector(
         onTap: () {
           showDialog(context: context, builder: (_) => FeedbackDialog());

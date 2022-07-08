@@ -79,16 +79,19 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                     child: Text('Note', style: Theme.of(context).textTheme.headline3),
                   ),
                   Expanded(
-                      child: Row(
-                        children: [
-                          Align(
-                              alignment: Alignment.centerRight,
-                              child: IconButton(onPressed: _listen, icon: Icon(_islistening ? Icons.mic_off : Icons.mic))),
-                          Align(
-                              alignment: Alignment.centerRight,
-                              child: IconButton(onPressed: () {}, icon: Icon(Icons.notes)))
+                      child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Row(
+                            children: [
+                              IconButton(onPressed: _listen, icon: Icon(_islistening ? Icons.mic_off : Icons.mic)),
+                              IconButton(
+                                  onPressed: () {
+                                CantonMethods.viewTransition(context, const NotesListView());
+                          },
+                                  icon: Icon(Icons.notes)),
                         ],
                       ))
+                  )
                 ]),
               ),
               Align(
