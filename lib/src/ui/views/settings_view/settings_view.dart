@@ -2,9 +2,11 @@ import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/main.dart';
 import 'package:elisha/src/ui/views/settings_view/settings_header_view.dart';
+import 'package:flutter_dnd/flutter_dnd.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 //import 'package:provider/provider.dart';
 import 'package:elisha/src/providers/theme_manager_provider.dart';
 
@@ -24,7 +26,7 @@ void runAlarm() async {
       1, "Secret place", "Hey, you scheduled a time with Jesus");
 }
 
-class SettingsPage extends StatefulWidget{
+class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
   @override
@@ -53,18 +55,17 @@ class _SettingsPageState extends State<SettingsPage> {
         preferences.setString("themeMode", "System");
       }
       themeVal = preferences.getString("themeMode")!;
-      if (preferences.containsKey("alarmTime") == false){
+      if (preferences.containsKey("alarmTime") == false) {
         tme = "Off";
         reminderValue = false;
-      }else{
+      } else {
         tme = preferences.getString("alarmTime")!.split(" ")[1].substring(0, 5);
       }
     });
-
   }
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     getPrefData();
   }
@@ -171,30 +172,30 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                   ),
                   const SizedBox(height: 12),
-
                   GestureDetector(
                     onTap: () async {
-
-                      if (await FlutterDnd.isNotificationPolicyAccessGranted) {
+                      var isNotificationPolicyAccessGranted =
+                          (await FlutterDnd.isNotificationPolicyAccessGranted);
+                      if ((isNotificationPolicyAccessGranted) != null &&
+                          isNotificationPolicyAccessGranted) {
                         if (isDoNotDisturbFunctionOn == true) {
-                          await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
+                          await FlutterDnd.setInterruptionFilter(
+                              FlutterDnd.INTERRUPTION_FILTER_ALL);
                           setState(() {
                             isDoNotDisturbFunctionOn = false;
                           });
                           saveDoNotDisturbStatusToSharedPref();
-
                         } else {
-                          await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_NONE);
+                          await FlutterDnd.setInterruptionFilter(
+                              FlutterDnd.INTERRUPTION_FILTER_NONE);
                           setState(() {
                             isDoNotDisturbFunctionOn = true;
                           });
                           saveDoNotDisturbStatusToSharedPref();
                         }
-
                       } else {
                         FlutterDnd.gotoPolicySettings();
                       }
-
                     },
                     child: Card(
                       child: Container(
@@ -294,7 +295,10 @@ class _SettingsPageState extends State<SettingsPage> {
       preferences.setString("themeMode", themeList[radioValue]);
       theme = preferences.getString("themeMode");
       themeVal = preferences.getString("themeMode")!;
-      Fluttertoast.showToast(msg: "Restart app to see changes", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
+      Fluttertoast.showToast(
+          msg: "Restart app to see changes",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM);
     });
   }
 
@@ -327,7 +331,6 @@ class _SettingsPageState extends State<SettingsPage> {
             startAt: DateTime.tryParse(time!));
       });
       reminderValue = true;
-    }, onError: (error) {
-    });
+    }, onError: (error) {});
   }
 }

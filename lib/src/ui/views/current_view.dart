@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/ui/views/note_view/note_view.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter_dnd/flutter_dnd.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:elisha/src/config/bottom_navigation_bar.dart';
@@ -196,7 +197,7 @@ class _CurrentViewState extends State<CurrentView> {
   Future<void> setDoNotDisturbState() async {
     final prefs = await SharedPreferences.getInstance();
 
-    final bool dndStatus = prefs.getBool('sharedPrefStatus');
+    final bool dndStatus = prefs.getBool('sharedPrefStatus') ?? false;
 
     if(dndStatus) {
       await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_NONE);
