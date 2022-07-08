@@ -39,6 +39,14 @@ class _SettingsPageState extends State<SettingsPage> {
   late String themeVal = ""; //for UI use to update the theme card subtext
   late String tme = ""; //for UI use to update the alarm card subtext
 
+  bool isDoNotDisturbFunctionOn = false;
+
+  void saveDoNotDisturbStatusToSharedPref() async {
+    final _prefs = await SharedPreferences.getInstance();
+
+    await _prefs.setBool('sharedPrefStatus', isDoNotDisturbFunctionOn);
+  }
+
   void getPrefData() async {
     await SharedPreferences.getInstance().then((preferences) {
       if (preferences.containsKey("themeMode") == false) {
@@ -166,12 +174,25 @@ class _SettingsPageState extends State<SettingsPage> {
 
                   GestureDetector(
                     onTap: () async {
-                      FlutterDnd.gotoPolicySettings();
 
                       if (await FlutterDnd.isNotificationPolicyAccessGranted) {
-                        await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_NONE);
+                        if (isDoNotDisturbFunctionOn == true) {
+                          await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
+                          setState(() {
+                            isDoNotDisturbFunctionOn = false;
+                          });
+                          saveDoNotDisturbStatusToSharedPref();
+
+                        } else {
+                          await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_NONE);
+                          setState(() {
+                            isDoNotDisturbFunctionOn = true;
+                          });
+                          saveDoNotDisturbStatusToSharedPref();
+                        }
+
                       } else {
-                        await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
+                        FlutterDnd.gotoPolicySettings();
                       }
 
                     },

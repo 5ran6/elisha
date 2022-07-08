@@ -80,6 +80,7 @@ class _CurrentViewState extends State<CurrentView> {
 
   void _loadData() async {
     print('second _loadData kkkkkkkkkkkkkkkkkkkkk');
+    setDoNotDisturbState();
     await context.read(streaksRepositoryProvider).updateStreaks();
     context.read(localRepositoryProvider.notifier).loadLastChapterAndTranslation();
     context.read(bookmarkedChaptersProvider.notifier).loadData();
@@ -190,5 +191,18 @@ class _CurrentViewState extends State<CurrentView> {
     final _prefs = await SharedPreferences.getInstance();
 
     await _prefs.setString('dateNavBarKey', todayDate);
+  }
+
+  Future<void> setDoNotDisturbState() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final bool dndStatus = prefs.getBool('sharedPrefStatus');
+
+    if(dndStatus) {
+      await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_NONE);
+    } else {
+      await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
+    }
+
   }
 }

@@ -72,6 +72,7 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 5),
                 child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
