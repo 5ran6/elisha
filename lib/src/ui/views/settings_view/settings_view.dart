@@ -42,6 +42,7 @@ class _SettingsPageState extends State<SettingsPage> {
   late String tme = ""; //for UI use to update the alarm card subtext
 
   bool isDoNotDisturbFunctionOn = false;
+  bool isDNDPolicyAccessGranted = false;
 
   void saveDoNotDisturbStatusToSharedPref() async {
     final _prefs = await SharedPreferences.getInstance();
@@ -178,6 +179,9 @@ class _SettingsPageState extends State<SettingsPage> {
                           (await FlutterDnd.isNotificationPolicyAccessGranted);
                       if ((isNotificationPolicyAccessGranted) != null &&
                           isNotificationPolicyAccessGranted) {
+                        setState(() {
+                          isDNDPolicyAccessGranted = true;
+                        });
                         if (isDoNotDisturbFunctionOn == true) {
                           await FlutterDnd.setInterruptionFilter(
                               FlutterDnd.INTERRUPTION_FILTER_ALL);
@@ -195,22 +199,57 @@ class _SettingsPageState extends State<SettingsPage> {
                         }
                       } else {
                         FlutterDnd.gotoPolicySettings();
+                        setState(() {
+                          isDNDPolicyAccessGranted = false;
+                        });
                       }
                     },
                     child: Card(
                       child: Container(
                         padding: const EdgeInsets.all(15),
                         alignment: Alignment.centerLeft,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Do not disturb',
-                                style: Theme.of(context).textTheme.headline6),
-                            Text("On",
-                                style: TextStyle(color: Colors.grey[600]))
-                          ],
-                        ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text('Do not disturb',
+                                    style: Theme.of(context).textTheme.headline6),
+                                Text( isDoNotDisturbFunctionOn ? "On" : "Off",
+                                    style: TextStyle(color: Colors.grey[600]))
+                              ],
+                            ),
+                            Transform.scale(
+                              scale: 1.2,
+                              child: Switch.adaptive(
+                                  activeColor: Colors.blueGrey,
+                                  activeTrackColor:
+                                  Colors.blueGrey.withOpacity(0.4),
+                                  inactiveThumbColor: Colors.black87,
+                                  inactiveTrackColor: Colors.black12,
+                                  splashRadius: 50,
+                                  value: isDoNotDisturbFunctionOn,
+                                  onChanged: isDNDPolicyAccessGranted == false ? null : (value) {
+                                    setState(() async {
+                                      isDoNotDisturbFunctionOn = value;
+                                      if (isDoNotDisturbFunctionOn == true) {
+                                        await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
+                                          isDoNotDisturbFunctionOn = false;
+                                          saveDoNotDisturbStatusToSharedPref();
+
+                                      } else {
+                                        await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_NONE);
+                                          isDoNotDisturbFunctionOn = true;
+                                          saveDoNotDisturbStatusToSharedPref();
+                                      }
+                                    });
+
+                                  }),
+                            ),
+                          ]
+                        )
                       ),
                     ),
                   ),
