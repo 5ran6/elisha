@@ -2,6 +2,7 @@ import 'package:canton_design_system/canton_design_system.dart';
 import 'package:vertical_card_pager/vertical_card_pager.dart';
 
 import '../../../models/devotional.dart';
+import 'full_bibleInAYear_content.dart';
 import 'full_prayer_content.dart';
 import 'full_thougthofday_content.dart';
 import 'full_topic_memoryverse_page.dart';

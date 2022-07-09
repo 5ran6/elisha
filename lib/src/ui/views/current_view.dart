@@ -59,12 +59,12 @@ class _CurrentViewState extends State<CurrentView> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetBinding.instance.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifeCycleState state) {
+  void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
 
     if(state == AppLifecycleState.inactive) return;
