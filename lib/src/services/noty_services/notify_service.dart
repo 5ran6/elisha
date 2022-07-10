@@ -37,8 +37,6 @@ class NotificationService {
   Future<void> showNotification(int id, String title, String body) async {
     tz.initializeTimeZones();
     final detroit = tz.getLocation('America/Detroit');
-    //TODO: Get local location of user from GPS
-    //TODO: Create background service to run alarm system even when app is closed
     print(tz.TZDateTime.now(detroit));
     //2022-06-24 08:45:58.985497-0400
 
