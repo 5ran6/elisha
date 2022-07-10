@@ -12,6 +12,7 @@ import 'package:speech_to_text/speech_to_text.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../../../models/note.dart';
+import '../notes_list_view/notes_list_view.dart';
 
 class DevotionalNotePage extends StatefulWidget {
   const DevotionalNotePage({Key? key}) : super(key: key);
