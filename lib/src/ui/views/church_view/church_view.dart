@@ -51,7 +51,7 @@ class _ChurchViewState extends State<ChurchView> {
     });
   }
 
-  late YoutubePlayerController _controller;
+  //late YoutubePlayerController _controller;
 
   @override
   void initState() {
@@ -76,17 +76,14 @@ class _ChurchViewState extends State<ChurchView> {
             ? _buildVideoCard(_videoClips, _controllers)
             : Center(
                 child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                      Theme.of(context).primaryColor),
+                  valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
                 ),
               ),
       ],
     );
   }
 
-  Widget _buildVideoCard(List<YouTubeVideoModel> listVid,
-          List<YoutubePlayerController> controllers) =>
-      Expanded(
+  Widget _buildVideoCard(List<YouTubeVideoModel> listVid, List<YoutubePlayerController> controllers) => Expanded(
         child: ListView.builder(
           itemCount: listVid.length,
           itemBuilder: (context, index) {
@@ -96,17 +93,13 @@ class _ChurchViewState extends State<ChurchView> {
               onTap: () {
                 var startTime = Duration(seconds: video.startAt ?? 2000);
                 controller.load(video.youtubeVideoId,
-                    startAt: startTime,
-                    endAt: video.endAt != null
-                        ? Duration(seconds: video.endAt!)
-                        : null);
+                    startAt: startTime, endAt: video.endAt != null ? Duration(seconds: video.endAt!) : null);
               },
               child: Card(
                 color: CantonMethods.alternateCanvasColorType2(context),
                 shape: CantonSmoothBorder.defaultBorder(),
                 child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 17, vertical: 22),
+                  padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 22),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -161,9 +154,9 @@ class _ChurchViewState extends State<ChurchView> {
         ),
       );
 
-  @override
-  void dispose() {
-    _controller.close();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _controller.close();
+  //   super.dispose();
+  // }
 }

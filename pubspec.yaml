@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.17.5 <3.0.0'
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   flutter:
@@ -45,7 +45,7 @@ dependencies:
   flutter_local_notifications: ^6.0.0
   timezone: ^0.7.0
   flutter_native_timezone: ^2.0.0
-  workmanager: ^0.4.1
+  workmanager: ^0.5.0
 
   # State Management
   flutter_riverpod: ^0.14.0+3
@@ -147,6 +147,7 @@ flutter:
     - assets/images/study.jpg
     - assets/images/secret_place_Store_icon.png
     - assets/images/secret_place_logo_with_background_color.png
+    - assets/images/secret_place_logo_white_background.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

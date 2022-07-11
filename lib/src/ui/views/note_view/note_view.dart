@@ -64,6 +64,8 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
+    DateTime now = DateTime.now();
+    String todayDt = DateFormat('dd.MM.yyyy').format(now);
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -72,27 +74,23 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
             children: [
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text('Note', style: Theme.of(context).textTheme.headline3),
                   ),
-                  Expanded(
-                      child: Align(
-                          alignment: Alignment.centerRight,
-                          child: Row(
-                            children: [
-                              IconButton(onPressed: _listen, icon: Icon(_islistening ? Icons.mic_off : Icons.mic)),
-                              IconButton(
-                                  onPressed: () {
+                  Align(
+                      alignment: Alignment.centerRight,
+                      child: Row(
+                        children: [
+                          IconButton(onPressed: _listen, icon: Icon(_islistening ? Icons.mic_off : Icons.mic)),
+                          IconButton(
+                              onPressed: () {
                                 CantonMethods.viewTransition(context, const NotesListView());
-                          },
-                                  icon: Icon(Icons.notes)),
+                              },
+                              icon: Icon(Icons.notes)),
                         ],
                       ))
-                  )
                 ]),
               ),
               Align(
@@ -103,11 +101,12 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                     height: 40,
                     width: MediaQuery.of(context).size.width - 15,
                     color: Colors.black87,
-                    child: const Align(
+                    child: Align(
                         alignment: Alignment.center,
                         child: Text(
-                          'Topic | Date',
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          todayDt,
+                          style: Theme.of(context).textTheme.headline4?.copyWith(
+                              fontWeight: FontWeight.bold, fontFamily: "Palatino", fontSize: 21, color: Colors.white),
                         )),
                   ),
                 ),
@@ -120,12 +119,17 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline4
+                          ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino", fontSize: 21),
                       onChanged: (String str) async {
                         final _prefs = await SharedPreferences.getInstance();
 
                         await _prefs.setString('titleKey', str);
                       },
                       controller: noteTitleWidget,
+                      textCapitalization: TextCapitalization.sentences,
                       keyboardType: TextInputType.text,
                       decoration: const InputDecoration(
                           alignLabelWithHint: true, labelText: 'Title', border: OutlineInputBorder()),
@@ -140,6 +144,11 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      textCapitalization: TextCapitalization.sentences,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline4
+                          ?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino", fontSize: 17),
                       onChanged: (String str) async {
                         final _prefs = await SharedPreferences.getInstance();
 
@@ -186,11 +195,15 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                       width: MediaQuery.of(context).size.width - 40,
                       height: 50,
                       decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(15)),
-                      child: const Align(
+                      child: Align(
                           alignment: Alignment.center,
                           child: Text(
                             "Save",
-                            style: TextStyle(color: Colors.white, fontSize: 18),
+                            style: Theme.of(context).textTheme.headline4?.copyWith(
+                                fontWeight: FontWeight.normal,
+                                fontFamily: "Palatino",
+                                fontSize: 22,
+                                color: Colors.white),
                           ))))
             ],
           ),

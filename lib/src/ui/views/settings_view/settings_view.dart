@@ -22,8 +22,7 @@ void runAlarm() async {
   await NotificationService().initNotification();
   SharedPreferences preferences = await SharedPreferences.getInstance();
   time = preferences.getString("alarmTime");
-  NotificationService().showNotification(
-      1, "Secret place", "Hey, you scheduled a time with Jesus");
+  NotificationService().showNotification(1, "Secret place", "Hey, you scheduled a time with Jesus");
 }
 
 class SettingsPage extends StatefulWidget {
@@ -101,10 +100,8 @@ class _SettingsPageState extends State<SettingsPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text('Theme',
-                                style: Theme.of(context).textTheme.headline6),
-                            Text(themeVal,
-                                style: TextStyle(color: Colors.grey[600])),
+                            Text('Theme', style: Theme.of(context).textTheme.headline6),
+                            Text(themeVal, style: TextStyle(color: Colors.grey[600])),
                           ],
                         ),
                       ),
@@ -128,22 +125,15 @@ class _SettingsPageState extends State<SettingsPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Text('Daily Remainder',
-                                    style:
-                                        Theme.of(context).textTheme.headline6),
-                                Text(tme,
-                                    style: TextStyle(
-                                        color: reminderValue
-                                            ? Colors.grey[600]
-                                            : Colors.grey[800]))
+                                Text('Daily Remainder', style: Theme.of(context).textTheme.headline6),
+                                Text(tme, style: TextStyle(color: reminderValue ? Colors.grey[600] : Colors.grey[800]))
                               ],
                             ),
                             Transform.scale(
                               scale: 1.2,
                               child: Switch.adaptive(
                                   activeColor: Colors.blueGrey,
-                                  activeTrackColor:
-                                      Colors.blueGrey.withOpacity(0.4),
+                                  activeTrackColor: Colors.blueGrey.withOpacity(0.4),
                                   inactiveThumbColor: Colors.black87,
                                   inactiveTrackColor: Colors.black12,
                                   splashRadius: 50,
@@ -154,10 +144,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                       if (reminderValue == false) {
                                         AndroidAlarmManager.cancel(1);
                                       } else {
-                                        AndroidAlarmManager.periodic(
-                                            const Duration(hours: 1),
-                                            1,
-                                            runAlarm,
+                                        AndroidAlarmManager.periodic(const Duration(hours: 1), 1, runAlarm,
                                             allowWhileIdle: true,
                                             rescheduleOnReboot: true,
                                             exact: true,
@@ -175,23 +162,19 @@ class _SettingsPageState extends State<SettingsPage> {
                   const SizedBox(height: 12),
                   GestureDetector(
                     onTap: () async {
-                      var isNotificationPolicyAccessGranted =
-                          (await FlutterDnd.isNotificationPolicyAccessGranted);
-                      if ((isNotificationPolicyAccessGranted) != null &&
-                          isNotificationPolicyAccessGranted) {
+                      var isNotificationPolicyAccessGranted = (await FlutterDnd.isNotificationPolicyAccessGranted);
+                      if ((isNotificationPolicyAccessGranted) != null && isNotificationPolicyAccessGranted) {
                         setState(() {
                           isDNDPolicyAccessGranted = true;
                         });
                         if (isDoNotDisturbFunctionOn == true) {
-                          await FlutterDnd.setInterruptionFilter(
-                              FlutterDnd.INTERRUPTION_FILTER_ALL);
+                          await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
                           setState(() {
                             isDoNotDisturbFunctionOn = false;
                           });
                           saveDoNotDisturbStatusToSharedPref();
                         } else {
-                          await FlutterDnd.setInterruptionFilter(
-                              FlutterDnd.INTERRUPTION_FILTER_NONE);
+                          await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_NONE);
                           setState(() {
                             isDoNotDisturbFunctionOn = true;
                           });
@@ -206,51 +189,46 @@ class _SettingsPageState extends State<SettingsPage> {
                     },
                     child: Card(
                       child: Container(
-                        padding: const EdgeInsets.all(15),
-                        alignment: Alignment.centerLeft,
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
+                          padding: const EdgeInsets.all(15),
+                          alignment: Alignment.centerLeft,
+                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Text('Do not disturb',
-                                    style: Theme.of(context).textTheme.headline6),
-                                Text( isDoNotDisturbFunctionOn ? "On" : "Off",
-                                    style: TextStyle(color: Colors.grey[600]))
+                                Text('Do not disturb(Tap me)', style: Theme.of(context).textTheme.headline6),
+                                Text(isDoNotDisturbFunctionOn ? "On" : "Off", style: TextStyle(color: Colors.grey[600]))
                               ],
                             ),
                             Transform.scale(
                               scale: 1.2,
                               child: Switch.adaptive(
                                   activeColor: Colors.blueGrey,
-                                  activeTrackColor:
-                                  Colors.blueGrey.withOpacity(0.4),
+                                  activeTrackColor: Colors.blueGrey.withOpacity(0.4),
                                   inactiveThumbColor: Colors.black87,
                                   inactiveTrackColor: Colors.black12,
                                   splashRadius: 50,
                                   value: isDoNotDisturbFunctionOn,
-                                  onChanged: isDNDPolicyAccessGranted == false ? null : (value) {
-                                    setState(() async {
-                                      isDoNotDisturbFunctionOn = value;
-                                      if (isDoNotDisturbFunctionOn == true) {
-                                        await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
-                                          isDoNotDisturbFunctionOn = false;
-                                          saveDoNotDisturbStatusToSharedPref();
-
-                                      } else {
-                                        await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_NONE);
-                                          isDoNotDisturbFunctionOn = true;
-                                          saveDoNotDisturbStatusToSharedPref();
-                                      }
-                                    });
-
-                                  }),
+                                  onChanged: isDNDPolicyAccessGranted == false
+                                      ? null
+                                      : (value) {
+                                          setState(() async {
+                                            isDoNotDisturbFunctionOn = value;
+                                            if (isDoNotDisturbFunctionOn == true) {
+                                              await FlutterDnd.setInterruptionFilter(
+                                                  FlutterDnd.INTERRUPTION_FILTER_ALL);
+                                              isDoNotDisturbFunctionOn = false;
+                                              saveDoNotDisturbStatusToSharedPref();
+                                            } else {
+                                              await FlutterDnd.setInterruptionFilter(
+                                                  FlutterDnd.INTERRUPTION_FILTER_NONE);
+                                              isDoNotDisturbFunctionOn = true;
+                                              saveDoNotDisturbStatusToSharedPref();
+                                            }
+                                          });
+                                        }),
                             ),
-                          ]
-                        )
-                      ),
+                          ])),
                     ),
                   ),
                 ],
@@ -335,9 +313,7 @@ class _SettingsPageState extends State<SettingsPage> {
       theme = preferences.getString("themeMode");
       themeVal = preferences.getString("themeMode")!;
       Fluttertoast.showToast(
-          msg: "Restart app to see changes",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM);
+          msg: "Restart app to see changes", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
     });
   }
 

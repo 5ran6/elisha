@@ -93,6 +93,7 @@ class _NotesListViewState extends State<NotesListView> {
             ? ListView.separated(
                 separatorBuilder: (BuildContext context, int index) => Divider(),
                 shrinkWrap: true,
+                scrollDirection: Axis.vertical,
                 physics: BouncingScrollPhysics(),
                 itemCount: _noteList.length,
                 itemBuilder: (context, index) {

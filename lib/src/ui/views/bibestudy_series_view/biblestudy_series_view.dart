@@ -32,7 +32,6 @@ class _BibleStudySeriesPageState extends State<BibleStudySeriesPage> {
     });
   }
 
-
   @override
   void initState() {
     fetchAndUpdateUIPlans();
@@ -41,79 +40,84 @@ class _BibleStudySeriesPageState extends State<BibleStudySeriesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: CantonMethods.alternateCanvasColor(context),
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const BibleStudySeriesHeaderView(),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: TextField(
-                controller: controller,
-                decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.search),
-                  hintText: 'Plan title',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(color: Theme.of(context).primaryColor),
-                  )
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 10),
+              const BibleStudySeriesHeaderView(),
+              // Padding(
+              //   padding: const EdgeInsets.all(15.0),
+              //   child: TextField(
+              //     controller: controller,
+              //     decoration: InputDecoration(
+              //       prefixIcon: const Icon(Icons.search),
+              //       hintText: 'Plan title',
+              //       border: OutlineInputBorder(
+              //         borderRadius: BorderRadius.circular(30),
+              //         borderSide: BorderSide(color: Theme.of(context).primaryColor),
+              //       )
+              //     ),
+              //     onChanged: searchStudyPlan,
+              //   ),
+              // ),
+
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: StaggeredGridView.countBuilder(
+                  shrinkWrap: true,
+                  physics: BouncingScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  itemCount: _devPlansList.length,
+                  crossAxisCount: 4,
+                  mainAxisSpacing: 8,
+                  crossAxisSpacing: 8,
+                  staggeredTileBuilder: (index) => StaggeredTile.count(2, 2),
+                  itemBuilder: (context, index) => buildBibleStudyPlanCardView(index),
                 ),
-                onChanged: searchStudyPlan,
               ),
-            ),
-
-            const SizedBox(height: 15),
-           Expanded(
-             child: StaggeredGridView.countBuilder(
-               itemCount: _devPlansList.length,
-                 crossAxisCount: 4,
-                 mainAxisSpacing: 8,
-                 crossAxisSpacing: 8,
-                 staggeredTileBuilder: (index) => StaggeredTile.count(2, 2),
-               itemBuilder: (context, index) => buildBibleStudyPlanCardView(index),
-             ),
-           ),
-
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
-  void searchStudyPlan(String query) {
-    final planSuggestions = _devPlansList.where((plan) {
-      final planTitle = plan.title.toLowerCase();
-      final input = query.toLowerCase();
+  // void searchStudyPlan(String query) {
+  //   final planSuggestions = _devPlansList.where((plan) {
+  //     final planTitle = plan.title.toLowerCase();
+  //     final input = query.toLowerCase();
 
-      return planTitle.contains(input);
-    }).toList();
+  //     return planTitle.contains(input);
+  //   }).toList();
 
-    setState(() {
-      _devPlansList = planSuggestions;
-    });
+  //   setState(() {
+  //     _devPlansList = planSuggestions;
+  //   });
 
-  }
+  // }
 
   buildBibleStudyPlanCardView(int index) => GestureDetector(
-    onTap: () {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => OpenedStudyPlanScreen(devPlanID: _devPlansList[index].id)));
-    },
-    child: Card(
-      margin: EdgeInsets.zero,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: CachedNetworkImage(
-            fit: BoxFit.cover,
-            imageUrl: _devPlansList[index].imageUrl,
-            placeholder: (context, url) => const CircularProgressIndicator(),
-            errorWidget: (context, url, error) => const Icon(Icons.error),
+        onTap: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => OpenedStudyPlanScreen(devPlanID: _devPlansList[index].id)));
+        },
+        child: Card(
+          margin: EdgeInsets.zero,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: CachedNetworkImage(
+              fit: BoxFit.cover,
+              imageUrl: _devPlansList[index].imageUrl,
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+            ),
           ),
-      ),
-    ),
-  );
+        ),
+      );
 }
-
-
-
