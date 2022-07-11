@@ -51,17 +51,9 @@ class DevotionalPlansHomePageListView extends StatelessWidget {
                         shape: CantonSmoothBorder.defaultBorder(),
                         child:  CachedNetworkImage(
                           imageUrl: devPlans[i].imageUrl,
-                          imageBuilder: (context, imageProvider) => Container(
-                            height: 100,
-                            width: 150,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: imageProvider,
-                                fit: BoxFit.cover,
-                              ),
-                                borderRadius: BorderRadius.circular(10)
-                            ),
-                          ),
+                          height: 100,
+                          width: 150,
+                          fit: BoxFit.cover,
                           placeholder: (context, url) => const CircularProgressIndicator(),
                           errorWidget: (context, url, error) => const Icon(Icons.error),
                         ),

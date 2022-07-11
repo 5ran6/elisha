@@ -44,7 +44,7 @@ class _DevotionalTodayCardState extends State<DevotionalTodayCard> {
 
   @override
   void initState() {
-    // TODO: implement initState
+
     checkIfDevotionalIsBookmarked(DateFormat('dd.MM.yyyy').format(DateTime.now()));
     super.initState();
   }
