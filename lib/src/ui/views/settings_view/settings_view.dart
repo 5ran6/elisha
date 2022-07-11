@@ -36,8 +36,8 @@ class _SettingsPageState extends State<SettingsPage> {
   late Future<TimeOfDay?> selectedTime;
   bool reminderValue = true;
   int radioValue = 0;
-  late String themeVal = ""; //for UI use to update the theme card subtext
-  late String tme = ""; //for UI use to update the alarm card subtext
+  String themeVal = ""; //for UI use to update the theme card subtext
+  String tme = ""; //for UI use to update the alarm card subtext
 
   void getPrefData() async {
     await SharedPreferences.getInstance().then((preferences) {
@@ -46,13 +46,12 @@ class _SettingsPageState extends State<SettingsPage> {
       }
       themeVal = preferences.getString("themeMode")!;
       if (preferences.containsKey("alarmTime") == false){
-        tme = "Off";
-        reminderValue = false;
-      }else{
-        tme = preferences.getString("alarmTime")!.split(" ")[1].substring(0, 5);
+        preferences.setString("alarmTime", "Off");
       }
+      tme = preferences.getString("alarmTime")! == "Off" ? preferences.getString("alarmTime")! : preferences.getString("alarmTime")!.split(" ")[1].substring(0, 5);
+      reminderValue = preferences.getString("alarmTime")! == "Off" ? false : true;
+      print("$tme, $themeVal");
     });
-
   }
 
   @override
@@ -63,7 +62,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    getPrefData();
+    //getPrefData();
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -287,7 +286,7 @@ class _SettingsPageState extends State<SettingsPage> {
             "${DateTime.now().year}${(((DateTime.now().month < 10) ? ("0" + DateTime.now().month.toString()) : DateTime.now().month.toString()) + ((DateTime.now().day < 10) ? ("0" + DateTime.now().day.toString()) : DateTime.now().day.toString()))} ${((value.hour < 10) ? ("0" + value.hour.toString()) : value.hour.toString())}:${((value.minute < 10) ? ("0" + value.minute.toString()) : value.minute.toString())}:00");
         time = preferences.getString("alarmTime");
         tme = time!.split(" ")[1].substring(0, 5);
-        AndroidAlarmManager.cancel(1)
+        AndroidAlarmManager.cancel(1);
         //All the settings for the alarm manager
         AndroidAlarmManager.periodic(const Duration(days: 1), 1, runAlarm,
             allowWhileIdle: true,

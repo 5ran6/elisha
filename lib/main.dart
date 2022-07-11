@@ -84,6 +84,8 @@ dynamic darkSetting = cantonDarkTheme().copyWith(
         .colorScheme
         .copyWith(primaryVariant: const Color(0xFFB97D3C)));
 
+
+
 //Notification stuff
 Future<void> initializeService() async {
   final service = FlutterBackgroundService();
