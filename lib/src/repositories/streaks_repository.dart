@@ -30,7 +30,6 @@ class StreaksRepository extends ChangeNotifier {
   int get perfectWeeks => _perfectWeeks;
 
   Future<void> _incrementStreak() async {
-    print('_incrementStreak');
     final box = Hive.box('elisha');
     _currentStreak++;
     await box.put('current_streak', _currentStreak);
@@ -60,8 +59,6 @@ class StreaksRepository extends ChangeNotifier {
   }
 
   void _loadData() {
-    print('jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj');
-    print('_loadData');
     final box = Hive.box('elisha');
 
     _currentStreak = box.get('current_streak', defaultValue: 1);
@@ -92,8 +89,7 @@ class StreaksRepository extends ChangeNotifier {
       if (_currentStreak % 7 == 0) {
         await _incrementPerfectWeeks();
       }
-
-      await box.put('visitKey', todayDate.toString());
     }
+    await box.put('visitKey', todayDate.toString());
   }
 }
