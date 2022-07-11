@@ -26,7 +26,9 @@ class StreaksRepository extends ChangeNotifier {
   var _perfectWeeks = 0;
 
   int get currentStreak => _currentStreak;
+
   int get bestStreak => _bestStreak;
+
   int get perfectWeeks => _perfectWeeks;
 
   Future<void> _incrementStreak() async {
@@ -68,16 +70,18 @@ class StreaksRepository extends ChangeNotifier {
 
   Future<void> updateStreaks() async {
     _loadData();
-
     final box = Hive.box('elisha');
 
-    var lastVisitDate = DateTime.parse(box.get('visitKey', defaultValue: DateTime.now().toString()));
+    var lastVisitDate = DateTime.parse(
+        box.get('visitKey', defaultValue: DateTime.now().toString()));
     var todayDate = DateTime.now();
-    var yesterdayDate = DateTime.now().subtract(const Duration(days: 1));
+    var yesterdayDate =
+        DateTime(todayDate.year, todayDate.month, todayDate.day - 1);
 
     if (todayDate.day.toString() == lastVisitDate.day.toString()) {
       DoNothingAction();
-    } else if (!(todayDate.isAfter(lastVisitDate) && yesterdayDate.isBefore(lastVisitDate))) {
+    } else if (!(todayDate.isAfter(lastVisitDate) &&
+        yesterdayDate.isBefore(lastVisitDate))) {
       await _resetCurrentStreak();
     } else {
       await _incrementStreak();
@@ -90,6 +94,7 @@ class StreaksRepository extends ChangeNotifier {
         await _incrementPerfectWeeks();
       }
     }
+
     await box.put('visitKey', todayDate.toString());
   }
 }
