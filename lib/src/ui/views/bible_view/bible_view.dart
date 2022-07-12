@@ -418,7 +418,7 @@ class _BibleViewState extends State<BibleView> {
   }
 
   Future<void> _showBookAndChapterBottomSheet() async {
-    List<Book> books = await BibleService(Dio()).getBooks('');
+    List<Book> books = await BibleService().getBooks('');
 
     Widget _bookCard(Book book) {
       Widget _chapterCard(ChapterId chapter) {
