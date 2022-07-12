@@ -1,30 +1,18 @@
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/main.dart';
+import 'package:elisha/src/services/shared_pref_manager/shared_pref_manager.dart';
 import 'package:elisha/src/ui/views/settings_view/settings_header_view.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-//import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
 import 'package:elisha/src/providers/theme_manager_provider.dart';
 
 import '../../../services/noty_services/notify_service.dart';
 
-//TODO: call the "set state of the provider" function for String? theme in the main from void submit
-//getPref gets Shared pref data for the UI
-//Alarm manager is called in void showDialogPicker
-
-String? time;
-
-void runAlarm() async {
-  await NotificationService().initNotification();
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  time = preferences.getString("alarmTime");
-  NotificationService().showNotification(
-      1, "Secret place", "Hey, you scheduled a time with Jesus");
-}
-
-class SettingsPage extends StatefulWidget{
+class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
   @override
@@ -32,37 +20,27 @@ class SettingsPage extends StatefulWidget{
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  //Future<SharedPreferences> pref = SharedPreferences.getInstance();
   List themeList = ["System", "Light", "Dark"];
   late Future<TimeOfDay?> selectedTime;
-  bool reminderValue = true;
+  bool reminderValue = false;
   int radioValue = 0;
-  String themeVal = ""; //for UI use to update the theme card subtext
-  String tme = ""; //for UI use to update the alarm card subtext
-
-  void getPrefData() async {
-    await SharedPreferences.getInstance().then((preferences) {
-      if (preferences.containsKey("themeMode") == false) {
-        preferences.setString("themeMode", "System");
-      }
-      themeVal = preferences.getString("themeMode")!;
-      if (preferences.containsKey("alarmTime") == false){
-        preferences.setString("alarmTime", "Off");
-      }
-      tme = preferences.getString("alarmTime")! == "Off" ? preferences.getString("alarmTime")! : preferences.getString("alarmTime")!.split(" ")[1].substring(0, 5);
-      reminderValue = preferences.getString("alarmTime")! == "Off" ? false : true;
-      print("$tme, $themeVal");
-    });
-  }
+  String themeText = "";
+  String timeText = "";
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    getPrefData();
+    //Get theme data for the UI
+    themeText = PrefManager.getTheme() ?? "System";
+
+    //Get alarm data for the UI
+    timeText = PrefManager.getTime() ?? "Off";
+    reminderValue = !(timeText == "Off");
   }
 
   @override
   Widget build(BuildContext context) {
-    //getPrefData();
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -92,7 +70,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           children: [
                             Text('Theme',
                                 style: Theme.of(context).textTheme.headline6),
-                            Text(themeVal,
+                            Text(themeText,
                                 style: TextStyle(color: Colors.grey[600])),
                           ],
                         ),
@@ -120,7 +98,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 Text('Daily Remainder',
                                     style:
                                         Theme.of(context).textTheme.headline6),
-                                Text(tme,
+                                Text(timeText,
                                     style: TextStyle(
                                         color: reminderValue
                                             ? Colors.grey[600]
@@ -140,19 +118,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                   onChanged: (value) {
                                     setState(() {
                                       reminderValue = value;
-                                      if (reminderValue == false) {
-                                        AndroidAlarmManager.cancel(1);
-                                      } else {
-                                        AndroidAlarmManager.periodic(
-                                            const Duration(hours: 1),
-                                            1,
-                                            runAlarm,
-                                            allowWhileIdle: true,
-                                            rescheduleOnReboot: true,
-                                            exact: true,
-                                            wakeup: true,
-                                            startAt: DateTime.tryParse(time!));
-                                      }
+                                      //Logic for alarm
                                     });
                                   }),
                             ),
@@ -163,8 +129,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   const SizedBox(height: 12),
                   GestureDetector(
-                    onTap: () {
-                    },
+                    onTap: () {},
                     child: Card(
                       child: Container(
                         padding: const EdgeInsets.all(15),
@@ -200,75 +165,50 @@ class _SettingsPageState extends State<SettingsPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Row(
-                  children: [
-                    Radio(
-                        value: 0,
-                        groupValue: radioValue,
-                        onChanged: (value) {
-                          setState(() {
-                            radioValue = 0;
-                            submit();
-                          });
-                        }),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    const Text("System Default")
-                  ],
-                ),
-                Row(
-                  children: [
-                    Radio(
-                        value: 1,
-                        groupValue: radioValue,
-                        onChanged: (value) {
-                          setState(() {
-                            radioValue = 1;
-                            submit();
-                          });
-                        }),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    const Text("Light")
-                  ],
-                ),
-                Row(
-                  children: [
-                    Radio(
-                        value: 2,
-                        groupValue: radioValue,
-                        onChanged: (value) {
-                          setState(() {
-                            radioValue = 2;
-                            submit();
-                          });
-                        }),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    const Text("Dark")
-                  ],
-                ),
+                RadioListTile(
+                    title: const Text("System default"),
+                    value: 0,
+                    groupValue: radioValue,
+                    onChanged: (value) {
+                      setState(() {
+                        radioValue = 0;
+                        submit();
+                      });
+                    }),
+                RadioListTile(
+                    title: const Text("Light"),
+                    value: 1,
+                    groupValue: radioValue,
+                    onChanged: (value) {
+                      setState(() {
+                        radioValue = 1;
+                        submit();
+                      });
+                    }),
+                RadioListTile(
+                    title: const Text("Dark"),
+                    value: 2,
+                    groupValue: radioValue,
+                    onChanged: (value) {
+                      setState(() {
+                        radioValue = 2;
+                        submit();
+                      });
+                    }),
               ],
             ),
             //Use submit to close dialog
           ));
 
-  void submit() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
+  void submit() {
+    Navigator.of(context).pop(radioValue);
     setState(() {
-      Navigator.of(context).pop(radioValue);
-      preferences.setString("themeMode", themeList[radioValue]);
-      theme = preferences.getString("themeMode");
-      themeVal = preferences.getString("themeMode")!;
-      Fluttertoast.showToast(msg: "Restart app to see changes", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
+        themeText = themeList[radioValue];
+        PrefManager.setTheme(themeText);
     });
   }
 
-  void showDialogPicker(BuildContext context) async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
+  void showDialogPicker(BuildContext context) {
     selectedTime = showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
@@ -282,21 +222,20 @@ class _SettingsPageState extends State<SettingsPage> {
     selectedTime.then((value) {
       setState(() {
         if (value == null) return;
-        preferences.setString("alarmTime",
-            "${DateTime.now().year}${(((DateTime.now().month < 10) ? ("0" + DateTime.now().month.toString()) : DateTime.now().month.toString()) + ((DateTime.now().day < 10) ? ("0" + DateTime.now().day.toString()) : DateTime.now().day.toString()))} ${((value.hour < 10) ? ("0" + value.hour.toString()) : value.hour.toString())}:${((value.minute < 10) ? ("0" + value.minute.toString()) : value.minute.toString())}:00");
-        time = preferences.getString("alarmTime");
-        tme = time!.split(" ")[1].substring(0, 5);
-        AndroidAlarmManager.cancel(1);
-        //All the settings for the alarm manager
-        AndroidAlarmManager.periodic(const Duration(days: 1), 1, runAlarm,
-            allowWhileIdle: true,
-            rescheduleOnReboot: true,
-            exact: true,
-            wakeup: true,
-            startAt: DateTime.tryParse(time!));
+          timeText = (value.hour < 10
+                  ? "0" + value.hour.toString()
+                  : value.hour.toString()) +
+              ":" +
+              (value.minute < 10
+                  ? "0" + value.minute.toString()
+                  : value.minute.toString());
+          PrefManager.setTime(timeText);
       });
       reminderValue = true;
     }, onError: (error) {
+      if (kDebugMode) {
+        print(Error());
+      }
     });
   }
 }

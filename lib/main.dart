@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:async';
 import 'dart:ui';
+import 'package:elisha/src/services/shared_pref_manager/shared_pref_manager.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -63,12 +64,6 @@ import 'package:elisha/src/config/constants.dart';
 import 'package:elisha/src/services/noty_services/notify_service.dart';
 import 'package:elisha/src/services/authentication_services/authentication_wrapper.dart';
 import 'dart:convert';
-
-
-//Future<void> initializeService, bool onIosBackground and void onStart are used for the flutter background service and is initialized in the main with await initializeService()
-//Android alarm manager has its only initialization in the main and is called in the settings_view.dart
-//TODO: Use providers to listen to String? theme once it changes...
-//String? theme is used to get the themeMode value from the Sharedpreferences
 
 
 //Global variable for theme. Set by settings page
@@ -142,11 +137,7 @@ Future<void> main() async {
     WidgetsFlutterBinding.ensureInitialized();
     await AndroidAlarmManager.initialize();
     //await initializeService();
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    if (preferences.containsKey("themeMode") == false) {
-      preferences.setString("themeMode", "System");
-    }
-    theme = preferences.getString("themeMode");
+    await PrefManager.init();
     await MobileAds.instance.initialize();
     await Firebase.initializeApp();
     await Hive.initFlutter();
@@ -203,8 +194,6 @@ class MyApp extends StatelessWidget {
           primaryDarkVariantColor: const Color(0xFFB97D3C),
           lightTheme: theme == "Dark" ? darkSetting : lightSetting,
           darkTheme: theme == "Light" ? lightSetting : darkSetting,
-          //lightTheme: darkSetting,
-          //darkTheme: darkSetting,
           navigatorObservers: [
             FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
           ],
