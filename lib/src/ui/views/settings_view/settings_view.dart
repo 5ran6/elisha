@@ -4,7 +4,6 @@ import 'package:elisha/main.dart';
 import 'package:elisha/src/services/shared_pref_manager/shared_pref_manager.dart';
 import 'package:elisha/src/ui/views/settings_view/settings_header_view.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
@@ -204,7 +203,7 @@ class _SettingsPageState extends State<SettingsPage> {
     Navigator.of(context).pop(radioValue);
     setState(() {
         themeText = themeList[radioValue];
-        PrefManager.setTheme(themeText);
+        Provider.of<ThemeManager>(context, listen: false).changeTheme(themeText);
     });
   }
 

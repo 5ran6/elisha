@@ -18,9 +18,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:async';
 import 'dart:ui';
+import 'package:elisha/src/providers/theme_manager_provider.dart';
 import 'package:elisha/src/services/shared_pref_manager/shared_pref_manager.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:elisha/src/models/devotional.dart';
 import 'package:elisha/src/providers/api_provider.dart';
@@ -54,10 +56,9 @@ import 'package:canton_design_system/canton_design_system.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+//import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 
 import 'package:elisha/src/config/constants.dart';
@@ -67,7 +68,6 @@ import 'dart:convert';
 
 
 //Global variable for theme. Set by settings page
-String? theme;
 dynamic lightSetting = cantonLightTheme().copyWith(
     primaryColor: const Color(0xFFB97D3C),
     colorScheme: cantonLightTheme()
@@ -153,7 +153,14 @@ Future<void> main() async {
     await SystemChrome.setPreferredOrientations(
             [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
         .then((_) {
-      runApp(const ProviderScope(child: MyApp()));
+      runApp(MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (context) => ThemeManager(),
+          )
+        ],
+          child: const MyApp()
+      ));
     });
   }, (error, stack) async {
     await FirebaseCrashlytics.instance.recordError(error, stack);
@@ -181,6 +188,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String finalTheme = Provider.of<ThemeManager>(context).theme;
     receiveData();
     return ScreenUtilInit(
       designSize: const Size(360, 690),
@@ -192,12 +200,12 @@ class MyApp extends StatelessWidget {
           primaryLightVariantColor: const Color(0xFFB97D3C),
           primaryDarkColor: const Color(0xFFB97D3C),
           primaryDarkVariantColor: const Color(0xFFB97D3C),
-          lightTheme: theme == "Dark" ? darkSetting : lightSetting,
-          darkTheme: theme == "Light" ? lightSetting : darkSetting,
+          lightTheme: finalTheme == "Dark" ? darkSetting : lightSetting,
+          darkTheme: finalTheme == "Light" ? lightSetting : darkSetting,
           navigatorObservers: [
             FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
           ],
-          home: SettingsPage()),
+          home: const SettingsPage()),
     );
   }
 }
