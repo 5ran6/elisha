@@ -25,8 +25,8 @@ class _DevotionalPageState extends State<DevotionalPage> {
   var _mainWriteUp = '';
   var _prayerBurden = '';
   var _thoughtOfTheDay = '';
-  var _fullPassage='';
-  var _bibleInAYear='';
+  var _fullPassage = '';
+  var _bibleInAYear = '';
 
   @override
   void initState() {
@@ -44,8 +44,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
   Widget build(BuildContext context) {
     final List<Widget> devotionalCards = [
       Card(
-        //color: CantonMethods.alternateCanvasColorType2(context),
-        color: Colors.red,
+        color: CantonMethods.alternateCanvasColorType2(context),
         shape: CantonSmoothBorder.defaultBorder(),
         child: ClipRRect(
             borderRadius: BorderRadius.circular(20.0),
@@ -54,16 +53,10 @@ class _DevotionalPageState extends State<DevotionalPage> {
                 Column(children: [
                   ListTile(
                     title: Text('Topic for today:',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline4
-                            ?.copyWith(fontWeight: FontWeight.bold)),
+                        style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold)),
                     trailing: Text(
                       'More',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6
-                          ?.copyWith(fontWeight: FontWeight.w100),
+                      style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.w100),
                     ),
                   ),
                   const SizedBox(height: 5),
@@ -72,19 +65,12 @@ class _DevotionalPageState extends State<DevotionalPage> {
                     child: Align(
                         alignment: Alignment.topLeft,
                         child: Text(_title,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline5
-                                ?.copyWith(fontWeight: FontWeight.normal))),
+                            style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.normal))),
                   ),
                   const SizedBox(height: 15),
                   ListTile(
                     title: Text('Memory Verse:',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline4
-                            ?.copyWith(fontWeight: FontWeight.bold)),
-
+                        style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold)),
                   ),
                   const SizedBox(height: 5),
                   Padding(
@@ -92,19 +78,12 @@ class _DevotionalPageState extends State<DevotionalPage> {
                     child: Align(
                         alignment: Alignment.topLeft,
                         child: Text(_memoryVerse + " " + _memoryVersePassage,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline5
-                                ?.copyWith(fontWeight: FontWeight.normal))),
+                            style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.normal))),
                   ),
                   const SizedBox(height: 15),
                   ListTile(
                     title: Text('Bible passage:',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline4
-                            ?.copyWith(fontWeight: FontWeight.bold)),
-
+                        style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold)),
                   ),
                   const SizedBox(height: 5),
                   Padding(
@@ -112,16 +91,12 @@ class _DevotionalPageState extends State<DevotionalPage> {
                     child: Align(
                         alignment: Alignment.topLeft,
                         child: Text(_fullPassage,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline5
-                                ?.copyWith(fontWeight: FontWeight.normal))),
+                            style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.normal))),
                   )
                 ])
               ],
             )),
       ),
-
       Card(
         color: CantonMethods.alternateCanvasColorType2(context),
         shape: CantonSmoothBorder.defaultBorder(),
@@ -133,16 +108,10 @@ class _DevotionalPageState extends State<DevotionalPage> {
                 children: [
                   ListTile(
                     title: Text('Word',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline4
-                            ?.copyWith(fontWeight: FontWeight.bold)),
+                        style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold)),
                     trailing: Text(
                       'More',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6
-                          ?.copyWith(fontWeight: FontWeight.w100),
+                      style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.w100),
                     ),
                   ),
                   const SizedBox(height: 5),
@@ -151,10 +120,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
                     child: Text(_mainWriteUp,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 10,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline5
-                            ?.copyWith(fontWeight: FontWeight.normal)),
+                        style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.normal)),
                   )
                 ],
               )
@@ -173,26 +139,17 @@ class _DevotionalPageState extends State<DevotionalPage> {
                 children: [
                   ListTile(
                     title: Text('Prayer',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline5
-                            ?.copyWith(fontWeight: FontWeight.bold)),
+                        style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.bold)),
                     trailing: Text(
                       'More',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6
-                          ?.copyWith(fontWeight: FontWeight.w100),
+                      style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.w100),
                     ),
                   ),
                   const SizedBox(height: 5),
                   Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: Text(_prayerBurden,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline3
-                            ?.copyWith(fontWeight: FontWeight.normal)),
+                        style: Theme.of(context).textTheme.headline3?.copyWith(fontWeight: FontWeight.normal)),
                   )
                 ],
               )
@@ -210,27 +167,18 @@ class _DevotionalPageState extends State<DevotionalPage> {
               Column(
                 children: [
                   ListTile(
-                    title: Text('Thought for The Day',
-                        style: Theme.of(context)
-                            .textTheme
-                      .headline5
-                            ?.copyWith(fontWeight: FontWeight.bold)),
+                    title: Text('Thought For The Day',
+                        style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.bold)),
                     trailing: Text(
                       'More',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6
-                          ?.copyWith(fontWeight: FontWeight.w100),
+                      style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.w100),
                     ),
                   ),
                   const SizedBox(height: 5),
                   Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: Text(_thoughtOfTheDay,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline3
-                            ?.copyWith(fontWeight: FontWeight.normal)),
+                        style: Theme.of(context).textTheme.headline3?.copyWith(fontWeight: FontWeight.normal)),
                   )
                 ],
               )
@@ -242,9 +190,11 @@ class _DevotionalPageState extends State<DevotionalPage> {
         color: CantonMethods.alternateCanvasColorType2(context),
         shape: CantonSmoothBorder.defaultBorder(),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(20.0),
-          child: Image.asset('assets/images/bible_in_one_year.jpg', fit: BoxFit.cover,)
-        ),
+            borderRadius: BorderRadius.circular(20.0),
+            child: Image.asset(
+              'assets/images/bible_in_one_year.jpg',
+              fit: BoxFit.cover,
+            )),
       ),
     ];
 
@@ -252,7 +202,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
       onWillPop: () async {
         //Navigator.push(context, MaterialPageRoute(builder: context) => HomeView());
         return true;
-        },
+      },
       child: Scaffold(
         body: SafeArea(
           child: Column(
@@ -261,25 +211,24 @@ class _DevotionalPageState extends State<DevotionalPage> {
                 child: VerticalCardPager(
                     images: devotionalCards,
                     titles: const ['', '', '', '', ''],
-                    onPageChanged: (page) {
-                    },
+                    onPageChanged: (page) {},
                     onSelectedItem: (index) {
                       switch (index) {
                         case 0:
                           Navigator.of(context).push(PageTransition(
                               child: FullTopicMemoryVerseVersePage(
-                                  title: _title,
-                                  memoryVerse: _memoryVerse,
-                                  memoryVersePassage: _memoryVersePassage,
-                                fullPassage: _fullPassage,),
+                                title: _title,
+                                memoryVerse: _memoryVerse,
+                                memoryVersePassage: _memoryVersePassage,
+                                fullPassage: _fullPassage,
+                              ),
                               type: PageTransitionType.scale,
                               alignment: Alignment.center,
                               duration: const Duration(milliseconds: 600)));
                           break;
                         case 1:
                           Navigator.of(context).push(PageTransition(
-                              child:
-                                  FullWordContentPage(mainWriteUp: _mainWriteUp),
+                              child: FullWordContentPage(mainWriteUp: _mainWriteUp),
                               type: PageTransitionType.scale,
                               alignment: Alignment.center,
                               duration: const Duration(milliseconds: 600)));
@@ -293,16 +242,14 @@ class _DevotionalPageState extends State<DevotionalPage> {
                           break;
                         case 3:
                           Navigator.of(context).push(PageTransition(
-                              child: FullThoughtOfTheDayPage(
-                                  thoughtOfTheDay: _thoughtOfTheDay),
+                              child: FullThoughtOfTheDayPage(thoughtOfTheDay: _thoughtOfTheDay),
                               type: PageTransitionType.scale,
                               alignment: Alignment.center,
                               duration: const Duration(milliseconds: 600)));
                           break;
                         case 4:
                           Navigator.of(context).push(PageTransition(
-                              child: FullBibleInAYearPage(
-                                  bibleInAYear: _bibleInAYear),
+                              child: FullBibleInAYearPage(bibleInAYear: _bibleInAYear),
                               type: PageTransitionType.scale,
                               alignment: Alignment.center,
                               duration: const Duration(milliseconds: 600)));
@@ -335,7 +282,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
   }
 
   getBibleInYearAsString(String dt) async {
-    var bibleInYearString =   await DevotionalItemsRetrieveClass.getBibleInYear(dt);
+    var bibleInYearString = await DevotionalItemsRetrieveClass.getBibleInYear(dt);
     setState(() {
       _bibleInAYear = bibleInYearString!;
     });
@@ -350,16 +297,14 @@ class _DevotionalPageState extends State<DevotionalPage> {
   }
 
   getVersePassageAsString(String dt) async {
-    var versePassage =
-        await DevotionalItemsRetrieveClass.getTodayVersePassage(dt);
+    var versePassage = await DevotionalItemsRetrieveClass.getTodayVersePassage(dt);
     setState(() {
       _memoryVersePassage = versePassage!;
     });
   }
 
   getTodayMainWriteUpAsString(String dt) async {
-    var mainWriteUp =
-        await DevotionalItemsRetrieveClass.getTodayMainWriteUp(dt);
+    var mainWriteUp = await DevotionalItemsRetrieveClass.getTodayMainWriteUp(dt);
     setState(() {
       _mainWriteUp = mainWriteUp!;
     });
@@ -373,11 +318,9 @@ class _DevotionalPageState extends State<DevotionalPage> {
   }
 
   getTodayThoughtOfTheDayAsString(String dt) async {
-    var thoughtOfTheDay =
-        await DevotionalItemsRetrieveClass.getTodayThoughtOfTheDay(dt);
+    var thoughtOfTheDay = await DevotionalItemsRetrieveClass.getTodayThoughtOfTheDay(dt);
     setState(() {
       _thoughtOfTheDay = thoughtOfTheDay!;
     });
   }
-
 }

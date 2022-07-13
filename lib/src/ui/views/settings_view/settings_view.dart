@@ -49,6 +49,20 @@ class _SettingsPageState extends State<SettingsPage> {
     await _prefs.setBool('sharedPrefStatus', isDoNotDisturbFunctionOn);
   }
 
+  void checkAndSetDNDInitState() async {
+    final sharedPrefs = await SharedPreferences.getInstance();
+    String? storedDNDInitState = sharedPrefs.getString('dndInit');
+    if (storedDNDInitState == 'off') {
+      setState(() {
+        isDoNotDisturbFunctionOn = false;
+      });
+    } else if (storedDNDInitState == 'on') {
+      setState(() {
+        isDoNotDisturbFunctionOn = true;
+      });
+    }
+  }
+
   void getPrefData() async {
     await SharedPreferences.getInstance().then((preferences) {
       if (preferences.containsKey("themeMode") == false) {
@@ -68,6 +82,7 @@ class _SettingsPageState extends State<SettingsPage> {
   void initState() {
     super.initState();
     getPrefData();
+    checkAndSetDNDInitState();
   }
 
   @override
@@ -169,12 +184,18 @@ class _SettingsPageState extends State<SettingsPage> {
                         });
                         if (isDoNotDisturbFunctionOn == true) {
                           await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
+                          final prefs = await SharedPreferences.getInstance();
+                          await prefs.setString('dndInit', 'off');
+
                           setState(() {
                             isDoNotDisturbFunctionOn = false;
                           });
                           saveDoNotDisturbStatusToSharedPref();
                         } else {
                           await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_NONE);
+                          final prefs = await SharedPreferences.getInstance();
+                          await prefs.setString('dndInit', 'on');
+
                           setState(() {
                             isDoNotDisturbFunctionOn = true;
                           });
@@ -212,19 +233,19 @@ class _SettingsPageState extends State<SettingsPage> {
                                   onChanged: isDNDPolicyAccessGranted == false
                                       ? null
                                       : (value) {
-                                          setState(() async {
+                                          setState(() {
                                             isDoNotDisturbFunctionOn = value;
-                                            if (isDoNotDisturbFunctionOn == true) {
-                                              await FlutterDnd.setInterruptionFilter(
-                                                  FlutterDnd.INTERRUPTION_FILTER_ALL);
-                                              isDoNotDisturbFunctionOn = false;
-                                              saveDoNotDisturbStatusToSharedPref();
-                                            } else {
-                                              await FlutterDnd.setInterruptionFilter(
-                                                  FlutterDnd.INTERRUPTION_FILTER_NONE);
-                                              isDoNotDisturbFunctionOn = true;
-                                              saveDoNotDisturbStatusToSharedPref();
-                                            }
+                                            // if (isDoNotDisturbFunctionOn == true) {
+                                            //   await FlutterDnd.setInterruptionFilter(
+                                            //       FlutterDnd.INTERRUPTION_FILTER_ALL);
+                                            //   isDoNotDisturbFunctionOn = false;
+                                            //   saveDoNotDisturbStatusToSharedPref();
+                                            // } else {
+                                            //   await FlutterDnd.setInterruptionFilter(
+                                            //       FlutterDnd.INTERRUPTION_FILTER_NONE);
+                                            //   isDoNotDisturbFunctionOn = true;
+                                            //   saveDoNotDisturbStatusToSharedPref();
+                                            // }
                                           });
                                         }),
                             ),

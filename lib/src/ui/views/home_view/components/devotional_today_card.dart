@@ -44,7 +44,6 @@ class _DevotionalTodayCardState extends State<DevotionalTodayCard> {
 
   @override
   void initState() {
-
     checkIfDevotionalIsBookmarked(DateFormat('dd.MM.yyyy').format(DateTime.now()));
     super.initState();
   }
@@ -149,7 +148,7 @@ class _DevotionalTodayCardState extends State<DevotionalTodayCard> {
                           'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
 
                       await Share.share(
-                          "<bold>Secret Place Devotional<bold>\nTopic: ${widget.title}\n\nScripture: ${widget.biblePassage}\n\nMemory Verse: ${widget.memoryVerse}\n${widget.memoryVersePassage}\n\n${widget.mainWriteUp}\n\nPrayer: ${widget.prayer}\n\n Thought: ${widget.thought}\n\nGet Secret Place App:\nPlayStore: $playStoreUrl\n AppleStore: $appleStoreUrl");
+                          "Secret Place Devotional\nTopic: ${widget.title}\n\nScripture: ${widget.biblePassage}\n\nMemory Verse: ${widget.memoryVerse}\n${widget.memoryVersePassage}\n\n${widget.mainWriteUp}\n\nPrayer: ${widget.prayer}\n\n Thought: ${widget.thought}\n\nGet Secret Place App:\nPlayStore: $playStoreUrl\n AppleStore: $appleStoreUrl");
                     },
                   ),
                 ],

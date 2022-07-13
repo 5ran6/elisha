@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/models/note.dart';
 import 'package:elisha/src/services/devotionalDB_helper.dart';
+import 'package:elisha/src/ui/views/notes_list_view/notes_list_view.dart';
 import 'package:elisha/utils/note_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -52,15 +53,23 @@ class _NoteViewFromDBState extends State<NoteViewFromDB> {
             children: [
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Row(children: [
+                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text('Note', style: Theme.of(context).textTheme.headline3),
                   ),
-                  Expanded(
-                      child: Align(
-                          alignment: Alignment.centerRight,
-                          child: IconButton(onPressed: _listen, icon: Icon(_islistening ? Icons.mic_off : Icons.mic))))
+                  Align(
+                      alignment: Alignment.centerRight,
+                      child: Row(
+                        children: [
+                          IconButton(onPressed: _listen, icon: Icon(_islistening ? Icons.mic_off : Icons.mic)),
+                          IconButton(
+                              onPressed: () {
+                                CantonMethods.viewTransition(context, const NotesListView());
+                              },
+                              icon: Icon(Icons.notes)),
+                        ],
+                      ))
                 ]),
               ),
               Align(
@@ -71,11 +80,12 @@ class _NoteViewFromDBState extends State<NoteViewFromDB> {
                     height: 40,
                     width: MediaQuery.of(context).size.width - 15,
                     color: Colors.black87,
-                    child: const Align(
+                    child: Align(
                         alignment: Alignment.center,
                         child: Text(
-                          'Topic | Date',
-                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          widget.dateNoteWasSaved,
+                          style: Theme.of(context).textTheme.headline4?.copyWith(
+                              fontWeight: FontWeight.bold, fontFamily: "Palatino", fontSize: 21, color: Colors.white),
                         )),
                   ),
                 ),
@@ -88,9 +98,14 @@ class _NoteViewFromDBState extends State<NoteViewFromDB> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline4
+                          ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino", fontSize: 21),
                       //initialValue: _title;
                       controller: noteTitleWidget..text = _title,
                       keyboardType: TextInputType.text,
+                      textCapitalization: TextCapitalization.sentences,
                       decoration: const InputDecoration(
                           alignLabelWithHint: true, labelText: 'Title', border: OutlineInputBorder()),
                     ),
@@ -104,6 +119,10 @@ class _NoteViewFromDBState extends State<NoteViewFromDB> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextFormField(
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline4
+                          ?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino", fontSize: 17),
                       minLines: 30,
                       keyboardType: TextInputType.text,
                       maxLines: null,
@@ -136,11 +155,15 @@ class _NoteViewFromDBState extends State<NoteViewFromDB> {
                       width: MediaQuery.of(context).size.width - 40,
                       height: 50,
                       decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(15)),
-                      child: const Align(
+                      child: Align(
                           alignment: Alignment.center,
                           child: Text(
                             "Save",
-                            style: TextStyle(color: Colors.white, fontSize: 18),
+                            style: Theme.of(context).textTheme.headline4?.copyWith(
+                                fontWeight: FontWeight.normal,
+                                fontFamily: "Palatino",
+                                fontSize: 22,
+                                color: Colors.white),
                           ))))
             ],
           ),
