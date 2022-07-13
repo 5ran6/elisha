@@ -108,7 +108,6 @@ class _CurrentViewState extends State<CurrentView> with WidgetsBindingObserver {
   }
 
   void _loadData() async {
-    print('second _loadData kkkkkkkkkkkkkkkkkkkkk');
     setDoNotDisturbState();
     await context.read(streaksRepositoryProvider).updateStreaks();
     context.read(localRepositoryProvider.notifier).loadLastChapterAndTranslation();

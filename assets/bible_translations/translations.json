@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "table": "t_asv",
+    "language": "english",
+    "abbreviation": "ASV",
+    "version": "American Standard-ASV1901",
+    "infoUrl": "http://en.wikipedia.org/wiki/American_Standard_Version"
+  },
+  {
+    "id": 2,
+    "table": "t_bbe",
+    "language": "english",
+    "abbreviation": "BBE",
+    "version": "Bible in Basic English",
+    "infoUrl": "http://en.wikipedia.org/wiki/Bible_in_Basic_English"
+  },
+  {
+    "id": 3,
+    "table": "t_dby",
+    "language": "english",
+    "abbreviation": "DARBY",
+    "version": "Darby English Bible",
+    "infoUrl": "http://en.wikipedia.org/wiki/Darby_Bible"
+  },
+  {
+    "id": 8,
+    "table": "t_esv",
+    "language": "english",
+    "abbreviation": "ESV",
+    "version": "English Standard Version",
+    "infoUrl": "https://en.wikipedia.org/wiki/English_Standard_Version"
+  },
+  {
+    "id": 4,
+    "table": "t_kjv",
+    "language": "english",
+    "abbreviation": "KJV",
+    "version": "King James Version",
+    "infoUrl": "http://en.wikipedia.org/wiki/King_James_Version"
+  },
+  {
+    "id": 9,
+    "table": "t_niv",
+    "language": "english",
+    "abbreviation": "NIV",
+    "version": "New International Version",
+    "infoUrl": "https://en.wikipedia.org/wiki/New_International_Version"
+  },
+  {
+    "id": 10,
+    "table": "t_nlt",
+    "language": "english",
+    "abbreviation": "NLT",
+    "version": "New Living Translation",
+    "infoUrl": "https://en.wikipedia.org/wiki/New_Living_Translation"
+  },
+  {
+    "id": 6,
+    "table": "t_web",
+    "language": "english",
+    "abbreviation": "WEB",
+    "version": "World English Bible",
+    "infoUrl": "http://en.wikipedia.org/wiki/World_English_Bible"
+  },
+  {
+    "id": 7,
+    "table": "t_ylt",
+    "language": "english",
+    "abbreviation": "YLT",
+    "version": "Young's Literal Translation",
+    "infoUrl": "http://en.wikipedia.org/wiki/Young%27s_Literal_Translation"
+  }
+]

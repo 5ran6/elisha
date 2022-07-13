@@ -20,8 +20,12 @@ import 'package:dio/dio.dart';
 import 'package:elisha/src/repositories/bible_repository.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_performance/firebase_performance.dart';
+import 'dart:convert';
 
-import 'package:reference_parser/reference_parser.dart' as bible_reference_parser;
+import 'package:flutter/services.dart';
+
+import 'package:reference_parser/reference_parser.dart'
+    as bible_reference_parser;
 
 import 'package:elisha/src/config/exceptions.dart';
 import 'package:elisha/src/models/book.dart';
@@ -30,20 +34,16 @@ import 'package:elisha/src/models/translation.dart';
 import 'package:elisha/src/models/verse.dart';
 
 class BibleService {
-  BibleService(this._dio);
-  final Dio _dio;
-  final _rootUrl = 'https://bible-go-api.rkeplin.com/v1';
-
   Future<List<Translation>> getTranslations() async {
     try {
-      final response = await _dio.get(_rootUrl + '/translations');
+      final String response = await rootBundle
+          .loadString('assets/bible_translations/translations.json');
 
-      final results = List<Map<String, dynamic>>.from(
-        response.data,
-      );
+      final results = await json.decode(response) as List<dynamic>;
 
-      final List<Translation> translations =
-          results.map((version) => Translation.fromMap(version)).toList(growable: false);
+      final List<Translation> translations = results
+          .map((version) => Translation.fromMap(version))
+          .toList(growable: false);
 
       return translations;
     } on DioError catch (e) {
@@ -52,26 +52,42 @@ class BibleService {
     }
   }
 
+  Future<List<Book>> readJsonBibleBooks() async {
+    final String response =
+        await rootBundle.loadString('assets/bible_translations/kjv.json');
+    final data = await json.decode(response) as List<dynamic>;
+    return data.map((book) {
+      return Book.fromJson(json.encode(book));
+    }).toList();
+  }
+
+  Future<Map<String, dynamic>> readJsonBibleChapter(
+      bookID, chapterID, translationID) async {
+    final String response =
+        await rootBundle.loadString('assets/bible_translations/kjv.json');
+    final data = await json.decode(response) as List<dynamic>;
+    final book = data[int.parse(bookID!) - 1] as Map<String, dynamic>;
+    return book['chapters'][int.parse(chapterID!) - 1];
+  }
+
+  Future<List<Map<String, dynamic>>> readJsonBibleChapters(bookID) async {
+    final String response =
+        await rootBundle.loadString('assets/bible_translations/kjv.json');
+    final data = await json.decode(response) as List<dynamic>;
+    final book = data[int.parse(bookID!) - 1] as Map<String, dynamic>;
+    return book['chapters'] as List<Map<String, dynamic>>;
+  }
+
   Future<List<Book>> getBooks(String? bookID) async {
     try {
       if (!['', null].contains(bookID)) {
-        final response = await _dio.get(_rootUrl + '/books/$bookID');
+        final bible = await readJsonBibleBooks();
 
-        final chaptersReponse = await _dio.get(_rootUrl + '/books/$bookID/chapters');
-
-        final result = Map<String, dynamic>.from(response.data);
-
-        final chaptersResult = List<Map<String, dynamic>>.from(chaptersReponse.data);
-
-        final book = Book.fromMap(result).copyWith(
-          chapters: chaptersResult.map((chapter) => ChapterId.fromMap(chapter)).toList(
-                growable: false,
-              ),
-        );
-
+        final book = bible[int.parse(bookID!) - 1];
         return [book];
       } else {
-        var trace = FirebasePerformance.instance.newTrace('book_chapter_bottom_sheet_open_time');
+        var trace = FirebasePerformance.instance
+            .newTrace('book_chapter_bottom_sheet_open_time');
         trace.start();
 
         final books = BibleRepository().getBooks();
@@ -86,15 +102,22 @@ class BibleService {
     }
   }
 
-  Future<Chapter> getChapter(String bookID, String chapterID, String translationID) async {
+  Future<Chapter> getChapter(
+      String bookID, String chapterID, String? translationID) async {
     try {
-      final response = await _dio.get(
-        _rootUrl + '/books/$bookID/chapters/$chapterID?translation=${translationID.replaceAll('"', '')}',
-      );
+      // final response = await _dio.get(
+      //   _rootUrl +
+      //       '/books/$bookID/chapters/$chapterID?translation=${translationID.replaceAll('"', '')}',
+      // );
 
-      final results = List<Map<String, dynamic>>.from(response.data);
+      final chapterFromJSON =
+          await readJsonBibleChapter(bookID, chapterID, translationID);
 
-      final verses = results.map((verse) => Verse.fromMap(verse)).toList(growable: false);
+      final versesList = chapterFromJSON['verses'] as List<dynamic>;
+
+      final verses = versesList
+          .map((verse) => Verse.fromMap(verse))
+          .toList(growable: false);
 
       final chapter = Chapter(
         id: verses[0].book.id,
@@ -112,14 +135,16 @@ class BibleService {
 
   Future<List<Chapter>> getChapters(String? bookID) async {
     try {
-      final response = await _dio.get(_rootUrl + '/books/$bookID/chapters');
+      // final response = await _dio.get(_rootUrl + '/books/$bookID/chapters');
+      final results = await readJsonBibleChapters(bookID);
 
-      final results = List<Map<String, dynamic>>.from(
-        response.data,
-      );
+      // final results = List<Map<String, dynamic>>.from(
+      //   response.data,
+      // );
 
-      final List<Chapter> chapters = results.map((chapter) => Chapter.fromMap(chapter)).toList(growable: false);
-
+      final List<Chapter> chapters = results
+          .map((chapter) => Chapter.fromMap(chapter))
+          .toList(growable: false);
       return chapters;
     } on DioError catch (e) {
       await FirebaseCrashlytics.instance.recordError(e, e.stackTrace);
@@ -127,26 +152,50 @@ class BibleService {
     }
   }
 
-  Future<List<Verse>> getVerses(String? bookID, String? chapterID, String? verseID) async {
+  Future<List<Verse>> getVerses(
+      String? bookID, String? chapterID, String? verseID) async {
     try {
       if (!['', null].contains(verseID)) {
-        final response = await _dio.get(_rootUrl + '/books/$bookID/chapters/$chapterID/verseID');
+        // final response = await _dio
+        //     .get(_rootUrl + '/books/$bookID/chapters/$chapterID/verseID');
+        Chapter chapter = await getChapter(bookID!, chapterID!, null);
 
-        final results = List<Map<String, dynamic>>.from(
-          response.data,
-        );
+        // final results = List<Map<String, dynamic>>.from(
+        //   response.data,
+        // );
 
-        final List<Verse> verses = results.map((verse) => Verse.fromMap(verse)).toList(growable: false);
+        // final List<Verse> verses = results
+        //     .map((verse) => Verse.fromMap(verse))
+        //     .toList(growable: false);
+
+        final List<Verse> verses = chapter.verses!
+            .where((element) => element.verseId.toString() == verseID)
+            .toList(growable: false);
 
         return verses;
       } else {
-        final response = await _dio.get(_rootUrl + '/books/$bookID/chapters/$chapterID');
+        // final response =
+        //     await _dio.get(_rootUrl + '/books/$bookID/chapters/$chapterID');
+        //
+        // final results = List<Map<String, dynamic>>.from(
+        //   response.data,
+        // );
+        //
+        // final List<Verse> verses = results
+        //     .map((verse) => Verse.fromMap(verse))
+        //     .toList(growable: false);
 
-        final results = List<Map<String, dynamic>>.from(
-          response.data,
-        );
+        Chapter chapter = await getChapter(bookID!, chapterID!, null);
 
-        final List<Verse> verses = results.map((verse) => Verse.fromMap(verse)).toList(growable: false);
+        // final results = List<Map<String, dynamic>>.from(
+        //   response.data,
+        // );
+
+        // final List<Verse> verses = results
+        //     .map((verse) => Verse.fromMap(verse))
+        //     .toList(growable: false);
+
+        final List<Verse> verses = chapter.verses!.toList(growable: false);
 
         return verses;
       }
@@ -156,7 +205,7 @@ class BibleService {
     }
   }
 
-  static int getBookIdFromPassageString(String ?passage) {
+  static int getBookIdFromPassageString(String? passage) {
     var ref = bible_reference_parser.parseReference(passage.toString());
     print("passage");
     print(passage);
@@ -168,7 +217,8 @@ class BibleService {
     print(ref.isValid); //
     return ref.bookNumber!;
   }
-  static int getChapterIdFromPassageString(String ?passage) {
+
+  static int getChapterIdFromPassageString(String? passage) {
     var ref = bible_reference_parser.parseReference(passage.toString());
     print("passage");
     print(passage);
