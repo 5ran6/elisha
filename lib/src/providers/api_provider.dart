@@ -29,12 +29,19 @@ class RemoteAPI {
  }
 
  static Future<List<DevotionalPlan>> getDevotionalPlans() async {
-   var dio2 = Dio();
-   final response2 = await dio2.get('https://secret-place.herokuapp.com/api/study-plans',
-   options: Options(responseType: ResponseType.json, followRedirects: false, validateStatus: (status) => true));
+   try {
+     var dio2 = Dio();
+     final response2 = await dio2.get(
+         'https://secret-place.herokuapp.com/api/study-plans',
+         options: Options(responseType: ResponseType.json,
+             followRedirects: false,
+             validateStatus: (status) => true));
 
-   var json = response2.data;
-   return devotionalPlansFromJson(json);
+     var json = response2.data;
+     return devotionalPlansFromJson(json);
+   } catch (e) {
+     return [];
+   }
  }
 
  static Future<DevotionalPlan> getDevotionalPlanWithID(studyPlanID) async {

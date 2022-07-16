@@ -235,18 +235,12 @@ class _SettingsPageState extends State<SettingsPage> {
                                       : (value) {
                                           setState(() {
                                             isDoNotDisturbFunctionOn = value;
-                                            // if (isDoNotDisturbFunctionOn == true) {
-                                            //   await FlutterDnd.setInterruptionFilter(
-                                            //       FlutterDnd.INTERRUPTION_FILTER_ALL);
-                                            //   isDoNotDisturbFunctionOn = false;
-                                            //   saveDoNotDisturbStatusToSharedPref();
-                                            // } else {
-                                            //   await FlutterDnd.setInterruptionFilter(
-                                            //       FlutterDnd.INTERRUPTION_FILTER_NONE);
-                                            //   isDoNotDisturbFunctionOn = true;
-                                            //   saveDoNotDisturbStatusToSharedPref();
-                                            // }
                                           });
+                                          if (value == true) {
+                                            setDNDon();
+                                          } else {
+                                            setDNDoff();
+                                          }
                                         }),
                             ),
                           ])),
@@ -259,6 +253,14 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
       ),
     );
+  }
+
+  Future<void> setDNDon() async {
+    await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_NONE);
+  }
+
+  Future<void> setDNDoff() async {
+    await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
   }
 
   Future openDialog() => showDialog(

@@ -61,6 +61,7 @@ class _HomeViewState extends State<HomeView> {
   bool _isBookmarked = false;
 
   var _devPlansList = List<DevotionalPlan>.empty();
+  //var _devPlansListCache = List<DevotionalPlan>.empty();
 
   bool isAnonymousUser = false;
 
@@ -122,7 +123,8 @@ class _HomeViewState extends State<HomeView> {
     getImageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
     getBibleInYearAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
 
-    getDevotionalPlansFromApi();
+    //getDevotionalPlansFromApi();
+    cacheStudyPlans();
     getStudyPlansFromDB();
   }
 
@@ -243,11 +245,30 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
-  getDevotionalPlansFromApi() async {
+  getDevotionalPlansFromApiAndStoreInDatabaseForCache() async {
     List<DevotionalPlan> devPlans = await RemoteAPI.getDevotionalPlans();
-    setState(() {
-      _devPlansList = devPlans;
-    });
+    await DevotionalDBHelper.instance.insertDevotionalPLanListForCache(devPlans);
+  }
+
+  cacheStudyPlans() async {
+    List<DevotionalPlan> devPlans = await RemoteAPI.getDevotionalPlans();
+    print(devPlans);
+    // if (devPlans.isNotEmpty) {
+    //   //print(devPlans);
+    //   print('ppppppppppppppppppp');
+    //   await DevotionalDBHelper.instance.deleteDevotionalPlansForCache();
+    //   await DevotionalDBHelper.instance.insertDevotionalPLanListForCache(devPlans);
+    // }
+
+    // List<DevotionalPlan> devPlansCacheFromDB = await DevotionalDBHelper.instance.getDevotionalPlanForCacheDB();
+    // print(devPlansCacheFromDB);
+    // if (devPlansCacheFromDB.isNotEmpty) {
+    //   print('yes');
+    //   setState(() {
+    //     devPlansCacheFromDB = _devPlansList;
+    //   });
+    // }
+    // print(_devPlansList);
   }
 
   getStudyPlansFromDB() async {

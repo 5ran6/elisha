@@ -65,25 +65,19 @@ import 'package:elisha/src/services/noty_services/notify_service.dart';
 import 'package:elisha/src/services/authentication_services/authentication_wrapper.dart';
 import 'dart:convert';
 
-
 //Future<void> initializeService, bool onIosBackground and void onStart are used for the flutter background service and is initialized in the main with await initializeService()
 //Android alarm manager has its only initialization in the main and is called in the settings_view.dart
 //TODO: Use providers to listen to String? theme once it changes...
 //String? theme is used to get the themeMode value from the Sharedpreferences
 
-
 //Global variable for theme. Set by settings page
 String? theme;
 dynamic lightSetting = cantonLightTheme().copyWith(
     primaryColor: const Color(0xFFB97D3C),
-    colorScheme: cantonLightTheme()
-        .colorScheme
-        .copyWith(primaryVariant: const Color(0xFFB97D3C)));
+    colorScheme: cantonLightTheme().colorScheme.copyWith(primaryVariant: const Color(0xFFB97D3C)));
 dynamic darkSetting = cantonDarkTheme().copyWith(
     primaryColor: const Color(0xFFB97D3C),
-    colorScheme: cantonDarkTheme()
-        .colorScheme
-        .copyWith(primaryVariant: const Color(0xFFB97D3C)));
+    colorScheme: cantonDarkTheme().colorScheme.copyWith(primaryVariant: const Color(0xFFB97D3C)));
 
 //Notification stuff
 Future<void> initializeService() async {
@@ -130,8 +124,7 @@ void onStart(ServiceInstance service) async {
 
   Timer.periodic(const Duration(seconds: 20), (timer) async {
     await NotificationService().initNotification();
-    NotificationService().showNotification(
-        1, "Secret place", "Hey, you scheduled a time with Jesus now");
+    NotificationService().showNotification(1, "Secret place", "Hey, you scheduled a time with Jesus now");
   });
 }
 
@@ -158,8 +151,7 @@ Future<void> main() async {
     }
 
     /// Lock screen orientation to vertical
-    await SystemChrome.setPreferredOrientations(
-            [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
+    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
         .then((_) {
       runApp(const ProviderScope(child: MyApp()));
     });
@@ -168,30 +160,38 @@ Future<void> main() async {
   });
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   void receiveData() async {
     DateTime now = DateTime.now();
 
     String formattedMYNameAPI = DateFormat('MMMMyyyy').format(now);
     String formattedMYNameDB = DateFormat('MM.yyyy').format(now);
 
-    List<Devotional> lsdv = await DevotionalDBHelper.instance
-        .getDevotionalsDBForMonth(formattedMYNameDB);
-    print(lsdv);
+    List<Devotional> lsdv = await DevotionalDBHelper.instance.getDevotionalsDBForMonth(formattedMYNameDB);
+    //print(lsdv);
     if (lsdv.isEmpty) {
-      List<Devotional> listOfDevs =
-          await RemoteAPI.getDevotionalsForMonth(formattedMYNameAPI);
+      List<Devotional> listOfDevs = await RemoteAPI.getDevotionalsForMonth(formattedMYNameAPI);
       DevotionalDBHelper.instance.insertDevotionalList(listOfDevs);
     }
   }
 
 
+  @override
+  void initState() {
+    super.initState();
+    receiveData();
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    receiveData();
     return ScreenUtilInit(
       designSize: const Size(360, 690),
       minTextAdapt: true,
@@ -206,9 +206,7 @@ class MyApp extends StatelessWidget {
           darkTheme: theme == "Light" ? lightSetting : darkSetting,
           //lightTheme: darkSetting,
           //darkTheme: darkSetting,
-          navigatorObservers: [
-            FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
-          ],
+          navigatorObservers: [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
           home: const SplashScreen()),
     );
   }

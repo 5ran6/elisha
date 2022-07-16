@@ -28,8 +28,8 @@ class DevotionalDBHelper {
 
   Future<Database> initDatabase() async {
     Directory directory = await getApplicationDocumentsDirectory();
-    print("await getDatabasesPath()");
-    print(await getDatabasesPath());
+   // print("await getDatabasesPath()");
+   // print(await getDatabasesPath());
     String path = join(await getDatabasesPath(), 'devotional_database.db');
 
     return await openDatabase(path, version: 4, onCreate: _onCreate, onUpgrade: _onUpgrade);
@@ -41,6 +41,9 @@ class DevotionalDBHelper {
     );
     await db.execute(
         'CREATE TABLE devotionalPlan_table(id TEXT, title TEXT, imageUrl TEXT, description TEXT, devotionals TEXT)');
+
+    await db.execute(
+        'CREATE TABLE devotionalPlanCache_table(id TEXT, title TEXT, imageUrl TEXT, description TEXT, devotionals TEXT)');
 
     await db.execute('CREATE TABLE note_table(id INTEGER PRIMARY KEY, title TEXT, writeUp TEXT, date TEXT)');
 
@@ -54,6 +57,33 @@ class DevotionalDBHelper {
       db.execute(MIGRATION_STRING_IF_LESSTHAN_FIVE2);
       print('migration......................');
     }
+  }
+
+  Future<dynamic> insertDevotionalPLanListForCache(List<DevotionalPlan> devotionalPlanList) async {
+    Database? db = await instance.database;
+    Batch batch = db!.batch();
+
+    for (var devotionalPlan in devotionalPlanList) {
+      batch.insert("devotionalPlanCache_table", devotionalPlan.toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
+    }
+
+    var result = batch.commit();
+    return result;
+  }
+
+  Future<List<DevotionalPlan>> getDevotionalPlanForCacheDB() async {
+    Database? db = await instance.database;
+
+    var devotionalPlans = await db!.query('devotionalPlanCache_table');
+
+    List<DevotionalPlan> devPlanList = devotionalPlans.isNotEmpty ? devotionalPlans.map((e) => DevotionalPlan.fromJson(e)).toList() : [];
+    return devPlanList;
+  }
+
+  Future deleteDevotionalPlansForCache() async {
+    Database? db = await instance.database;
+
+    db!.rawDelete('delete from devotionalPlanCache_table');
   }
 
   Future<dynamic> insertDevotionalList(List<Devotional> devotionalList) async {
