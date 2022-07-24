@@ -1,12 +1,16 @@
+import 'package:elisha/src/services/shared_pref_manager/shared_pref_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class ThemeManager with ChangeNotifier{
-  String _theme = "";
-  String get theme => _theme;
+  String theme;
+  ThemeManager({
+    this.theme = "System"
+});
 
-  void getTheme() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    _theme = preferences.getString("themeMode")!;
+  void changeTheme(newTheme) {
+    PrefManager.setTheme(newTheme);
+    theme = newTheme;
+    notifyListeners();
   }
 }

@@ -18,8 +18,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:async';
 import 'dart:ui';
+import 'package:elisha/src/providers/theme_manager_provider.dart';
+import 'package:elisha/src/services/shared_pref_manager/shared_pref_manager.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:elisha/src/models/devotional.dart';
 import 'package:elisha/src/providers/api_provider.dart';
@@ -54,10 +57,9 @@ import 'package:canton_design_system/canton_design_system.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+// import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 
 import 'package:elisha/src/config/constants.dart';
@@ -65,13 +67,8 @@ import 'package:elisha/src/services/noty_services/notify_service.dart';
 import 'package:elisha/src/services/authentication_services/authentication_wrapper.dart';
 import 'dart:convert';
 
-//Future<void> initializeService, bool onIosBackground and void onStart are used for the flutter background service and is initialized in the main with await initializeService()
-//Android alarm manager has its only initialization in the main and is called in the settings_view.dart
-//TODO: Use providers to listen to String? theme once it changes...
-//String? theme is used to get the themeMode value from the Sharedpreferences
 
 //Global variable for theme. Set by settings page
-String? theme;
 dynamic lightSetting = cantonLightTheme().copyWith(
     primaryColor: const Color(0xFF030C5A),
     colorScheme: cantonLightTheme().colorScheme.copyWith(primaryVariant: const Color(0xFF030C5A)));
@@ -134,11 +131,7 @@ Future<void> main() async {
     WidgetsFlutterBinding.ensureInitialized();
     await AndroidAlarmManager.initialize();
     //await initializeService();
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    if (preferences.containsKey("themeMode") == false) {
-      preferences.setString("themeMode", "System");
-    }
-    theme = preferences.getString("themeMode");
+    await PrefManager.init();
     await MobileAds.instance.initialize();
     await Firebase.initializeApp();
     await Hive.initFlutter();
@@ -153,7 +146,14 @@ Future<void> main() async {
     /// Lock screen orientation to vertical
     await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
         .then((_) {
-      runApp(const ProviderScope(child: MyApp()));
+      runApp(MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (context) => ThemeManager(),
+          )
+        ],
+          child: const MyApp()
+      ));
     });
   }, (error, stack) async {
     await FirebaseCrashlytics.instance.recordError(error, stack);
@@ -182,14 +182,17 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+
   @override
   void initState() {
     super.initState();
     receiveData();
   }
 
+
   @override
   Widget build(BuildContext context) {
+    String finalTheme = Provider.of<ThemeManager>(context).theme;
     return ScreenUtilInit(
       designSize: const Size(360, 690),
       minTextAdapt: true,
@@ -200,12 +203,16 @@ class _MyAppState extends State<MyApp> {
           primaryLightVariantColor: const Color(0xFF030C5A),
           primaryDarkColor: const Color(0xFF030C5A),
           primaryDarkVariantColor: const Color(0xFF030C5A),
-          lightTheme: theme == "Dark" ? darkSetting : lightSetting,
-          darkTheme: theme == "Light" ? lightSetting : darkSetting,
           //lightTheme: darkSetting,
           //darkTheme: darkSetting,
           navigatorObservers: [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
           home: const SplashScreen()),
+          lightTheme: finalTheme == "Dark" ? darkSetting : lightSetting,
+          darkTheme: finalTheme == "Light" ? lightSetting : darkSetting,
+          navigatorObservers: [
+            FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
+          ],
+          home: const SettingsPage()),
     );
   }
 }
