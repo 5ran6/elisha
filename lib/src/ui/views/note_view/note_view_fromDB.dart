@@ -143,13 +143,20 @@ class _NoteViewFromDBState extends State<NoteViewFromDB> {
                     String todayDate = DateFormat('dd.MM.yyyy').format(now);
                     Note note = Note(title: noteTitleWidget.text, writeUp: noteWidget.text, date: todayDate);
 
-                    DevotionalDBHelper.instance.insertNote(note);
+                    List<Note> notes = await DevotionalDBHelper.instance.getNotewithDate(todayDate);
+                    if (notes.isNotEmpty) {
+                      DevotionalDBHelper.instance.updateNote(note);
+                      if (user != null) {
+                        sendNotePutRequest(note);
+                      }
+                    } else {
+                      DevotionalDBHelper.instance.insertNote(note);
+                      if (user != null) {
+                        sendNotePostRequest(note);
+                      }
+                    }
                     Fluttertoast.showToast(
                         msg: "Note Saved", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
-
-                    if (user != null) {
-                      sendNotePostRequest(note);
-                    }
                   },
                   child: Container(
                       width: MediaQuery.of(context).size.width - 40,
@@ -177,6 +184,19 @@ class _NoteViewFromDBState extends State<NoteViewFromDB> {
 
     final idToken = await user?.getIdToken();
     final response = await http.post(Uri.parse("https://secret-place.herokuapp.com/api-secured/users/notes"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $idToken',
+        },
+        body: jsonEncode(note));
+  }
+
+  void sendNotePutRequest(Note note) async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    final idToken = await user?.getIdToken();
+    final response = await http.put(Uri.parse("https://secret-place.herokuapp.com/api-secured/users/notes"),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',

@@ -10,6 +10,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ChurchView extends StatefulWidget {
   //const ChurchView(this.reading, {Key? key}) : super(key: key);
@@ -51,6 +52,11 @@ class _ChurchViewState extends State<ChurchView> {
     });
   }
 
+  void sendToast() {
+    Fluttertoast.showToast(
+        msg: "Ensure Do Not Disturb Is Disabled", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
+  }
+
   //late YoutubePlayerController _controller;
 
   @override
@@ -58,6 +64,7 @@ class _ChurchViewState extends State<ChurchView> {
     super.initState();
 
     fetchAndUpdateUIVideos();
+    sendToast();
   }
 
   @override

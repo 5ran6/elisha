@@ -181,6 +181,9 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                     List<Note> notes = await DevotionalDBHelper.instance.getNotewithDate(todayDt);
                     if (notes.isNotEmpty) {
                       DevotionalDBHelper.instance.updateNote(note);
+                      if (user != null) {
+                        sendNotePutRequest(note);
+                      }
                     } else {
                       DevotionalDBHelper.instance.insertNote(note);
                       if (user != null) {
@@ -217,6 +220,21 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
 
     final idToken = await user?.getIdToken();
     final response = await http.post(Uri.parse("https://secret-place.herokuapp.com/api-secured/users/notes"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $idToken',
+        },
+        body: jsonEncode(note));
+
+    print(response.body);
+  }
+
+  void sendNotePutRequest(Note note) async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    final idToken = await user?.getIdToken();
+    final response = await http.put(Uri.parse("https://secret-place.herokuapp.com/api-secured/users/notes"),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',

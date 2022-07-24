@@ -65,20 +65,24 @@ class _OpenedStudyPlanScreenState extends State<OpenedStudyPlanScreen> {
                             height: 300,
                             width: MediaQuery.of(context).size.width,
                             decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: imageProvider,
-                                  fit: BoxFit.fill,
-                                ),
-                                borderRadius: BorderRadius.circular(15)),
+                              image: DecorationImage(
+                                image: imageProvider,
+                                fit: BoxFit.fill,
+                              ),
+                              //borderRadius: BorderRadius.circular(15)
+                            ),
                           ),
                       placeholder: (context, url) => const CircularProgressIndicator(),
                       errorWidget: (context, url, error) => const Icon(Icons.error)),
-                  const SizedBox(height: 10),
-                  Text(
-                    _devPlanWithFullDevotionals?.description ?? '',
-                    style: Theme.of(context).textTheme.headline5,
+                  const SizedBox(height: 5),
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Text(
+                      _devPlanWithFullDevotionals?.description ?? '',
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 5),
                   Expanded(
                     child: StaggeredGridView.countBuilder(
                       staggeredTileBuilder: (index) => StaggeredTile.count(2, 1),
@@ -86,7 +90,7 @@ class _OpenedStudyPlanScreenState extends State<OpenedStudyPlanScreen> {
                       mainAxisSpacing: 8,
                       crossAxisCount: 4,
                       crossAxisSpacing: 8,
-                      itemBuilder: (context, index) => buildDailyPlanCard(index),
+                      itemBuilder: (context, index) => buildDailyPlanCard(index + 1),
                     ),
                   ),
                 ],
@@ -101,7 +105,6 @@ class _OpenedStudyPlanScreenState extends State<OpenedStudyPlanScreen> {
 
   Widget buildDailyPlanCard(int index) => GestureDetector(
         onTap: () {
-          //List<Devotional> devsForPlan = _devPlansWithDevotionals[index].devotionals;
           if (_devPlanWithFullDevotionals != null) {
             Navigator.push(
                 context,

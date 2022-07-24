@@ -1,4 +1,3 @@
-
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -9,10 +8,8 @@ class AppTheme {
   final whiteColor = const Color(0XFFFFFFFF);
   static const greyColor1 = Color(0XFF5B5B5B);
   static const greyColor2 = Color(0XFF6B6B6B);
-  static final kHeadline1 = TextStyle(
-      color: kBlackColor,
-      fontSize: ScreenUtil().setSp(24),
-      fontWeight: FontWeight.w700);
+  static final kHeadline1 =
+      TextStyle(color: kBlackColor, fontSize: ScreenUtil().setSp(24), fontWeight: FontWeight.w700);
   static final kHeadline2 = TextStyle(
     color: Colors.white,
     fontSize: ScreenUtil().setSp(20),
@@ -54,19 +51,14 @@ class AppTheme {
     colors: [Colors.white.withOpacity(0.95), Colors.grey],
   );
 
-  static TextStyle whiteBold = const TextStyle(
-      color: kPrimaryColor, fontWeight: FontWeight.bold, fontFamily: 'Ubuntu');
-  static TextStyle whiteNormal = const TextStyle(
-      color: kWhiteColor, fontWeight: FontWeight.normal, fontFamily: 'Ubuntu');
-  static TextStyle whiteBoldWithSpacing = const TextStyle(
-      color: kWhiteColor,
-      fontWeight: FontWeight.bold,
-      letterSpacing: 2.0,
-      fontFamily: 'Ubuntu');
-  static TextStyle blackBold = const TextStyle(
-      color: kBlackColor, fontWeight: FontWeight.bold, fontFamily: 'Ubuntu');
-  static TextStyle blackNormal = const TextStyle(
-      color: kBlackColor, fontWeight: FontWeight.normal, fontFamily: 'Ubuntu');
+  static TextStyle whiteBold = const TextStyle(color: kPrimaryColor, fontWeight: FontWeight.bold, fontFamily: 'Ubuntu');
+  static TextStyle whiteNormal =
+      const TextStyle(color: kWhiteColor, fontWeight: FontWeight.normal, fontFamily: 'Ubuntu');
+  static TextStyle whiteBoldWithSpacing =
+      const TextStyle(color: kWhiteColor, fontWeight: FontWeight.bold, letterSpacing: 2.0, fontFamily: 'Ubuntu');
+  static TextStyle blackBold = const TextStyle(color: kBlackColor, fontWeight: FontWeight.bold, fontFamily: 'Ubuntu');
+  static TextStyle blackNormal =
+      const TextStyle(color: kBlackColor, fontWeight: FontWeight.normal, fontFamily: 'Ubuntu');
 
   static ThemeData lightTheme = ThemeData(
     fontFamily: 'Ubuntu',

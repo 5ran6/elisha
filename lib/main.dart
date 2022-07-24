@@ -73,11 +73,11 @@ import 'dart:convert';
 //Global variable for theme. Set by settings page
 String? theme;
 dynamic lightSetting = cantonLightTheme().copyWith(
-    primaryColor: const Color(0xFFB97D3C),
-    colorScheme: cantonLightTheme().colorScheme.copyWith(primaryVariant: const Color(0xFFB97D3C)));
+    primaryColor: const Color(0xFF030C5A),
+    colorScheme: cantonLightTheme().colorScheme.copyWith(primaryVariant: const Color(0xFF030C5A)));
 dynamic darkSetting = cantonDarkTheme().copyWith(
-    primaryColor: const Color(0xFFB97D3C),
-    colorScheme: cantonDarkTheme().colorScheme.copyWith(primaryVariant: const Color(0xFFB97D3C)));
+    primaryColor: const Color(0xFF0B6091),
+    colorScheme: cantonDarkTheme().colorScheme.copyWith(primaryVariant: const Color(0xFF0B6091)));
 
 //Notification stuff
 Future<void> initializeService() async {
@@ -182,13 +182,11 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-
   @override
   void initState() {
     super.initState();
     receiveData();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -198,10 +196,10 @@ class _MyAppState extends State<MyApp> {
       splitScreenMode: true,
       builder: (context, child) => CantonApp(
           title: kAppTitle,
-          primaryLightColor: const Color(0xFFB97D3C),
-          primaryLightVariantColor: const Color(0xFFB97D3C),
-          primaryDarkColor: const Color(0xFFB97D3C),
-          primaryDarkVariantColor: const Color(0xFFB97D3C),
+          primaryLightColor: const Color(0xFF030C5A),
+          primaryLightVariantColor: const Color(0xFF030C5A),
+          primaryDarkColor: const Color(0xFF030C5A),
+          primaryDarkVariantColor: const Color(0xFF030C5A),
           lightTheme: theme == "Dark" ? darkSetting : lightSetting,
           darkTheme: theme == "Light" ? lightSetting : darkSetting,
           //lightTheme: darkSetting,

@@ -12,18 +12,12 @@ class VerseOfTheDayCard extends StatelessWidget {
 //final Verse verse;
   final String verse;
   final String versePassage;
-  const VerseOfTheDayCard({ required this.verse, required this.versePassage});
-
-
-
+  const VerseOfTheDayCard({required this.verse, required this.versePassage});
 
   @override
   Widget build(BuildContext context) {
-
     Color bgColor() {
-      if (MediaQuery
-          .of(context)
-          .platformBrightness == Brightness.dark) {
+      if (MediaQuery.of(context).platformBrightness == Brightness.dark) {
         return CantonDarkColors.gray[300]!;
       }
       return CantonColors.gray[300]!;
@@ -63,22 +57,16 @@ class VerseOfTheDayCard extends StatelessWidget {
   Widget _header(BuildContext context, Color bgColor) {
     return Text(
       'Verse of the Day',
-      style: Theme
-          .of(context)
-          .textTheme
-          .headline4
-          ?.copyWith(fontWeight: FontWeight.bold),
+      style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold),
     );
   }
 
   Widget _favoriteButton(BuildContext context, Color bgColor) {
     Color heartColor() {
-      if (MediaQuery
-          .of(context)
-          .platformBrightness == Brightness.dark) {
-        return CantonDarkColors.red[400]!;
+      if (MediaQuery.of(context).platformBrightness == Brightness.dark) {
+        return Theme.of(context).primaryColor;
       }
-      return CantonColors.red[400]!;
+      return Theme.of(context).primaryColor;
     }
 
     return GestureDetector(
@@ -86,7 +74,8 @@ class VerseOfTheDayCard extends StatelessWidget {
         const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
         const appleStoreUrl = 'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
 
-        await Share.share("$verse\n$versePassage\n\nGet Secret Place App:\nPlayStore: $playStoreUrl\n AppleStore: $appleStoreUrl");
+        await Share.share(
+            "$verse\n$versePassage\n\nGet Secret Place App:\nPlayStore: $playStoreUrl\n AppleStore: $appleStoreUrl");
       },
       child: Container(
         height: 35,
@@ -107,7 +96,6 @@ class VerseOfTheDayCard extends StatelessWidget {
   }
 
   Widget _body(BuildContext context, Color bgColor) {
-
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('dd.MM.yyyy').format(now);
 
@@ -125,11 +113,7 @@ class VerseOfTheDayCard extends StatelessWidget {
           Expanded(
             child: Text(
               verse,
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .headline4
-                  ?.copyWith(fontWeight: FontWeight.w500),
+              style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.w500),
             ),
           ),
         ],
@@ -143,16 +127,7 @@ class VerseOfTheDayCard extends StatelessWidget {
 
     return Text(
       versePassage,
-      style: Theme
-          .of(context)
-          .textTheme
-          .headline6
-          ?.copyWith(fontWeight: FontWeight.w500),
+      style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.w500),
     );
   }
-
-
-
-
-
 }

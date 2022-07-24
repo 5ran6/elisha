@@ -123,7 +123,6 @@ class _HomeViewState extends State<HomeView> {
     getImageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
     getBibleInYearAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
 
-    //getDevotionalPlansFromApi();
     cacheStudyPlans();
     getStudyPlansFromDB();
   }
@@ -245,30 +244,19 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
-  getDevotionalPlansFromApiAndStoreInDatabaseForCache() async {
-    List<DevotionalPlan> devPlans = await RemoteAPI.getDevotionalPlans();
-    await DevotionalDBHelper.instance.insertDevotionalPLanListForCache(devPlans);
-  }
-
   cacheStudyPlans() async {
     List<DevotionalPlan> devPlans = await RemoteAPI.getDevotionalPlans();
-    print(devPlans);
-    // if (devPlans.isNotEmpty) {
-    //   //print(devPlans);
-    //   print('ppppppppppppppppppp');
-    //   await DevotionalDBHelper.instance.deleteDevotionalPlansForCache();
-    //   await DevotionalDBHelper.instance.insertDevotionalPLanListForCache(devPlans);
-    // }
+    if (devPlans.isNotEmpty) {
+      await DevotionalDBHelper.instance.deleteDevotionalPlansForCache();
+      await DevotionalDBHelper.instance.insertDevotionalPLanListForCache(devPlans);
+    }
 
-    // List<DevotionalPlan> devPlansCacheFromDB = await DevotionalDBHelper.instance.getDevotionalPlanForCacheDB();
-    // print(devPlansCacheFromDB);
-    // if (devPlansCacheFromDB.isNotEmpty) {
-    //   print('yes');
-    //   setState(() {
-    //     devPlansCacheFromDB = _devPlansList;
-    //   });
-    // }
-    // print(_devPlansList);
+    List<DevotionalPlan> devPlansCacheFromDB = await DevotionalDBHelper.instance.getDevotionalPlanForCacheDB();
+    if (devPlansCacheFromDB.isNotEmpty) {
+      setState(() {
+        _devPlansList = devPlansCacheFromDB;
+      });
+    }
   }
 
   getStudyPlansFromDB() async {

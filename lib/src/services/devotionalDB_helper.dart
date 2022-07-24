@@ -28,8 +28,8 @@ class DevotionalDBHelper {
 
   Future<Database> initDatabase() async {
     Directory directory = await getApplicationDocumentsDirectory();
-   // print("await getDatabasesPath()");
-   // print(await getDatabasesPath());
+    // print("await getDatabasesPath()");
+    // print(await getDatabasesPath());
     String path = join(await getDatabasesPath(), 'devotional_database.db');
 
     return await openDatabase(path, version: 4, onCreate: _onCreate, onUpgrade: _onUpgrade);
@@ -76,7 +76,8 @@ class DevotionalDBHelper {
 
     var devotionalPlans = await db!.query('devotionalPlanCache_table');
 
-    List<DevotionalPlan> devPlanList = devotionalPlans.isNotEmpty ? devotionalPlans.map((e) => DevotionalPlan.fromJson(e)).toList() : [];
+    List<DevotionalPlan> devPlanList =
+        devotionalPlans.isNotEmpty ? devotionalPlans.map((e) => DevotionalPlan.fromJson(e)).toList() : [];
     return devPlanList;
   }
 
@@ -122,6 +123,12 @@ class DevotionalDBHelper {
 
     return await db?.insert("devotionalPlan_table", devotionalPlan.toJson(),
         conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  Future deleteSelectedStudyPlan(planID) async {
+    Database? db = await instance.database;
+
+    db!.rawDelete('DELETE FROM devotionalPlan_table WHERE id=?', ['$planID']);
   }
 
   Future<List<DevotionalPlan>> getDevotionalPlansFromDB() async {

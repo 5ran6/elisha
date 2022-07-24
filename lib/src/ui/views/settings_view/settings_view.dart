@@ -147,10 +147,10 @@ class _SettingsPageState extends State<SettingsPage> {
                             Transform.scale(
                               scale: 1.2,
                               child: Switch.adaptive(
-                                  activeColor: Colors.blueGrey,
-                                  activeTrackColor: Colors.blueGrey.withOpacity(0.4),
-                                  inactiveThumbColor: Colors.black87,
-                                  inactiveTrackColor: Colors.black12,
+                                  activeColor: Theme.of(context).primaryColor,
+                                  activeTrackColor: Theme.of(context).primaryColor.withOpacity(0.4),
+                                  inactiveThumbColor: Colors.blueGrey,
+                                  inactiveTrackColor: Colors.blueGrey,
                                   splashRadius: 50,
                                   value: reminderValue,
                                   onChanged: (value) {
@@ -224,10 +224,10 @@ class _SettingsPageState extends State<SettingsPage> {
                             Transform.scale(
                               scale: 1.2,
                               child: Switch.adaptive(
-                                  activeColor: Colors.blueGrey,
-                                  activeTrackColor: Colors.blueGrey.withOpacity(0.4),
-                                  inactiveThumbColor: Colors.black87,
-                                  inactiveTrackColor: Colors.black12,
+                                  activeColor: Theme.of(context).primaryColor,
+                                  activeTrackColor: Theme.of(context).primaryColor.withOpacity(0.4),
+                                  inactiveThumbColor: Colors.blueGrey,
+                                  inactiveTrackColor: Colors.blueGrey,
                                   splashRadius: 50,
                                   value: isDoNotDisturbFunctionOn,
                                   onChanged: isDNDPolicyAccessGranted == false
