@@ -20,8 +20,6 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:elisha/src/providers/theme_manager_provider.dart';
 import 'package:elisha/src/services/shared_pref_manager/shared_pref_manager.dart';
-import 'package:flutter_background_service/flutter_background_service.dart';
-import 'package:flutter_background_service_android/flutter_background_service_android.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:elisha/src/models/devotional.dart';
@@ -52,87 +50,24 @@ import 'package:elisha/src/ui/views/splash_view/splash_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:elisha/utils/constants.dart';
 
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 
 import 'package:elisha/src/config/constants.dart';
-import 'package:elisha/src/services/noty_services/notify_service.dart';
 import 'package:elisha/src/services/authentication_services/authentication_wrapper.dart';
 import 'dart:convert';
 
-
-//Global variable for theme. Set by settings page
-dynamic lightSetting = cantonLightTheme().copyWith(
-    primaryColor: const Color(0xFFB97D3C),
-    colorScheme: cantonLightTheme().colorScheme.copyWith(primaryVariant: const Color(0xFFB97D3C)));
-dynamic darkSetting = cantonDarkTheme().copyWith(
-    primaryColor: const Color(0xFFB97D3C),
-    colorScheme: cantonDarkTheme().colorScheme.copyWith(primaryVariant: const Color(0xFFB97D3C)));
-
-
-
-//Notification stuff
-Future<void> initializeService() async {
-  final service = FlutterBackgroundService();
-  await service.configure(
-    androidConfiguration: AndroidConfiguration(
-      // this will be executed when app is in foreground or background in separated isolate
-      onStart: onStart,
-      autoStart: true,
-      isForegroundMode: false,
-    ),
-    iosConfiguration: IosConfiguration(
-      // auto start service
-      autoStart: true,
-      // this will be executed when app is in foreground in separated isolate
-      onForeground: onStart,
-      // you have to enable background fetch capability on xcode project
-      onBackground: onIosBackground,
-    ),
-  );
-  service.startService();
-}
-
-bool onIosBackground(ServiceInstance service) {
-  WidgetsFlutterBinding.ensureInitialized();
-  return true;
-}
-
-void onStart(ServiceInstance service) async {
-  DartPluginRegistrant.ensureInitialized();
-
-  if (service is AndroidServiceInstance) {
-    service.on('setAsForeground').listen((event) {
-      service.setAsForegroundService();
-    });
-
-    service.on('setAsBackground').listen((event) {
-      service.setAsBackgroundService();
-    });
-  }
-  service.on('stopService').listen((event) {
-    service.stopSelf();
-  });
-
-  Timer.periodic(const Duration(seconds: 20), (timer) async {
-    await NotificationService().initNotification();
-    NotificationService().showNotification(1, "Secret place", "Hey, you scheduled a time with Jesus now");
-  });
-}
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runZonedGuarded<Future<void>>(() async {
     WidgetsFlutterBinding.ensureInitialized();
-    await AndroidAlarmManager.initialize();
-    //await initializeService();
     await PrefManager.init();
     await MobileAds.instance.initialize();
     await Firebase.initializeApp();

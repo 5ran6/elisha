@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/services/shared_pref_manager/shared_pref_manager.dart';
 import 'package:elisha/src/ui/views/settings_view/settings_header_view.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
 import 'package:flutter_dnd/flutter_dnd.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
@@ -97,14 +100,20 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      showDialogPicker(context);
+                      if (Platform.isAndroid){
+                        timeText  == "Off" ? showDialogPicker(context) : FlutterAlarmClock.showAlarms();
+                      }
+                      else if (Platform.isIOS){
+                        print("IOS logic here");
+                      }
                     },
                     child: Card(
                       child: Container(
                         padding: const EdgeInsets.all(15),
                         alignment: Alignment.centerLeft,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Text('Daily Remainder',
                                 style: Theme.of(context).textTheme.headline6),
@@ -296,8 +305,9 @@ class _SettingsPageState extends State<SettingsPage> {
                 ? "0" + value.minute.toString()
                 : value.minute.toString());
         PrefManager.setTime(timeText);
+        FlutterAlarmClock.createAlarm(value.hour, value.minute, title: "Secret place - Reminder");
+        reminderValue = true;
       });
-      reminderValue = true;
     }, onError: (error) {
       if (kDebugMode) {
         print(Error());

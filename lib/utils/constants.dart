@@ -122,3 +122,10 @@ deviceWidth(BuildContext context) {
 String insertCommasInString(String value) {
   return value.replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => "${m[1]},");
 }
+
+dynamic lightSetting = cantonLightTheme().copyWith(
+    primaryColor: const Color(0xFFB97D3C),
+    colorScheme: cantonLightTheme().colorScheme.copyWith(primaryVariant: const Color(0xFFB97D3C)));
+dynamic darkSetting = cantonDarkTheme().copyWith(
+    primaryColor: const Color(0xFFB97D3C),
+    colorScheme: cantonDarkTheme().colorScheme.copyWith(primaryVariant: const Color(0xFFB97D3C)));
