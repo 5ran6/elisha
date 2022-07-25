@@ -1,17 +1,11 @@
-import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:canton_design_system/canton_design_system.dart';
-import 'package:elisha/main.dart';
 import 'package:elisha/src/services/shared_pref_manager/shared_pref_manager.dart';
 import 'package:elisha/src/ui/views/settings_view/settings_header_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dnd/flutter_dnd.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:elisha/src/providers/theme_manager_provider.dart';
-
-import '../../../services/noty_services/notify_service.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -21,13 +15,10 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  //Future<SharedPreferences> pref = SharedPreferences.getInstance();
   List themeList = ["System", "Light", "Dark"];
   late Future<TimeOfDay?> selectedTime;
   bool reminderValue = false;
   int radioValue = 0;
-  late String themeVal = ""; //for UI use to update the theme card subtext
-  late String tme = ""; //for UI use to update the alarm card subtext
   String themeText = "";
   String timeText = "";
   bool isDoNotDisturbFunctionOn = false;
@@ -35,7 +26,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
   void saveDoNotDisturbStatusToSharedPref() async {
     final _prefs = await SharedPreferences.getInstance();
-
     await _prefs.setBool('sharedPrefStatus', isDoNotDisturbFunctionOn);
   }
 
@@ -53,25 +43,9 @@ class _SettingsPageState extends State<SettingsPage> {
     }
   }
 
-  void getPrefData() async {
-    await SharedPreferences.getInstance().then((preferences) {
-      if (preferences.containsKey("themeMode") == false) {
-        preferences.setString("themeMode", "System");
-      }
-      themeVal = preferences.getString("themeMode")!;
-      if (preferences.containsKey("alarmTime") == false) {
-        tme = "Off";
-        reminderValue = false;
-      } else {
-        tme = preferences.getString("alarmTime")!.split(" ")[1].substring(0, 5);
-      }
-    });
-  }
-
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    getPrefData();
     checkAndSetDNDInitState();
     themeText = PrefManager.getTheme() ?? "System";
 
@@ -132,36 +106,13 @@ class _SettingsPageState extends State<SettingsPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text('Daily Remainder',
-                                    style:
-                                        Theme.of(context).textTheme.headline6),
-                                Text(timeText,
-                                    style: TextStyle(
-                                        color: reminderValue
-                                            ? Colors.grey[600]
-                                            : Colors.grey[800]))
-                              ],
-                            ),
-                            Transform.scale(
-                              scale: 1.2,
-                              child: Switch.adaptive(
-                                  activeColor: Colors.blueGrey,
-                                  activeTrackColor: Colors.blueGrey.withOpacity(0.4),
-                                  inactiveThumbColor: Colors.black87,
-                                  inactiveTrackColor: Colors.black12,
-                                  splashRadius: 50,
-                                  value: reminderValue,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      reminderValue = value;
-                                      //Logic for alarm
-                                    });
-                                  }),
-                            ),
+                            Text('Daily Remainder',
+                                style: Theme.of(context).textTheme.headline6),
+                            Text(timeText,
+                                style: TextStyle(
+                                    color: reminderValue
+                                        ? Colors.grey[600]
+                                        : Colors.grey[800])),
                           ],
                         ),
                       ),
@@ -170,13 +121,16 @@ class _SettingsPageState extends State<SettingsPage> {
                   const SizedBox(height: 12),
                   GestureDetector(
                     onTap: () async {
-                      var isNotificationPolicyAccessGranted = (await FlutterDnd.isNotificationPolicyAccessGranted);
-                      if ((isNotificationPolicyAccessGranted) != null && isNotificationPolicyAccessGranted) {
+                      var isNotificationPolicyAccessGranted =
+                          (await FlutterDnd.isNotificationPolicyAccessGranted);
+                      if ((isNotificationPolicyAccessGranted) != null &&
+                          isNotificationPolicyAccessGranted) {
                         setState(() {
                           isDNDPolicyAccessGranted = true;
                         });
                         if (isDoNotDisturbFunctionOn == true) {
-                          await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
+                          await FlutterDnd.setInterruptionFilter(
+                              FlutterDnd.INTERRUPTION_FILTER_ALL);
                           final prefs = await SharedPreferences.getInstance();
                           await prefs.setString('dndInit', 'off');
 
@@ -185,7 +139,8 @@ class _SettingsPageState extends State<SettingsPage> {
                           });
                           saveDoNotDisturbStatusToSharedPref();
                         } else {
-                          await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_NONE);
+                          await FlutterDnd.setInterruptionFilter(
+                              FlutterDnd.INTERRUPTION_FILTER_NONE);
                           final prefs = await SharedPreferences.getInstance();
                           await prefs.setString('dndInit', 'on');
 
@@ -205,38 +160,49 @@ class _SettingsPageState extends State<SettingsPage> {
                       child: Container(
                           padding: const EdgeInsets.all(15),
                           alignment: Alignment.centerLeft,
-                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('Do not disturb(Tap me)', style: Theme.of(context).textTheme.headline6),
-                                Text(isDoNotDisturbFunctionOn ? "On" : "Off", style: TextStyle(color: Colors.grey[600]))
-                              ],
-                            ),
-                            Transform.scale(
-                              scale: 1.2,
-                              child: Switch.adaptive(
-                                  activeColor: Colors.blueGrey,
-                                  activeTrackColor: Colors.blueGrey.withOpacity(0.4),
-                                  inactiveThumbColor: Colors.black87,
-                                  inactiveTrackColor: Colors.black12,
-                                  splashRadius: 50,
-                                  value: isDoNotDisturbFunctionOn,
-                                  onChanged: isDNDPolicyAccessGranted == false
-                                      ? null
-                                      : (value) {
-                                          setState(() {
-                                            isDoNotDisturbFunctionOn = value;
-                                          });
-                                          if (value == true) {
-                                            setDNDon();
-                                          } else {
-                                            setDNDoff();
-                                          }
-                                        }),
-                            ),
-                          ])),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text('Do not disturb(Tap me)',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline6),
+                                    Text(
+                                        isDoNotDisturbFunctionOn ? "On" : "Off",
+                                        style:
+                                            TextStyle(color: Colors.grey[600]))
+                                  ],
+                                ),
+                                Transform.scale(
+                                  scale: 1.2,
+                                  child: Switch.adaptive(
+                                      activeColor: Colors.blueGrey,
+                                      activeTrackColor:
+                                          Colors.blueGrey.withOpacity(0.4),
+                                      inactiveThumbColor: Colors.black87,
+                                      inactiveTrackColor: Colors.black12,
+                                      splashRadius: 50,
+                                      value: isDoNotDisturbFunctionOn,
+                                      onChanged:
+                                          isDNDPolicyAccessGranted == false
+                                              ? null
+                                              : (value) {
+                                                  setState(() {
+                                                    isDoNotDisturbFunctionOn =
+                                                        value;
+                                                  });
+                                                  if (value == true) {
+                                                    setDNDon();
+                                                  } else {
+                                                    setDNDoff();
+                                                  }
+                                                }),
+                                ),
+                              ])),
                     ),
                   ),
                 ],
@@ -303,8 +269,8 @@ class _SettingsPageState extends State<SettingsPage> {
   void submit() {
     Navigator.of(context).pop(radioValue);
     setState(() {
-        themeText = themeList[radioValue];
-        Provider.of<ThemeManager>(context, listen: false).changeTheme(themeText);
+      themeText = themeList[radioValue];
+      Provider.of<ThemeManager>(context, listen: false).changeTheme(themeText);
     });
   }
 
@@ -322,14 +288,14 @@ class _SettingsPageState extends State<SettingsPage> {
     selectedTime.then((value) {
       setState(() {
         if (value == null) return;
-          timeText = (value.hour < 10
-                  ? "0" + value.hour.toString()
-                  : value.hour.toString()) +
-              ":" +
-              (value.minute < 10
-                  ? "0" + value.minute.toString()
-                  : value.minute.toString());
-          PrefManager.setTime(timeText);
+        timeText = (value.hour < 10
+                ? "0" + value.hour.toString()
+                : value.hour.toString()) +
+            ":" +
+            (value.minute < 10
+                ? "0" + value.minute.toString()
+                : value.minute.toString());
+        PrefManager.setTime(timeText);
       });
       reminderValue = true;
     }, onError: (error) {
