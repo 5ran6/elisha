@@ -1,14 +1,18 @@
 import 'dart:io';
 
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:elisha/src/services/alarm_services.dart';
 import 'package:elisha/src/services/shared_pref_manager/shared_pref_manager.dart';
 import 'package:elisha/src/ui/views/settings_view/settings_header_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_dnd/flutter_dnd.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:elisha/src/providers/theme_manager_provider.dart';
+
+import '../../../services/noty_services/notify_service.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -104,7 +108,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         timeText  == "Off" ? showDialogPicker(context) : FlutterAlarmClock.showAlarms();
                       }
                       else if (Platform.isIOS){
-                        print("IOS logic here");
+                        showDialogPicker(context);
                       }
                     },
                     child: Card(
@@ -284,6 +288,10 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   void showDialogPicker(BuildContext context) {
+    //Stop running service before starting new service
+    if (timeText != "Off"){
+      FlutterBackgroundService().on("stopService");
+    }
     selectedTime = showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
@@ -304,8 +312,18 @@ class _SettingsPageState extends State<SettingsPage> {
             (value.minute < 10
                 ? "0" + value.minute.toString()
                 : value.minute.toString());
+
         PrefManager.setTime(timeText);
-        FlutterAlarmClock.createAlarm(value.hour, value.minute, title: "Secret place - Reminder");
+        if (Platform.isAndroid){
+          FlutterAlarmClock.createAlarm(value.hour, value.minute, title: "Secret place - Reminder");
+        }else if (Platform.isIOS){
+          //TODO: Test Plan A or B
+          //------------------------------------------------------------------------------------------------Plan A------------------------------------------------------------------------------------------------------
+          initializeService();
+
+          //------------------------------------------------------------------------------------------------Plan B------------------------------------------------------------------------------------------------------
+          //NotificationService().showNotification(1, "Secret Place Reminder", "You scheduled a time with Jesus now", timeText);
+        }
         reminderValue = true;
       });
     }, onError: (error) {
