@@ -20,6 +20,7 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:elisha/src/providers/theme_manager_provider.dart';
 import 'package:elisha/src/services/shared_pref_manager/shared_pref_manager.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:elisha/src/models/devotional.dart';
@@ -83,13 +84,8 @@ Future<void> main() async {
     /// Lock screen orientation to vertical
     await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
         .then((_) {
-      runApp(MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-            create: (context) => ThemeManager(),
-          )
-        ],
-          child: const MyApp()
+      runApp(const ProviderScope(
+          child: MyApp()
       ));
     });
   }, (error, stack) async {
@@ -128,7 +124,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    String finalTheme = Provider.of<ThemeManager>(context).theme;
+    //String finalTheme = Provider.of<ThemeManager>(context).theme;
+    String finalTheme = "Light";
     receiveData();
     return ScreenUtilInit(
       designSize: const Size(360, 690),
@@ -145,7 +142,7 @@ class _MyAppState extends State<MyApp> {
           navigatorObservers: [
             FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
           ],
-          home: const SettingsPage()),
+          home: const HomeView()),
     );
   }
 }

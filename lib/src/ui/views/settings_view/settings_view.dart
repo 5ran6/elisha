@@ -283,7 +283,7 @@ class _SettingsPageState extends State<SettingsPage> {
     Navigator.of(context).pop(radioValue);
     setState(() {
       themeText = themeList[radioValue];
-      Provider.of<ThemeManager>(context, listen: false).changeTheme(themeText);
+      //Provider.of<ThemeManager>(context, listen: false).changeTheme(themeText);
     });
   }
 
