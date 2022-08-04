@@ -142,7 +142,7 @@ class _MyAppState extends State<MyApp> {
           navigatorObservers: [
             FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
           ],
-          home: const HomeView()),
+          home: const SettingsPage()),
     );
   }
 }
