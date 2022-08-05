@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/ui/views/note_view/note_view_fromDB.dart';
 
@@ -16,6 +18,7 @@ class _NotesListViewState extends State<NotesListView> {
 
   var _noteList = List<Note>.empty();
 
+
   void fetchAndUpdateListOfNotes() async {
     List<Note> noteInLocalDatabase = await DevotionalDBHelper.instance.getNotesFromDB();
     setState(() {
@@ -25,6 +28,7 @@ class _NotesListViewState extends State<NotesListView> {
 
   @override
   void initState() {
+
     fetchAndUpdateListOfNotes();
     super.initState();
   }
@@ -41,6 +45,8 @@ class _NotesListViewState extends State<NotesListView> {
       _noteList = noteSuggestions;
     });
   }
+
+
 
   @override
   Widget build(BuildContext context) {

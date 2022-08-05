@@ -203,16 +203,11 @@ class _MyAppState extends State<MyApp> {
           primaryLightVariantColor: const Color(0xFF030C5A),
           primaryDarkColor: const Color(0xFF030C5A),
           primaryDarkVariantColor: const Color(0xFF030C5A),
-          //lightTheme: darkSetting,
-          //darkTheme: darkSetting,
-          navigatorObservers: [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
           home: const SplashScreen()),
           lightTheme: finalTheme == "Dark" ? darkSetting : lightSetting,
           darkTheme: finalTheme == "Light" ? lightSetting : darkSetting,
-          navigatorObservers: [
-            FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
-          ],
-          home: const SettingsPage()),
+          navigatorObservers: [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
+          home: const SplashScreen()),
     );
   }
 }

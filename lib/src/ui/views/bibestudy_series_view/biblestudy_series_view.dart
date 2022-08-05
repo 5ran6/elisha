@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/ui/views/bibestudy_series_view/biblestudy_series_view_header.dart';
@@ -19,6 +21,7 @@ class _BibleStudySeriesPageState extends State<BibleStudySeriesPage> {
   final controller = TextEditingController();
 
   var _devPlansList = List<DevotionalPlan>.empty();
+  bool _isConnectionSuccessful = false;
 
   Future<List<DevotionalPlan>> get devPlansFuture {
     return RemoteAPI.getDevotionalPlans();
@@ -32,8 +35,23 @@ class _BibleStudySeriesPageState extends State<BibleStudySeriesPage> {
     });
   }
 
+  Future<void> _tryConnection() async {
+    try {
+      final response = await InternetAddress.lookup('example.com');
+
+      setState(() {
+        _isConnectionSuccessful = response.isNotEmpty;
+      });
+    } on SocketException catch (e) {
+      setState(() {
+        _isConnectionSuccessful = false;
+      });
+    }
+  }
+
   @override
   void initState() {
+    _tryConnection();
     fetchAndUpdateUIPlans();
   }
 
@@ -66,7 +84,7 @@ class _BibleStudySeriesPageState extends State<BibleStudySeriesPage> {
               // ),
 
               const SizedBox(height: 20),
-              Padding(
+              _isConnectionSuccessful ? Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: StaggeredGridView.countBuilder(
                   shrinkWrap: true,
@@ -78,6 +96,11 @@ class _BibleStudySeriesPageState extends State<BibleStudySeriesPage> {
                   crossAxisSpacing: 8,
                   staggeredTileBuilder: (index) => StaggeredTile.count(2, 2),
                   itemBuilder: (context, index) => buildBibleStudyPlanCardView(index),
+                ),
+              ) : Text(
+                'Enable Internet Connection',
+                style: Theme.of(context).textTheme.headline5?.copyWith(
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
             ],
