@@ -2,9 +2,10 @@ import 'package:elisha/src/services/shared_pref_manager/shared_pref_manager.dart
 import 'package:flutter/material.dart';
 
 
-class ThemeManager with ChangeNotifier{
+class ThemeManagerRepository with ChangeNotifier{
   String theme;
-  ThemeManager({
+  String get currentTheme => theme;
+  ThemeManagerRepository({
     this.theme = "System"
 });
 

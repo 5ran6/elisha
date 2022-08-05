@@ -29,7 +29,7 @@ import 'package:elisha/src/ui/views/home_view/components/devotional_today_card.d
 import 'package:elisha/src/ui/views/home_view/components/selected_study_plans_listview.dart';
 import 'package:elisha/src/ui/views/home_view/components/streaks_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:elisha/src/ui/views/home_view/components/home_view_header.dart';
 import 'package:intl/intl.dart';

@@ -19,9 +19,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'dart:async';
 import 'dart:ui';
 import 'package:elisha/src/providers/theme_manager_provider.dart';
+import 'package:elisha/src/repositories/theme_manager_repository.dart';
 import 'package:elisha/src/services/shared_pref_manager/shared_pref_manager.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:provider/provider.dart';
+//import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:elisha/src/models/devotional.dart';
 import 'package:elisha/src/providers/api_provider.dart';
@@ -124,25 +125,28 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    //String finalTheme = Provider.of<ThemeManager>(context).theme;
-    String finalTheme = "Light";
     receiveData();
-    return ScreenUtilInit(
-      designSize: const Size(360, 690),
-      minTextAdapt: true,
-      splitScreenMode: true,
-      builder: (context, child) => CantonApp(
-          title: kAppTitle,
-          primaryLightColor: const Color(0xFFB97D3C),
-          primaryLightVariantColor: const Color(0xFFB97D3C),
-          primaryDarkColor: const Color(0xFFB97D3C),
-          primaryDarkVariantColor: const Color(0xFFB97D3C),
-          lightTheme: finalTheme == "Dark" ? darkSetting : lightSetting,
-          darkTheme: finalTheme == "Light" ? lightSetting : darkSetting,
-          navigatorObservers: [
-            FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
-          ],
-          home: const SettingsPage()),
+    return Consumer(
+      builder: (context, watch, child) {
+        final themeWatcher = watch(themeRepositoryProvider);
+        return ScreenUtilInit(
+          designSize: const Size(360, 690),
+          minTextAdapt: true,
+          splitScreenMode: true,
+          builder: (context, child) => CantonApp(
+              title: kAppTitle,
+              primaryLightColor: const Color(0xFFB97D3C),
+              primaryLightVariantColor: const Color(0xFFB97D3C),
+              primaryDarkColor: const Color(0xFFB97D3C),
+              primaryDarkVariantColor: const Color(0xFFB97D3C),
+              lightTheme: themeWatcher.currentTheme == "Dark" ? darkSetting : lightSetting,
+              darkTheme: themeWatcher.currentTheme == "Light" ? lightSetting : darkSetting,
+              navigatorObservers: [
+                FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
+              ],
+              home: const SettingsPage()),
+        );
+      }
     );
   }
 }

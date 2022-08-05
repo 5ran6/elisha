@@ -8,8 +8,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_dnd/flutter_dnd.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:provider/provider.dart';
 import 'package:elisha/src/providers/theme_manager_provider.dart';
 
 import '../../../services/noty_services/notify_service.dart';
@@ -283,7 +283,7 @@ class _SettingsPageState extends State<SettingsPage> {
     Navigator.of(context).pop(radioValue);
     setState(() {
       themeText = themeList[radioValue];
-      //Provider.of<ThemeManager>(context, listen: false).changeTheme(themeText);
+      context.read(themeRepositoryProvider).changeTheme(themeText);
     });
   }
 
