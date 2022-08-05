@@ -1,16 +1,7 @@
-import 'package:elisha/src/services/shared_pref_manager/shared_pref_manager.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:elisha/src/repositories/theme_manager_repository.dart';
 
-class ThemeManager with ChangeNotifier{
-  String theme;
-  ThemeManager({
-    this.theme = "System"
+final themeRepositoryProvider = ChangeNotifierProvider<ThemeManagerRepository>((ref) {
+  return ThemeManagerRepository();
 });
-
-  void changeTheme(newTheme) {
-    PrefManager.setTheme(newTheme);
-    theme = newTheme;
-    notifyListeners();
-  }
-}

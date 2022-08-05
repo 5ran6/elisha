@@ -34,17 +34,16 @@ class NotificationService {
     flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
-  Future<void> showNotification(int id, String title, String body) async {
+  Future<void> showNotification(int id, String title, String body, String time) async {
     tz.initializeTimeZones();
     final detroit = tz.getLocation('America/Detroit');
-    print(tz.TZDateTime.now(detroit));
     //2022-06-24 08:45:58.985497-0400
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id,
       title,
       body,
-      tz.TZDateTime.now(detroit).add(const Duration(seconds: 1)),
+      (tz.TZDateTime.parse(detroit, "${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day} $time:00").difference(tz.TZDateTime.now(detroit))).isNegative ? tz.TZDateTime.parse(detroit, "${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day} $time:00").add(const Duration(days: 1)) : tz.TZDateTime.parse(detroit, "${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day} $time:00"),
       //tz.TZDateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day, hour, minute).add(Duration(seconds: 2)),
       const NotificationDetails(
         android: AndroidNotificationDetails(

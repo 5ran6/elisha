@@ -137,9 +137,7 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Widget _content(BuildContext context) {
-    return Consumer(
-      builder: (context, watch, child) {
-        return SingleChildScrollView(
+    return SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -148,8 +146,6 @@ class _HomeViewState extends State<HomeView> {
             ],
           ),
         );
-      },
-    );
   }
 
   Widget _body(BuildContext context) {
