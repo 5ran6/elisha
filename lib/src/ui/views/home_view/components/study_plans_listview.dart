@@ -9,65 +9,63 @@ import 'package:flutter/cupertino.dart';
 class DevotionalPlansHomePageListView extends StatelessWidget {
   final List<DevotionalPlan> devPlans;
 
-  const DevotionalPlansHomePageListView({required this.devPlans});
+  const DevotionalPlansHomePageListView({Key? key, required this.devPlans}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          ListTile(
-            title: Text('Study Plans',
-                style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold)),
-            trailing: GestureDetector(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => BibleStudySeriesPage(),
-                ),
-                );
-              },
-              child: Text('View All',
-                  style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.normal)),
-            ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        ListTile(
+          title: Text('Study Plans',
+              style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold)),
+          trailing: GestureDetector(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => BibleStudySeriesPage(),
+              ),
+              );
+            },
+            child: Text('View All',
+                style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.normal)),
           ),
-          SizedBox(
-            height: 200,
-            child: ListView.separated(
-                separatorBuilder: (context, index) {
-                  return const SizedBox(width: 10);
-                },
-                physics: BouncingScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                itemCount: devPlans.length,
-                itemBuilder: (ctx, i) => Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => OpenedStudyPlanScreen(devPlanID: devPlans[i].id)));
-                      },
-                      child: Card(
-                        color: CantonMethods.alternateCanvasColorType2(context),
-                        shape: CantonSmoothBorder.defaultBorder(),
-                        child:  CachedNetworkImage(
-                          imageUrl: devPlans[i].imageUrl,
-                          height: 100,
-                          width: 150,
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) => const CircularProgressIndicator(),
-                          errorWidget: (context, url, error) => const Icon(Icons.error),
-                        ),
+        ),
+        SizedBox(
+          height: 200,
+          child: ListView.separated(
+              separatorBuilder: (context, index) {
+                return const SizedBox(width: 10);
+              },
+              physics: BouncingScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              itemCount: devPlans.length,
+              itemBuilder: (ctx, i) => Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => OpenedStudyPlanScreen(devPlanID: devPlans[i].id)));
+                    },
+                    child: Card(
+                      color: CantonMethods.alternateCanvasColorType2(context),
+                      shape: CantonSmoothBorder.defaultBorder(),
+                      child:  CachedNetworkImage(
+                        imageUrl: devPlans[i].imageUrl,
+                        height: 100,
+                        width: 150,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
                       ),
                     ),
-                    const SizedBox(height: 5),
-                    Text(devPlans[i].title, style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold))
-                  ],
-                )),
-          )
-        ],
-      ),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(devPlans[i].title, style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold))
+                ],
+              )),
+        )
+      ],
     );
   }
 }

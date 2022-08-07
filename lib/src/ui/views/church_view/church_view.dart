@@ -8,6 +8,8 @@ import 'package:elisha/src/ui/views/church_view/components/sunday_mass_card.dart
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dnd/flutter_dnd.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -26,8 +28,33 @@ class _ChurchViewState extends State<ChurchView> {
   var _videoClips = List<YouTubeVideoModel>.empty();
   var _controllers = List<YoutubePlayerController>.empty();
 
+  bool isDoNotDisturbFunctionOn = false;
+  bool isDNDPolicyAccessGranted = false;
+
   Future<List<YouTubeVideoModel>> get videoClipsFuture {
     return RemoteAPI.getYouTubeVideos();
+  }
+
+  Future<void> setDoNotDisturbOffWIthAppOnMessageClipView() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final bool dndStatus = prefs.getBool('sharedPrefStatus') ?? false;
+    if (dndStatus) {
+      await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
+    }
+  }
+
+  void assertLoactionAndSetDND() async {
+    final sharedPrefs = await SharedPreferences.getInstance();
+    String? storedLocationOfCurrentView = sharedPrefs.getString('messageClipkey');
+    print("jjjjjjjjjjjjjjjj" + storedLocationOfCurrentView!);
+
+    if (storedLocationOfCurrentView == "iAmInMessageClipPage") {
+      var isNotificationPolicyAccessGranted = (await FlutterDnd.isNotificationPolicyAccessGranted);
+      if ((isNotificationPolicyAccessGranted) != null && isNotificationPolicyAccessGranted) {
+        setDoNotDisturbOffWIthAppOnMessageClipView();
+      }
+    }
   }
 
   void fetchAndUpdateUIVideos() async {
@@ -52,10 +79,10 @@ class _ChurchViewState extends State<ChurchView> {
     });
   }
 
-  void sendToast() {
-    Fluttertoast.showToast(
-        msg: "Ensure Do Not Disturb Is Disabled", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
-  }
+  // void sendToast() {
+  //   Fluttertoast.showToast(
+  //       msg: "Ensure Do Not Disturb Is Disabled", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
+  // }
 
   //late YoutubePlayerController _controller;
 
@@ -64,7 +91,7 @@ class _ChurchViewState extends State<ChurchView> {
     super.initState();
 
     fetchAndUpdateUIVideos();
-    sendToast();
+    assertLoactionAndSetDND();
   }
 
   @override

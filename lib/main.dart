@@ -65,7 +65,6 @@ import 'package:elisha/src/config/constants.dart';
 import 'package:elisha/src/services/authentication_services/authentication_wrapper.dart';
 import 'dart:convert';
 
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runZonedGuarded<Future<void>>(() async {
@@ -85,9 +84,7 @@ Future<void> main() async {
     /// Lock screen orientation to vertical
     await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
         .then((_) {
-      runApp(const ProviderScope(
-          child: MyApp()
-      ));
+      runApp(const ProviderScope(child: MyApp()));
     });
   }, (error, stack) async {
     await FirebaseCrashlytics.instance.recordError(error, stack);
@@ -116,7 +113,6 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-
   @override
   void initState() {
     super.initState();
@@ -126,27 +122,23 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     receiveData();
-    return Consumer(
-      builder: (context, watch, child) {
-        final themeWatcher = watch(themeRepositoryProvider);
-        return ScreenUtilInit(
-          designSize: const Size(360, 690),
-          minTextAdapt: true,
-          splitScreenMode: true,
-          builder: (context, child) => CantonApp(
-              title: kAppTitle,
-              primaryLightColor: const Color(0xFFB97D3C),
-              primaryLightVariantColor: const Color(0xFFB97D3C),
-              primaryDarkColor: const Color(0xFFB97D3C),
-              primaryDarkVariantColor: const Color(0xFFB97D3C),
-              lightTheme: themeWatcher.currentTheme == "Dark" ? darkSetting : lightSetting,
-              darkTheme: themeWatcher.currentTheme == "Light" ? lightSetting : darkSetting,
-              navigatorObservers: [
-                FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
-              ],
-              home: const SettingsPage()),
-        );
-      }
-    );
+    return Consumer(builder: (context, watch, child) {
+      final themeWatcher = watch(themeRepositoryProvider);
+      return ScreenUtilInit(
+        designSize: const Size(360, 690),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (context, child) => CantonApp(
+            title: kAppTitle,
+            primaryLightColor: const Color(0xFF030C5A),
+            primaryLightVariantColor: const Color(0xFF030C5A),
+            primaryDarkColor: const Color(0xFF0B83B3),
+            primaryDarkVariantColor: const Color(0xFF0B83B3),
+            lightTheme: themeWatcher.currentTheme == "Dark" ? darkSetting : lightSetting,
+            darkTheme: themeWatcher.currentTheme == "Light" ? lightSetting : darkSetting,
+            navigatorObservers: [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
+            home: const SplashScreen()),
+      );
+    });
   }
 }

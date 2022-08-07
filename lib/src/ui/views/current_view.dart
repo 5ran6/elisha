@@ -67,24 +67,27 @@ class _CurrentViewState extends State<CurrentView> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
 
-    if(state == AppLifecycleState.inactive) return;
+    if (state == AppLifecycleState.inactive) return;
 
     final isBackground = state == AppLifecycleState.paused;
-    final isClosed  = state == AppLifecycleState.detached;
+    final isClosed = state == AppLifecycleState.detached;
 
-    if(isBackground) {
+    if (isBackground) {
       setDoNotDisturbOffWIthAppOnBackground();
     } else if (isClosed) {
       setDoNotDisturbOffWIthAppOnBackground();
     } else {
       setDoNotDisturbOnWIthAppOnForeground();
     }
-
   }
 
-
-
   void _onTabTapped(int index) {
+    if (index == 3) {
+      saveMessageClipViewLocationToSharedPref();
+    }
+    // if (index == 2) {
+    //   saveTodayDateToSharedPref();
+    // }
     if (index == _currentIndex && _currentIndex == 0 && _homeNavigatorKey.currentState!.canPop()) {
       _homeNavigatorKey.currentState!.pop();
     }
@@ -93,7 +96,6 @@ class _CurrentViewState extends State<CurrentView> with WidgetsBindingObserver {
     }
     if (index == _currentIndex && _currentIndex == 2 && _noteNavigatorKey.currentState!.canPop()) {
       _noteNavigatorKey.currentState!.pop();
-      saveTodayDateToSharedPref();
     }
     if (index == _currentIndex && _currentIndex == 3 && _churchNavigatorKey.currentState!.canPop()) {
       _churchNavigatorKey.currentState!.pop();
@@ -221,24 +223,30 @@ class _CurrentViewState extends State<CurrentView> with WidgetsBindingObserver {
     await _prefs.setString('dateNavBarKey', todayDate);
   }
 
+  Future<void> saveMessageClipViewLocationToSharedPref() async {
+    print('Message Clipsd   erehrehrehrehrehrhehrhehrehrhehhrehhrehr');
+    final _prefs = await SharedPreferences.getInstance();
+
+    await _prefs.setString('messageClipkey', "iAmInMessageClipPage");
+  }
+
   Future<void> setDoNotDisturbState() async {
     final prefs = await SharedPreferences.getInstance();
 
     final bool dndStatus = prefs.getBool('sharedPrefStatus') ?? false;
 
-    if(dndStatus) {
+    if (dndStatus) {
       await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_NONE);
     } else {
       await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
     }
-
   }
 
   Future<void> setDoNotDisturbOffWIthAppOnBackground() async {
     final prefs = await SharedPreferences.getInstance();
 
     final bool dndStatus = prefs.getBool('sharedPrefStatus') ?? false;
-    if(dndStatus) {
+    if (dndStatus) {
       await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
     }
   }
@@ -247,9 +255,8 @@ class _CurrentViewState extends State<CurrentView> with WidgetsBindingObserver {
     final prefs = await SharedPreferences.getInstance();
 
     final bool dndStatus = prefs.getBool('sharedPrefStatus') ?? false;
-    if(dndStatus) {
+    if (dndStatus) {
       await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_NONE);
     }
   }
-
 }

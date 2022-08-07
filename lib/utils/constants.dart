@@ -124,8 +124,8 @@ String insertCommasInString(String value) {
 }
 
 dynamic lightSetting = cantonLightTheme().copyWith(
-    primaryColor: const Color(0xFFB97D3C),
-    colorScheme: cantonLightTheme().colorScheme.copyWith(primaryVariant: const Color(0xFFB97D3C)));
+    primaryColor: const Color(0xFF030C5A),
+    colorScheme: cantonLightTheme().colorScheme.copyWith(primaryVariant: const Color(0xFF030C5A)));
 dynamic darkSetting = cantonDarkTheme().copyWith(
-    primaryColor: const Color(0xFFB97D3C),
-    colorScheme: cantonDarkTheme().colorScheme.copyWith(primaryVariant: const Color(0xFFB97D3C)));
+    primaryColor: const Color(0xFF0B83B3),
+    colorScheme: cantonDarkTheme().colorScheme.copyWith(primaryVariant: const Color(0xFF0B83B3)));

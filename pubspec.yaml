@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -91,7 +91,6 @@ dependencies:
   flutter_alarm_clock: ^0.0.2
   flutter_background_service: ^2.1.3
 
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
@@ -103,13 +102,12 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/secret_place_logo-1.jpg"
+  image_path: "assets/images/man_kneeling2.png"
 
   flutter_native_splash: ^1.2.1
   import_sorter: ^4.6.0
   dio: ^4.0.6
   intl: ^0.17.0
-
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -144,8 +142,7 @@ flutter:
     - assets/images/study.jpg
     - assets/images/secret_place_Store_icon.png
     - assets/images/secret_place_logo_with_background_color.png
-    - assets/images/secret_place_logo_white_background.png
-    - assets/images/man_kneeling_1.png
+    - assets\images\man_kneeling_1.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

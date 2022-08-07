@@ -84,7 +84,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                     child: Center(
                       child: Image.asset(
                         'assets/images/man_kneeling_1.png',
-                        width: 300.0,
+                        width: 100.0,
                         fit: BoxFit.fitWidth,
                       ),
                     ),

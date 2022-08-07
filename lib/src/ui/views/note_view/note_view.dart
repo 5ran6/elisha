@@ -193,6 +193,9 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
 
                     Fluttertoast.showToast(
                         msg: "Note Saved", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
+
+                    noteTitleWidget.clear();
+                    noteWidget.clear();
                   },
                   child: Container(
                       width: MediaQuery.of(context).size.width - 40,
