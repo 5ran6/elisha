@@ -84,6 +84,8 @@ class _CurrentViewState extends State<CurrentView> with WidgetsBindingObserver {
   void _onTabTapped(int index) {
     if (index == 3) {
       saveMessageClipViewLocationToSharedPref();
+    } else {
+      setDNDForTab();
     }
     // if (index == 2) {
     //   saveTodayDateToSharedPref();
@@ -257,6 +259,17 @@ class _CurrentViewState extends State<CurrentView> with WidgetsBindingObserver {
     final bool dndStatus = prefs.getBool('sharedPrefStatus') ?? false;
     if (dndStatus) {
       await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_NONE);
+    }
+  }
+
+  Future<void> setDNDForTab() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final bool dndStatus = prefs.getBool('sharedPrefStatus') ?? false;
+    if (dndStatus) {
+      await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_NONE);
+    } else {
+      await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
     }
   }
 }

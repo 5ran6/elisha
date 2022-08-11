@@ -121,7 +121,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    receiveData();
+    ///receiveData();
     return Consumer(builder: (context, watch, child) {
       final themeWatcher = watch(themeRepositoryProvider);
       return ScreenUtilInit(

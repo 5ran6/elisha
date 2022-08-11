@@ -138,14 +138,14 @@ class _HomeViewState extends State<HomeView> {
 
   Widget _content(BuildContext context) {
     return SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const HomeViewHeader(),
-              _body(context),
-            ],
-          ),
-        );
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const HomeViewHeader(),
+          _body(context),
+        ],
+      ),
+    );
   }
 
   Widget _body(BuildContext context) {

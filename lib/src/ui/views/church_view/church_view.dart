@@ -2,6 +2,7 @@ import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/models/daily_reading.dart';
 import 'package:elisha/src/models/youTube_video.dart';
 import 'package:elisha/src/providers/api_provider.dart';
+import 'package:elisha/src/services/shared_pref_manager/shared_pref_manager.dart';
 import 'package:elisha/src/ui/views/church_view/components/church_view_header.dart';
 import 'package:elisha/src/ui/views/church_view/components/daily_readings_card.dart';
 import 'package:elisha/src/ui/views/church_view/components/sunday_mass_card.dart';
@@ -30,6 +31,7 @@ class _ChurchViewState extends State<ChurchView> {
 
   bool isDoNotDisturbFunctionOn = false;
   bool isDNDPolicyAccessGranted = false;
+  String dndStat = "";
 
   Future<List<YouTubeVideoModel>> get videoClipsFuture {
     return RemoteAPI.getYouTubeVideos();
@@ -44,12 +46,24 @@ class _ChurchViewState extends State<ChurchView> {
     }
   }
 
+  // Future<void> setDNDBackToOriginalStateWhenOutOfMessageClipView() async {
+  //   final prefs = await SharedPreferences.getInstance();
+
+  //   final bool dndStatus = prefs.getBool('sharedPrefStatus') ?? false;
+  //   if (dndStatus) {
+  //     await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_NONE);
+  //   } else {
+  //     await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
+  //   }
+  // }
+
   void assertLoactionAndSetDND() async {
     final sharedPrefs = await SharedPreferences.getInstance();
     String? storedLocationOfCurrentView = sharedPrefs.getString('messageClipkey');
-    print("jjjjjjjjjjjjjjjj" + storedLocationOfCurrentView!);
 
-    if (storedLocationOfCurrentView == "iAmInMessageClipPage") {
+    if (storedLocationOfCurrentView != null) {
+      // String s = PrefManager.getDND() ?? "off";
+      // if (s == "on") {}
       var isNotificationPolicyAccessGranted = (await FlutterDnd.isNotificationPolicyAccessGranted);
       if ((isNotificationPolicyAccessGranted) != null && isNotificationPolicyAccessGranted) {
         setDoNotDisturbOffWIthAppOnMessageClipView();
