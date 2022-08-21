@@ -58,7 +58,6 @@ import 'package:canton_design_system/canton_design_system.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:elisha/src/config/constants.dart';
@@ -68,11 +67,9 @@ import 'dart:convert';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runZonedGuarded<Future<void>>(() async {
-    WidgetsFlutterBinding.ensureInitialized();
     await PrefManager.init();
-    await MobileAds.instance.initialize();
-    await Firebase.initializeApp();
     await Hive.initFlutter();
     await Hive.openBox('elisha');
 
@@ -144,7 +141,7 @@ class _MyAppState extends State<MyApp> {
               navigatorObservers: [
                 FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
               ],
-              home: const SettingsPage()),
+              home: const SplashScreen()),
         );
       }
     );
