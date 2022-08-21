@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 
 
 class ThemeManagerRepository with ChangeNotifier{
-  String theme;
+  String theme = PrefManager.getTheme() ?? "System";
   String get currentTheme => theme;
-  ThemeManagerRepository({
-    this.theme = "System"
-});
 
   void changeTheme(newTheme) {
     PrefManager.setTheme(newTheme);
