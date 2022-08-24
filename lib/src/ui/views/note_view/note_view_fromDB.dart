@@ -6,7 +6,6 @@ import 'package:elisha/src/services/devotionalDB_helper.dart';
 import 'package:elisha/src/ui/views/notes_list_view/notes_list_view.dart';
 import 'package:elisha/utils/note_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:http/http.dart' as http;
@@ -211,16 +210,10 @@ class _NoteViewFromDBState extends State<NoteViewFromDB> {
           onStatus: (val) => setState(() {
                 if (val == 'listening') {
                   _islistening = true;
-                  Fluttertoast.showToast(
-                      msg: "Mic started", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
                 } else if (val == 'done') {
                   noteWidget.text = noteWidget.text == "" ? newWords : noteWidget.text + newWords;
                 } else {
                   _islistening = false;
-                  Fluttertoast.showToast(
-                      msg: "Tap microphone to speak again",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.BOTTOM);
                 }
               }),
           onError: (val) => print('onError: $val'));

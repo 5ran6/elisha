@@ -72,5 +72,7 @@
     <array>
         <string>dev.flutter.background.refresh</string>
     </array>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 </dict>
 </plist>
