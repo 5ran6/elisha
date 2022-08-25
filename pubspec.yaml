@@ -88,6 +88,7 @@ dependencies:
   flutter_dnd: ^0.1.4+1
   flutter_alarm_clock: ^0.0.2
   flutter_background_service: ^2.1.3
+  fluttertoast: ^8.0.9
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -100,7 +101,7 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/secret_place_logo_with_background_color.png"
+  image_path: "assets/images/SecretPlace(1024).png"
 
   flutter_native_splash: ^1.2.1
   import_sorter: ^4.6.0
@@ -140,7 +141,8 @@ flutter:
     - assets/images/study.jpg
     - assets/images/secret_place_Store_icon.png
     - assets/images/secret_place_logo_with_background_color.png
-    - assets\images\man_kneeling_1.png
+    - assets/images/man_kneeling_1.png
+    - assets/images/SecretPlace(1024).png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

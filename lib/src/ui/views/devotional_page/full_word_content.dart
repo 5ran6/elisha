@@ -32,18 +32,20 @@ class _FullWordContentPageState extends State<FullWordContentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.secondary,
       body: SingleChildScrollView(
         child: SafeArea(
           child: Column(
             children: [
+              const SizedBox(
+                height: 20,
+              ),
               ListTile(
                   title: Text('Word',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline4
-                          ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino", fontSize: 24)),
+                      style:
+                          Theme.of(context).textTheme.headline3?.copyWith(fontWeight: FontWeight.bold, fontSize: 24)),
                   leading: IconButton(
-                    icon: const Icon(Icons.arrow_back, color: Colors.black),
+                    icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary),
                     onPressed: () => Navigator.of(context).pop(),
                   )),
               const SizedBox(height: 5),

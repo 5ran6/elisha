@@ -17,16 +17,19 @@ class DevotionalPlansHomePageListView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         ListTile(
-          title: Text('Study Plans',
-              style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold)),
+          title:
+              Text('Study Plans', style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold)),
           trailing: GestureDetector(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => BibleStudySeriesPage(),
-              ),
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => BibleStudySeriesPage(),
+                ),
               );
             },
-            child: Text('View All',
-                style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.normal)),
+            child:
+                Text('View All', style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.normal)),
           ),
         ),
         SizedBox(
@@ -39,31 +42,36 @@ class DevotionalPlansHomePageListView extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemCount: devPlans.length,
               itemBuilder: (ctx, i) => Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => OpenedStudyPlanScreen(devPlanID: devPlans[i].id)));
-                    },
-                    child: Card(
-                      color: CantonMethods.alternateCanvasColorType2(context),
-                      shape: CantonSmoothBorder.defaultBorder(),
-                      child:  CachedNetworkImage(
-                        imageUrl: devPlans[i].imageUrl,
-                        height: 100,
-                        width: 150,
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) => const CircularProgressIndicator(),
-                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => OpenedStudyPlanScreen(devPlanID: devPlans[i].id)));
+                        },
+                        child: Card(
+                          color: CantonMethods.alternateCanvasColorType2(context),
+                          shape: CantonSmoothBorder.defaultBorder(),
+                          child: CachedNetworkImage(
+                            imageUrl: devPlans[i].imageUrl,
+                            height: 100,
+                            width: 150,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => Center(
+                              child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
+                              ),
+                            ),
+                            errorWidget: (context, url, error) => const Icon(Icons.error),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-                  Text(devPlans[i].title, style: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold))
-                ],
-              )),
+                      const SizedBox(height: 5),
+                      Text(devPlans[i].title, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
+                    ],
+                  )),
         )
       ],
     );

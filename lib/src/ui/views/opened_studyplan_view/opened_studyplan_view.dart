@@ -79,7 +79,7 @@ class _OpenedStudyPlanScreenState extends State<OpenedStudyPlanScreen> {
                     padding: const EdgeInsets.all(15.0),
                     child: Text(
                       _devPlanWithFullDevotionals?.description ?? '',
-                      style: Theme.of(context).textTheme.headline6,
+                      style: Theme.of(context).textTheme.headline4?.copyWith(fontFamily: "Palatino"),
                     ),
                   ),
                   const SizedBox(height: 5),

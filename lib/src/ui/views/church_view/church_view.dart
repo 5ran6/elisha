@@ -13,7 +13,7 @@ import 'package:flutter_dnd/flutter_dnd.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+
 
 class ChurchView extends StatefulWidget {
   //const ChurchView(this.reading, {Key? key}) : super(key: key);
@@ -92,11 +92,6 @@ class _ChurchViewState extends State<ChurchView> {
       _videoClips = videoClips;
     });
   }
-
-  // void sendToast() {
-  //   Fluttertoast.showToast(
-  //       msg: "Ensure Do Not Disturb Is Disabled", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
-  // }
 
   //late YoutubePlayerController _controller;
 

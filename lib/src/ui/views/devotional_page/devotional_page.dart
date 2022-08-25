@@ -53,7 +53,10 @@ class _DevotionalPageState extends State<DevotionalPage> {
                 Column(children: [
                   ListTile(
                     title: Text('Topic for today:',
-                        style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold)),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline4
+                            ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino")),
                     trailing: Text(
                       'More',
                       style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.w100),
@@ -65,12 +68,18 @@ class _DevotionalPageState extends State<DevotionalPage> {
                     child: Align(
                         alignment: Alignment.topLeft,
                         child: Text(_title,
-                            style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.normal))),
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline5
+                                ?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino"))),
                   ),
                   const SizedBox(height: 15),
                   ListTile(
                     title: Text('Memory Verse:',
-                        style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold)),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline4
+                            ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino")),
                   ),
                   const SizedBox(height: 5),
                   Padding(
@@ -78,12 +87,18 @@ class _DevotionalPageState extends State<DevotionalPage> {
                     child: Align(
                         alignment: Alignment.topLeft,
                         child: Text(_memoryVerse + " " + _memoryVersePassage,
-                            style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.normal))),
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline5
+                                ?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino"))),
                   ),
                   const SizedBox(height: 15),
                   ListTile(
                     title: Text('Bible passage:',
-                        style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold)),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline4
+                            ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino")),
                   ),
                   const SizedBox(height: 5),
                   Padding(
@@ -91,7 +106,10 @@ class _DevotionalPageState extends State<DevotionalPage> {
                     child: Align(
                         alignment: Alignment.topLeft,
                         child: Text(_fullPassage,
-                            style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.normal))),
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline5
+                                ?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino"))),
                   )
                 ])
               ],
@@ -108,7 +126,10 @@ class _DevotionalPageState extends State<DevotionalPage> {
                 children: [
                   ListTile(
                     title: Text('Word',
-                        style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold)),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline3
+                            ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino")),
                     trailing: Text(
                       'More',
                       style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.w100),
@@ -120,7 +141,10 @@ class _DevotionalPageState extends State<DevotionalPage> {
                     child: Text(_mainWriteUp,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 10,
-                        style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.normal)),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline5
+                            ?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino")),
                   )
                 ],
               )
@@ -139,7 +163,10 @@ class _DevotionalPageState extends State<DevotionalPage> {
                 children: [
                   ListTile(
                     title: Text('Prayer',
-                        style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.bold)),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline4
+                            ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino")),
                     trailing: Text(
                       'More',
                       style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.w100),
@@ -149,7 +176,10 @@ class _DevotionalPageState extends State<DevotionalPage> {
                   Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: Text(_prayerBurden,
-                        style: Theme.of(context).textTheme.headline3?.copyWith(fontWeight: FontWeight.normal)),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline3
+                            ?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino")),
                   )
                 ],
               )
@@ -168,7 +198,10 @@ class _DevotionalPageState extends State<DevotionalPage> {
                 children: [
                   ListTile(
                     title: Text('Thought For The Day',
-                        style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.bold)),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline4
+                            ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino")),
                     trailing: Text(
                       'More',
                       style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.w100),
@@ -178,7 +211,10 @@ class _DevotionalPageState extends State<DevotionalPage> {
                   Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: Text(_thoughtOfTheDay,
-                        style: Theme.of(context).textTheme.headline3?.copyWith(fontWeight: FontWeight.normal)),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline3
+                            ?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino")),
                   )
                 ],
               )

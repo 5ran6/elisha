@@ -20,7 +20,6 @@ class DevotionalPageFromPlans extends StatefulWidget {
 class _DevotionalPageFromPlansState extends State<DevotionalPageFromPlans> {
   @override
   Widget build(BuildContext context) {
-
     String title = widget.devotionalFromPlan.title;
     String memoryVerse = widget.devotionalFromPlan.memoryVerse;
     String memoryVersePassage = widget.devotionalFromPlan.memoryVersePassage;
@@ -44,13 +43,10 @@ class _DevotionalPageFromPlansState extends State<DevotionalPageFromPlans> {
                         style: Theme.of(context)
                             .textTheme
                             .headline4
-                            ?.copyWith(fontWeight: FontWeight.bold)),
+                            ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino")),
                     trailing: Text(
                       'More',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6
-                          ?.copyWith(fontWeight: FontWeight.w100),
+                      style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.w100),
                     ),
                   ),
                   const SizedBox(height: 5),
@@ -59,10 +55,7 @@ class _DevotionalPageFromPlansState extends State<DevotionalPageFromPlans> {
                     child: Align(
                         alignment: Alignment.topLeft,
                         child: Text(title,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline5
-                                ?.copyWith(fontWeight: FontWeight.normal))),
+                            style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.normal))),
                   ),
                   const SizedBox(height: 15),
                   ListTile(
@@ -70,8 +63,7 @@ class _DevotionalPageFromPlansState extends State<DevotionalPageFromPlans> {
                         style: Theme.of(context)
                             .textTheme
                             .headline4
-                            ?.copyWith(fontWeight: FontWeight.bold)),
-
+                            ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino")),
                   ),
                   const SizedBox(height: 5),
                   Padding(
@@ -79,10 +71,7 @@ class _DevotionalPageFromPlansState extends State<DevotionalPageFromPlans> {
                     child: Align(
                         alignment: Alignment.topLeft,
                         child: Text(memoryVerse + " " + memoryVersePassage,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline5
-                                ?.copyWith(fontWeight: FontWeight.normal))),
+                            style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.normal))),
                   ),
                   const SizedBox(height: 15),
                   ListTile(
@@ -90,8 +79,7 @@ class _DevotionalPageFromPlansState extends State<DevotionalPageFromPlans> {
                         style: Theme.of(context)
                             .textTheme
                             .headline4
-                            ?.copyWith(fontWeight: FontWeight.bold)),
-
+                            ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino")),
                   ),
                   const SizedBox(height: 5),
                   Padding(
@@ -102,13 +90,12 @@ class _DevotionalPageFromPlansState extends State<DevotionalPageFromPlans> {
                             style: Theme.of(context)
                                 .textTheme
                                 .headline5
-                                ?.copyWith(fontWeight: FontWeight.normal))),
+                                ?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino"))),
                   )
                 ])
               ],
             )),
       ),
-
       Card(
         color: CantonMethods.alternateCanvasColorType2(context),
         shape: CantonSmoothBorder.defaultBorder(),
@@ -123,13 +110,10 @@ class _DevotionalPageFromPlansState extends State<DevotionalPageFromPlans> {
                         style: Theme.of(context)
                             .textTheme
                             .headline4
-                            ?.copyWith(fontWeight: FontWeight.bold)),
+                            ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino")),
                     trailing: Text(
                       'More',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6
-                          ?.copyWith(fontWeight: FontWeight.w100),
+                      style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.w100),
                     ),
                   ),
                   const SizedBox(height: 5),
@@ -141,7 +125,7 @@ class _DevotionalPageFromPlansState extends State<DevotionalPageFromPlans> {
                         style: Theme.of(context)
                             .textTheme
                             .headline5
-                            ?.copyWith(fontWeight: FontWeight.normal)),
+                            ?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino")),
                   )
                 ],
               )
@@ -162,14 +146,11 @@ class _DevotionalPageFromPlansState extends State<DevotionalPageFromPlans> {
                     title: Text('Prayer',
                         style: Theme.of(context)
                             .textTheme
-                            .headline5
-                            ?.copyWith(fontWeight: FontWeight.bold)),
+                            .headline4
+                            ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino")),
                     trailing: Text(
                       'More',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6
-                          ?.copyWith(fontWeight: FontWeight.w100),
+                      style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.w100),
                     ),
                   ),
                   const SizedBox(height: 5),
@@ -179,7 +160,7 @@ class _DevotionalPageFromPlansState extends State<DevotionalPageFromPlans> {
                         style: Theme.of(context)
                             .textTheme
                             .headline3
-                            ?.copyWith(fontWeight: FontWeight.normal)),
+                            ?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino")),
                   )
                 ],
               )
@@ -200,14 +181,11 @@ class _DevotionalPageFromPlansState extends State<DevotionalPageFromPlans> {
                     title: Text('Thought for The Day',
                         style: Theme.of(context)
                             .textTheme
-                            .headline5
-                            ?.copyWith(fontWeight: FontWeight.bold)),
+                            .headline4
+                            ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino")),
                     trailing: Text(
                       'More',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6
-                          ?.copyWith(fontWeight: FontWeight.w100),
+                      style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.w100),
                     ),
                   ),
                   const SizedBox(height: 5),
@@ -217,7 +195,7 @@ class _DevotionalPageFromPlansState extends State<DevotionalPageFromPlans> {
                         style: Theme.of(context)
                             .textTheme
                             .headline3
-                            ?.copyWith(fontWeight: FontWeight.normal)),
+                            ?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino")),
                   )
                 ],
               )
@@ -230,8 +208,10 @@ class _DevotionalPageFromPlansState extends State<DevotionalPageFromPlans> {
         shape: CantonSmoothBorder.defaultBorder(),
         child: ClipRRect(
             borderRadius: BorderRadius.circular(20.0),
-            child: Image.asset('assets/images/bible_in_one_year.jpg', fit: BoxFit.cover,)
-        ),
+            child: Image.asset(
+              'assets/images/bible_in_one_year.jpg',
+              fit: BoxFit.cover,
+            )),
       ),
     ];
 
@@ -243,25 +223,24 @@ class _DevotionalPageFromPlansState extends State<DevotionalPageFromPlans> {
               child: VerticalCardPager(
                   images: devotionalCards,
                   titles: const ['', '', '', '', ''],
-                  onPageChanged: (page) {
-                  },
+                  onPageChanged: (page) {},
                   onSelectedItem: (index) {
                     switch (index) {
                       case 0:
                         Navigator.of(context).push(PageTransition(
                             child: FullTopicMemoryVerseVersePage(
-                                title: title,
-                                memoryVerse: memoryVerse,
-                                memoryVersePassage: memoryVersePassage,
-                            fullPassage: fullPassage,),
+                              title: title,
+                              memoryVerse: memoryVerse,
+                              memoryVersePassage: memoryVersePassage,
+                              fullPassage: fullPassage,
+                            ),
                             type: PageTransitionType.scale,
                             alignment: Alignment.center,
                             duration: const Duration(milliseconds: 600)));
                         break;
                       case 1:
                         Navigator.of(context).push(PageTransition(
-                            child:
-                            FullWordContentPage(mainWriteUp: fullText),
+                            child: FullWordContentPage(mainWriteUp: fullText),
                             type: PageTransitionType.scale,
                             alignment: Alignment.center,
                             duration: const Duration(milliseconds: 600)));
@@ -275,16 +254,14 @@ class _DevotionalPageFromPlansState extends State<DevotionalPageFromPlans> {
                         break;
                       case 3:
                         Navigator.of(context).push(PageTransition(
-                            child: FullThoughtOfTheDayPage(
-                                thoughtOfTheDay: thoughtOfTheDay),
+                            child: FullThoughtOfTheDayPage(thoughtOfTheDay: thoughtOfTheDay),
                             type: PageTransitionType.scale,
                             alignment: Alignment.center,
                             duration: const Duration(milliseconds: 600)));
                         break;
                       case 4:
                         Navigator.of(context).push(PageTransition(
-                            child: FullBibleInAYearPage(
-                                bibleInAYear: bibleInAYear),
+                            child: FullBibleInAYearPage(bibleInAYear: bibleInAYear),
                             type: PageTransitionType.scale,
                             alignment: Alignment.center,
                             duration: const Duration(milliseconds: 600)));

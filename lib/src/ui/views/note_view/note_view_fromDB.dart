@@ -6,6 +6,7 @@ import 'package:elisha/src/services/devotionalDB_helper.dart';
 import 'package:elisha/src/ui/views/notes_list_view/notes_list_view.dart';
 import 'package:elisha/utils/note_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:http/http.dart' as http;

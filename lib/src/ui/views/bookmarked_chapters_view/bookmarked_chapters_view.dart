@@ -60,29 +60,29 @@ class _BookmarkedChaptersViewState extends State<BookmarkedChaptersView> {
     return Expanded(
       child: context.read(bookmarkedChaptersProvider).isNotEmpty
           ? ListView.separated(
-        itemCount: context.read(bookmarkedChaptersProvider).length,
-        separatorBuilder: (context, index) {
-          return const Divider();
-        },
-        itemBuilder: (context, index) {
-          return Column(
-            children: [
-              if (index == 0) const Divider(),
-              _bookmarkedChapterCard(
-                context,
-                context.read(bookmarkedChaptersProvider)[index],
-              ),
-              if (index == context.read(bookmarkedChaptersProvider).length - 1) const Divider(),
-            ],
-          );
-        },
-      )
+              itemCount: context.read(bookmarkedChaptersProvider).length,
+              separatorBuilder: (context, index) {
+                return const Divider();
+              },
+              itemBuilder: (context, index) {
+                return Column(
+                  children: [
+                    if (index == 0) const Divider(),
+                    _bookmarkedChapterCard(
+                      context,
+                      context.read(bookmarkedChaptersProvider)[index],
+                    ),
+                    if (index == context.read(bookmarkedChaptersProvider).length - 1) const Divider(),
+                  ],
+                );
+              },
+            )
           : Text(
-        'No Bookmarked Chapters',
-        style: Theme.of(context).textTheme.headline5?.copyWith(
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-      ),
+              'No Bookmarked Chapters',
+              style: Theme.of(context).textTheme.headline5?.copyWith(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+            ),
     );
   }
 
@@ -150,8 +150,8 @@ class _BookmarkedChaptersViewState extends State<BookmarkedChaptersView> {
                         child: Text(
                           'Cancel',
                           style: Theme.of(context).textTheme.headline6?.copyWith(
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
                         ),
                       ),
                       const Spacer(flex: 7),

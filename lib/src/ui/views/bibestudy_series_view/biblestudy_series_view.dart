@@ -137,7 +137,11 @@ class _BibleStudySeriesPageState extends State<BibleStudySeriesPage> {
             child: CachedNetworkImage(
               fit: BoxFit.cover,
               imageUrl: _devPlansList[index].imageUrl,
-              placeholder: (context, url) => const CircularProgressIndicator(),
+              placeholder: (context, url) => Center(
+                child:  CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
+                ),
+              ),
               errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
           ),

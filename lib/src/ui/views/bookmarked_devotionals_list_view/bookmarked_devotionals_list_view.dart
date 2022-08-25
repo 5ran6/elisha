@@ -12,7 +12,6 @@ class BookMarkedDevotionalView extends StatefulWidget {
   _BookMarkedDevotionalViewState createState() => _BookMarkedDevotionalViewState();
 }
 
-
 class _BookMarkedDevotionalViewState extends State<BookMarkedDevotionalView> {
   final controller = TextEditingController();
 
@@ -24,9 +23,9 @@ class _BookMarkedDevotionalViewState extends State<BookMarkedDevotionalView> {
       _devBookmarkedList = bookmarkedDevsInDatabase;
     });
   }
+
   @override
   void initState() {
-
     fetchAndUpdateListOfBookmarkedDevotionals();
     super.initState();
   }
@@ -39,22 +38,26 @@ class _BookMarkedDevotionalViewState extends State<BookMarkedDevotionalView> {
       body: _content(context),
     );
   }
+
   Widget _content(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         children: [
           _header(),
           _searchBar(),
-          _devBookmarkedList.isNotEmpty ? _buildBookmarkedDevotionalList() : Text(
-            'No Bookmarked Devotional',
-            style: Theme.of(context).textTheme.headline5?.copyWith(
-              color: Theme.of(context).colorScheme.secondary,
-            ),
-          ),
+          _devBookmarkedList.isNotEmpty
+              ? _buildBookmarkedDevotionalList()
+              : Text(
+                  'No Bookmarked Devotional',
+                  style: Theme.of(context).textTheme.headline5?.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                ),
         ],
       ),
     );
   }
+
   Widget _header() {
     return Container(
       padding: const EdgeInsets.only(top: 17, left: 17, right: 17),
@@ -64,18 +67,19 @@ class _BookMarkedDevotionalViewState extends State<BookMarkedDevotionalView> {
       ),
     );
   }
+
   Widget _searchBar() {
     return Padding(
       padding: const EdgeInsets.all(15.0),
       child: TextField(
         controller: controller,
         decoration: InputDecoration(
-            prefixIcon: const Icon(Icons.search),
-            hintText: 'Devotional title',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(30),
-              borderSide: BorderSide(color: Theme.of(context).primaryColor),
-            ),
+          prefixIcon: const Icon(Icons.search),
+          hintText: 'Devotional title',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+            borderSide: BorderSide(color: Theme.of(context).primaryColor),
+          ),
         ),
         onChanged: searchBookmark,
       ),
@@ -93,20 +97,23 @@ class _BookMarkedDevotionalViewState extends State<BookMarkedDevotionalView> {
     setState(() {
       _devBookmarkedList = bookmarkSuggestions;
     });
-
   }
 
   Widget _buildBookmarkedDevotionalList() {
     return ListView.builder(
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      itemCount: _devBookmarkedList.length,
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        itemCount: _devBookmarkedList.length,
         physics: BouncingScrollPhysics(),
         itemBuilder: (context, index) {
           return InkWell(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => DevotionalPageFromBookmark(bookmarkedDevotionalDate: _devBookmarkedList[index].date))
-              );},
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          DevotionalPageFromBookmark(bookmarkedDevotionalDate: _devBookmarkedList[index].date)));
+            },
             child: Container(
               height: 350,
               width: MediaQuery.of(context).size.width,
@@ -117,7 +124,9 @@ class _BookMarkedDevotionalViewState extends State<BookMarkedDevotionalView> {
                     Card(
                         margin: EdgeInsets.all(5.0),
                         elevation: 0,
-                        shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(8),),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                         //clipBehavior: Clip.antiAliasWithSaveLayer,
                         child: CachedNetworkImage(
                           imageUrl: _devBookmarkedList[index].image,
@@ -129,23 +138,31 @@ class _BookMarkedDevotionalViewState extends State<BookMarkedDevotionalView> {
                                   image: imageProvider,
                                   fit: BoxFit.cover,
                                 ),
-                                borderRadius: BorderRadius.circular(15)
+                                borderRadius: BorderRadius.circular(15)),
+                          ),
+                          placeholder: (context, url) => Center(
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
                             ),
                           ),
-                          placeholder: (context, url) => const CircularProgressIndicator(),
                           errorWidget: (context, url, error) => const Icon(Icons.error),
-                        )
-                    ),
+                        )),
                     Container(height: 10),
                     Row(
                       children: <Widget>[
-                        Text(_devBookmarkedList[index].title, style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.bold),),
+                        Text(
+                          _devBookmarkedList[index].title,
+                          style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.bold),
+                        ),
                         const Spacer(),
-                        Text(_devBookmarkedList[index].date, style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.normal)),
+                        Text(_devBookmarkedList[index].date,
+                            style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.normal)),
                       ],
                     ),
                     Container(height: 10),
-                    Text(_devBookmarkedList[index].fullText, style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.normal),
+                    Text(
+                      _devBookmarkedList[index].fullText,
+                      style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.normal),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -156,7 +173,6 @@ class _BookMarkedDevotionalViewState extends State<BookMarkedDevotionalView> {
               ),
             ),
           );
-        }
-    );
+        });
   }
 }

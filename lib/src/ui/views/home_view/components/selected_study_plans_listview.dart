@@ -64,7 +64,11 @@ class _SelectedStudyPlansListviewState extends State<SelectedStudyPlansListview>
                                         ),
                                         borderRadius: BorderRadius.circular(10)),
                                   ),
-                                  placeholder: (context, url) => const CircularProgressIndicator(),
+                                  placeholder: (context, url) => Center(
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
+                                    ),
+                                  ),
                                   errorWidget: (context, url, error) => const Icon(Icons.error),
                                 ),
                               ),

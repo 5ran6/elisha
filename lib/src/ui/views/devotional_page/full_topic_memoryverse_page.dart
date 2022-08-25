@@ -37,13 +37,14 @@ class _FullTopicMemoryVerseVersePageState extends State<FullTopicMemoryVerseVers
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.secondary,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
               ListTile(
                 leading: IconButton(
-                  icon: const Icon(Icons.arrow_back, color: Colors.black),
+                  icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ),

@@ -23,13 +23,11 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
     return Dialog(
-      backgroundColor: Colors.transparent,
       child: Container(
         child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(4),
           ),
-          color: Colors.white,
           clipBehavior: Clip.antiAliasWithSaveLayer,
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -43,7 +41,7 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
                         const CircleAvatar(
                           radius: 20,
                           backgroundColor: Color.fromRGBO(3, 3, 70, 1),
-                          backgroundImage: AssetImage("assets/images/secret_place_logo_white_background.png"),
+                          backgroundImage: AssetImage("assets/images/SecretPlace(1024).png"),
                         ),
                         Container(width: 15),
                         Expanded(
@@ -52,12 +50,14 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
                             children: <Widget>[
                               Text(
                                 "Secret Place",
-                                style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.bold),
+                                style: Theme.of(context).textTheme.headline5?.copyWith(
+                                    fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),
                               ),
                               Container(height: 5),
                               Text(
                                 "Feedback services",
-                                style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.normal),
+                                style: Theme.of(context).textTheme.headline6?.copyWith(
+                                    fontWeight: FontWeight.normal, color: Theme.of(context).colorScheme.primary),
                               ),
                             ],
                           ),
@@ -125,11 +125,21 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: Text("CLOSE", style: TextStyle(color: Colors.pink[500])),
+                    child: Text(
+                      "CLOSE",
+                      style: Theme.of(context).textTheme.headline5?.copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                    ),
                   ),
                   TextButton(
                     style: TextButton.styleFrom(primary: Colors.transparent),
-                    child: const Text("SUBMIT", style: TextStyle(color: Colors.black)),
+                    child: Text(
+                      "SUBMIT",
+                      style: Theme.of(context).textTheme.headline5?.copyWith(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                    ),
                     onPressed: () {
                       FeedbackModel feedback = FeedbackModel(
                           userId: user?.uid ?? '',
