@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.cpai.secretplaceandroidversiontwo">
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.BLUETOOTH"/>
@@ -73,5 +74,16 @@
                <action android:name="android.intent.action.BOOT_COMPLETED" />
            </intent-filter>
        </receiver>
-    </application>
+
+       <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" tools:node="merge" android:exported="false"/>
+       <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver"  tools:node="merge" android:exported="false">
+           <intent-filter>
+               <action android:name="android.intent.action.BOOT_COMPLETED" />
+               <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+               <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+               <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+           </intent-filter>
+       </receiver>
+
+   </application>
 </manifest>
