@@ -34,7 +34,8 @@ class NotificationService {
     flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
-  Future<void> showNotification(int id, String title, String body, String time) async {
+  Future<void> showNotification(
+      int id, String title, String body) async {
     tz.initializeTimeZones();
     final detroit = tz.getLocation('America/Detroit');
     //2022-06-24 08:45:58.985497-0400
@@ -43,8 +44,17 @@ class NotificationService {
       id,
       title,
       body,
-      (tz.TZDateTime.parse(detroit, "${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day} $time:00").difference(tz.TZDateTime.now(detroit))).isNegative ? tz.TZDateTime.parse(detroit, "${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day} $time:00").add(const Duration(days: 1)) : tz.TZDateTime.parse(detroit, "${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day} $time:00"),
-      //tz.TZDateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day, hour, minute).add(Duration(seconds: 2)),
+      tz.TZDateTime.now(detroit).add(const Duration(seconds: 1)),
+      // (tz.TZDateTime.parse(detroit,
+      //                 "${DateTime.now().year}${DateTime.now().month < 10 ? "0" + DateTime.now().month.toString() : DateTime.now().day}${DateTime.now().day < 10 ? "0" + DateTime.now().day.toString() : DateTime.now().day} $time:00")
+      //             .difference(tz.TZDateTime.now(detroit)))
+      //         .isNegative
+      //     ? tz.TZDateTime.parse(detroit,
+      //             "${DateTime.now().year}${DateTime.now().month < 10 ? "0" + DateTime.now().month.toString() : DateTime.now().day}${DateTime.now().day < 10 ? "0" + DateTime.now().day.toString() : DateTime.now().day} $time:00")
+      //         .add(const Duration(days: 1))
+      //     : tz.TZDateTime.parse(detroit,
+      //     "${DateTime.now().year}${DateTime.now().month < 10 ? "0" + DateTime.now().month.toString() : DateTime.now().day}${DateTime.now().day < 10 ? "0" + DateTime.now().day.toString() : DateTime.now().day} $time:00"),
+      // //tz.TZDateTime.utc(DateTime.now().year, DateTime.now().month, DateTime.now().day, hour, minute).add(Duration(seconds: 2)),
       const NotificationDetails(
         android: AndroidNotificationDetails(
             'main_channel', 'Main Channel', 'Main channel notifications',

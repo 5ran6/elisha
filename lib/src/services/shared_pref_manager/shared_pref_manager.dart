@@ -14,5 +14,5 @@ class PrefManager{
   static Future setTime(String time) async =>
       await _preferences?.setString("alarmTime", time);
 
-  static String? getTime() => _preferences!.getString("alarmTime");
+  static String? getTime() => _preferences?.getString("alarmTime");
 }

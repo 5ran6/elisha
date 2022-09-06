@@ -17,9 +17,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'dart:async';
+import 'dart:io';
 import 'dart:ui';
 import 'package:elisha/src/providers/theme_manager_provider.dart';
 import 'package:elisha/src/repositories/theme_manager_repository.dart';
+import 'package:elisha/src/services/alarm_services.dart';
 import 'package:elisha/src/services/shared_pref_manager/shared_pref_manager.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 //import 'package:provider/provider.dart';
@@ -64,7 +66,6 @@ import 'package:elisha/src/config/constants.dart';
 import 'package:elisha/src/services/authentication_services/authentication_wrapper.dart';
 import 'dart:convert';
 
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -72,6 +73,9 @@ Future<void> main() async {
     await PrefManager.init();
     await Hive.initFlutter();
     await Hive.openBox('elisha');
+    if (Platform.isIOS) {
+      await initializeService();
+    }
 
     if (kDebugMode) {
       await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
@@ -80,11 +84,10 @@ Future<void> main() async {
     }
 
     /// Lock screen orientation to vertical
-    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
+    await SystemChrome.setPreferredOrientations(
+            [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
         .then((_) {
-      runApp(const ProviderScope(
-          child: MyApp()
-      ));
+      runApp(const ProviderScope(child: MyApp()));
     });
   }, (error, stack) async {
     await FirebaseCrashlytics.instance.recordError(error, stack);
@@ -105,14 +108,15 @@ class _MyAppState extends State<MyApp> {
     String formattedMYNameAPI = DateFormat('MMMMyyyy').format(now);
     String formattedMYNameDB = DateFormat('MM.yyyy').format(now);
 
-    List<Devotional> lsdv = await DevotionalDBHelper.instance.getDevotionalsDBForMonth(formattedMYNameDB);
+    List<Devotional> lsdv = await DevotionalDBHelper.instance
+        .getDevotionalsDBForMonth(formattedMYNameDB);
     //print(lsdv);
     if (lsdv.isEmpty) {
-      List<Devotional> listOfDevs = await RemoteAPI.getDevotionalsForMonth(formattedMYNameAPI);
+      List<Devotional> listOfDevs =
+          await RemoteAPI.getDevotionalsForMonth(formattedMYNameAPI);
       DevotionalDBHelper.instance.insertDevotionalList(listOfDevs);
     }
   }
-
 
   @override
   void initState() {
@@ -123,27 +127,29 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     receiveData();
-    return Consumer(
-      builder: (context, watch, child) {
-        final themeWatcher = watch(themeRepositoryProvider);
-        return ScreenUtilInit(
-          designSize: const Size(360, 690),
-          minTextAdapt: true,
-          splitScreenMode: true,
-          builder: (context, child) => CantonApp(
-              title: kAppTitle,
-              primaryLightColor: const Color(0xFFB97D3C),
-              primaryLightVariantColor: const Color(0xFFB97D3C),
-              primaryDarkColor: const Color(0xFFB97D3C),
-              primaryDarkVariantColor: const Color(0xFFB97D3C),
-              lightTheme: themeWatcher.currentTheme == "Dark" ? darkSetting : lightSetting,
-              darkTheme: themeWatcher.currentTheme == "Light" ? lightSetting : darkSetting,
-              navigatorObservers: [
-                FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
-              ],
-              home: const SplashScreen()),
-        );
-      }
-    );
+    return Consumer(builder: (context, watch, child) {
+      final themeWatcher = watch(themeRepositoryProvider);
+      return ScreenUtilInit(
+        designSize: const Size(360, 690),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (context, child) => CantonApp(
+            title: kAppTitle,
+            primaryLightColor: const Color(0xFFB97D3C),
+            primaryLightVariantColor: const Color(0xFFB97D3C),
+            primaryDarkColor: const Color(0xFFB97D3C),
+            primaryDarkVariantColor: const Color(0xFFB97D3C),
+            lightTheme: themeWatcher.currentTheme == "Dark"
+                ? darkSetting
+                : lightSetting,
+            darkTheme: themeWatcher.currentTheme == "Light"
+                ? lightSetting
+                : darkSetting,
+            navigatorObservers: [
+              FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
+            ],
+            home: const SplashScreen()),
+      );
+    });
   }
 }
