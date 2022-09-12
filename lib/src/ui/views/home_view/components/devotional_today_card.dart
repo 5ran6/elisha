@@ -50,6 +50,9 @@ class _DevotionalTodayCardState extends State<DevotionalTodayCard> {
 
   @override
   Widget build(BuildContext context) {
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('dd/MM/yyy').format(now);
+
     return Card(
       color: CantonMethods.alternateCanvasColorType2(context),
       shape: CantonSmoothBorder.defaultBorder(),
@@ -70,12 +73,12 @@ class _DevotionalTodayCardState extends State<DevotionalTodayCard> {
               ListTile(
                 //trailing: Icon(Icons.share),
                 title: Text(widget.title,
-                    style: Theme.of(context).textTheme.headline3?.copyWith(fontWeight: FontWeight.bold)),
+                    style: Theme.of(context).textTheme.headline3?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino")),
                 subtitle: Text(
                   widget.mainWriteUp,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.normal),
+                  style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino"),
                 ),
               ),
               //const SizedBox(height: 5),
@@ -148,7 +151,7 @@ class _DevotionalTodayCardState extends State<DevotionalTodayCard> {
                           'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
 
                       await Share.share(
-                          "Secret Place Devotional\nTopic: ${widget.title}\n\nScripture: ${widget.biblePassage}\n\nMemory Verse: ${widget.memoryVerse}\n${widget.memoryVersePassage}\n\n${widget.mainWriteUp}\n\nPrayer: ${widget.prayer}\n\n Thought: ${widget.thought}\n\nGet Secret Place App:\nPlayStore: $playStoreUrl\n AppleStore: $appleStoreUrl");
+                          "Secret Place Devotional\n$formattedDate\nTopic: ${widget.title}\n\nScripture: ${widget.biblePassage}\n\nMemory Verse: ${widget.memoryVerse}\n${widget.memoryVersePassage}\n\n${widget.mainWriteUp}\n\nPrayer: ${widget.prayer}\n\n Thought: ${widget.thought}\n\nGet Secret Place App:\nPlayStore: $playStoreUrl\n AppleStore: $appleStoreUrl");
                     },
                   ),
                 ],

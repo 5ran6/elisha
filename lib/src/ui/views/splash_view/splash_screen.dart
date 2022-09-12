@@ -83,7 +83,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                     opacity: _animation!,
                     child: Center(
                       child: Image.asset(
-                        'assets/images/man_kneeling_1.png',
+                        'assets/images/secret_place_logo_white_background.png',
                         width: 100.0,
                         fit: BoxFit.fitWidth,
                       ),

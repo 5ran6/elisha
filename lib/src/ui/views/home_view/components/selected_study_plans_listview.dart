@@ -22,7 +22,7 @@ class _SelectedStudyPlansListviewState extends State<SelectedStudyPlansListview>
             children: [
               ListTile(
                 title: Text('My Study Plans',
-                    style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold)),
+                    style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino")),
               ),
               SizedBox(
                 height: 200,
@@ -84,7 +84,7 @@ class _SelectedStudyPlansListviewState extends State<SelectedStudyPlansListview>
         : Center(
             child: Text(
             'No Study Plan Selected',
-            style: Theme.of(context).textTheme.headline5,
+            style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.w500, fontFamily: "Palatino"),
           ));
   }
 

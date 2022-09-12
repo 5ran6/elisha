@@ -67,21 +67,21 @@ class _BibleStudySeriesPageState extends State<BibleStudySeriesPage> {
             children: [
               const SizedBox(height: 10),
               const BibleStudySeriesHeaderView(),
-              // Padding(
-              //   padding: const EdgeInsets.all(15.0),
-              //   child: TextField(
-              //     controller: controller,
-              //     decoration: InputDecoration(
-              //       prefixIcon: const Icon(Icons.search),
-              //       hintText: 'Plan title',
-              //       border: OutlineInputBorder(
-              //         borderRadius: BorderRadius.circular(30),
-              //         borderSide: BorderSide(color: Theme.of(context).primaryColor),
-              //       )
-              //     ),
-              //     onChanged: searchStudyPlan,
-              //   ),
-              // ),
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: TextField(
+                  controller: controller,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.search, color: Theme.of(context).primaryColor),
+                    hintText: 'Plan title',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                    )
+                  ),
+                  onChanged: (value) => searchStudyPlan(value),
+                ),
+              ),
 
               const SizedBox(height: 20),
               _isConnectionSuccessful ? Padding(
@@ -95,7 +95,9 @@ class _BibleStudySeriesPageState extends State<BibleStudySeriesPage> {
                   mainAxisSpacing: 8,
                   crossAxisSpacing: 8,
                   staggeredTileBuilder: (index) => StaggeredTile.count(2, 2),
-                  itemBuilder: (context, index) => buildBibleStudyPlanCardView(index),
+                  itemBuilder: (context, index) => _devPlansList.length == 1 ?
+                  Center(child: Text('No results found', style: Theme.of(context).textTheme.headline2?.copyWith(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),),)
+                      : buildBibleStudyPlanCardView(index),
                 ),
               ) : Text(
                 'Enable Internet Connection',
@@ -110,19 +112,18 @@ class _BibleStudySeriesPageState extends State<BibleStudySeriesPage> {
     );
   }
 
-  // void searchStudyPlan(String query) {
-  //   final planSuggestions = _devPlansList.where((plan) {
-  //     final planTitle = plan.title.toLowerCase();
-  //     final input = query.toLowerCase();
+  void searchStudyPlan(String query) {
+    final displayList = _devPlansList.where((plan) {
+      final planTitle = plan.title.toLowerCase();
+      final input = query.toLowerCase();
 
-  //     return planTitle.contains(input);
-  //   }).toList();
+      return planTitle.contains(input);
+    }).toList();
+    setState(() {
+      _devPlansList = displayList;
+    });
 
-  //   setState(() {
-  //     _devPlansList = planSuggestions;
-  //   });
-
-  // }
+  }
 
   buildBibleStudyPlanCardView(int index) => GestureDetector(
         onTap: () {

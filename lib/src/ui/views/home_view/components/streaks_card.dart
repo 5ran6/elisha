@@ -44,7 +44,7 @@ class StreaksCard extends StatelessWidget {
                         style: Theme.of(context)
                             .textTheme
                             .bodyText1
-                            ?.copyWith(color: Theme.of(context).colorScheme.secondary),
+                            ?.copyWith(color: Theme.of(context).primaryColor),
                       ),
                     ],
                   ),
@@ -67,7 +67,7 @@ class StreaksCard extends StatelessWidget {
                         style: Theme.of(context)
                             .textTheme
                             .bodyText1
-                            ?.copyWith(color: Theme.of(context).colorScheme.secondary),
+                            ?.copyWith(color: Theme.of(context).primaryColor),
                       ),
                     ],
                   ),
@@ -90,7 +90,7 @@ class StreaksCard extends StatelessWidget {
                         style: Theme.of(context)
                             .textTheme
                             .bodyText1
-                            ?.copyWith(color: Theme.of(context).colorScheme.secondary),
+                            ?.copyWith(color: Theme.of(context).primaryColor),
                       ),
                     ],
                   ),

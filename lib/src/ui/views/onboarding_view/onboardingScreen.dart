@@ -121,7 +121,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                   style: Theme.of(context)
                                       .textTheme
                                       .button
-                                      ?.copyWith(fontWeight: FontWeight.normal, fontSize: ScreenUtil().setSp(13)),
+                                      ?.copyWith(fontWeight: FontWeight.normal, fontSize: ScreenUtil().setSp(13), color: Theme.of(context).primaryColorLight),
                                 ),
                               ),
                             ),

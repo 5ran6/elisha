@@ -28,6 +28,7 @@ class HomeViewHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
+    
     String greeting() {
       var hour = DateTime.now().hour;
       if (hour < 12) {
@@ -56,14 +57,14 @@ class HomeViewHeader extends StatelessWidget {
         children: [
           Text(
             'Good ' + greeting() + ',' + ' ',
-            style: Theme.of(context).textTheme.headline6?.copyWith(
+            style: Theme.of(context).textTheme.headline5?.copyWith(
                   color: Theme.of(context).colorScheme.secondaryVariant,
                 ),
           ),
           dbName != null
               ? Text(
                   name(dbName),
-                  style: Theme.of(context).textTheme.headline6?.copyWith(
+                  style: Theme.of(context).textTheme.headline5?.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
                 )

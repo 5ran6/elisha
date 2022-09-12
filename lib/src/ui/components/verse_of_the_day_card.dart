@@ -57,7 +57,7 @@ class VerseOfTheDayCard extends StatelessWidget {
   Widget _header(BuildContext context, Color bgColor) {
     return Text(
       'Verse of the Day',
-      style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold),
+      style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino"),
     );
   }
 
@@ -113,7 +113,7 @@ class VerseOfTheDayCard extends StatelessWidget {
           Expanded(
             child: Text(
               verse,
-              style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.w500),
+              style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.w500, fontFamily: "Palatino"),
             ),
           ),
         ],
@@ -127,7 +127,7 @@ class VerseOfTheDayCard extends StatelessWidget {
 
     return Text(
       versePassage,
-      style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.w500),
+      style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.w500, fontFamily: "Palatino"),
     );
   }
 }

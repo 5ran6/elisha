@@ -26,7 +26,7 @@ class SignUpViewHeader extends StatelessWidget {
     return Column(
       children: [
         Image.asset(
-          'assets/images/store_icon.png',
+          'assets/images/secret_place_Store_icon.png',
           height: 70,
         ),
         SizedBox(
@@ -35,7 +35,7 @@ class SignUpViewHeader extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Welcome to Elisha',
+                'Welcome to Secret Place',
                 style: Theme.of(context).textTheme.headline4,
               ),
             ],
