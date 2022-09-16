@@ -15,6 +15,10 @@ import 'package:elisha/src/providers/theme_manager_provider.dart';
 
 import 'package:elisha/src/services/noty_services/notify_service.dart';
 
+// Issue with reading shared pref in onStart() function to get alarm time
+// Please refer to tutorial https://youtu.be/Hv0K5IaborA for how to use flutter background service
+// Back button issue still pending
+
 Future<void> initializeService() async {
   final service = FlutterBackgroundService();
   await service.configure(

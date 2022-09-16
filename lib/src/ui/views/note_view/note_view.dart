@@ -80,16 +80,11 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                   ),
                   Align(
                       alignment: Alignment.centerRight,
-                      child: Row(
-                        children: [
-                          IconButton(onPressed: _listen, icon: Icon(_islistening ? Icons.mic_off : Icons.mic)),
-                          IconButton(
-                              onPressed: () {
-                                CantonMethods.viewTransition(context, const NotesListView());
-                              },
-                              icon: Icon(Icons.notes)),
-                        ],
-                      ))
+                      child: IconButton(
+                          onPressed: () {
+                            CantonMethods.viewTransition(context, const NotesListView());
+                          },
+                          icon: Icon(Icons.notes)))
                 ]),
               ),
               Align(
@@ -142,23 +137,31 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                   width: MediaQuery.of(context).size.width - 15,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      textCapitalization: TextCapitalization.sentences,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline4
-                          ?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino", fontSize: 17),
-                      onChanged: (String str) async {
-                        final _prefs = await SharedPreferences.getInstance();
+                    child: Stack(
+                      children: [
+                        Align(
+                            alignment: Alignment.topRight,
+                            child:
+                                IconButton(onPressed: _listen, icon: Icon(_islistening ? Icons.mic_off : Icons.mic))),
+                        TextFormField(
+                          textCapitalization: TextCapitalization.sentences,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline4
+                              ?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino", fontSize: 17),
+                          onChanged: (String str) async {
+                            final _prefs = await SharedPreferences.getInstance();
 
-                        await _prefs.setString('noteKey', str);
-                      },
-                      minLines: 30,
-                      keyboardType: TextInputType.text,
-                      maxLines: null,
-                      controller: noteWidget,
-                      decoration: const InputDecoration(
-                          alignLabelWithHint: true, labelText: 'Note', border: OutlineInputBorder()),
+                            await _prefs.setString('noteKey', str);
+                          },
+                          minLines: 30,
+                          keyboardType: TextInputType.text,
+                          maxLines: null,
+                          controller: noteWidget,
+                          decoration: const InputDecoration(
+                              alignLabelWithHint: true, labelText: 'Note', border: OutlineInputBorder()),
+                        ),
+                      ],
                     ),
                   ),
                 ),
