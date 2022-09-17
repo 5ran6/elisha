@@ -12,11 +12,12 @@ class YouTubeVideoModel {
   String youtubeVideoId;
   String shortDesc;
   String ministering;
+  String groupName;
   int? startAt;
   int? endAt;
 
   YouTubeVideoModel({required this.title, required this.youtubeVideoUrl, required this.youtubeVideoId,
-    required this.shortDesc, required this.ministering, required this.startAt, required this.endAt});
+    required this.shortDesc, required this.ministering, required this.groupName, required this.startAt, required this.endAt});
 
   Map<String, dynamic> toMap() {
     return {
@@ -25,6 +26,7 @@ class YouTubeVideoModel {
       'youtubeVideoId': youtubeVideoId,
       'shortDesc': shortDesc,
       'ministering': ministering,
+      'groupName': groupName,
       'startAt': startAt,
       'endAt': endAt,
     };
@@ -32,7 +34,7 @@ class YouTubeVideoModel {
 
   @override
   String toString() {
-    return 'YouTubeVideoModel{title: $title, youtubeVideoUrl: $youtubeVideoUrl, youtubeVideoId: $youtubeVideoId, shortDesc: $shortDesc, ministering: $ministering, startAt: $startAt, endAt: $endAt}';
+    return 'YouTubeVideoModel{title: $title, youtubeVideoUrl: $youtubeVideoUrl, youtubeVideoId: $youtubeVideoId, shortDesc: $shortDesc, ministering: $ministering, groupName: $groupName, startAt: $startAt, endAt: $endAt}';
   }
 
   factory YouTubeVideoModel.fromJson(Map<String, dynamic> json) => YouTubeVideoModel(
@@ -41,6 +43,7 @@ class YouTubeVideoModel {
       youtubeVideoId: json['youtubeVideoId']?? '',
       shortDesc: json['shortDesc']?? '',
       ministering: json['ministering']?? '',
+      groupName: json['groupName']?? '',
       startAt: json['startAt'],
       endAt: json['endAt']
   );
