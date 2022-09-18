@@ -139,10 +139,6 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                     padding: const EdgeInsets.all(8.0),
                     child: Stack(
                       children: [
-                        Align(
-                            alignment: Alignment.topRight,
-                            child:
-                                IconButton(onPressed: _listen, icon: Icon(_islistening ? Icons.mic_off : Icons.mic))),
                         TextFormField(
                           textCapitalization: TextCapitalization.sentences,
                           style: Theme.of(context)
@@ -161,6 +157,10 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                           decoration: const InputDecoration(
                               alignLabelWithHint: true, labelText: 'Note', border: OutlineInputBorder()),
                         ),
+                        Align(
+                            alignment: Alignment.topRight,
+                            child:
+                                IconButton(onPressed: _listen, icon: Icon(_islistening ? Icons.mic_off : Icons.mic))),
                       ],
                     ),
                   ),
