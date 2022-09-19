@@ -102,9 +102,7 @@ class _ChurchViewState extends State<ChurchView> {
       children: [
         const ChurchViewHeader(),
         const SizedBox(height: 20),
-        ListView(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
+        Column(
           children: _basicTiles.map((tile) => CollapsibleTileWidget(tile: tile)).toList(),
         )
       ],
