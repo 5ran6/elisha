@@ -22,26 +22,22 @@ class LocalUser {
   String firstName;
   String lastName;
   String email;
-  DateTime birthDate;
 
   LocalUser({
     required this.firstName,
     required this.lastName,
     required this.email,
-    required this.birthDate,
   });
 
   LocalUser copyWith({
     String? firstName,
     String? lastName,
     String? email,
-    DateTime? birthDate,
   }) {
     return LocalUser(
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
       email: email ?? this.email,
-      birthDate: birthDate ?? this.birthDate,
     );
   }
 
@@ -50,7 +46,6 @@ class LocalUser {
       'firstName': firstName,
       'lastName': lastName,
       'email': email,
-      'birthDate': birthDate.millisecondsSinceEpoch,
     };
   }
 
@@ -59,7 +54,6 @@ class LocalUser {
       firstName: map['firstName'],
       lastName: map['lastName'],
       email: map['email'],
-      birthDate: DateTime.fromMillisecondsSinceEpoch(map['birthDate']),
     );
   }
 
@@ -69,7 +63,7 @@ class LocalUser {
 
   @override
   String toString() {
-    return 'LocalUser(firstName: $firstName, lastName: $lastName, email: $email, birthDate: $birthDate)';
+    return 'LocalUser(firstName: $firstName, lastName: $lastName, email: $email)';
   }
 
   @override
@@ -79,12 +73,11 @@ class LocalUser {
     return other is LocalUser &&
         other.firstName == firstName &&
         other.lastName == lastName &&
-        other.email == email &&
-        other.birthDate == birthDate;
+        other.email == email;
   }
 
   @override
   int get hashCode {
-    return firstName.hashCode ^ lastName.hashCode ^ email.hashCode ^ birthDate.hashCode;
+    return firstName.hashCode ^ lastName.hashCode ^ email.hashCode;
   }
 }
