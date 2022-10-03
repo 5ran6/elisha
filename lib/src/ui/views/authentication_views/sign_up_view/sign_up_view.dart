@@ -30,6 +30,7 @@ import 'package:elisha/src/providers/authentication_providers/authentication_rep
 import 'package:elisha/src/ui/components/terms_and_privacy_policy_text.dart';
 import 'package:elisha/src/ui/views/authentication_views/components/email_text_input.dart';
 import 'package:elisha/src/ui/views/authentication_views/components/password_text_input.dart';
+import 'package:elisha/src/ui/views/authentication_views/components/confirm_password_text_input.dart';
 import 'package:elisha/src/ui/views/authentication_views/sign_up_view/components/birth_date_input.dart';
 import 'package:elisha/src/ui/views/authentication_views/sign_up_view/components/first_name_input.dart';
 import 'package:elisha/src/ui/views/authentication_views/sign_up_view/components/last_name_input.dart';
@@ -85,7 +86,7 @@ class _SignUpViewState extends State<SignUpView> {
             ),
             EmailTextInput(emailController: _emailController),
             PasswordTextInput(passwordController: _passwordController),
-            PasswordTextInput(passwordController: _passwordConfirmationController),
+            ConfirmPasswordTextInput(confirmPasswordController: _passwordConfirmationController),
             _hasError ? const SizedBox(height: 15) : Container(),
             _hasError ? _errorText(context, _errorMessage) : Container(),
             isInit ? _signUpButton(context): circularContainer(isDone),
