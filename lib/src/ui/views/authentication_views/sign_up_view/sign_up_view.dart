@@ -62,7 +62,7 @@ class _SignUpViewState extends State<SignUpView> {
   Widget build(BuildContext context) {
     return CantonScaffold(
       resizeToAvoidBottomInset: true,
-      padding: const EdgeInsets.only(top: 40, left: 27, right: 27),
+      padding: const EdgeInsets.symmetric(horizontal: 27),
       body: _content(context),
     );
   }
@@ -76,6 +76,12 @@ class _SignUpViewState extends State<SignUpView> {
         height: MediaQuery.of(context).size.height,
         child: Column(
           children: [
+            //TODO: not sure why it does not go back
+            Row(
+              children: const [
+                CantonBackButton(isClear: true),
+              ],
+            ),
             const SignUpViewHeader(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
