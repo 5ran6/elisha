@@ -57,7 +57,7 @@ class LastTranslationBookChapterRepository extends StateNotifier<TranslationBook
 
   /// Saves last Bible Chapter and version the user was on
   Future<void> _saveLastChapterAndTranslation() async {
-    var box = Hive.box('elisha');
+    var box = Hive.box('secret_place');
 
     List<String> savedBibleChapterAndTranslation = [];
 
@@ -70,7 +70,7 @@ class LastTranslationBookChapterRepository extends StateNotifier<TranslationBook
   }
 
   void loadLastChapterAndTranslation() {
-    var box = Hive.box('elisha');
+    var box = Hive.box('secret_place');
 
     // Removes all info
     // box.remove('bible_chapter_translation');

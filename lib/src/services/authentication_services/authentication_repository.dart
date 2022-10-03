@@ -122,6 +122,8 @@ class AuthenticationRepository {
   Future<String> signOut() async {
     try {
       await _firebaseAuth.signOut();
+      //delete user metadata from hive
+      await LocalUserRepository().removeUser();
 
       return 'success';
     } catch (e) {

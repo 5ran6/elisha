@@ -67,9 +67,9 @@ class AccountView extends StatelessWidget {
             backgroundImage: NetworkImage(user?.photoURL ?? ''),
           ): Container(),
         SizedBox(height: 8),
-        name != null ? Text(name??'', style: Theme.of(context).textTheme.headline5,) : Container(),
+        name! != null ? Text(name??'', style: Theme.of(context).textTheme.headline5,) : Container(),
         SizedBox(height: 8),
-        email != null ? Text(email??'', style: Theme.of(context).textTheme.headline5,) : Container(),
+        email! != null ? Text(email??'', style: Theme.of(context).textTheme.headline5,) : Container(),
         SizedBox(height: 25),
       ],
     );

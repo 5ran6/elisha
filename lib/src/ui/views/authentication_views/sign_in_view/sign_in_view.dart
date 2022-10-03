@@ -28,7 +28,10 @@ import 'package:elisha/src/ui/views/authentication_views/components/email_text_i
 import 'package:elisha/src/ui/views/authentication_views/components/password_text_input.dart';
 import 'package:elisha/src/ui/views/authentication_views/components/sign_in_view_header.dart';
 
+//enum to declare 3 state of button
+enum ButtonState { init, requesting, completed }
 class SignInView extends StatefulWidget {
+
   const SignInView(this.toggleView, {Key? key}) : super(key: key);
 
   final void Function() toggleView;
@@ -42,7 +45,9 @@ class _SignInViewState extends State<SignInView> {
   bool _hasError = false;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool isAnimating = true;
 
+  ButtonState state = ButtonState.init;
   @override
   Widget build(BuildContext context) {
     return CantonScaffold(
@@ -53,6 +58,9 @@ class _SignInViewState extends State<SignInView> {
   }
 
   Widget _content(BuildContext context) {
+    final isInit = isAnimating || state == ButtonState.init;
+    final isDone = state == ButtonState.completed;
+
     return SingleChildScrollView(
       child: SizedBox(
         height: MediaQuery.of(context).size.height,
@@ -70,7 +78,7 @@ class _SignInViewState extends State<SignInView> {
             PasswordTextInput(passwordController: _passwordController),
             _hasError ? const SizedBox(height: 15) : Container(),
             _hasError ? _errorText(context, _errorMessage) : Container(),
-            _signInButton(context),
+            isInit ? _signInButton(context) : circularContainer(isDone),
             DontHaveAnAccountText(toggleView: widget.toggleView),
             const Expanded(child: Align(alignment: FractionalOffset.bottomCenter, child: TermsAndPrivacyPolicyText())),
           ],
@@ -79,7 +87,22 @@ class _SignInViewState extends State<SignInView> {
     );
   }
 
+  Widget circularContainer(bool done) {
+    final color = done ? Colors.green : Colors.blue;
+    return Container(
+      decoration: BoxDecoration(shape: BoxShape.circle, color: color),
+      child: Center(
+        child: done
+            ? const Icon(Icons.done, size: 50, color: Colors.white)
+            : const CircularProgressIndicator(
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+
   Widget _signInButton(BuildContext context) {
+    final buttonWidth = MediaQuery.of(context).size.width;
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 7),
       child: CantonPrimaryButton(
@@ -94,7 +117,12 @@ class _SignInViewState extends State<SignInView> {
         color: Theme.of(context).primaryColor,
         onPressed: () async {
           HapticFeedback.lightImpact();
+          //loading state start
 
+          setState(() {
+            state = ButtonState.requesting;
+            isAnimating = !isAnimating;
+          });
           await context
               .read(authenticationRepositoryProvider)
               .signInWithEmailAndPassword(
@@ -102,6 +130,11 @@ class _SignInViewState extends State<SignInView> {
                 password: _passwordController.text.trim(),
               )
               .then((value) {
+            //loading state stop
+            setState(() {
+              state = ButtonState.completed;
+              isAnimating = !isAnimating;
+            });
             if (value != 'success') {
               setState(() {
                 _hasError = true;

@@ -34,7 +34,8 @@ import 'package:elisha/src/ui/views/authentication_views/sign_up_view/components
 import 'package:elisha/src/ui/views/authentication_views/sign_up_view/components/first_name_input.dart';
 import 'package:elisha/src/ui/views/authentication_views/sign_up_view/components/last_name_input.dart';
 import 'package:elisha/src/ui/views/authentication_views/sign_up_view/components/sign_up_view_header.dart';
-
+//enum to declare 3 state of button
+enum ButtonState { init, requesting, completed }
 class SignUpView extends StatefulWidget {
   const SignUpView(this.toggleView, {Key? key}) : super(key: key);
 
@@ -50,9 +51,12 @@ class _SignUpViewState extends State<SignUpView> {
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _passwordConfirmationController = TextEditingController();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
+  bool isAnimating = true;
 
+  ButtonState state = ButtonState.init;
   @override
   Widget build(BuildContext context) {
     return CantonScaffold(
@@ -63,6 +67,9 @@ class _SignUpViewState extends State<SignUpView> {
   }
 
   Widget _content(BuildContext context) {
+    final isInit = isAnimating || state == ButtonState.init;
+    final isDone = state == ButtonState.completed;
+
     return SingleChildScrollView(
       child: SizedBox(
         height: MediaQuery.of(context).size.height,
@@ -78,9 +85,10 @@ class _SignUpViewState extends State<SignUpView> {
             ),
             EmailTextInput(emailController: _emailController),
             PasswordTextInput(passwordController: _passwordController),
+            PasswordTextInput(passwordController: _passwordConfirmationController),
             _hasError ? const SizedBox(height: 15) : Container(),
             _hasError ? _errorText(context, _errorMessage) : Container(),
-            _signUpButton(context),
+            isInit ? _signUpButton(context): circularContainer(isDone),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -129,7 +137,10 @@ class _SignUpViewState extends State<SignUpView> {
         borderRadius: CantonSmoothBorder.smallBorder().borderRadius,
         onPressed: () async {
           HapticFeedback.lightImpact();
-
+          setState(() {
+            state = ButtonState.requesting;
+            isAnimating = !isAnimating;
+          });
           if ([
             _emailController.text,
             _passwordController.text,
@@ -137,10 +148,20 @@ class _SignUpViewState extends State<SignUpView> {
             _lastNameController.text,
           ].contains('')) {
             setState(() {
+              state = ButtonState.completed;
+              isAnimating = !isAnimating;
               _hasError = true;
               _errorMessage = 'Missing fields';
             });
-          } else {
+          }else if ( _passwordController.text !=  _passwordConfirmationController.text){
+            setState(() {
+              state = ButtonState.completed;
+              isAnimating = !isAnimating;
+              _hasError = true;
+              _errorMessage = 'Password Mismatch';
+            });
+          }
+          else {
             var res = await context.read(authenticationRepositoryProvider).signUp(
                   context: context,
                   email: _emailController.text.trim(),
@@ -148,7 +169,10 @@ class _SignUpViewState extends State<SignUpView> {
                   firstName: _firstNameController.text.trim(),
                   lastName: _lastNameController.text.trim(),
                 );
-
+            setState(() {
+              state = ButtonState.completed;
+              isAnimating = !isAnimating;
+            });
             if (res != 'success') {
               setState(() {
                 _hasError = true;
@@ -160,6 +184,22 @@ class _SignUpViewState extends State<SignUpView> {
       ),
     );
   }
+
+
+  Widget circularContainer(bool done) {
+    final color = done ? Colors.green : Colors.blue;
+    return Container(
+      decoration: BoxDecoration(shape: BoxShape.circle, color: color),
+      child: Center(
+        child: done
+            ? const Icon(Icons.done, size: 50, color: Colors.white)
+            : const CircularProgressIndicator(
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+
 
   Widget _errorText(BuildContext context, String error) {
     return Text(

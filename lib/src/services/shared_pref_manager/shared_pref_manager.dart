@@ -15,4 +15,9 @@ class PrefManager{
       await _preferences?.setString("alarmTime", time);
 
   static String? getTime() => _preferences?.getString("alarmTime");
+
+  static Future setDND(String time) async =>
+      await _preferences?.setString("dnd", time);
+
+  static String? getDND() => _preferences?.getString("dnd");
 }
