@@ -21,26 +21,30 @@ import 'dart:convert';
 class Translation {
   int? id;
   String? name;
-  String? abbreviation;
+  String abbreviation;
+  String? downloadUrl;
   String? language;
 
   Translation({
     this.id,
     this.name,
-    this.abbreviation,
+    required this.abbreviation,
+    this.downloadUrl,
     this.language,
   });
 
   Translation copyWith({
     int? id,
     String? name,
-    String? abbreviation,
+    required String abbreviation,
+    String? downloadUrl,
     String? language,
   }) {
     return Translation(
       id: id ?? this.id,
       name: name ?? this.name,
-      abbreviation: abbreviation ?? this.abbreviation,
+      abbreviation: abbreviation,
+      downloadUrl: downloadUrl ?? this.downloadUrl,
       language: language ?? this.language,
     );
   }
@@ -50,6 +54,7 @@ class Translation {
       'id': id,
       'name': name,
       'abbreviation': abbreviation,
+      'downloadUrl': downloadUrl,
       'language': language,
     };
   }
@@ -57,9 +62,10 @@ class Translation {
   factory Translation.fromMap(Map<String, dynamic> map) {
     return Translation(
       id: map['id'],
-      name: map['version'],
-      abbreviation: map['abbreviation'],
-      language: map['language'],
+      name: map['translationName'],
+      abbreviation: map['translationKey'],
+      downloadUrl: map['downloadUrl'],
+      language: map['language'] ?? "English",
     );
   }
 
@@ -68,9 +74,10 @@ class Translation {
   factory Translation.fromJson(String source) =>
       Translation.fromMap(json.decode(source));
 
+
   @override
   String toString() {
-    return 'Version(id: $id, name: $name, abbreviation: $abbreviation, language: $language)';
+    return 'Translation{id: $id, name: $name, abbreviation: $abbreviation, downloadUrl: $downloadUrl, language: $language}';
   }
 
   @override

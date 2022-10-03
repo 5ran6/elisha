@@ -72,7 +72,7 @@ Future<void> main() async {
   runZonedGuarded<Future<void>>(() async {
     await PrefManager.init();
     await Hive.initFlutter();
-    await Hive.openBox('elisha');
+    await Hive.openBox('secret_place');
     if (Platform.isIOS) {
       await initializeService();
     }

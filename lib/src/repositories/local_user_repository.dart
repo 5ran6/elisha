@@ -22,7 +22,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:elisha/src/models/local_user.dart';
 
 class LocalUserRepository extends StateNotifier<LocalUser> {
-  LocalUserRepository() : super(LocalUser(firstName: '', lastName: '', email: '', birthDate: DateTime.now()));
+  LocalUserRepository() : super(LocalUser(firstName: '', lastName: '', email: ''));
 
   Future<void> updateUser(LocalUser user) async {
     state = user;
@@ -30,7 +30,7 @@ class LocalUserRepository extends StateNotifier<LocalUser> {
   }
 
   Future<void> _saveUser() async {
-    var box = Hive.box('elisha');
+    var box = Hive.box('secret_place');
 
     String user = state.toJson();
 
@@ -38,7 +38,7 @@ class LocalUserRepository extends StateNotifier<LocalUser> {
   }
 
   void loadUser() {
-    var box = Hive.box('elisha');
+    var box = Hive.box('secret_place');
 
     /// Removes user from device.
     // box.remove('user');
@@ -48,6 +48,12 @@ class LocalUserRepository extends StateNotifier<LocalUser> {
     state.firstName = LocalUser.fromJson(user).firstName;
     state.lastName = LocalUser.fromJson(user).lastName;
     state.email = LocalUser.fromJson(user).email;
-    state.birthDate = LocalUser.fromJson(user).birthDate;
+  }
+
+  Future<void> removeUser() async {
+    var box = Hive.box('secret_place');
+    /// Removes user from device.
+    await box.clear();
+
   }
 }

@@ -41,7 +41,7 @@ class BookmarkedChaptersRepository extends StateNotifier<List<Chapter>> {
   }
 
   Future<void> _saveChapters() async {
-    var box = Hive.box('elisha');
+    var box = Hive.box('secret_place');
 
     List<String> chapters = state.map((e) => json.encode(e.toMap())).toList();
 
@@ -49,7 +49,7 @@ class BookmarkedChaptersRepository extends StateNotifier<List<Chapter>> {
   }
 
   void loadData() {
-    var box = Hive.box('elisha');
+    var box = Hive.box('secret_place');
 
     /// Removes all [Chapters] (s) from device.
     // box.remove('bookmarked_chapters');

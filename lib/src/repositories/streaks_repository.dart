@@ -32,28 +32,28 @@ class StreaksRepository extends ChangeNotifier {
   int get perfectWeeks => _perfectWeeks;
 
   Future<void> _incrementStreak() async {
-    final box = Hive.box('elisha');
+    final box = Hive.box('secret_place');
     _currentStreak++;
     await box.put('current_streak', _currentStreak);
     notifyListeners();
   }
 
   Future<void> _incrementBestStreak() async {
-    final box = Hive.box('elisha');
+    final box = Hive.box('secret_place');
     _bestStreak++;
     await box.put('best_streak', _bestStreak);
     notifyListeners();
   }
 
   Future<void> _incrementPerfectWeeks() async {
-    final box = Hive.box('elisha');
+    final box = Hive.box('secret_place');
     _perfectWeeks++;
     await box.put('perfect_weeks', _perfectWeeks);
     notifyListeners();
   }
 
   Future<void> _resetCurrentStreak() async {
-    final box = Hive.box('elisha');
+    final box = Hive.box('secret_place');
 
     _currentStreak = 1;
     await box.put('current_streak', _currentStreak);
@@ -61,7 +61,7 @@ class StreaksRepository extends ChangeNotifier {
   }
 
   void _loadData() {
-    final box = Hive.box('elisha');
+    final box = Hive.box('secret_place');
 
     _currentStreak = box.get('current_streak', defaultValue: 1);
     _bestStreak = box.get('best_streak', defaultValue: 1);
@@ -70,7 +70,7 @@ class StreaksRepository extends ChangeNotifier {
 
   Future<void> updateStreaks() async {
     _loadData();
-    final box = Hive.box('elisha');
+    final box = Hive.box('secret_place');
 
     var lastVisitDate = DateTime.parse(
         box.get('visitKey', defaultValue: DateTime.now().toString()));
