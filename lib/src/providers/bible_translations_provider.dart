@@ -27,7 +27,7 @@ final bibleTranslationsProvider = FutureProvider.autoDispose<List<Translation>>(
   ref.maintainState = true;
 
   final bibleService = ref.read(bibleServiceProvider);
-  final versions = bibleService.getTranslations();
+  final versions = await bibleService.getTranslations();
 
   return versions;
 });

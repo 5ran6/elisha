@@ -37,7 +37,6 @@ import 'package:elisha/src/providers/bible_repository_provider.dart';
 import 'package:elisha/src/providers/bible_translations_provider.dart';
 import 'package:elisha/src/providers/bookmarked_chapters_provider.dart';
 import 'package:elisha/src/providers/last_translation_book_chapter_provider.dart';
-import 'package:elisha/src/services/bible_service.dart';
 import 'package:elisha/src/ui/components/error_body.dart';
 import 'package:elisha/src/ui/components/unexpected_error.dart';
 import 'package:path_provider/path_provider.dart';
@@ -326,10 +325,8 @@ class _BibleViewState extends State<BibleView> {
                 color: Theme.of(context).inputDecorationTheme.fillColor,
               ),
               child: Text(
-                translations
-                    .where((element) => element.abbreviation == translationID)
-                    .first
-                    .abbreviation!,
+                translations.where((element) => element.abbreviation.toLowerCase() == translationID.toLowerCase()).first
+                        .abbreviation,
                 style: Theme.of(context)
                     .textTheme
                     .bodyText1
@@ -543,7 +540,8 @@ class _BibleViewState extends State<BibleView> {
         return await savedJSON.exists();
       }
 
-      Future<void> _downloadBibleTranslation(Translation translation, Function callback) async {
+      Future<void> _downloadBibleTranslation(
+          Translation translation, Function callback) async {
         print(
             "started downloading bible translation " + translation.toString());
 
@@ -565,7 +563,10 @@ class _BibleViewState extends State<BibleView> {
           },
           deleteOnCancel: true,
         );
-        await Flowder.download(translation.downloadUrl!, options);
+        print("about to call dwnload");
+        print(translation);
+        final core = await Flowder.download(translation.downloadUrl!, options);
+        core.resume();
       }
 
       return GestureDetector(
@@ -574,31 +575,29 @@ class _BibleViewState extends State<BibleView> {
               await _bibleTranslationHasBeenDownloaded(translation);
           if (!bibleTranslationHasBeenDownloaded) {
             //setDownloadState true
-            await _downloadBibleTranslation(
-              translation, () {
+            await _downloadBibleTranslation(translation, () {
               setState(() {
                 context
                     .read(localRepositoryProvider.notifier)
                     .changeBibleTranslation(
-                  index - 1,
-                  translation.abbreviation,
-                );
+                      index - 1,
+                      translation.abbreviation,
+                    );
 
                 context.refresh(bibleChaptersProvider);
               });
 
               Navigator.of(context, rootNavigator: true).pop();
-            }
-            );
+            });
             //setDownloadState false
           } else {
             setState(() {
               context
                   .read(localRepositoryProvider.notifier)
                   .changeBibleTranslation(
-                index - 1,
-                translation.abbreviation,
-              );
+                    index - 1,
+                    translation.abbreviation,
+                  );
 
               context.refresh(bibleChaptersProvider);
             });

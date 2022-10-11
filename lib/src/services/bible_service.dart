@@ -73,6 +73,8 @@ class BibleService {
       final List<Translation> translations = results
           .map((translation) => Translation.fromMap(translation))
           .toList(growable: false);
+      print('translations list');
+      print(translations);
       return translations;
     } on DioError catch (e) {
       await FirebaseCrashlytics.instance.recordError(e, e.stackTrace);
