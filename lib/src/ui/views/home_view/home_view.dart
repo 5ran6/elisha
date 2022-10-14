@@ -34,6 +34,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:elisha/src/ui/views/home_view/components/home_view_header.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../utils/dev_functions.dart';
 import '../../../models/devotional.dart';
@@ -95,6 +96,7 @@ class _HomeViewState extends State<HomeView> {
       });
     }
   }
+  bool isLoading = false;
 
   void _toggleView() {
     setState(() {
@@ -109,6 +111,13 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   void initState() {
+    isLoading = true;
+    Future.delayed(const Duration(seconds: 5), () {
+      setState(() {
+        isLoading = false;
+      });
+    });
+
     _tryConnection();
     //isUserAnonymous();
     checkIfDevotionalIsBookmarked(DateFormat('dd.MM.yyyy').format(DateTime.now()));
@@ -142,7 +151,7 @@ class _HomeViewState extends State<HomeView> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const HomeViewHeader(),
-          _body(context),
+         isLoading ? buildSkeleton() :_body(context) ,
         ],
       ),
     );
@@ -276,5 +285,72 @@ class _HomeViewState extends State<HomeView> {
         });
       }
     }
+  }
+
+
+
+}
+
+Widget buildSkeleton() {
+  return Column(
+    children: [
+      IntrinsicHeight(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: const [
+            Expanded(child: ClipCardSkeleton(height: 60, width: 80)),
+            Expanded(child: ClipCardSkeleton(height: 60, width: 80)),
+            Expanded(child: ClipCardSkeleton(height: 60, width: 80)),
+          ],
+        ),
+      ),
+      const SizedBox(height: 15),
+      const ClipCardSkeleton(height: 150, width: 420),
+      const SizedBox(height: 15),
+      const ClipCardSkeleton(height: 250, width: 420),
+      const SizedBox(height: 10),
+      Center(child: const ClipCardSkeleton(height: 20, width: 150)),
+      const SizedBox(height: 15),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: const [
+          ClipCardSkeleton(height: 20, width: 70),
+          ClipCardSkeleton(height: 15, width: 50),
+        ],
+      ),
+      const SizedBox(height: 10),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: const [
+          ClipCardSkeleton(height: 100, width: 120),
+          ClipCardSkeleton(height: 100, width: 120),
+          ClipCardSkeleton(height: 100, width: 120),
+        ],
+      ),
+      const SizedBox(height: 7),
+    ],
+  );
+}
+
+class ClipCardSkeleton extends StatelessWidget {
+  const ClipCardSkeleton({Key? key, this.height, this.width}) : super(key: key);
+
+  final double? height, width;
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[400]!,
+      highlightColor: Colors.grey[300]!,
+      child: Container(
+        height: height,
+        width: width,
+        padding: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Colors.grey,
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+        ),
+      ),
+    );
   }
 }

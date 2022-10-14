@@ -137,6 +137,7 @@ class CollapsibleTileWidget extends StatefulWidget {
 class _CollapsibleTileWidgetState extends State<CollapsibleTileWidget> {
   var _videoClips = List<YouTubeVideoModel>.empty();
   var _controllers = List<YoutubePlayerController>.empty();
+  bool isLoading = false;
 
   Future<List<YouTubeVideoModel>> get videoClipsFuture {
     return RemoteAPI.getYouTubeVideos();
