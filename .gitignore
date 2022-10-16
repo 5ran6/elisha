@@ -30,6 +30,8 @@
 .pub-cache/
 .pub/
 /build/
+ios/Podfile.lock
+pubspec.lock
 
 # Web related
 lib/generated_plugin_registrant.dart
