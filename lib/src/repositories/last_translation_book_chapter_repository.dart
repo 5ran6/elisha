@@ -40,7 +40,7 @@ class LastTranslationBookChapterRepository extends StateNotifier<TranslationBook
   Future<void> changeBibleTranslation(int number, String abb) async {
     state.translation = number;
     state.translationAbb = abb;
-    translationID = number.toString();
+    translationID = abb;
     translationAbb = abb;
     await _saveLastChapterAndTranslation();
   }
@@ -85,7 +85,7 @@ class LastTranslationBookChapterRepository extends StateNotifier<TranslationBook
     state.book = int.parse(savedList[2]);
     state.chapter = int.parse(savedList[3]);
 
-    translationID = state.translation.toString();
+    translationID = state.translationAbb!;
     translationAbb = state.translationAbb!;
     bookID = state.book.toString();
     chapterID = state.chapter.toString();
