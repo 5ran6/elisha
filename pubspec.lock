@@ -290,6 +290,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.1+7"
+  flowder:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "1ddd171a763c4f1ba09b95e34e35e2e5cf0d1bba"
+      url: "https://github.com/Harsh223/flowder.git"
+    source: git
+    version: "0.2.0"
   flutter:
     dependency: "direct main"
     description: flutter

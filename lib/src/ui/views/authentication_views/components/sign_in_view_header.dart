@@ -35,7 +35,7 @@ class SignInViewHeader extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Sign In to Secret Place',
+                'Sign in to Secret Place',
                 style: Theme.of(context).textTheme.headline4?.copyWith(
                       fontWeight: FontWeight.w600,
                     ),

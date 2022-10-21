@@ -29,6 +29,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 class AuthenticationRepository {
   final FirebaseAuth _firebaseAuth;
+
   AuthenticationRepository(this._firebaseAuth);
 
   Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
@@ -37,9 +38,11 @@ class AuthenticationRepository {
     await LocalUserRepository().updateUser(user);
   }
 
-  Future<String> signInWithEmailAndPassword({required String email, required String password}) async {
+  Future<String> signInWithEmailAndPassword(
+      {required String email, required String password}) async {
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
 
       // final localUser = LocalUser(firstName: firstName, lastName: lastName, email: email, birthDate: birthDate);
 
@@ -87,7 +90,8 @@ class AuthenticationRepository {
     required String password,
   }) async {
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+      await _firebaseAuth.createUserWithEmailAndPassword(
+          email: email, password: password);
 
       //final user = FirebaseAuth.instance.currentUser;
 
@@ -121,10 +125,12 @@ class AuthenticationRepository {
 
   Future<String> signOut() async {
     try {
-      await _firebaseAuth.signOut();
-      //delete user metadata from hive
-      await LocalUserRepository().removeUser();
-
+      //you can refactor to use Future.wait([futures]). Look at https://medium.com/flutter-africa/how-to-wait-for-the-future-s-in-dart-flutter-227933e97270
+      await _firebaseAuth
+          .signOut()
+          .then((value) async => await LocalUserRepository()
+              .removeUser()) //delete user metadata from hive
+          .then((value) => handleGoogleSignOut(_firebaseAuth));
       return 'success';
     } catch (e) {
       await FirebaseCrashlytics.instance.recordError(e, null);
