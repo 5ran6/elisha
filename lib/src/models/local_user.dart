@@ -51,9 +51,9 @@ class LocalUser {
 
   factory LocalUser.fromMap(Map<String, dynamic> map) {
     return LocalUser(
-      firstName: map['firstName'],
-      lastName: map['lastName'],
-      email: map['email'],
+      firstName: map['firstName'] ?? "",
+      lastName: map['lastName'] ?? "",
+      email: map['email'] ?? "",
     );
   }
 

@@ -58,6 +58,23 @@ Future<String> handleGoogleSignIn(FirebaseAuth firebaseAuth) async {
   }
 }
 
+Future<String> handleGoogleSignOut(FirebaseAuth firebaseAuth) async {
+  try {
+    final googleUser = await GoogleSignIn().signOut();
+    if (googleUser == null) return 'failed';
+    return 'success';
+  } catch (e) {
+    await FirebaseCrashlytics.instance.recordError(e, null);
+
+    if (e is FirebaseAuthException) {
+      return AuthenticationExceptions.fromFirebaseAuthError(e).toString();
+    } else if (e is RangeError) {
+      return '';
+    }
+    return 'failed';
+  }
+}
+
 void sendNoteGetRequestAndSaveNotesToDB() async {
   final user = FirebaseAuth.instance.currentUser;
 

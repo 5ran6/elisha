@@ -17,19 +17,19 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:elisha/src/ui/views/authentication_views/auth_selection_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:elisha/src/providers/authentication_providers/authentication_repository_provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class AccountView extends StatelessWidget {
   const AccountView({Key? key}) : super(key: key);
 
-
-
   @override
   Widget build(BuildContext context) {
-
     return CantonScaffold(
       backgroundColor: CantonMethods.alternateCanvasColor(context),
       body: _content(context),
@@ -62,14 +62,26 @@ class AccountView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-          name != null ? CircleAvatar(
-            radius: 40,
-            backgroundImage: NetworkImage(user?.photoURL ?? ''),
-          ): Container(),
+        name != null
+            ? CircleAvatar(
+                radius: 40,
+                backgroundImage: NetworkImage(user?.photoURL ?? ''),
+              )
+            : Container(),
         SizedBox(height: 8),
-        name != null ? Text(name, style: Theme.of(context).textTheme.headline5,) : Container(),
+        name != null
+            ? Text(
+                name,
+                style: Theme.of(context).textTheme.headline5,
+              )
+            : Container(),
         SizedBox(height: 8),
-        email != null ? Text(email, style: Theme.of(context).textTheme.headline5,) : Container(),
+        email != null
+            ? Text(
+                email,
+                style: Theme.of(context).textTheme.headline5,
+              )
+            : Container(),
         SizedBox(height: 25),
       ],
     );
@@ -82,9 +94,19 @@ class AccountView extends StatelessWidget {
       textColor: Theme.of(context).colorScheme.error,
       borderRadius: CantonSmoothBorder.smallBorder().borderRadius,
       containerWidth: MediaQuery.of(context).size.width / 2 - 34,
-      onPressed: () {
-        context.read(authenticationRepositoryProvider).signOut();
-        Navigator.pop(context);
+      onPressed: () async {
+        String response =
+            await context.read(authenticationRepositoryProvider).signOut();
+        print("this is response: " + response);
+        if (response == "success") {
+          print("logged out successfully");
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AuthenticationSelectionScreen()));
+        } else {
+          Fluttertoast.showToast(msg: "Failed signing out. Try again");
+        }
       },
     );
   }

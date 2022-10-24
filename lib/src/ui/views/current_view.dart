@@ -116,7 +116,7 @@ class _CurrentViewState extends State<CurrentView> with WidgetsBindingObserver {
     await context.read(streaksRepositoryProvider).updateStreaks();
     context.read(localRepositoryProvider.notifier).loadLastChapterAndTranslation();
     context.read(bookmarkedChaptersProvider.notifier).loadData();
-    context.read(localUserRepositoryProvider.notifier).loadUser();
+  //  context.read(localUserRepositoryProvider.notifier).loadUser();
   }
 
   @override

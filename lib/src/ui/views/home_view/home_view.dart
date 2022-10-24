@@ -84,7 +84,7 @@ class _HomeViewState extends State<HomeView> {
 
   Future<void> _tryConnection() async {
     try {
-      final response = await InternetAddress.lookup('example.com');
+      final response = await InternetAddress.lookup('google.com');
 
       setState(() {
         _isConnectionSuccessful = response.isNotEmpty;
