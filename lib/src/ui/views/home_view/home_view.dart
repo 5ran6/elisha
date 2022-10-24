@@ -112,7 +112,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     isLoading = true;
-    Future.delayed(const Duration(seconds: 5), () {
+    Future.delayed(const Duration(seconds: 4), () {
       setState(() {
         isLoading = false;
       });
