@@ -99,7 +99,9 @@ class _DevotionalTodayCardState extends State<DevotionalTodayCard> {
                               ),
                               borderRadius: BorderRadius.circular(15)),
                         ),
-                        placeholder: (context, url) => const CircularProgressIndicator(),
+                        placeholder: (context, url) => CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
+                        ),
                         errorWidget: (context, url, error) => const Icon(Icons.error),
                       )
                     : Image.asset('assets/images/light.jpg'),

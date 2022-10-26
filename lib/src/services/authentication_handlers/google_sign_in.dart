@@ -74,15 +74,4 @@ void sendNoteGetRequestAndSaveNotesToDB() async {
   List<Note> notesFromServer = noteFromJson(json);
   DevotionalDBHelper.instance.insertNoteListFromApiIntoDB(notesFromServer);
 
-  // final response = await http.get(Uri.parse("https://secret-place.herokuapp.com/api-secured/users/notes"), headers: {
-  //   'Content-Type': 'application/json',
-  //   'Accept': 'application/json',
-  //   'Authorization': 'Bearer $idToken',
-  // });
-
-  // final body = json.decode(response.body);
-
-  // List<Note> notesFromServer = noteFromJson(body);
-  // print(notesFromServer);
-  // DevotionalDBHelper.instance.insertNoteListFromApiIntoDB(notesFromServer);
 }

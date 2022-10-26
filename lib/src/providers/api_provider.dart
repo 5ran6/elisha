@@ -6,7 +6,19 @@ import 'package:elisha/src/models/devotional_plans.dart';
 import 'package:elisha/src/models/youTube_video.dart';
 import 'package:intl/intl.dart';
 
+import '../models/note.dart';
+
 class RemoteAPI {
+  static Future<List<Note>> getUsersNotesFromFirebase() async {
+    var dio = Dio();
+    final response = await dio.get('https://secret-place.herokuapp.com/api-secured/users/notes',
+        options: Options(responseType: ResponseType.json,
+          followRedirects: false,
+          validateStatus: (status) => true,));
+    var json = response.data;
+    return noteFromJson(json);
+
+  }
 
  static Future<List<Devotional>> getDevotionalsForMonth(monthYearName) async {
     var dio = Dio();

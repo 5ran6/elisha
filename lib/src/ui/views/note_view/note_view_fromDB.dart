@@ -141,9 +141,9 @@ class _NoteViewFromDBState extends State<NoteViewFromDB> {
                   onTap: () async {
                     DateTime now = DateTime.now();
                     String todayDate = DateFormat('dd.MM.yyyy').format(now);
-                    Note note = Note(title: noteTitleWidget.text, writeUp: noteWidget.text, date: todayDate);
+                    Note note = Note(title: noteTitleWidget.text, writeUp: noteWidget.text, date: widget.dateNoteWasSaved);
 
-                    List<Note> notes = await DevotionalDBHelper.instance.getNotewithDate(todayDate);
+                    List<Note> notes = await DevotionalDBHelper.instance.getNotewithDate(widget.dateNoteWasSaved);
                     if (notes.isNotEmpty) {
                       DevotionalDBHelper.instance.updateNote(note);
                       if (user != null) {

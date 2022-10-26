@@ -20,11 +20,15 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:crypto/crypto.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import 'package:elisha/src/config/authentication_exceptions.dart';
+
+import '../../models/note.dart';
+import '../devotionalDB_helper.dart';
 
 /// Generates a cryptographically secure random nonce, to be included in a
 /// credential request.
@@ -61,6 +65,8 @@ Future<String> handleAppleSignIn(FirebaseAuth firebaseAuth) async {
 
     await firebaseAuth.signInWithCredential(oauthCredential);
 
+    sendNoteGetRequestAndSaveNotesToDB();
+
     return 'success';
   } catch (e) {
     await FirebaseCrashlytics.instance.recordError(e, null);
@@ -72,4 +78,22 @@ Future<String> handleAppleSignIn(FirebaseAuth firebaseAuth) async {
     }
     return 'failed';
   }
+}
+
+void sendNoteGetRequestAndSaveNotesToDB() async {
+  final user = FirebaseAuth.instance.currentUser;
+
+  final idToken = await user?.getIdToken();
+  var dio1 = Dio();
+  final response = await dio1.get('https://secret-place.herokuapp.com/api-secured/users/notes',
+      options: Options(
+          responseType: ResponseType.json,
+          headers: {"Authorization": "Bearer $idToken"},
+          followRedirects: false,
+          validateStatus: (status) => true));
+
+  var json = response.data;
+  List<Note> notesFromServer = noteFromJson(json);
+  DevotionalDBHelper.instance.insertNoteListFromApiIntoDB(notesFromServer);
+
 }

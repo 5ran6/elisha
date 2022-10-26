@@ -298,9 +298,9 @@ Widget buildSkeleton() {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: const [
-            Expanded(child: ClipCardSkeleton(height: 60, width: 80)),
-            Expanded(child: ClipCardSkeleton(height: 60, width: 80)),
-            Expanded(child: ClipCardSkeleton(height: 60, width: 80)),
+            Expanded(child: ClipCardSkeleton(height: 60, width: 60)),
+            Expanded(child: ClipCardSkeleton(height: 60, width: 60)),
+            Expanded(child: ClipCardSkeleton(height: 60, width: 60)),
           ],
         ),
       ),
@@ -340,8 +340,8 @@ class ClipCardSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: Colors.grey[400]!,
-      highlightColor: Colors.grey[300]!,
+      baseColor: Colors.grey[700]!,
+      highlightColor: Colors.grey[600]!,
       child: Container(
         height: height,
         width: width,

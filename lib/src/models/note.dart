@@ -24,6 +24,7 @@ class Note {
   String date;
 
   factory Note.fromJson(Map<String, dynamic> json) => Note(
+         id: json["id"] ?? '',
         title: json["title"] ?? '',
         writeUp: json["writeUp"] ?? '',
         date: json["date"] ?? '',
