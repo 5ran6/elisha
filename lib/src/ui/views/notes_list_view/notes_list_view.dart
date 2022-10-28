@@ -31,6 +31,8 @@ class _NotesListViewState extends State<NotesListView> {
   @override
   void initState() {
     fetchAndUpdateListOfNotes();
+    print('Notes');
+    print(_noteList);
     super.initState();
   }
 
@@ -82,7 +84,7 @@ class _NotesListViewState extends State<NotesListView> {
       padding: const EdgeInsets.only(top: 17, left: 17, right: 17),
       child: const ViewHeaderTwo(
         title: 'Notes',
-        backButton: true,
+        backButton: false,
       ),
     );
   }

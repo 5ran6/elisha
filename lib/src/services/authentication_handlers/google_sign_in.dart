@@ -71,7 +71,12 @@ void sendNoteGetRequestAndSaveNotesToDB() async {
           validateStatus: (status) => true));
 
   var json = response.data;
+  print('josn..................');
+  print(json);
+  print(response.statusCode);
   List<Note> notesFromServer = noteFromJson(json);
   DevotionalDBHelper.instance.insertNoteListFromApiIntoDB(notesFromServer);
+
+  print(notesFromServer);
 
 }

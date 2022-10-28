@@ -112,7 +112,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     isLoading = true;
-    Future.delayed(const Duration(seconds: 4), () {
+    Future.delayed(const Duration(seconds: 3), () {
       setState(() {
         isLoading = false;
       });
@@ -162,7 +162,7 @@ class _HomeViewState extends State<HomeView> {
       children: [
         const StreaksCard(),
         const SizedBox(height: 15),
-        VerseOfTheDayCard(verse: _verse, versePassage: _versePassage),
+        VerseOfTheDayCard(verse: _verse, versePassage: _versePassage, devImageUrl: _image),
         const SizedBox(height: 15),
         DevotionalTodayCard(
             title: _title,
@@ -340,14 +340,14 @@ class ClipCardSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: Colors.grey[700]!,
-      highlightColor: Colors.grey[600]!,
+      baseColor: Colors.grey[400]!,
+      highlightColor: Colors.grey[200]!,
       child: Container(
         height: height,
         width: width,
         padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: Colors.grey,
+          color: Colors.grey[200],
           borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
       ),
