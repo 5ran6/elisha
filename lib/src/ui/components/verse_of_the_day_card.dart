@@ -19,7 +19,7 @@ class VerseOfTheDayCard extends StatelessWidget {
   final String devImageUrl;
   const VerseOfTheDayCard({required this.verse, required this.versePassage, required this.devImageUrl});
 
-  Future saveAndShareImage(String devImageUrl) async {
+  Future saveAndShareImage(String devImageUrl, String linkToPlayStore, String linkToAppleStore, String verseOfDay) async {
 
     //final RenderBox box = context.findRenderObject();
     if (Platform.isAndroid) {
@@ -28,13 +28,21 @@ class VerseOfTheDayCard extends StatelessWidget {
       File imgFile = File('$documentDirectory/flutter.png');
       imgFile.writeAsBytesSync(response.bodyBytes);
 
-      Share.shareFiles(['$documentDirectory/image.png'],
-        subject: 'URL conversion + Share',
-        text: 'Hey! Checkout the Share Files repo',
+      await Share.shareFiles(['$documentDirectory/flutter.png'],
+        subject: 'Secret Place',
+        text: 'Get Secret Place $linkToAppleStore, $linkToAppleStore',
       );
     } else {
-      Share.share('Hey! Checkout the Share Files repo',
-          subject: 'URL conversion + Share');
+      //Share.share(verseOfDay);
+      var response = await get(Uri.parse(devImageUrl));
+      final documentDirectory = (await getExternalStorageDirectory())?.path;
+      File imgFile = File('$documentDirectory/flutter.png');
+      imgFile.writeAsBytesSync(response.bodyBytes);
+
+      await Share.shareFiles(['$documentDirectory/flutter.png'],
+        subject: 'Secret Place',
+        text: 'Get Secret Place $linkToAppleStore, $linkToAppleStore',
+      );
     }
 
   }
@@ -98,11 +106,12 @@ class VerseOfTheDayCard extends StatelessWidget {
       onTap: () async {
         const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
         const appleStoreUrl = 'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
+        String verseOfDay = "$verse\n$versePassage\n\nGet Secret Place App:\nPlayStore: $playStoreUrl\n AppleStore: $appleStoreUrl";
 
         // await Share.share(
         //     "$verse\n$versePassage\n\nGet Secret Place App:\nPlayStore: $playStoreUrl\n AppleStore: $appleStoreUrl");
 
-          saveAndShareImage(devImageUrl);
+          saveAndShareImage(devImageUrl, playStoreUrl, appleStoreUrl, verseOfDay);
       },
       child: Container(
         height: 35,

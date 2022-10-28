@@ -22,7 +22,7 @@ class RemoteAPI {
 
  static Future<List<Devotional>> getDevotionalsForMonth(monthYearName) async {
     var dio = Dio();
-    final response = await dio.get('https://secret-place.herokuapp.com/api/devotionals?month=${monthYearName}',
+    final response = await dio.get('https://secret-place.herokuapp.com//api/devotionals?month=${monthYearName}',
         options: Options(responseType: ResponseType.json,
         followRedirects: false,
         validateStatus: (status) => true,));
