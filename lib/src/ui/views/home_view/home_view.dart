@@ -29,6 +29,7 @@ import 'package:elisha/src/ui/views/home_view/components/devotional_today_card.d
 import 'package:elisha/src/ui/views/home_view/components/selected_study_plans_listview.dart';
 import 'package:elisha/src/ui/views/home_view/components/streaks_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:elisha/src/ui/views/home_view/components/home_view_header.dart';
@@ -61,6 +62,7 @@ class _HomeViewState extends State<HomeView> {
   bool _isBookmarked = false;
 
   var _devPlansList = List<DevotionalPlan>.empty();
+
   //var _devPlansListCache = List<DevotionalPlan>.empty();
 
   bool isAnonymousUser = false;
@@ -111,13 +113,16 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     _tryConnection();
     //isUserAnonymous();
-    checkIfDevotionalIsBookmarked(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+    checkIfDevotionalIsBookmarked(
+        DateFormat('dd.MM.yyyy').format(DateTime.now()));
 
     getVerseAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
     getVersePassageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
     getTodayTitleAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
-    getTodayMainWriteUpAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
-    getTodayFullPassageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+    getTodayMainWriteUpAsString(
+        DateFormat('dd.MM.yyyy').format(DateTime.now()));
+    getTodayFullPassageAsString(
+        DateFormat('dd.MM.yyyy').format(DateTime.now()));
     getTodayPrayerAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
     getTodayThoughtAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
     getImageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
@@ -185,7 +190,8 @@ class _HomeViewState extends State<HomeView> {
   }
 
   getVersePassageAsString(String dt) async {
-    var versePassage = await DevotionalItemsRetrieveClass.getTodayVersePassage(dt);
+    var versePassage =
+        await DevotionalItemsRetrieveClass.getTodayVersePassage(dt);
     setState(() {
       _versePassage = versePassage!;
     });
@@ -199,7 +205,8 @@ class _HomeViewState extends State<HomeView> {
   }
 
   getTodayMainWriteUpAsString(String dt) async {
-    var mainWriteUp = await DevotionalItemsRetrieveClass.getTodayMainWriteUp(dt);
+    var mainWriteUp =
+        await DevotionalItemsRetrieveClass.getTodayMainWriteUp(dt);
     setState(() {
       _mainWriteUp = mainWriteUp!;
     });
@@ -213,14 +220,16 @@ class _HomeViewState extends State<HomeView> {
   }
 
   getTodayThoughtAsString(String dt) async {
-    var thought = await DevotionalItemsRetrieveClass.getTodayThoughtOfTheDay(dt);
+    var thought =
+        await DevotionalItemsRetrieveClass.getTodayThoughtOfTheDay(dt);
     setState(() {
       _thoughtOfTheDay = thought!;
     });
   }
 
   getTodayFullPassageAsString(String dt) async {
-    var fullPassage = await DevotionalItemsRetrieveClass.getTodayFullPassage(dt);
+    var fullPassage =
+        await DevotionalItemsRetrieveClass.getTodayFullPassage(dt);
     setState(() {
       _fullpassage = fullPassage!;
     });
@@ -234,7 +243,8 @@ class _HomeViewState extends State<HomeView> {
   }
 
   getBibleInYearAsString(String dt) async {
-    var bibleInYearString = await DevotionalItemsRetrieveClass.getBibleInYear(dt);
+    var bibleInYearString =
+        await DevotionalItemsRetrieveClass.getBibleInYear(dt);
     setState(() {
       _bibleInAYear = bibleInYearString!;
     });
@@ -244,19 +254,28 @@ class _HomeViewState extends State<HomeView> {
     List<DevotionalPlan> devPlans = await RemoteAPI.getDevotionalPlans();
     if (devPlans.isNotEmpty) {
       await DevotionalDBHelper.instance.deleteDevotionalPlansForCache();
-      await DevotionalDBHelper.instance.insertDevotionalPLanListForCache(devPlans);
+      await DevotionalDBHelper.instance
+          .insertDevotionalPLanListForCache(devPlans);
     }
 
-    List<DevotionalPlan> devPlansCacheFromDB = await DevotionalDBHelper.instance.getDevotionalPlanForCacheDB();
-    if (devPlansCacheFromDB.isNotEmpty) {
-      setState(() {
-        _devPlansList = devPlansCacheFromDB;
-      });
+    List<DevotionalPlan> devPlansCacheFromDB =
+        await DevotionalDBHelper.instance.getDevotionalPlanForCacheDB();
+    try {
+      if (devPlansCacheFromDB.isNotEmpty) {
+        setState(() {
+          _devPlansList = devPlansCacheFromDB;
+        });
+      }
+    } catch (e){
+      if (kDebugMode) {
+        print('Something bad happened: $e');
+      }
     }
   }
 
   getStudyPlansFromDB() async {
-    List<DevotionalPlan> devPlansFromDB = await DevotionalDBHelper.instance.getDevotionalPlansFromDB();
+    List<DevotionalPlan> devPlansFromDB =
+        await DevotionalDBHelper.instance.getDevotionalPlansFromDB();
 
     setState(() {
       _devPlansListFromDB = devPlansFromDB;
@@ -264,7 +283,8 @@ class _HomeViewState extends State<HomeView> {
   }
 
   checkIfDevotionalIsBookmarked(String date) async {
-    List<Devotional> bmDevotionals = await DevotionalDBHelper.instance.getBookMarkedDevotionalsFromDB();
+    List<Devotional> bmDevotionals =
+        await DevotionalDBHelper.instance.getBookMarkedDevotionalsFromDB();
     for (int i = 0; i < bmDevotionals.length; i++) {
       if (bmDevotionals[i].date == date) {
         setState(() {

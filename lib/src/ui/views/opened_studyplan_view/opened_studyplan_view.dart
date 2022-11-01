@@ -86,7 +86,7 @@ class _OpenedStudyPlanScreenState extends State<OpenedStudyPlanScreen> {
                   Expanded(
                     child: StaggeredGridView.countBuilder(
                       staggeredTileBuilder: (index) => StaggeredTile.count(2, 1),
-                      itemCount: _devPlanWithFullDevotionals?.devotionals?.length,
+                      itemCount: _devPlanWithFullDevotionals?.devotionals.length,
                       mainAxisSpacing: 8,
                       crossAxisCount: 4,
                       crossAxisSpacing: 8,
