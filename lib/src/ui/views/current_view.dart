@@ -16,6 +16,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+import 'dart:io';
+
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/ui/views/note_view/note_view.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -90,19 +92,29 @@ class _CurrentViewState extends State<CurrentView> with WidgetsBindingObserver {
     // if (index == 2) {
     //   saveTodayDateToSharedPref();
     // }
-    if (index == _currentIndex && _currentIndex == 0 && _homeNavigatorKey.currentState!.canPop()) {
+    if (index == _currentIndex &&
+        _currentIndex == 0 &&
+        _homeNavigatorKey.currentState!.canPop()) {
       _homeNavigatorKey.currentState!.pop();
     }
-    if (index == _currentIndex && _currentIndex == 1 && _bibleNavigatorKey.currentState!.canPop()) {
+    if (index == _currentIndex &&
+        _currentIndex == 1 &&
+        _bibleNavigatorKey.currentState!.canPop()) {
       _bibleNavigatorKey.currentState!.pop();
     }
-    if (index == _currentIndex && _currentIndex == 2 && _noteNavigatorKey.currentState!.canPop()) {
+    if (index == _currentIndex &&
+        _currentIndex == 2 &&
+        _noteNavigatorKey.currentState!.canPop()) {
       _noteNavigatorKey.currentState!.pop();
     }
-    if (index == _currentIndex && _currentIndex == 3 && _churchNavigatorKey.currentState!.canPop()) {
+    if (index == _currentIndex &&
+        _currentIndex == 3 &&
+        _churchNavigatorKey.currentState!.canPop()) {
       _churchNavigatorKey.currentState!.pop();
     }
-    if (index == _currentIndex && _currentIndex == 4 && _profileNavigatorKey.currentState!.canPop()) {
+    if (index == _currentIndex &&
+        _currentIndex == 4 &&
+        _profileNavigatorKey.currentState!.canPop()) {
       _profileNavigatorKey.currentState!.pop();
     }
 
@@ -112,11 +124,15 @@ class _CurrentViewState extends State<CurrentView> with WidgetsBindingObserver {
   }
 
   void _loadData() async {
-    setDoNotDisturbState();
+    if (Platform.isAndroid) {
+      setDoNotDisturbState();
+    }
     await context.read(streaksRepositoryProvider).updateStreaks();
-    context.read(localRepositoryProvider.notifier).loadLastChapterAndTranslation();
+    context
+        .read(localRepositoryProvider.notifier)
+        .loadLastChapterAndTranslation();
     context.read(bookmarkedChaptersProvider.notifier).loadData();
-  //  context.read(localUserRepositoryProvider.notifier).loadUser();
+    //  context.read(localUserRepositoryProvider.notifier).loadUser();
   }
 
   @override
@@ -143,7 +159,9 @@ class _CurrentViewState extends State<CurrentView> with WidgetsBindingObserver {
         children: [
           Navigator(
             key: _homeNavigatorKey,
-            observers: [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
+            observers: [
+              FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
+            ],
             onGenerateRoute: (settings) {
               return MaterialPageRoute(
                 settings: settings,
@@ -159,7 +177,9 @@ class _CurrentViewState extends State<CurrentView> with WidgetsBindingObserver {
           ),
           Navigator(
             key: _bibleNavigatorKey,
-            observers: [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
+            observers: [
+              FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
+            ],
             onGenerateRoute: (settings) {
               return MaterialPageRoute(
                 settings: settings,
@@ -170,7 +190,9 @@ class _CurrentViewState extends State<CurrentView> with WidgetsBindingObserver {
           ),
           Navigator(
             key: _noteNavigatorKey,
-            observers: [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
+            observers: [
+              FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
+            ],
             onGenerateRoute: (settings) {
               return MaterialPageRoute(
                 settings: settings,
@@ -181,7 +203,9 @@ class _CurrentViewState extends State<CurrentView> with WidgetsBindingObserver {
           ),
           Navigator(
             key: _churchNavigatorKey,
-            observers: [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
+            observers: [
+              FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
+            ],
             onGenerateRoute: (settings) {
               return MaterialPageRoute(
                 settings: settings,
@@ -197,7 +221,9 @@ class _CurrentViewState extends State<CurrentView> with WidgetsBindingObserver {
           ),
           Navigator(
             key: _profileNavigatorKey,
-            observers: [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
+            observers: [
+              FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
+            ],
             onGenerateRoute: (settings) {
               return MaterialPageRoute(
                 settings: settings,
@@ -226,7 +252,6 @@ class _CurrentViewState extends State<CurrentView> with WidgetsBindingObserver {
   }
 
   Future<void> saveMessageClipViewLocationToSharedPref() async {
-    print('Message Clipsd   erehrehrehrehrehrhehrhehrehrhehhrehhrehr');
     final _prefs = await SharedPreferences.getInstance();
 
     await _prefs.setString('messageClipkey', "iAmInMessageClipPage");
@@ -237,10 +262,14 @@ class _CurrentViewState extends State<CurrentView> with WidgetsBindingObserver {
 
     final bool dndStatus = prefs.getBool('sharedPrefStatus') ?? false;
 
-    if (dndStatus) {
-      await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_NONE);
-    } else {
-      await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
+    if (Platform.isAndroid) {
+      if (dndStatus) {
+        await FlutterDnd.setInterruptionFilter(
+            FlutterDnd.INTERRUPTION_FILTER_NONE);
+      } else {
+        await FlutterDnd.setInterruptionFilter(
+            FlutterDnd.INTERRUPTION_FILTER_ALL);
+      }
     }
   }
 
@@ -248,8 +277,11 @@ class _CurrentViewState extends State<CurrentView> with WidgetsBindingObserver {
     final prefs = await SharedPreferences.getInstance();
 
     final bool dndStatus = prefs.getBool('sharedPrefStatus') ?? false;
-    if (dndStatus) {
-      await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
+    if (Platform.isAndroid) {
+      if (dndStatus) {
+        await FlutterDnd.setInterruptionFilter(
+            FlutterDnd.INTERRUPTION_FILTER_ALL);
+      }
     }
   }
 
@@ -257,8 +289,12 @@ class _CurrentViewState extends State<CurrentView> with WidgetsBindingObserver {
     final prefs = await SharedPreferences.getInstance();
 
     final bool dndStatus = prefs.getBool('sharedPrefStatus') ?? false;
-    if (dndStatus) {
-      await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_NONE);
+
+    if (Platform.isAndroid) {
+      if (dndStatus) {
+        await FlutterDnd.setInterruptionFilter(
+            FlutterDnd.INTERRUPTION_FILTER_NONE);
+      }
     }
   }
 
@@ -266,10 +302,14 @@ class _CurrentViewState extends State<CurrentView> with WidgetsBindingObserver {
     final prefs = await SharedPreferences.getInstance();
 
     final bool dndStatus = prefs.getBool('sharedPrefStatus') ?? false;
-    if (dndStatus) {
-      await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_NONE);
-    } else {
-      await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
+    if (Platform.isAndroid) {
+      if (dndStatus) {
+        await FlutterDnd.setInterruptionFilter(
+            FlutterDnd.INTERRUPTION_FILTER_NONE);
+      } else {
+        await FlutterDnd.setInterruptionFilter(
+            FlutterDnd.INTERRUPTION_FILTER_ALL);
+      }
     }
   }
 }

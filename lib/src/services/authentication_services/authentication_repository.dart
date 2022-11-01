@@ -17,7 +17,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'package:canton_design_system/canton_design_system.dart';
-import 'package:elisha/src/ui/views/authentication_views/verify_email_view/verify_email_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:elisha/src/config/authentication_exceptions.dart';

@@ -68,14 +68,14 @@ class AccountView extends StatelessWidget {
                 backgroundImage: NetworkImage(user?.photoURL ?? ''),
               )
             : Container(),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         name != null
             ? Text(
                 name,
                 style: Theme.of(context).textTheme.headline5,
               )
             : Container(),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         email != null
             ? Text(
                 email,
@@ -100,10 +100,10 @@ class AccountView extends StatelessWidget {
         print("this is response: " + response);
         if (response == "success") {
           print("logged out successfully");
-          Navigator.pushReplacement(
+          Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => AuthenticationSelectionScreen()));
+                  builder: (context) => const AuthenticationSelectionScreen()));
         } else {
           Fluttertoast.showToast(msg: "Failed signing out. Try again");
         }

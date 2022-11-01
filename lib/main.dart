@@ -20,35 +20,14 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
 import 'package:elisha/src/providers/theme_manager_provider.dart';
-import 'package:elisha/src/repositories/theme_manager_repository.dart';
-import 'package:elisha/src/services/alarm_services.dart';
 import 'package:elisha/src/services/shared_pref_manager/shared_pref_manager.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 //import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:elisha/src/models/devotional.dart';
 import 'package:elisha/src/providers/api_provider.dart';
 import 'package:elisha/src/services/devotionalDB_helper.dart';
-import 'package:elisha/src/ui/views/onboarding_view/onboardingScreen.dart';
 import 'package:intl/intl.dart';
 
-import 'package:dio/dio.dart';
-import 'package:elisha/src/models/book.dart';
-import 'package:elisha/src/models/verse.dart';
-import 'package:elisha/src/ui/views/about_us_view/about_us_page.dart';
-import 'package:elisha/src/ui/views/bibestudy_series_view/biblestudy_series_view.dart';
-import 'package:elisha/src/ui/views/account_view/account_view.dart';
-import 'package:elisha/src/ui/views/bible_view/bible_view.dart';
-import 'package:elisha/src/ui/views/bookmarked_chapter_view/bookmarked_chapter_view.dart';
-import 'package:elisha/src/ui/views/bookmarked_chapters_view/bookmarked_chapters_view.dart';
-import 'package:elisha/src/ui/views/current_view.dart';
-import 'package:elisha/src/ui/views/devotional_page/devotional_page.dart';
-import 'package:elisha/src/ui/views/home_view/components/study_plans_listview.dart';
-import 'package:elisha/src/ui/views/home_view/home_view.dart';
-import 'package:elisha/src/ui/views/list_of_notes_view/list_of_notes_view.dart';
-import 'package:elisha/src/ui/views/note_view/note_view.dart';
-import 'package:elisha/src/ui/views/opened_studyplan_view/opened_studyplan_view.dart';
-import 'package:elisha/src/ui/views/profile_view/profile_view.dart';
 import 'package:elisha/src/ui/views/settings_view/settings_view.dart';
 import 'package:elisha/src/ui/views/splash_view/splash_screen.dart';
 import 'package:flutter/foundation.dart';
@@ -63,8 +42,6 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:elisha/src/config/constants.dart';
-import 'package:elisha/src/services/authentication_services/authentication_wrapper.dart';
-import 'dart:convert';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
