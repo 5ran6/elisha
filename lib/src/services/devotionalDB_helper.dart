@@ -27,7 +27,7 @@ class DevotionalDBHelper {
   }
 
   Future<Database> initDatabase() async {
-    Directory directory = await getApplicationDocumentsDirectory();
+   // Directory directory = await getApplicationDocumentsDirectory();
     // print("await getDatabasesPath()");
     // print(await getDatabasesPath());
     String path = join(await getDatabasesPath(), 'devotional_database.db');

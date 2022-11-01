@@ -16,6 +16,9 @@ class AuthenticationSelectionScreen extends StatefulWidget {
 class _AuthenticationSelectionScreenState extends State<AuthenticationSelectionScreen> {
   bool showSignIn = true;
   bool isAnonymousUser = false;
+  // The reference to the navigator
+  late NavigatorState _navigator;
+
 
   Future<void> isUserAnonymous() async {
     final prefs = await SharedPreferences.getInstance();
@@ -40,9 +43,22 @@ class _AuthenticationSelectionScreenState extends State<AuthenticationSelectionS
     super.initState();
   }
 
+
+  @override
+  void didChangeDependencies() {
+    _navigator = Navigator.of(context);
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+//    _navigator.pushAndRemoveUntil(, (route) => ...);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
+    //final user = FirebaseAuth.instance.currentUser;
     return StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {

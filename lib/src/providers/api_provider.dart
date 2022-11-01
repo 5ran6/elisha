@@ -1,10 +1,7 @@
-
-
 import 'package:dio/dio.dart';
 import 'package:elisha/src/models/devotional.dart';
 import 'package:elisha/src/models/devotional_plans.dart';
 import 'package:elisha/src/models/youTube_video.dart';
-import 'package:intl/intl.dart';
 
 import '../models/note.dart';
 
@@ -22,7 +19,7 @@ class RemoteAPI {
 
  static Future<List<Devotional>> getDevotionalsForMonth(monthYearName) async {
     var dio = Dio();
-    final response = await dio.get('https://api.cpai-secretplace.com/api/devotionals?month=${monthYearName}',
+    final response = await dio.get('https://api.cpai-secretplace.com/api/devotionals?month=$monthYearName',
         options: Options(responseType: ResponseType.json,
         followRedirects: false,
         validateStatus: (status) => true,));
@@ -57,8 +54,8 @@ class RemoteAPI {
 
  static Future<DevotionalPlan> getDevotionalPlanWithID(studyPlanID) async {
    var dio3 = Dio();
-   final response3 = await dio3.get('https://api.cpai-secretplace.com/api/study-plans/${studyPlanID}',
-       options: Options(responseType: ResponseType.json, followRedirects: false, validateStatus: (status) => true));
+   final response3 = await dio3.get('https://api.cpai-secretplace.com/api/study-plans/$studyPlanID',
+     options: Options(responseType: ResponseType.json, followRedirects: false, validateStatus: (status) => true));
 
    var json = response3.data;
    return devotionalPlanWithIDFromJson(json);

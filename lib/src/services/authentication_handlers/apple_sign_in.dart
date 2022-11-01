@@ -67,15 +67,18 @@ Future<String> handleAppleSignIn(FirebaseAuth firebaseAuth) async {
 
     sendNoteGetRequestAndSaveNotesToDB();
 
+    print ("signed in with apple successfully");
     return 'success';
   } catch (e) {
     await FirebaseCrashlytics.instance.recordError(e, null);
+    print ("sign in firebase error");
 
     if (e is FirebaseAuthException) {
       return AuthenticationExceptions.fromFirebaseAuthError(e).toString();
     } else if (e is RangeError) {
       return '';
     }
+    print ("sign in with apple unsuccessful");
     return 'failed';
   }
 }
