@@ -45,7 +45,7 @@ class DevotionalDBHelper {
     await db.execute(
         'CREATE TABLE devotionalPlanCache_table(id TEXT, title TEXT, imageUrl TEXT, description TEXT, devotionals TEXT)');
 
-    await db.execute('CREATE TABLE note_table(id INTEGER PRIMARY KEY, title TEXT, writeUp TEXT, date TEXT)');
+    await db.execute('CREATE TABLE note_table(id INTEGER PRIMARY KEY, noteId Text, title TEXT, writeUp TEXT, date TEXT)');
 
     await db.execute(
         'CREATE TABLE bookmarked_devotional_table(id INTEGER PRIMARY KEY, date TEXT, title TEXT, translation TEXT, memoryVerse TEXT, memoryVersePassage TEXT, fullPassage TEXT, fullText TEXT, bibleInAYear TEXT, image TEXT, prayerBurden TEXT, thoughtOfTheDay TEXT)');
@@ -207,6 +207,15 @@ class DevotionalDBHelper {
     Database? db = await instance.database;
 
     var result = await db!.rawQuery("SELECT * FROM note_table WHERE date=?", ['$date']);
+
+    List<Note> noteList = result.isNotEmpty ? result.map((e) => Note.fromJson(e)).toList() : [];
+    return noteList;
+  }
+
+  Future<List<Note>> getNoteWithNoteId(noteId) async {
+    Database? db = await instance.database;
+
+    var result = await db!.rawQuery("SELECT * FROM note_table WHERE noteId=?", ['$noteId']);
 
     List<Note> noteList = result.isNotEmpty ? result.map((e) => Note.fromJson(e)).toList() : [];
     return noteList;

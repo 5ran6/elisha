@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:elisha/src/ui/views/note_view/note_view.dart';
 import 'package:elisha/src/ui/views/note_view/note_view_fromDB.dart';
 
 import '../../../models/note.dart';
+import '../../../providers/api_provider.dart';
 import '../../../services/devotionalDB_helper.dart';
 
 class NotesListView extends StatefulWidget {
@@ -28,8 +30,9 @@ class _NotesListViewState extends State<NotesListView> {
 
   @override
   void initState() {
-
     fetchAndUpdateListOfNotes();
+    print('Notes');
+    print(_noteList);
     super.initState();
   }
 
@@ -58,9 +61,20 @@ class _NotesListViewState extends State<NotesListView> {
   }
 
   Widget _content(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [_header(), _searchBar(), _buildNoteList(context)],
+    return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+          backgroundColor: Theme.of(context).primaryColor,
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(
+                builder: (context) => const DevotionalNotePage()));
+          },
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [_header(), _searchBar(), _buildNoteList(context)],
+        ),
       ),
     );
   }
@@ -70,7 +84,7 @@ class _NotesListViewState extends State<NotesListView> {
       padding: const EdgeInsets.only(top: 17, left: 17, right: 17),
       child: const ViewHeaderTwo(
         title: 'Notes',
-        backButton: true,
+        backButton: false,
       ),
     );
   }
@@ -110,7 +124,7 @@ class _NotesListViewState extends State<NotesListView> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => NoteViewFromDB(dateNoteWasSaved: _noteList[index].date)));
+                              builder: (context) => DevotionalNotePage(noteId: _noteList[index].id)));
                     },
                   );
                 })

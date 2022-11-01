@@ -35,6 +35,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:elisha/src/ui/views/home_view/components/home_view_header.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../utils/dev_functions.dart';
 import '../../../models/devotional.dart';
@@ -59,6 +60,9 @@ class _HomeViewState extends State<HomeView> {
   var _prayerBurden = '';
   var _thoughtOfTheDay = '';
   var _bibleInAYear = '';
+  var _memoryVerseImageToShare = '';
+  var _thoughtOfTheDayImageToShare = '';
+  var _prayerBurdenImageToShare = '';
   bool _isBookmarked = false;
 
   var _devPlansList = List<DevotionalPlan>.empty();
@@ -97,6 +101,7 @@ class _HomeViewState extends State<HomeView> {
       });
     }
   }
+  bool isLoading = false;
 
   void _toggleView() {
     setState(() {
@@ -111,6 +116,13 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   void initState() {
+    isLoading = true;
+    Future.delayed(const Duration(seconds: 3), () {
+      setState(() {
+        isLoading = false;
+      });
+    });
+
     _tryConnection();
     //isUserAnonymous();
     checkIfDevotionalIsBookmarked(
@@ -127,6 +139,9 @@ class _HomeViewState extends State<HomeView> {
     getTodayThoughtAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
     getImageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
     getBibleInYearAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+    getMemoryVerseImageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+    getThoughtOfTheDayImageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+    getPrayerBurdenImageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
 
     cacheStudyPlans();
     getStudyPlansFromDB();
@@ -147,7 +162,7 @@ class _HomeViewState extends State<HomeView> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const HomeViewHeader(),
-          _body(context),
+         isLoading ? buildSkeleton() :_body(context) ,
         ],
       ),
     );
@@ -158,7 +173,7 @@ class _HomeViewState extends State<HomeView> {
       children: [
         const StreaksCard(),
         const SizedBox(height: 15),
-        VerseOfTheDayCard(verse: _verse, versePassage: _versePassage),
+        VerseOfTheDayCard(verse: _verse, versePassage: _versePassage, memoryVerseImageUrl: _memoryVerseImageToShare),
         const SizedBox(height: 15),
         DevotionalTodayCard(
             title: _title,
@@ -171,7 +186,11 @@ class _HomeViewState extends State<HomeView> {
             isBookmarked: _isBookmarked,
             memoryVersePassage: _versePassage,
             memoryVerse: _verse,
-            bibleInAYear: _bibleInAYear),
+            bibleInAYear: _bibleInAYear,
+          memoryVerseImage: _memoryVerseImageToShare,
+          thoughtOfTheDayImage: _thoughtOfTheDayImageToShare,
+          prayerBurdenImage: _prayerBurdenImageToShare,
+        ),
         const SizedBox(height: 15),
         SelectedStudyPlansListview(devPlansFromDB: _devPlansListFromDB),
         const SizedBox(height: 5),
@@ -242,6 +261,25 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
+  getMemoryVerseImageAsString(String dt) async {
+    var memoryVerseImageToShare = await DevotionalItemsRetrieveClass.getMemoryVerseImage(dt);
+    setState(() {
+      _memoryVerseImageToShare = memoryVerseImageToShare!;
+    });
+  }
+  getThoughtOfTheDayImageAsString(String dt) async {
+    var thoughtOfTheDayImageToShare = await DevotionalItemsRetrieveClass.getThoughtOfTheDayImage(dt);
+    setState(() {
+      _thoughtOfTheDayImageToShare = thoughtOfTheDayImageToShare!;
+    });
+  }
+  getPrayerBurdenImageAsString(String dt) async {
+    var prayerBurdenImageToShare = await DevotionalItemsRetrieveClass.getPrayerBurdenImage(dt);
+    setState(() {
+      _prayerBurdenImageToShare = prayerBurdenImageToShare!;
+    });
+  }
+
   getBibleInYearAsString(String dt) async {
     var bibleInYearString =
         await DevotionalItemsRetrieveClass.getBibleInYear(dt);
@@ -296,5 +334,72 @@ class _HomeViewState extends State<HomeView> {
         });
       }
     }
+  }
+
+
+
+}
+
+Widget buildSkeleton() {
+  return Column(
+    children: [
+      IntrinsicHeight(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: const [
+            Expanded(child: ClipCardSkeleton(height: 60, width: 60)),
+            Expanded(child: ClipCardSkeleton(height: 60, width: 60)),
+            Expanded(child: ClipCardSkeleton(height: 60, width: 60)),
+          ],
+        ),
+      ),
+      const SizedBox(height: 15),
+      const ClipCardSkeleton(height: 150, width: 420),
+      const SizedBox(height: 15),
+      const ClipCardSkeleton(height: 250, width: 420),
+      const SizedBox(height: 10),
+      Center(child: const ClipCardSkeleton(height: 20, width: 150)),
+      const SizedBox(height: 15),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: const [
+          ClipCardSkeleton(height: 20, width: 70),
+          ClipCardSkeleton(height: 15, width: 50),
+        ],
+      ),
+      const SizedBox(height: 10),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: const [
+          ClipCardSkeleton(height: 100, width: 120),
+          ClipCardSkeleton(height: 100, width: 120),
+          ClipCardSkeleton(height: 100, width: 120),
+        ],
+      ),
+      const SizedBox(height: 7),
+    ],
+  );
+}
+
+class ClipCardSkeleton extends StatelessWidget {
+  const ClipCardSkeleton({Key? key, this.height, this.width}) : super(key: key);
+
+  final double? height, width;
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[400]!,
+      highlightColor: Colors.grey[200]!,
+      child: Container(
+        height: height,
+        width: width,
+        padding: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: Colors.grey[200],
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+        ),
+      ),
+    );
   }
 }

@@ -21,6 +21,9 @@ class Devotional {
   String image;
   String prayerBurden;
   String thoughtOfTheDay;
+  String memoryVerseImageToShare;
+  String thoughtOfTheDayImageToShare;
+  String prayerBurdenImageToShare;
 
 
   Devotional({
@@ -35,7 +38,11 @@ class Devotional {
     required this.bibleInAYear,
     required this.image,
     required this.prayerBurden,
-    required this.thoughtOfTheDay
+    required this.thoughtOfTheDay,
+    required this.memoryVerseImageToShare,
+    required this.thoughtOfTheDayImageToShare,
+    required this.prayerBurdenImageToShare
+
   });
 
   Map<String, dynamic> toMap() {
@@ -52,13 +59,17 @@ class Devotional {
       'image': image,
       'prayerBurden': prayerBurden,
       'thoughtOfTheDay': thoughtOfTheDay,
+      'memoryVerseImageToShare': memoryVerseImageToShare,
+      'thoughtOfTheDayImageToShare': thoughtOfTheDayImageToShare,
+      'prayerBurdenImageToShare': prayerBurdenImageToShare,
+
     };
   }
 
 
   @override
   String toString() {
-    return 'DevotionalModel{int: $id, date: $date, translation: $translation, title: $title, memoryVerse: $memoryVerse, memoryVersePassage: $memoryVersePassage, fullPassage: $fullPassage, fullText: $fullText, bibleInAYear: $bibleInAYear, image: $image, prayerBurden: $prayerBurden, thoughtOfTheDay: $thoughtOfTheDay}';
+    return 'DevotionalModel{int: $id, date: $date, translation: $translation, title: $title, memoryVerse: $memoryVerse, memoryVersePassage: $memoryVersePassage, fullPassage: $fullPassage, fullText: $fullText, bibleInAYear: $bibleInAYear, image: $image, prayerBurden: $prayerBurden, thoughtOfTheDay: $thoughtOfTheDay, memoryVerseImageToShare: $memoryVerseImageToShare, thoughtOfTheDayImageToShare: $thoughtOfTheDayImageToShare, prayerBurdenImageToShare: $prayerBurdenImageToShare,}';
   }
 
 
@@ -74,5 +85,8 @@ class Devotional {
     image : json['image']?? '',
     prayerBurden : json['prayerBurden']?? '',
     thoughtOfTheDay : json['thoughtOfTheDay']?? '',
+    memoryVerseImageToShare : json['memoryVerseImageToShare']?? '',
+    thoughtOfTheDayImageToShare : json['thoughtOfTheDayImageToShare']?? '',
+    prayerBurdenImageToShare : json['prayerBurdenImageToShare']?? '',
   );
 }

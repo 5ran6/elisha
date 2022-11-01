@@ -27,6 +27,8 @@ class _DevotionalPageState extends State<DevotionalPage> {
   var _thoughtOfTheDay = '';
   var _fullPassage = '';
   var _bibleInAYear = '';
+  var _thoughtOfTheDayImageToShare = '';
+  var _prayerBurdenImageToShare = '';
 
   @override
   void initState() {
@@ -38,6 +40,8 @@ class _DevotionalPageState extends State<DevotionalPage> {
     getTodayThoughtOfTheDayAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
     getTodayFullPassageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
     getBibleInYearAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+    getThoughtOfTheDayImageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+    getPrayerBurdenImageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
   }
 
   @override
@@ -271,14 +275,14 @@ class _DevotionalPageState extends State<DevotionalPage> {
                           break;
                         case 2:
                           Navigator.of(context).push(PageTransition(
-                              child: FullPrayerPage(prayer: _prayerBurden),
+                              child: FullPrayerPage(prayer: _prayerBurden, prayerBurdenImage: _prayerBurdenImageToShare),
                               type: PageTransitionType.scale,
                               alignment: Alignment.center,
                               duration: const Duration(milliseconds: 600)));
                           break;
                         case 3:
                           Navigator.of(context).push(PageTransition(
-                              child: FullThoughtOfTheDayPage(thoughtOfTheDay: _thoughtOfTheDay),
+                              child: FullThoughtOfTheDayPage(thoughtOfTheDay: _thoughtOfTheDay, thoughtOfTheDayImage: _thoughtOfTheDayImageToShare),
                               type: PageTransitionType.scale,
                               alignment: Alignment.center,
                               duration: const Duration(milliseconds: 600)));
@@ -359,4 +363,18 @@ class _DevotionalPageState extends State<DevotionalPage> {
       _thoughtOfTheDay = thoughtOfTheDay!;
     });
   }
+
+  getThoughtOfTheDayImageAsString(String dt) async {
+    var thoughtOfTheDayImageToShare = await DevotionalItemsRetrieveClass.getThoughtOfTheDayImage(dt);
+    setState(() {
+      _thoughtOfTheDayImageToShare = thoughtOfTheDayImageToShare!;
+    });
+  }
+  getPrayerBurdenImageAsString(String dt) async {
+    var prayerBurdenImageToShare = await DevotionalItemsRetrieveClass.getPrayerBurdenImage(dt);
+    setState(() {
+      _prayerBurdenImageToShare = prayerBurdenImageToShare!;
+    });
+  }
+
 }

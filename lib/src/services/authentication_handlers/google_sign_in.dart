@@ -78,7 +78,7 @@ void sendNoteGetRequestAndSaveNotesToDB() async {
 
   final idToken = await user?.getIdToken();
   var dio1 = Dio();
-  final response = await dio1.get('https://secret-place.herokuapp.com/api-secured/users/notes',
+  final response = await dio1.get('https://api.cpai-secretplace.com/api-secured/users/notes',
       options: Options(
           responseType: ResponseType.json,
           headers: {"Authorization": "Bearer $idToken"},
@@ -86,18 +86,12 @@ void sendNoteGetRequestAndSaveNotesToDB() async {
           validateStatus: (status) => true));
 
   var json = response.data;
+  print('josn..................');
+  print(json);
+  print(response.statusCode);
   List<Note> notesFromServer = noteFromJson(json);
   DevotionalDBHelper.instance.insertNoteListFromApiIntoDB(notesFromServer);
 
-  // final response = await http.get(Uri.parse("https://secret-place.herokuapp.com/api-secured/users/notes"), headers: {
-  //   'Content-Type': 'application/json',
-  //   'Accept': 'application/json',
-  //   'Authorization': 'Bearer $idToken',
-  // });
+  print(notesFromServer);
 
-  // final body = json.decode(response.body);
-
-  // List<Note> notesFromServer = noteFromJson(body);
-  // print(notesFromServer);
-  // DevotionalDBHelper.instance.insertNoteListFromApiIntoDB(notesFromServer);
 }

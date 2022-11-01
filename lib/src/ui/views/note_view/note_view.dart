@@ -11,11 +11,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:uuid/uuid.dart';
 import '../../../models/note.dart';
 import '../notes_list_view/notes_list_view.dart';
 
 class DevotionalNotePage extends StatefulWidget {
-  const DevotionalNotePage({Key? key}) : super(key: key);
+  const DevotionalNotePage({Key? key, this.noteId}) : super(key: key);
+  final String? noteId;
 
   @override
   _DevotionalNotePageState createState() => _DevotionalNotePageState();
@@ -28,35 +30,36 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
   var noteWidget = TextEditingController();
   var noteTitleWidget = TextEditingController();
   String newWords = "";
+  var uniqueNoteId = Uuid();
 
-  Future<void> getNoteTileAndContent() async {
-    final prefs = await SharedPreferences.getInstance();
-
-    final String? storedTitle = prefs.getString('titleKey');
-    final String? storedNote = prefs.getString('noteKey');
-    final String? storedClear = prefs.getString('clearKey');
-    final String? storedDateNavBar = prefs.getString('dateNavBarKey');
-    final String? storedDateSave = prefs.getString('dateSaveKey');
-
-    if (storedTitle != null || storedDateNavBar == storedDateSave) {
-      setState(() {
-        noteTitleWidget.text = storedTitle!;
-      });
-    } else {
-      noteTitleWidget.clear();
-    }
-    if (storedNote != null || storedDateNavBar == storedDateSave) {
-      setState(() {
-        noteWidget.text = storedNote!;
-      });
-    } else {
-      noteWidget.clear();
-    }
-  }
+  // Future<void> getNoteTileAndContent() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //
+  //   final String? storedTitle = prefs.getString('titleKey');
+  //   final String? storedNote = prefs.getString('noteKey');
+  //   final String? storedClear = prefs.getString('clearKey');
+  //   final String? storedDateNavBar = prefs.getString('dateNavBarKey');
+  //   final String? storedDateSave = prefs.getString('dateSaveKey');
+  //
+  //   if (storedTitle != null || storedDateNavBar == storedDateSave) {
+  //     setState(() {
+  //       noteTitleWidget.text = storedTitle!;
+  //     });
+  //   } else {
+  //     noteTitleWidget.clear();
+  //   }
+  //   if (storedNote != null || storedDateNavBar == storedDateSave) {
+  //     setState(() {
+  //       noteWidget.text = storedNote!;
+  //     });
+  //   } else {
+  //     noteWidget.clear();
+  //   }
+  // }
 
   @override
   void initState() {
-    getNoteTileAndContent();
+    //getNoteTileAndContent();
     super.initState();
     _speech = SpeechToText();
   }
@@ -79,13 +82,13 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                     padding: const EdgeInsets.all(8.0),
                     child: Text('Note', style: Theme.of(context).textTheme.headline3),
                   ),
-                  Align(
-                      alignment: Alignment.centerRight,
-                      child: IconButton(
-                          onPressed: () {
-                            CantonMethods.viewTransition(context, const NotesListView());
-                          },
-                          icon: Icon(Icons.notes)))
+                  // Align(
+                  //     alignment: Alignment.centerRight,
+                  //     child: IconButton(
+                  //         onPressed: () {
+                  //           CantonMethods.viewTransition(context, const NotesListView());
+                  //         },
+                  //         icon: Icon(Icons.notes)))
                 ]),
               ),
               Align(
@@ -179,20 +182,37 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                     await _prefs.setString('clearKey', 'clearNoteTitleAndReview');
                     await _prefs.setString('dateSaveKey', todayDt);
 
-                    Note note = Note(title: noteTitleWidget.text, writeUp: noteWidget.text, date: todayDt);
+                    Note newNote = Note(title: noteTitleWidget.text, writeUp: noteWidget.text, date: todayDt, id: uniqueNoteId.v1());
+                    Note oldNote = Note(title: noteTitleWidget.text, writeUp: noteWidget.text, date: todayDt, id: widget.noteId);
+                    // DevotionalDBHelper.instance.insertNote(note);
+                    //   if (user != null) {
+                    //     sendNotePostRequest(note);
+                    //   }
 
-                    List<Note> notes = await DevotionalDBHelper.instance.getNotewithDate(todayDt);
-                    if (notes.isNotEmpty) {
-                      DevotionalDBHelper.instance.updateNote(note);
+                    if (widget.noteId != null) {
+                      DevotionalDBHelper.instance.updateNote(oldNote);
                       if (user != null) {
-                        sendNotePutRequest(note);
+                        sendNotePutRequest(oldNote);
                       }
                     } else {
-                      DevotionalDBHelper.instance.insertNote(note);
-                      if (user != null) {
-                        sendNotePostRequest(note);
-                      }
+                      DevotionalDBHelper.instance.insertNote(newNote);
+                        if (user != null) {
+                          sendNotePostRequest(newNote);
+                        }
                     }
+
+                    // List<Note> notes = await DevotionalDBHelper.instance.getNoteWithNoteId(widget.noteId);
+                    // if (notes.isNotEmpty) {
+                    //   DevotionalDBHelper.instance.updateNote(note);
+                    //   if (user != null) {
+                    //     sendNotePutRequest(note);
+                    //   }
+                    // } else {
+                    //   DevotionalDBHelper.instance.insertNote(note);
+                    //   if (user != null) {
+                    //     sendNotePostRequest(note);
+                    //   }
+                    // }
 
                     Fluttertoast.showToast(
                         msg: "Note Saved", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
@@ -234,6 +254,7 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
         body: jsonEncode(note));
 
     print(response.body);
+    print(response.statusCode);
   }
 
   void sendNotePutRequest(Note note) async {
@@ -247,6 +268,9 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
           'Authorization': 'Bearer $idToken',
         },
         body: jsonEncode(note));
+
+    print(response.body);
+    print(response.statusCode);
   }
 
   void _listen() async {

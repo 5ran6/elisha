@@ -91,6 +91,36 @@ class DevotionalItemsRetrieveClass {
     }
     return null;
   }
+  static Future<String?> getMemoryVerseImage(String todayDate) async {
+    List<Devotional> devs = await DevotionalDBHelper.instance
+        .getDevotionalsDB();
+    for (int i = 0; i < devs.length; i++) {
+      if (devs[i].date == todayDate) {
+        return devs[i].memoryVerseImageToShare;
+      }
+    }
+    return null;
+  }
+  static Future<String?> getThoughtOfTheDayImage(String todayDate) async {
+    List<Devotional> devs = await DevotionalDBHelper.instance
+        .getDevotionalsDB();
+    for (int i = 0; i < devs.length; i++) {
+      if (devs[i].date == todayDate) {
+        return devs[i].thoughtOfTheDayImageToShare;
+      }
+    }
+    return null;
+  }
+  static Future<String?> getPrayerBurdenImage(String todayDate) async {
+    List<Devotional> devs = await DevotionalDBHelper.instance
+        .getDevotionalsDB();
+    for (int i = 0; i < devs.length; i++) {
+      if (devs[i].date == todayDate) {
+        return devs[i].prayerBurdenImageToShare;
+      }
+    }
+    return null;
+  }
 
   static Future<String?> getBibleInYear(String todayDate) async {
     List<Devotional> devs = await DevotionalDBHelper.instance

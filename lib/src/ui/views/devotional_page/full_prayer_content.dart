@@ -1,9 +1,43 @@
+import 'dart:io';
+
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:http/http.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 class FullPrayerPage extends StatelessWidget {
   final String prayer;
-  const FullPrayerPage({required this.prayer});
+  final String prayerBurdenImage;
+  const FullPrayerPage({required this.prayer, required this.prayerBurdenImage});
+
+  Future saveAndShareImage(String prayerBurdenImageUrl, String linkToPlayStore, String linkToAppleStore) async {
+
+    //final RenderBox box = context.findRenderObject();
+    if (Platform.isAndroid) {
+      var response = await get(Uri.parse(prayerBurdenImageUrl));
+      final documentDirectory = (await getExternalStorageDirectory())?.path;
+      File imgFile = File('$documentDirectory/flutter.png');
+      imgFile.writeAsBytesSync(response.bodyBytes);
+
+      await Share.shareFiles(['$documentDirectory/flutter.png'],
+        subject: 'Secret Place',
+        text: 'Get Secret Place, PlayStore: $linkToPlayStore, AppleStore: $linkToAppleStore',
+      );
+    } else {
+      //Share.share(verseOfDay);
+      var response = await get(Uri.parse(prayerBurdenImageUrl));
+      final documentDirectory = (await getExternalStorageDirectory())?.path;
+      File imgFile = File('$documentDirectory/flutter.png');
+      imgFile.writeAsBytesSync(response.bodyBytes);
+
+      await Share.shareFiles(['$documentDirectory/flutter.png'],
+        subject: 'Secret Place',
+        text: 'Get Secret Place, Playstore: $linkToPlayStore, AppleStore: $linkToAppleStore',
+      );
+    }
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +64,14 @@ class FullPrayerPage extends StatelessWidget {
                   icon: const Icon(Icons.share, color: Colors.black),
                   onPressed: () async {
                     const playStoreUrl =
-                        'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
+                        'https://cpaisecretplacedevotional.page.link/app';
                     const appleStoreUrl =
                         'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
 
-                    await Share.share(
-                        "$prayer\n\nGet Secret Place App:\nPlayStore: $playStoreUrl\n AppleStore: $appleStoreUrl");
+                    // await Share.share(
+                    //     "$prayer\n\nGet Secret Place App:\nPlayStore: $playStoreUrl\n AppleStore: $appleStoreUrl");
+
+                    saveAndShareImage(prayerBurdenImage, playStoreUrl, appleStoreUrl);
                   },
                 ),
               ),

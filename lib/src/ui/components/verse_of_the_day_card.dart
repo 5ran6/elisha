@@ -1,18 +1,49 @@
+import 'dart:io';
+
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/models/verse.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:http/http.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../models/devotional.dart';
 import '../../services/devotionalDB_helper.dart';
 
 class VerseOfTheDayCard extends StatelessWidget {
-  //const VerseOfTheDayCard({required this.verse, Key? key}) : super(key: key);
-//final Verse verse;
   final String verse;
   final String versePassage;
-  const VerseOfTheDayCard({required this.verse, required this.versePassage});
+  final String memoryVerseImageUrl;
+  const VerseOfTheDayCard({required this.verse, required this.versePassage, required this.memoryVerseImageUrl});
+
+  Future saveAndShareImage(String memoryVerseImage, String linkToPlayStore, String linkToAppleStore, String verseOfDay) async {
+
+    //final RenderBox box = context.findRenderObject();
+    if (Platform.isAndroid) {
+      var response = await get(Uri.parse(memoryVerseImage));
+      final documentDirectory = (await getExternalStorageDirectory())?.path;
+      File imgFile = File('$documentDirectory/flutter.png');
+      imgFile.writeAsBytesSync(response.bodyBytes);
+
+      await Share.shareFiles(['$documentDirectory/flutter.png'],
+        subject: 'Secret Place',
+        text: 'Get Secret Place, Playstore: $linkToPlayStore, AppleStore: $linkToAppleStore',
+      );
+    } else {
+      //Share.share(verseOfDay);
+      var response = await get(Uri.parse(memoryVerseImage));
+      final documentDirectory = (await getExternalStorageDirectory())?.path;
+      File imgFile = File('$documentDirectory/flutter.png');
+      imgFile.writeAsBytesSync(response.bodyBytes);
+
+      await Share.shareFiles(['$documentDirectory/flutter.png'],
+        subject: 'Secret Place',
+        text: 'Get Secret Place, Playstore: $linkToPlayStore, AppleStore: $linkToAppleStore',
+      );
+    }
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,11 +102,14 @@ class VerseOfTheDayCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: () async {
-        const playStoreUrl = 'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
+        const playStoreUrl = 'https://cpaisecretplacedevotional.page.link/app';
         const appleStoreUrl = 'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
+        String verseOfDay = "$verse\n$versePassage\n\nGet Secret Place App:\nPlayStore: $playStoreUrl\n AppleStore: $appleStoreUrl";
 
-        await Share.share(
-            "$verse\n$versePassage\n\nGet Secret Place App:\nPlayStore: $playStoreUrl\n AppleStore: $appleStoreUrl");
+        // await Share.share(
+        //     "$verse\n$versePassage\n\nGet Secret Place App:\nPlayStore: $playStoreUrl\n AppleStore: $appleStoreUrl");
+
+          saveAndShareImage(memoryVerseImageUrl, playStoreUrl, appleStoreUrl, verseOfDay);
       },
       child: Container(
         height: 35,
