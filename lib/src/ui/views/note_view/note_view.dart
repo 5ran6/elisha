@@ -254,6 +254,7 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
         body: jsonEncode(note));
 
     print(response.body);
+    print(response.statusCode);
   }
 
   void sendNotePutRequest(Note note) async {
@@ -267,6 +268,9 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
           'Authorization': 'Bearer $idToken',
         },
         body: jsonEncode(note));
+
+    print(response.body);
+    print(response.statusCode);
   }
 
   void _listen() async {

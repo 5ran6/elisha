@@ -59,6 +59,9 @@ class _HomeViewState extends State<HomeView> {
   var _prayerBurden = '';
   var _thoughtOfTheDay = '';
   var _bibleInAYear = '';
+  var _memoryVerseImageToShare = '';
+  var _thoughtOfTheDayImageToShare = '';
+  var _prayerBurdenImageToShare = '';
   bool _isBookmarked = false;
 
   var _devPlansList = List<DevotionalPlan>.empty();
@@ -131,6 +134,9 @@ class _HomeViewState extends State<HomeView> {
     getTodayThoughtAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
     getImageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
     getBibleInYearAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+    getMemoryVerseImageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+    getThoughtOfTheDayImageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+    getPrayerBurdenImageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
 
     cacheStudyPlans();
     getStudyPlansFromDB();
@@ -162,7 +168,7 @@ class _HomeViewState extends State<HomeView> {
       children: [
         const StreaksCard(),
         const SizedBox(height: 15),
-        VerseOfTheDayCard(verse: _verse, versePassage: _versePassage, devImageUrl: _image),
+        VerseOfTheDayCard(verse: _verse, versePassage: _versePassage, memoryVerseImageUrl: _memoryVerseImageToShare),
         const SizedBox(height: 15),
         DevotionalTodayCard(
             title: _title,
@@ -175,7 +181,11 @@ class _HomeViewState extends State<HomeView> {
             isBookmarked: _isBookmarked,
             memoryVersePassage: _versePassage,
             memoryVerse: _verse,
-            bibleInAYear: _bibleInAYear),
+            bibleInAYear: _bibleInAYear,
+          memoryVerseImage: _memoryVerseImageToShare,
+          thoughtOfTheDayImage: _thoughtOfTheDayImageToShare,
+          prayerBurdenImage: _prayerBurdenImageToShare,
+        ),
         const SizedBox(height: 15),
         SelectedStudyPlansListview(devPlansFromDB: _devPlansListFromDB),
         const SizedBox(height: 5),
@@ -239,6 +249,25 @@ class _HomeViewState extends State<HomeView> {
     var image = await DevotionalItemsRetrieveClass.getImage(dt);
     setState(() {
       _image = image!;
+    });
+  }
+
+  getMemoryVerseImageAsString(String dt) async {
+    var memoryVerseImageToShare = await DevotionalItemsRetrieveClass.getMemoryVerseImage(dt);
+    setState(() {
+      _memoryVerseImageToShare = memoryVerseImageToShare!;
+    });
+  }
+  getThoughtOfTheDayImageAsString(String dt) async {
+    var thoughtOfTheDayImageToShare = await DevotionalItemsRetrieveClass.getThoughtOfTheDayImage(dt);
+    setState(() {
+      _thoughtOfTheDayImageToShare = thoughtOfTheDayImageToShare!;
+    });
+  }
+  getPrayerBurdenImageAsString(String dt) async {
+    var prayerBurdenImageToShare = await DevotionalItemsRetrieveClass.getPrayerBurdenImage(dt);
+    setState(() {
+      _prayerBurdenImageToShare = prayerBurdenImageToShare!;
     });
   }
 

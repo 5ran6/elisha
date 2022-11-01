@@ -28,6 +28,9 @@ class _DevotionalPageFromPlansState extends State<DevotionalPageFromPlans> {
     String prayerBurden = widget.devotionalFromPlan.prayerBurden;
     String thoughtOfTheDay = widget.devotionalFromPlan.thoughtOfTheDay;
     String bibleInAYear = widget.devotionalFromPlan.bibleInAYear;
+    String prayerBurdenImage = widget.devotionalFromPlan.prayerBurdenImageToShare;
+    String thoughtOfTheDayImage = widget.devotionalFromPlan.thoughtOfTheDayImageToShare;
+
 
     final List<Widget> devotionalCards = [
       Card(
@@ -247,14 +250,14 @@ class _DevotionalPageFromPlansState extends State<DevotionalPageFromPlans> {
                         break;
                       case 2:
                         Navigator.of(context).push(PageTransition(
-                            child: FullPrayerPage(prayer: prayerBurden),
+                            child: FullPrayerPage(prayer: prayerBurden, prayerBurdenImage: prayerBurdenImage),
                             type: PageTransitionType.scale,
                             alignment: Alignment.center,
                             duration: const Duration(milliseconds: 600)));
                         break;
                       case 3:
                         Navigator.of(context).push(PageTransition(
-                            child: FullThoughtOfTheDayPage(thoughtOfTheDay: thoughtOfTheDay),
+                            child: FullThoughtOfTheDayPage(thoughtOfTheDay: thoughtOfTheDay, thoughtOfTheDayImage: thoughtOfTheDayImage,),
                             type: PageTransitionType.scale,
                             alignment: Alignment.center,
                             duration: const Duration(milliseconds: 600)));

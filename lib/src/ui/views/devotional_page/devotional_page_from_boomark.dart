@@ -25,6 +25,8 @@ class _DevotionalPageFromBookmarkState extends State<DevotionalPageFromBookmark>
   var _thoughtOfTheDay = '';
   var _fullPassage='';
   var _bibleInAYear='';
+  var _thoughtOfTheDayImageToShare = '';
+  var _prayerBurdenImageToShare = '';
 
   @override
   void initState() {
@@ -36,6 +38,8 @@ class _DevotionalPageFromBookmarkState extends State<DevotionalPageFromBookmark>
     getTodayThoughtOfTheDayAsString(widget.bookmarkedDevotionalDate);
     getTodayFullPassageAsString(widget.bookmarkedDevotionalDate);
     getBibleInYearAsString(widget.bookmarkedDevotionalDate);
+    getThoughtOfTheDayImageAsString(widget.bookmarkedDevotionalDate);
+    getPrayerBurdenImageAsString(widget.bookmarkedDevotionalDate);
     super.initState();
   }
   @override
@@ -269,7 +273,7 @@ class _DevotionalPageFromBookmarkState extends State<DevotionalPageFromBookmark>
                         break;
                       case 2:
                         Navigator.of(context).push(PageTransition(
-                            child: FullPrayerPage(prayer: _prayerBurden),
+                            child: FullPrayerPage(prayer: _prayerBurden, prayerBurdenImage: _prayerBurdenImageToShare),
                             type: PageTransitionType.scale,
                             alignment: Alignment.center,
                             duration: const Duration(milliseconds: 600)));
@@ -277,7 +281,7 @@ class _DevotionalPageFromBookmarkState extends State<DevotionalPageFromBookmark>
                       case 3:
                         Navigator.of(context).push(PageTransition(
                             child: FullThoughtOfTheDayPage(
-                                thoughtOfTheDay: _thoughtOfTheDay),
+                                thoughtOfTheDay: _thoughtOfTheDay, thoughtOfTheDayImage: _thoughtOfTheDayImageToShare),
                             type: PageTransitionType.scale,
                             alignment: Alignment.center,
                             duration: const Duration(milliseconds: 600)));
@@ -351,6 +355,19 @@ class _DevotionalPageFromBookmarkState extends State<DevotionalPageFromBookmark>
     await DevotionalItemsRetrieveClass.getTodayThoughtOfTheDay(dt);
     setState(() {
       _thoughtOfTheDay = thoughtOfTheDay!;
+    });
+  }
+
+  getThoughtOfTheDayImageAsString(String dt) async {
+    var thoughtOfTheDayImageToShare = await DevotionalItemsRetrieveClass.getThoughtOfTheDayImage(dt);
+    setState(() {
+      _thoughtOfTheDayImageToShare = thoughtOfTheDayImageToShare!;
+    });
+  }
+  getPrayerBurdenImageAsString(String dt) async {
+    var prayerBurdenImageToShare = await DevotionalItemsRetrieveClass.getPrayerBurdenImage(dt);
+    setState(() {
+      _prayerBurdenImageToShare = prayerBurdenImageToShare!;
     });
   }
 }

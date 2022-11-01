@@ -85,7 +85,7 @@ void sendNoteGetRequestAndSaveNotesToDB() async {
 
   final idToken = await user?.getIdToken();
   var dio1 = Dio();
-  final response = await dio1.get('https://secret-place.herokuapp.com/api-secured/users/notes',
+  final response = await dio1.get('https://api.cpai-secretplace.com/api-secured/users/notes',
       options: Options(
           responseType: ResponseType.json,
           headers: {"Authorization": "Bearer $idToken"},

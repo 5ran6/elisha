@@ -19,6 +19,9 @@ class DevotionalTodayCard extends StatefulWidget {
   final String thought;
   final String bibleInAYear;
   late bool isBookmarked;
+  final String memoryVerseImage;
+  final String thoughtOfTheDayImage;
+  final String prayerBurdenImage;
 
   DevotionalTodayCard(
       {Key? key,
@@ -32,7 +35,11 @@ class DevotionalTodayCard extends StatefulWidget {
       required this.isBookmarked,
       required this.memoryVerse,
       required this.memoryVersePassage,
-      required this.bibleInAYear})
+      required this.bibleInAYear,
+        required this.thoughtOfTheDayImage,
+        required this.prayerBurdenImage,
+        required this.memoryVerseImage
+      })
       : super(key: key);
 
   @override
@@ -138,7 +145,11 @@ class _DevotionalTodayCardState extends State<DevotionalTodayCard> {
                                 bibleInAYear: widget.bibleInAYear,
                                 image: widget.image,
                                 prayerBurden: widget.prayer,
-                                thoughtOfTheDay: widget.thought);
+                                thoughtOfTheDay: widget.thought,
+                              memoryVerseImageToShare: widget.memoryVerseImage,
+                              thoughtOfTheDayImageToShare: widget.thoughtOfTheDayImage,
+                              prayerBurdenImageToShare: widget.prayerBurdenImage
+                            );
 
                             await DevotionalDBHelper.instance.insertBookMarkedDevotional(dev);
                             List bms = await DevotionalDBHelper.instance.getBookMarkedDevotionalsFromDB();
@@ -148,7 +159,7 @@ class _DevotionalTodayCardState extends State<DevotionalTodayCard> {
                     icon: const Icon(Icons.share),
                     onPressed: () async {
                       const playStoreUrl =
-                          'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
+                          'https://cpaisecretplacedevotional.page.link/app';
                       const appleStoreUrl =
                           'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
 
