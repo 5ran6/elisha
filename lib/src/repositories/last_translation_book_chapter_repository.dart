@@ -30,7 +30,7 @@ class LastTranslationBookChapterRepository extends StateNotifier<TranslationBook
   LastTranslationBookChapterRepository()
       : super(
           TranslationBookChapter(
-            translationAbb: 'asv',
+            translationAbb: 'kjv',
             translation: 0,
             book: 1,
             chapter: 1,
@@ -76,7 +76,7 @@ class LastTranslationBookChapterRepository extends StateNotifier<TranslationBook
     // box.remove('bible_chapter_translation');
 
     List<String> savedBibleChapterAndTranslation =
-        box.get('bible_chapter_translation', defaultValue: ['0', 'asv', '1', '1']);
+        box.get('bible_chapter_translation', defaultValue: ['0', 'kjv', '1', '1']);
 
     var savedList = savedBibleChapterAndTranslation.map((element) => element.toString()).toList();
 

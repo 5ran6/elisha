@@ -85,7 +85,6 @@ class _BibleViewState extends State<BibleView> {
           },
           loading: () => Container(),
           data: (translations) {
-            translations.sort((a, b) => a.id!.compareTo(b.id!));
             return booksRepo.when(
               error: (e, s) {
                 if (e is Exceptions) {
@@ -311,11 +310,11 @@ class _BibleViewState extends State<BibleView> {
           ),
           const SizedBox(width: 2),
           GestureDetector(
-            onTap: () async {
-              HapticFeedback.lightImpact();
-
-              await _showTranslationsBottomSheet(translations);
-            },
+            // onTap: () async {
+            //   HapticFeedback.lightImpact();
+            //
+            //   await _showTranslationsBottomSheet(translations);
+            // },
             child: Container(
               padding: const EdgeInsets.all(8.0),
               decoration: ShapeDecoration(
