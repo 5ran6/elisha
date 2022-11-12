@@ -15,7 +15,7 @@ class NotesListView extends StatefulWidget {
   _NotesListViewState createState() => _NotesListViewState();
 }
 
-class _NotesListViewState extends State<NotesListView> {
+class _NotesListViewState extends State<NotesListView> with WidgetsBindingObserver {
   final controller = TextEditingController();
 
   var _noteList = List<Note>.empty();
@@ -30,10 +30,27 @@ class _NotesListViewState extends State<NotesListView> {
 
   @override
   void initState() {
+    print("initState");
     fetchAndUpdateListOfNotes();
-    print('Notes');
-    print(_noteList);
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
+  }
+
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print("AppLifecycleState");
+    if (state == AppLifecycleState.resumed) {
+      print("REsumed");
+      fetchAndUpdateListOfNotes();
+    }
   }
 
   void searchNote(String query) {
