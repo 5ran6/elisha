@@ -17,6 +17,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:dio/dio.dart';
+import 'package:elisha/src/providers/api_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:elisha/src/config/authentication_exceptions.dart';
@@ -25,6 +27,9 @@ import 'package:elisha/src/repositories/local_user_repository.dart';
 import 'package:elisha/src/services/authentication_handlers/apple_sign_in.dart';
 import 'package:elisha/src/services/authentication_handlers/google_sign_in.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+
+import '../../models/note.dart';
+import '../devotionalDB_helper.dart';
 
 class AuthenticationRepository {
   final FirebaseAuth _firebaseAuth;
@@ -46,6 +51,7 @@ class AuthenticationRepository {
       // final localUser = LocalUser(firstName: firstName, lastName: lastName, email: email, birthDate: birthDate);
 
       // await _updateLocalUser(localUser);
+      sendNoteGetRequestAndSaveNotesToDB();
 
       return 'success';
     } catch (e) {
@@ -61,6 +67,7 @@ class AuthenticationRepository {
   Future<String> signInAnonymously() async {
     try {
       await _firebaseAuth.signInAnonymously();
+      sendNoteGetRequestAndSaveNotesToDB();
 
       return 'success';
     } catch (e) {
@@ -139,5 +146,23 @@ class AuthenticationRepository {
       }
       return 'failed';
     }
+  }
+
+  void sendNoteGetRequestAndSaveNotesToDB() async {
+    final user = FirebaseAuth.instance.currentUser;
+
+    final idToken = await user?.getIdToken();
+    var dio1 = Dio();
+    final response = await dio1.get('https://api.cpai-secretplace.com/api-secured/users/notes',
+        options: Options(
+            responseType: ResponseType.json,
+            headers: {"Authorization": "Bearer $idToken"},
+            followRedirects: false,
+            validateStatus: (status) => true));
+
+    var json = response.data;
+    List<Note> notesFromServer = noteFromJson(json);
+    DevotionalDBHelper.instance.insertNoteListFromApiIntoDB(notesFromServer);
+
   }
 }
