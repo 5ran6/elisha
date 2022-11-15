@@ -23,11 +23,20 @@ import 'package:elisha/src/providers/bible_service_provider.dart';
 
 String translationID = '';
 
-final bibleTranslationsProvider = FutureProvider.autoDispose<List<Translation>>((ref) async {
+final bibleTranslationsProvider =
+    FutureProvider.autoDispose<List<Translation>>((ref) async {
   ref.maintainState = true;
 
-  final bibleService = ref.read(bibleServiceProvider);
-  final versions = await bibleService.getTranslations();
+  // final bibleService = ref.read(bibleServiceProvider);
+  // final translations = await bibleService.getTranslations();
 
-  return versions;
+  return [
+    Translation(
+        id: 0,
+        name: "English Standard Version",
+        abbreviation: "ESV",
+        downloadUrl:
+            "https://res.cloudinary.com/dtznarddo/raw/upload/v1663446929/bible_translations/bible_ESV_gfv52g.json",
+        language: "English")
+  ];
 });

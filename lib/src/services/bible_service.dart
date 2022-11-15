@@ -41,7 +41,7 @@ class BibleService {
 
   final Dio _dio;
   final _rootUrl = 'https://secret-place.herokuapp.com/api';
-  final _defaultBibleVersionPath = 'assets/bible_translations/kjv.json';
+  final _defaultBibleVersionPath = 'assets/bible_translations/esv.json';
 
   Future<String> getPathToBibleTranslation(String translationAbbr) async {
     var _path = (await getExternalStorageDirectory())!.path;

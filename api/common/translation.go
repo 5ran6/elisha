@@ -41,7 +41,7 @@ func (t TranslationFactory) GetTable(key string) (table string) {
 	case "nlt":
 		table = "t_nlt"
 	default:
-		table = "t_kjv"
+		table = "t_esv"
 	}
 
 	return
@@ -82,7 +82,7 @@ func (t TranslationFactory) GetIndex(key string) (index string) {
 	case "nlt":
 		index = "nlt"
 	default:
-		index = "kjv"
+		index = "esv"
 	}
 
 	return
