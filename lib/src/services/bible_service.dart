@@ -16,7 +16,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:elisha/src/providers/bible_translations_provider.dart';
@@ -29,7 +28,7 @@ import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:reference_parser/reference_parser.dart'
-    as bible_reference_parser;
+as bible_reference_parser;
 
 import 'package:elisha/src/config/exceptions.dart';
 import 'package:elisha/src/models/book.dart';
@@ -51,16 +50,7 @@ class BibleService {
 
   Future<String> getBibleTranslationIfAvailableOrDefault(
       String translationAbbr) async {
-    String _localPath = await getPathToBibleTranslation(translationAbbr);
-    print("_localPath");
-    print(_localPath);
-    final savedJSON = File(_localPath);
-    final bibleTranslationExists = await savedJSON.exists();
-    print("bibleTranslationExists");
-    print(bibleTranslationExists);
-    return bibleTranslationExists
-        ? await savedJSON.readAsString()
-        : await rootBundle.loadString(_defaultBibleVersionPath);
+    return await rootBundle.loadString(_defaultBibleVersionPath);
   }
 
   Future<List<Translation>> getTranslations() async {
@@ -72,8 +62,6 @@ class BibleService {
       final List<Translation> translations = results
           .map((translation) => Translation.fromMap(translation))
           .toList(growable: false);
-      print('translations list');
-      print(translations);
       return translations;
     } on DioError catch (e) {
       await FirebaseCrashlytics.instance.recordError(e, e.stackTrace);
@@ -83,7 +71,7 @@ class BibleService {
 
   Future<List<Book>> readJsonBibleBooks() async {
     final String response =
-        await rootBundle.loadString(_defaultBibleVersionPath);
+    await rootBundle.loadString(_defaultBibleVersionPath);
     final data = await json.decode(response) as List<dynamic>;
     return data.map((book) {
       return Book.fromJson(json.encode(book));
@@ -93,7 +81,7 @@ class BibleService {
   Future<Map<String, dynamic>> readJsonBibleChapter(
       bookID, chapterID, translationAbbr) async {
     final String response =
-        await getBibleTranslationIfAvailableOrDefault(translationAbbr);
+    await getBibleTranslationIfAvailableOrDefault(translationAbbr);
     print("json bible response");
     print(response);
     final data = await json.decode(response) as List<dynamic>;
@@ -103,7 +91,7 @@ class BibleService {
 
   Future<List<Map<String, dynamic>>> readJsonBibleChapters(bookID) async {
     final String response =
-        await rootBundle.loadString(_defaultBibleVersionPath);
+    await rootBundle.loadString(_defaultBibleVersionPath);
     final data = await json.decode(response) as List<dynamic>;
     final book = data[int.parse(bookID!) - 1] as Map<String, dynamic>;
     return book['chapters'] as List<Map<String, dynamic>>;
@@ -140,7 +128,7 @@ class BibleService {
       print(translationID);
 
       final chapterFromJSON =
-          await readJsonBibleChapter(bookID, chapterID, translationAbbr);
+      await readJsonBibleChapter(bookID, chapterID, translationAbbr);
 
       final versesList = chapterFromJSON['verses'] as List<dynamic>;
 
