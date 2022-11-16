@@ -246,7 +246,7 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                       width: MediaQuery.of(context).size.width - 40,
                       height: 50,
                       decoration: BoxDecoration(
-                          color: Colors.black,
+                          color: Theme.of(context).colorScheme.primary,
                           borderRadius: BorderRadius.circular(15)),
                       child: Align(
                           alignment: Alignment.center,

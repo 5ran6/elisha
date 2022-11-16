@@ -43,8 +43,7 @@ class RemoteAPI {
     var json = response.data;
     return noteFromJson(json);
   }
-  final getUsersNotes =
-  FutureProvider.autoDispose<List<Note>?>((ref) => getUsersNotesFromFirebase());
+
 
 
   static Future<List<Devotional>> getDevotionalsForMonth(monthYearName) async {

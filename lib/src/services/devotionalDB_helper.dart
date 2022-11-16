@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter_riverpod/all.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:uuid/uuid.dart';
 import '../models/devotional.dart';
@@ -206,6 +207,19 @@ class DevotionalDBHelper {
 
     return noteList;
   }
+
+  static Future<List<Note>> getNotesFromDatabaseStaticMethod() async {
+    Database? db = await instance.database;
+
+    var notes = await db!.query("note_table");
+
+    List<Note> noteList =
+    notes.isNotEmpty ? notes.map((e) => Note.fromJson(e)).toList() : [];
+
+    return noteList;
+  }
+
+  final getUsersNotesFromDBProvider = FutureProvider.autoDispose<List<Note>?>((ref) => getNotesFromDatabaseStaticMethod());
 
   Future<dynamic> updateNote(Note note) async {
     Database? db = await instance.database;

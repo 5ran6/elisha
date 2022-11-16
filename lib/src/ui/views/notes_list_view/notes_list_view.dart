@@ -2,10 +2,8 @@ import 'dart:io';
 
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/ui/views/note_view/note_view.dart';
-import 'package:elisha/src/ui/views/note_view/note_view_fromDB.dart';
 
 import '../../../models/note.dart';
-import '../../../providers/api_provider.dart';
 import '../../../services/devotionalDB_helper.dart';
 
 class NotesListView extends StatefulWidget {
@@ -15,7 +13,7 @@ class NotesListView extends StatefulWidget {
   _NotesListViewState createState() => _NotesListViewState();
 }
 
-class _NotesListViewState extends State<NotesListView> with WidgetsBindingObserver {
+class _NotesListViewState extends State<NotesListView> {
   final controller = TextEditingController();
 
   var _noteList = List<Note>.empty();
@@ -32,16 +30,16 @@ class _NotesListViewState extends State<NotesListView> with WidgetsBindingObserv
   void initState() {
     print("initState");
     fetchAndUpdateListOfNotes();
-    WidgetsBinding.instance.addObserver(this);
+    //WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 
 
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   WidgetsBinding.instance.removeObserver(this);
+  //   super.dispose();
+  // }
 
 
   @override
@@ -70,6 +68,8 @@ class _NotesListViewState extends State<NotesListView> with WidgetsBindingObserv
 
   @override
   Widget build(BuildContext context) {
+    //final dbNotes = ref.watch(DevotionalDBHelper.getUsersNotesFromDBProvider);
+
     return CantonScaffold(
       backgroundColor: CantonMethods.alternateCanvasColor(context),
       padding: EdgeInsets.zero,

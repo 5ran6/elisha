@@ -120,7 +120,7 @@ class VerseOfTheDayCard extends StatelessWidget {
         ),
         child: Center(
           child: Icon(
-            FontAwesomeIcons.share,
+            Icons.share,
             size: 19,
             color: heartColor(),
           ),
