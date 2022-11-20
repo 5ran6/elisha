@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import 'dart:io';
 
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:elisha/src/controller/GetXNoteListView.dart';
 import 'package:elisha/src/ui/views/note_view/note_view.dart';
 import 'package:elisha/src/ui/views/notes_list_view/notes_list_view.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -141,7 +142,7 @@ class _CurrentViewState extends State<CurrentView> with WidgetsBindingObserver {
     final _views = <Widget>[
       const HomeView(),
       const BibleView(),
-      const NotesListView(),
+      const GetXNoteList(),
       const ChurchView(),
       const ProfileView(),
     ];
