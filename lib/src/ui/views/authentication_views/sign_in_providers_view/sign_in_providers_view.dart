@@ -29,13 +29,17 @@ import 'package:elisha/src/ui/views/authentication_views/sign_in_providers_view/
 import 'package:elisha/src/ui/views/authentication_views/sign_in_providers_view/components/sign_in_with_google_button.dart';
 
 class SignInProvidersView extends StatelessWidget {
-  const SignInProvidersView(this.toggleView, {Key? key}) : super(key: key);
+  const SignInProvidersView(this.toggleView, this.toggleEmailSignIn, {Key? key})
+      : super(key: key);
 
   final void Function() toggleView;
+  final void Function() toggleEmailSignIn;
 
   @override
   Widget build(BuildContext context) {
-    return CantonScaffold(padding: const EdgeInsets.only(top: 100, left: 27, right: 27), body: _content(context));
+    return CantonScaffold(
+        padding: const EdgeInsets.only(top: 100, left: 27, right: 27),
+        body: _content(context));
   }
 
   Widget _content(BuildContext context) {
@@ -50,16 +54,21 @@ class SignInProvidersView extends StatelessWidget {
           children: [
             const SignInViewHeader(),
             const SizedBox(height: 20),
-            SignInWithEmailButton(toggleView: toggleView),
+            SignInWithEmailButton(toggleView: toggleEmailSignIn),
             const SizedBox(height: buttonSpacing),
             const SignInAnonymouslyButton(),
             const SizedBox(height: buttonSpacing),
             const SignInWithGoogleButton(),
-            Platform.isIOS ? const SizedBox(height: buttonSpacing) : Container(),
+            Platform.isIOS
+                ? const SizedBox(height: buttonSpacing)
+                : Container(),
             Platform.isIOS ? const SignInWithAppleButton() : Container(),
             const SizedBox(height: 15),
             DontHaveAnAccountText(toggleView: toggleView),
-            const Expanded(child: Align(alignment: FractionalOffset.bottomCenter, child: TermsAndPrivacyPolicyText())),
+            const Expanded(
+                child: Align(
+                    alignment: FractionalOffset.bottomCenter,
+                    child: TermsAndPrivacyPolicyText())),
           ],
         ),
       ),

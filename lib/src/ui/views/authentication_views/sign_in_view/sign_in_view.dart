@@ -30,11 +30,13 @@ import 'package:elisha/src/ui/views/authentication_views/components/sign_in_view
 
 //enum to declare 3 state of button
 enum ButtonState { init, requesting, completed }
-class SignInView extends StatefulWidget {
 
-  const SignInView(this.toggleView, {Key? key}) : super(key: key);
+class SignInView extends StatefulWidget {
+  const SignInView(this.toggleView, this.toggleEmailSignIn, {Key? key})
+      : super(key: key);
 
   final void Function() toggleView;
+  final void Function() toggleEmailSignIn;
 
   @override
   _SignInViewState createState() => _SignInViewState();
@@ -48,6 +50,7 @@ class _SignInViewState extends State<SignInView> {
   bool isAnimating = true;
 
   ButtonState state = ButtonState.init;
+
   @override
   Widget build(BuildContext context) {
     return CantonScaffold(
@@ -66,10 +69,11 @@ class _SignInViewState extends State<SignInView> {
         height: MediaQuery.of(context).size.height,
         child: Column(
           children: [
-         //   const SizedBox(height: 20),
+            //   const SizedBox(height: 20),
             Row(
-              children: const [
-                CantonBackButton(isClear: true),
+              children: [
+                CantonBackButton(
+                    isClear: true, onPressed: widget.toggleEmailSignIn),
               ],
             ),
             const SizedBox(height: 50),
@@ -80,7 +84,10 @@ class _SignInViewState extends State<SignInView> {
             _hasError ? _errorText(context, _errorMessage) : Container(),
             isInit ? _signInButton(context) : circularContainer(isDone),
             DontHaveAnAccountText(toggleView: widget.toggleView),
-            const Expanded(child: Align(alignment: FractionalOffset.bottomCenter, child: TermsAndPrivacyPolicyText())),
+            const Expanded(
+                child: Align(
+                    alignment: FractionalOffset.bottomCenter,
+                    child: TermsAndPrivacyPolicyText())),
           ],
         ),
       ),
@@ -95,8 +102,8 @@ class _SignInViewState extends State<SignInView> {
         child: done
             ? const Icon(Icons.done, size: 50, color: Colors.white)
             : const CircularProgressIndicator(
-          color: Colors.white,
-        ),
+                color: Colors.white,
+              ),
       ),
     );
   }
@@ -123,25 +130,24 @@ class _SignInViewState extends State<SignInView> {
             state = ButtonState.requesting;
             isAnimating = !isAnimating;
           });
-          await context
+          var value = await context
               .read(authenticationRepositoryProvider)
               .signInWithEmailAndPassword(
                 email: _emailController.text.trim(),
                 password: _passwordController.text.trim(),
-              )
-              .then((value) {
-            //loading state stop
-            setState(() {
-              state = ButtonState.completed;
-              isAnimating = !isAnimating;
-            });
-            if (value != 'success') {
-              setState(() {
-                _hasError = true;
-                _errorMessage = value;
-              });
-            }
+              );
+
+          //loading state stop
+          setState(() {
+            state = ButtonState.completed;
+            isAnimating = !isAnimating;
           });
+          if (value != 'success') {
+            setState(() {
+              _hasError = true;
+              _errorMessage = value;
+            });
+          }
         },
       ),
     );

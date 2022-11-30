@@ -1,10 +1,8 @@
 import 'dart:async';
 
 import 'package:canton_design_system/canton_design_system.dart';
-import 'package:elisha/src/services/authentication_services/authentication_wrapper.dart';
 import 'package:elisha/src/theme/apptheme.dart';
 import 'package:elisha/src/ui/views/authentication_views/auth_selection_view.dart';
-import 'package:elisha/src/ui/views/current_view.dart';
 import 'package:elisha/src/ui/views/onboarding_view/onboardingScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

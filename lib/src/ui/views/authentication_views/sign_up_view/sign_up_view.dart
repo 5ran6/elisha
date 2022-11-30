@@ -16,31 +16,28 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import 'dart:io';
 
-import 'package:elisha/src/ui/views/authentication_views/sign_in_view/sign_in_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 import 'package:elisha/src/providers/authentication_providers/authentication_repository_provider.dart';
-import 'package:elisha/src/ui/components/terms_and_privacy_policy_text.dart';
 import 'package:elisha/src/ui/views/authentication_views/components/email_text_input.dart';
 import 'package:elisha/src/ui/views/authentication_views/components/password_text_input.dart';
 import 'package:elisha/src/ui/views/authentication_views/components/confirm_password_text_input.dart';
-import 'package:elisha/src/ui/views/authentication_views/sign_up_view/components/birth_date_input.dart';
 import 'package:elisha/src/ui/views/authentication_views/sign_up_view/components/first_name_input.dart';
 import 'package:elisha/src/ui/views/authentication_views/sign_up_view/components/last_name_input.dart';
 import 'package:elisha/src/ui/views/authentication_views/sign_up_view/components/sign_up_view_header.dart';
+
 //enum to declare 3 state of button
 enum ButtonState { init, requesting, completed }
+
 class SignUpView extends StatefulWidget {
   const SignUpView(this.toggleView, {Key? key}) : super(key: key);
 
-  final Function? toggleView;
+  final void Function() toggleView;
 
   @override
   _SignUpViewState createState() => _SignUpViewState();
@@ -58,6 +55,7 @@ class _SignUpViewState extends State<SignUpView> {
   bool isAnimating = true;
 
   ButtonState state = ButtonState.init;
+
   @override
   Widget build(BuildContext context) {
     return CantonScaffold(
@@ -78,8 +76,8 @@ class _SignUpViewState extends State<SignUpView> {
           children: [
             //TODO: not sure why it does not go back
             Row(
-              children: const [
-                CantonBackButton(isClear: true),
+              children: [
+                CantonBackButton(isClear: true, onPressed: widget.toggleView),
               ],
             ),
             const SignUpViewHeader(),
@@ -92,10 +90,11 @@ class _SignUpViewState extends State<SignUpView> {
             ),
             EmailTextInput(emailController: _emailController),
             PasswordTextInput(passwordController: _passwordController),
-            ConfirmPasswordTextInput(confirmPasswordController: _passwordConfirmationController),
+            ConfirmPasswordTextInput(
+                confirmPasswordController: _passwordConfirmationController),
             _hasError ? const SizedBox(height: 15) : Container(),
             _hasError ? _errorText(context, _errorMessage) : Container(),
-            isInit ? _signUpButton(context): circularContainer(isDone),
+            isInit ? _signUpButton(context) : circularContainer(isDone),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -109,7 +108,7 @@ class _SignUpViewState extends State<SignUpView> {
                 GestureDetector(
                   onTap: () {
                     //SignInView(widget.toggleView!());
-                    widget.toggleView!();
+                    widget.toggleView();
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -160,22 +159,23 @@ class _SignUpViewState extends State<SignUpView> {
               _hasError = true;
               _errorMessage = 'Missing fields';
             });
-          }else if ( _passwordController.text !=  _passwordConfirmationController.text){
+          } else if (_passwordController.text !=
+              _passwordConfirmationController.text) {
             setState(() {
               state = ButtonState.completed;
               isAnimating = !isAnimating;
               _hasError = true;
               _errorMessage = 'Password Mismatch';
             });
-          }
-          else {
-            var res = await context.read(authenticationRepositoryProvider).signUp(
-                  context: context,
-                  email: _emailController.text.trim(),
-                  password: _passwordController.text.trim(),
-                  firstName: _firstNameController.text.trim(),
-                  lastName: _lastNameController.text.trim(),
-                );
+          } else {
+            var res =
+                await context.read(authenticationRepositoryProvider).signUp(
+                      context: context,
+                      email: _emailController.text.trim(),
+                      password: _passwordController.text.trim(),
+                      firstName: _firstNameController.text.trim(),
+                      lastName: _lastNameController.text.trim(),
+                    );
             setState(() {
               state = ButtonState.completed;
               isAnimating = !isAnimating;
@@ -192,7 +192,6 @@ class _SignUpViewState extends State<SignUpView> {
     );
   }
 
-
   Widget circularContainer(bool done) {
     final color = done ? Colors.green : Colors.blue;
     return Container(
@@ -201,12 +200,11 @@ class _SignUpViewState extends State<SignUpView> {
         child: done
             ? const Icon(Icons.done, size: 50, color: Colors.white)
             : const CircularProgressIndicator(
-          color: Colors.white,
-        ),
+                color: Colors.white,
+              ),
       ),
     );
   }
-
 
   Widget _errorText(BuildContext context, String error) {
     return Text(
@@ -217,97 +215,97 @@ class _SignUpViewState extends State<SignUpView> {
     );
   }
 
-  // Future<void> _showBirthDatePicker() async {
-  //   final initialDate = DateTime.now();
-  //   final maximumYear = DateTime.now().year;
-  //   final firstDate = DateTime(1900);
-  //   final lastDate = DateTime.now();
+// Future<void> _showBirthDatePicker() async {
+//   final initialDate = DateTime.now();
+//   final maximumYear = DateTime.now().year;
+//   final firstDate = DateTime(1900);
+//   final lastDate = DateTime.now();
 
-  //   return showModalBottomSheet(
-  //     context: context,
-  //     isScrollControlled: true,
-  //     elevation: 0,
-  //     useRootNavigator: true,
-  //     builder: (context) {
-  //       return FractionallySizedBox(
-  //         heightFactor: 0.40,
-  //         child: Column(
-  //           crossAxisAlignment: CrossAxisAlignment.center,
-  //           mainAxisSize: MainAxisSize.min,
-  //           children: [
-  //             Container(
-  //               padding: const EdgeInsets.only(top: 15, left: 27, right: 27),
-  //               child: Container(
-  //                 height: 5,
-  //                 width: 50,
-  //                 decoration: BoxDecoration(
-  //                   borderRadius: BorderRadius.circular(25),
-  //                   color: Theme.of(context).colorScheme.secondary,
-  //                 ),
-  //               ),
-  //             ),
-  //             Container(
-  //               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 27),
-  //               child: Text(
-  //                 'Select Your Birthday',
-  //                 style: Theme.of(context).textTheme.headline5,
-  //               ),
-  //             ),
-  //             const Divider(),
-  //             SizedBox(
-  //               height: 200,
-  //               child: Platform.isIOS
-  //                   ? CupertinoTheme(
-  //                       data: CupertinoThemeData(
-  //                         brightness: MediaQuery.of(context).platformBrightness,
-  //                       ),
-  //                       child: CupertinoDatePicker(
-  //                         mode: CupertinoDatePickerMode.date,
-  //                         initialDateTime: initialDate,
-  //                         minimumDate: firstDate,
-  //                         minimumYear: firstDate.year,
-  //                         maximumDate: initialDate,
-  //                         maximumYear: maximumYear,
-  //                         onDateTimeChanged: (date) {
-  //                           _birthDateController = date;
-  //                           setState(() {
-  //                             birthDateText = DateFormat.yMMMd().format(date);
-  //                           });
-  //                         },
-  //                       ),
-  //                     )
-  //                   : DatePickerDialog(
-  //                       initialDate: initialDate,
-  //                       firstDate: firstDate,
-  //                       lastDate: lastDate,
-  //                       initialCalendarMode: DatePickerMode.day,
-  //                       selectableDayPredicate: (date) {
-  //                         _birthDateController = date;
-  //                         setState(() {
-  //                           birthDateText = DateFormat.yMMMd().format(date);
-  //                         });
-  //                         return true;
-  //                       },
-  //                     ),
-  //             ),
-  //             const SizedBox(height: 20),
-  //             GestureDetector(
-  //               onTap: () {
-  //                 Navigator.pop(context);
-  //               },
-  //               child: Center(
-  //                 child: Text(
-  //                   'Save',
-  //                   style: Theme.of(context).textTheme.headline6?.copyWith(
-  //                         color: Theme.of(context).primaryColor,
-  //                       ),
-  //                 ),
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
+//   return showModalBottomSheet(
+//     context: context,
+//     isScrollControlled: true,
+//     elevation: 0,
+//     useRootNavigator: true,
+//     builder: (context) {
+//       return FractionallySizedBox(
+//         heightFactor: 0.40,
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.center,
+//           mainAxisSize: MainAxisSize.min,
+//           children: [
+//             Container(
+//               padding: const EdgeInsets.only(top: 15, left: 27, right: 27),
+//               child: Container(
+//                 height: 5,
+//                 width: 50,
+//                 decoration: BoxDecoration(
+//                   borderRadius: BorderRadius.circular(25),
+//                   color: Theme.of(context).colorScheme.secondary,
+//                 ),
+//               ),
+//             ),
+//             Container(
+//               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 27),
+//               child: Text(
+//                 'Select Your Birthday',
+//                 style: Theme.of(context).textTheme.headline5,
+//               ),
+//             ),
+//             const Divider(),
+//             SizedBox(
+//               height: 200,
+//               child: Platform.isIOS
+//                   ? CupertinoTheme(
+//                       data: CupertinoThemeData(
+//                         brightness: MediaQuery.of(context).platformBrightness,
+//                       ),
+//                       child: CupertinoDatePicker(
+//                         mode: CupertinoDatePickerMode.date,
+//                         initialDateTime: initialDate,
+//                         minimumDate: firstDate,
+//                         minimumYear: firstDate.year,
+//                         maximumDate: initialDate,
+//                         maximumYear: maximumYear,
+//                         onDateTimeChanged: (date) {
+//                           _birthDateController = date;
+//                           setState(() {
+//                             birthDateText = DateFormat.yMMMd().format(date);
+//                           });
+//                         },
+//                       ),
+//                     )
+//                   : DatePickerDialog(
+//                       initialDate: initialDate,
+//                       firstDate: firstDate,
+//                       lastDate: lastDate,
+//                       initialCalendarMode: DatePickerMode.day,
+//                       selectableDayPredicate: (date) {
+//                         _birthDateController = date;
+//                         setState(() {
+//                           birthDateText = DateFormat.yMMMd().format(date);
+//                         });
+//                         return true;
+//                       },
+//                     ),
+//             ),
+//             const SizedBox(height: 20),
+//             GestureDetector(
+//               onTap: () {
+//                 Navigator.pop(context);
+//               },
+//               child: Center(
+//                 child: Text(
+//                   'Save',
+//                   style: Theme.of(context).textTheme.headline6?.copyWith(
+//                         color: Theme.of(context).primaryColor,
+//                       ),
+//                 ),
+//               ),
+//             ),
+//           ],
+//         ),
+//       );
+//     },
+//   );
+// }
 }

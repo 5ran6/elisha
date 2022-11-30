@@ -21,7 +21,6 @@ import 'package:flutter/services.dart';
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'package:elisha/src/ui/views/authentication_views/sign_in_view/sign_in_view.dart';
 
 class SignInWithEmailButton extends StatelessWidget {
   const SignInWithEmailButton({Key? key, required this.toggleView}) : super(key: key);
@@ -49,7 +48,8 @@ class SignInWithEmailButton extends StatelessWidget {
       ),
       onPressed: () {
         HapticFeedback.lightImpact();
-        CantonMethods.viewTransition(context, SignInView(toggleView));
+        toggleView();
+        // CantonMethods.viewTransition(context, SignInView(toggleView));
       },
     );
   }
