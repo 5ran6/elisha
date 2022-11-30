@@ -1,8 +1,6 @@
 import 'package:canton_design_system/canton_design_system.dart';
-import 'package:elisha/src/services/authentication_services/authentication_wrapper.dart';
 import 'package:elisha/src/theme/apptheme.dart';
 import 'package:elisha/src/ui/views/authentication_views/auth_selection_view.dart';
-import 'package:elisha/src/ui/views/current_view.dart';
 import 'package:elisha/src/ui/views/onboarding_view/widgets/onboardingItem.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';

@@ -92,7 +92,10 @@ class AuthenticationRepository {
       await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
 
-      //final user = FirebaseAuth.instance.currentUser;
+      final user = FirebaseAuth.instance.currentUser!;
+
+      await user.updateDisplayName(firstName + " " + lastName);
+      // await user.updateDisplayName(firstName + " " + lastName);
 
       // if (user != null && !user.emailVerified) {
       //   CantonMethods.viewTransition(context, const VerifyEmailView());

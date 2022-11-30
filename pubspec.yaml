@@ -146,7 +146,7 @@ flutter:
     - assets/images/pray.jpg
     - assets/images/study.jpg
     - assets/images/secret_place_Store_icon.png
-    - assets/bible_translations/kjv.json
+    - assets/bible_translations/esv.json
     - assets/bible_translations/translations.json
     - assets/images/man_kneeling_1.png
     - assets/images/SecretPlace(1024).png
