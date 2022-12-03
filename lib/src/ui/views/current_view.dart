@@ -146,99 +146,102 @@ class _CurrentViewState extends State<CurrentView> with WidgetsBindingObserver {
       const ProfileView(),
     ];
 
-    return CantonScaffold(
-      safeArea: false,
-      bottomNavBar: BottomNavBar(_currentIndex, _onTabTapped),
-      padding: EdgeInsets.zero,
-      backgroundColor: CantonMethods.alternateCanvasColorType2(
-        context,
-        index: _currentIndex,
-        targetIndexes: [1],
-      ),
-      body: IndexedStack(
-        index: _currentIndex,
-        children: [
-          Navigator(
-            key: _homeNavigatorKey,
-            observers: [
-              FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
-            ],
-            onGenerateRoute: (settings) {
-              return MaterialPageRoute(
-                settings: settings,
-                fullscreenDialog: true,
-                builder: (context) => SafeArea(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 17),
-                    child: _views[_currentIndex],
+    return WillPopScope(
+      onWillPop: () => _handleBackButtonPress(context),
+      child: CantonScaffold(
+        safeArea: false,
+        bottomNavBar: BottomNavBar(_currentIndex, _onTabTapped),
+        padding: EdgeInsets.zero,
+        backgroundColor: CantonMethods.alternateCanvasColorType2(
+          context,
+          index: _currentIndex,
+          targetIndexes: [1],
+        ),
+        body: IndexedStack(
+          index: _currentIndex,
+          children: [
+            Navigator(
+              key: _homeNavigatorKey,
+              observers: [
+                FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
+              ],
+              onGenerateRoute: (settings) {
+                return MaterialPageRoute(
+                  settings: settings,
+                  fullscreenDialog: true,
+                  builder: (context) => SafeArea(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 17),
+                      child: _views[_currentIndex],
+                    ),
                   ),
-                ),
-              );
-            },
-          ),
-          Navigator(
-            key: _bibleNavigatorKey,
-            observers: [
-              FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
-            ],
-            onGenerateRoute: (settings) {
-              return MaterialPageRoute(
-                settings: settings,
-                fullscreenDialog: true,
-                builder: (context) => SafeArea(child: _views[_currentIndex]),
-              );
-            },
-          ),
-          Navigator(
-            key: _noteNavigatorKey,
-            observers: [
-              FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
-            ],
-            onGenerateRoute: (settings) {
-              return MaterialPageRoute(
-                settings: settings,
-                fullscreenDialog: true,
-                builder: (context) => SafeArea(child: _views[_currentIndex]),
-              );
-            },
-          ),
-          Navigator(
-            key: _churchNavigatorKey,
-            observers: [
-              FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
-            ],
-            onGenerateRoute: (settings) {
-              return MaterialPageRoute(
-                settings: settings,
-                fullscreenDialog: true,
-                builder: (context) => SafeArea(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 17),
-                    child: _views[_currentIndex],
+                );
+              },
+            ),
+            Navigator(
+              key: _bibleNavigatorKey,
+              observers: [
+                FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
+              ],
+              onGenerateRoute: (settings) {
+                return MaterialPageRoute(
+                  settings: settings,
+                  fullscreenDialog: true,
+                  builder: (context) => SafeArea(child: _views[_currentIndex]),
+                );
+              },
+            ),
+            Navigator(
+              key: _noteNavigatorKey,
+              observers: [
+                FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
+              ],
+              onGenerateRoute: (settings) {
+                return MaterialPageRoute(
+                  settings: settings,
+                  fullscreenDialog: true,
+                  builder: (context) => SafeArea(child: _views[_currentIndex]),
+                );
+              },
+            ),
+            Navigator(
+              key: _churchNavigatorKey,
+              observers: [
+                FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
+              ],
+              onGenerateRoute: (settings) {
+                return MaterialPageRoute(
+                  settings: settings,
+                  fullscreenDialog: true,
+                  builder: (context) => SafeArea(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 17),
+                      child: _views[_currentIndex],
+                    ),
                   ),
-                ),
-              );
-            },
-          ),
-          Navigator(
-            key: _profileNavigatorKey,
-            observers: [
-              FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
-            ],
-            onGenerateRoute: (settings) {
-              return MaterialPageRoute(
-                settings: settings,
-                fullscreenDialog: true,
-                builder: (context) => SafeArea(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 17),
-                    child: _views[_currentIndex],
+                );
+              },
+            ),
+            Navigator(
+              key: _profileNavigatorKey,
+              observers: [
+                FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)
+              ],
+              onGenerateRoute: (settings) {
+                return MaterialPageRoute(
+                  settings: settings,
+                  fullscreenDialog: true,
+                  builder: (context) => SafeArea(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 17),
+                      child: _views[_currentIndex],
+                    ),
                   ),
-                ),
-              );
-            },
-          ),
-        ],
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -311,6 +314,16 @@ class _CurrentViewState extends State<CurrentView> with WidgetsBindingObserver {
         await FlutterDnd.setInterruptionFilter(
             FlutterDnd.INTERRUPTION_FILTER_ALL);
       }
+    }
+  }
+
+  _handleBackButtonPress(BuildContext context) {
+    if (_currentIndex != 0) {
+      setState(() {
+        _currentIndex = 0;
+      });
+    } else {
+      return Future<bool>.value(true);
     }
   }
 }
