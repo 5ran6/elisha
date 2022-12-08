@@ -68,10 +68,10 @@ class FullPrayerPage extends StatelessWidget {
                     const appleStoreUrl =
                         'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
 
-                    // await Share.share(
-                    //     "$prayer\n\nGet Secret Place App:\nPlayStore: $playStoreUrl\n AppleStore: $appleStoreUrl");
+                    await Share.share(
+                        "$prayer\n\nGet Secret Place App:\nPlay/Apple Store: $playStoreUrl");
 
-                    saveAndShareImage(prayerBurdenImage, playStoreUrl, appleStoreUrl);
+                    //saveAndShareImage(prayerBurdenImage, playStoreUrl, appleStoreUrl);
                   },
                 ),
               ),

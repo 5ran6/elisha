@@ -106,10 +106,10 @@ class VerseOfTheDayCard extends StatelessWidget {
         const appleStoreUrl = 'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
         String verseOfDay = "$verse\n$versePassage\n\nGet Secret Place App:\nPlayStore: $playStoreUrl\n AppleStore: $appleStoreUrl";
 
-        // await Share.share(
-        //     "$verse\n$versePassage\n\nGet Secret Place App:\nPlayStore: $playStoreUrl\n AppleStore: $appleStoreUrl");
+        await Share.share(
+            "$verse\n$versePassage\n\nGet Secret Place App:\nPlay/Apple Store: $playStoreUrl");
 
-          saveAndShareImage(memoryVerseImageUrl, playStoreUrl, appleStoreUrl, verseOfDay);
+          //saveAndShareImage(memoryVerseImageUrl, playStoreUrl, appleStoreUrl, verseOfDay);
       },
       child: Container(
         height: 35,

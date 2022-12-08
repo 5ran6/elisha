@@ -87,10 +87,10 @@ class FullThoughtOfTheDayPage extends StatelessWidget {
                       const appleStoreUrl =
                           'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
 
-                      // await Share.share(
-                      //     "$thoughtOfTheDay\n\nGet Secret Place App:\nPlayStore: $playStoreUrl\n AppleStore: $appleStoreUrl");
+                      await Share.share(
+                          "$thoughtOfTheDay\n\nGet Secret Place App:\nPlay/Apple Store: $playStoreUrl");
 
-                      saveAndShareImage(thoughtOfTheDayImage, playStoreUrl, appleStoreUrl);
+                      //saveAndShareImage(thoughtOfTheDayImage, playStoreUrl, appleStoreUrl);
                     },
                   ),
                 ),

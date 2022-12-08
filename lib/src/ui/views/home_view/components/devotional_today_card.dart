@@ -164,7 +164,7 @@ class _DevotionalTodayCardState extends State<DevotionalTodayCard> {
                           'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
 
                       await Share.share(
-                          "Secret Place Devotional\n$formattedDate\nTopic: ${widget.title}\n\nScripture: ${widget.biblePassage}\n\nMemory Verse: ${widget.memoryVerse}\n${widget.memoryVersePassage}\n\n${widget.mainWriteUp}\n\nPrayer: ${widget.prayer}\n\n Thought: ${widget.thought}\n\nGet Secret Place App:\nPlayStore: $playStoreUrl\n AppleStore: $appleStoreUrl");
+                          "Secret Place Devotional\n$formattedDate\nTopic: ${widget.title}\n\nScripture: ${widget.biblePassage}\n\nMemory Verse: ${widget.memoryVerse}\n${widget.memoryVersePassage}\n\n${widget.mainWriteUp}\n\nPrayer: ${widget.prayer}\n\n Thought: ${widget.thought}\n\nGet Secret Place App:\nPlay Or Apple Store: $playStoreUrl");
                     },
                   ),
                 ],
