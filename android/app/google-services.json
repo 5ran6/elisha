@@ -31,6 +31,14 @@
           }
         },
         {
+          "client_id": "208275060327-95o5ii2moped6jbes16projeq06mlout.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cpai.secretplaceandroidversiontwo",
+            "certificate_hash": "5e121c8a30646285f4755578874e1ac4d15c1867"
+          }
+        },
+        {
           "client_id": "208275060327-h5ba5569la897f0abvvne69kiob7i4fj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
