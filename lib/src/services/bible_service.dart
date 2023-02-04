@@ -33,15 +33,11 @@ as bible_reference_parser;
 import 'package:elisha/src/config/exceptions.dart';
 import 'package:elisha/src/models/book.dart';
 import 'package:elisha/src/models/chapter.dart';
-import 'package:elisha/src/models/translation.dart';
 import 'package:elisha/src/models/verse.dart';
 
 class BibleService {
-  BibleService(this._dio);
 
-  final Dio _dio;
-  final _rootUrl = 'https://secret-place.herokuapp.com/api';
-  final _defaultBibleVersionPath = 'assets/bible_translations/esv.json';
+  final _defaultBibleVersionPath = 'assets/esv.json';
 
   Future<String> getPathToBibleTranslation(String translationAbbr) async {
     var _path = (await getExternalStorageDirectory())!.path;
@@ -51,22 +47,6 @@ class BibleService {
   Future<String> getBibleTranslationIfAvailableOrDefault(
       String translationAbbr) async {
     return await rootBundle.loadString(_defaultBibleVersionPath);
-  }
-
-  Future<List<Translation>> getTranslations() async {
-    try {
-      final response = await _dio.get(_rootUrl + '/bible-translations');
-      final results = List<Map<String, dynamic>>.from(
-        response.data,
-      );
-      final List<Translation> translations = results
-          .map((translation) => Translation.fromMap(translation))
-          .toList(growable: false);
-      return translations;
-    } on DioError catch (e) {
-      await FirebaseCrashlytics.instance.recordError(e, e.stackTrace);
-      throw Exceptions.fromDioError(e);
-    }
   }
 
   Future<List<Book>> readJsonBibleBooks() async {
