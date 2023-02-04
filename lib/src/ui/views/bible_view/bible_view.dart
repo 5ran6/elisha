@@ -22,7 +22,6 @@ import 'package:flowder/flowder.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:canton_design_system/canton_design_system.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -40,10 +39,9 @@ import 'package:elisha/src/providers/last_translation_book_chapter_provider.dart
 import 'package:elisha/src/ui/components/error_body.dart';
 import 'package:elisha/src/ui/components/unexpected_error.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 class BibleView extends StatefulWidget {
-  //const BibleView({Key? key}) : super(key: key);
-
   final String? biblePassage;
 
   const BibleView({this.biblePassage});
@@ -70,14 +68,10 @@ class _BibleViewState extends State<BibleView> {
         final translationRepo = watch(bibleTranslationsProvider);
         final booksRepo = watch(bibleBooksProvider);
         final chaptersRepo = watch(bibleChaptersProvider);
-        final themeProvider = ChangeNotifierProvider<ThemeRepository>((ref) {
-          return ThemeRepository();
-        });
-
-        final repo = watch(themeProvider);
 
         return translationRepo.when(
           error: (e, s) {
+            FirebaseCrashlytics.instance.recordError(e, null);
             if (e is Exceptions) {
               return ErrorBody(e.message, bibleTranslationsProvider);
             }
@@ -87,6 +81,7 @@ class _BibleViewState extends State<BibleView> {
           data: (translations) {
             return booksRepo.when(
               error: (e, s) {
+                FirebaseCrashlytics.instance.recordError(e, null);
                 if (e is Exceptions) {
                   return ErrorBody(e.message, bibleBooksProvider);
                 }
@@ -96,6 +91,7 @@ class _BibleViewState extends State<BibleView> {
               data: (books) {
                 return chaptersRepo.when(
                   error: (e, s) {
+                    FirebaseCrashlytics.instance.recordError(e, null);
                     if (e is Exceptions) {
                       return ErrorBody(e.message, bibleChaptersProvider);
                     }
@@ -324,8 +320,12 @@ class _BibleViewState extends State<BibleView> {
                 color: Theme.of(context).inputDecorationTheme.fillColor,
               ),
               child: Text(
-                translations.where((element) => element.abbreviation.toLowerCase() == translationID.toLowerCase()).first
-                        .abbreviation,
+                translations
+                    .where((element) =>
+                        element.abbreviation.toLowerCase() ==
+                        translationID.toLowerCase())
+                    .first
+                    .abbreviation,
                 style: Theme.of(context)
                     .textTheme
                     .bodyText1
@@ -401,7 +401,7 @@ class _BibleViewState extends State<BibleView> {
   }
 
   Future<void> _showBookAndChapterBottomSheet() async {
-    List<Book> books = await BibleService(Dio()).getBooks('');
+    List<Book> books = await BibleService().getBooks('');
 
     Widget _bookCard(Book book) {
       Widget _chapterCard(ChapterId chapter) {
