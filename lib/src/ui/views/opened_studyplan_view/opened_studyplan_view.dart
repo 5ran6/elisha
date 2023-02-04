@@ -1,9 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:canton_design_system/canton_design_system.dart';
-import 'package:elisha/src/models/devotional.dart';
 import 'package:elisha/src/models/devotional_plans.dart';
 import 'package:elisha/src/services/devotionalDB_helper.dart';
-import 'package:elisha/src/ui/views/devotional_page/devotional_page.dart';
 import 'package:elisha/src/ui/views/devotional_page/devotional_page_fromplans.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -12,9 +10,6 @@ import '../../../providers/api_provider.dart';
 
 class OpenedStudyPlanScreen extends StatefulWidget {
   final String devPlanID;
-  // final String devPlanDescription;
-  // final String devPlanImageUrl;
-  // final List<Devotional> devs;
 
   const OpenedStudyPlanScreen({required this.devPlanID});
 
@@ -90,7 +85,7 @@ class _OpenedStudyPlanScreenState extends State<OpenedStudyPlanScreen> {
                       mainAxisSpacing: 8,
                       crossAxisCount: 4,
                       crossAxisSpacing: 8,
-                      itemBuilder: (context, index) => buildDailyPlanCard(index + 1),
+                      itemBuilder: (context, index) => buildDailyPlanCard(index),
                     ),
                   ),
                 ],
@@ -120,7 +115,7 @@ class _OpenedStudyPlanScreenState extends State<OpenedStudyPlanScreen> {
               margin: EdgeInsets.all(5),
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: Center(child: Text('Day$index', style: Theme.of(context).textTheme.headline5)))),
+                  child: Center(child: Text('Day ${index + 1}', style: Theme.of(context).textTheme.headline5)))),
         ),
       );
 }
