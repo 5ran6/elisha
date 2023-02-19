@@ -87,7 +87,6 @@ class _MyAppState extends State<MyApp> {
 
     List<Devotional> lsdv = await DevotionalDBHelper.instance
         .getDevotionalsDBForMonth(formattedMYNameDB);
-    //print(lsdv);
     if (lsdv.isEmpty) {
       List<Devotional> listOfDevs =
           await RemoteAPI.getDevotionalsForMonth(formattedMYNameAPI);
@@ -103,7 +102,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    ///receiveData();
     return Consumer(builder: (context, watch, child) {
       final themeWatcher = watch(themeRepositoryProvider);
       return ScreenUtilInit(

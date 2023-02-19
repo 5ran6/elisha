@@ -294,11 +294,9 @@ class _CurrentViewState extends State<CurrentView> with WidgetsBindingObserver {
 
     final bool dndStatus = prefs.getBool('sharedPrefStatus') ?? false;
 
-    if (Platform.isAndroid) {
-      if (dndStatus) {
-        await FlutterDnd.setInterruptionFilter(
-            FlutterDnd.INTERRUPTION_FILTER_NONE);
-      }
+    if (Platform.isAndroid && dndStatus) {
+      await FlutterDnd.setInterruptionFilter(
+          FlutterDnd.INTERRUPTION_FILTER_NONE);
     }
   }
 
@@ -318,7 +316,20 @@ class _CurrentViewState extends State<CurrentView> with WidgetsBindingObserver {
   }
 
   _handleBackButtonPress(BuildContext context) {
-    if (_currentIndex != 0) {
+    if (_currentIndex == 0 && _homeNavigatorKey.currentState!.canPop()) {
+      _homeNavigatorKey.currentState!.pop();
+    } else if (_currentIndex == 1 &&
+        _bibleNavigatorKey.currentState!.canPop()) {
+      _bibleNavigatorKey.currentState!.pop();
+    } else if (_currentIndex == 2 && _noteNavigatorKey.currentState!.canPop()) {
+      _noteNavigatorKey.currentState!.pop();
+    } else if (_currentIndex == 3 &&
+        _churchNavigatorKey.currentState!.canPop()) {
+      _churchNavigatorKey.currentState!.pop();
+    } else if (_currentIndex == 4 &&
+        _profileNavigatorKey.currentState!.canPop()) {
+      _profileNavigatorKey.currentState!.pop();
+    }else if (_currentIndex != 0) {
       setState(() {
         _currentIndex = 0;
       });
