@@ -67,8 +67,6 @@ class _HomeViewState extends State<HomeView> {
 
   var _devPlansList = List<DevotionalPlan>.empty();
 
-  //var _devPlansListCache = List<DevotionalPlan>.empty();
-
   bool isAnonymousUser = false;
 
   var _devPlansListFromDB = List<DevotionalPlan>.empty();
@@ -76,17 +74,6 @@ class _HomeViewState extends State<HomeView> {
   bool _isConnectionSuccessful = false;
 
   bool showSignIn = true;
-
-  // Future<void> isUserAnonymous() async {
-  //   final prefs = await SharedPreferences.getInstance();
-
-  //   final String? storedValue = prefs.getString('key');
-  //   if (storedValue != null) {
-  //     setState(() {
-  //       isAnonymousUser == true;
-  //     });
-  //   }
-  // }
 
   Future<void> _tryConnection() async {
     try {
@@ -103,12 +90,6 @@ class _HomeViewState extends State<HomeView> {
   }
   bool isLoading = false;
 
-  void _toggleView() {
-    setState(() {
-      showSignIn = !showSignIn;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return _content(context);
@@ -124,7 +105,6 @@ class _HomeViewState extends State<HomeView> {
     });
 
     _tryConnection();
-    //isUserAnonymous();
     checkIfDevotionalIsBookmarked(
         DateFormat('dd.MM.yyyy').format(DateTime.now()));
 
@@ -150,8 +130,6 @@ class _HomeViewState extends State<HomeView> {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      //do your stuff
-
       getStudyPlansFromDB();
     }
   }
@@ -199,10 +177,8 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  //final String vs;
   getVerseAsString(String dt) async {
     var verse = await DevotionalItemsRetrieveClass.getTodayVerse(dt);
-    //print(verse);
     setState(() {
       _verse = verse!;
     });
