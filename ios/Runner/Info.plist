@@ -56,6 +56,16 @@
 			</array>
 		</dict>
 	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+      <dict>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <!-- Add the missing URL scheme here -->
+          <string>com.googleusercontent.apps.208275060327-f6dqs0adita6t7oitl0hki1msoq0vq03</string>
+        </array>
+      </dict>
+    </array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>GADApplicationIdentifier</key>
