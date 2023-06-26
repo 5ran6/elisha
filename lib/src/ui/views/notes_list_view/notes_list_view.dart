@@ -1,11 +1,8 @@
-import 'dart:io';
-
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/ui/views/note_view/note_view.dart';
-import 'package:elisha/src/ui/views/note_view/note_view_fromDB.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../../models/note.dart';
-import '../../../providers/api_provider.dart';
 import '../../../services/devotionalDB_helper.dart';
 
 class NotesListView extends StatefulWidget {
@@ -19,23 +16,25 @@ class _NotesListViewState extends State<NotesListView> with WidgetsBindingObserv
   final controller = TextEditingController();
 
   var _noteList = List<Note>.empty();
-
+  var _searchList = List<Note>.empty();
 
   void fetchAndUpdateListOfNotes() async {
     List<Note> noteInLocalDatabase = await DevotionalDBHelper.instance.getNotesFromDB();
     setState(() {
       _noteList = noteInLocalDatabase;
+      _searchList = _noteList;
     });
   }
 
   @override
   void initState() {
-    print("initState");
+    if (kDebugMode) {
+      print("initState");
+    }
     fetchAndUpdateListOfNotes();
     WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
-
 
   @override
   void dispose() {
@@ -43,30 +42,33 @@ class _NotesListViewState extends State<NotesListView> with WidgetsBindingObserv
     super.dispose();
   }
 
-
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    print("AppLifecycleState");
+    if (kDebugMode) {
+      print("AppLifecycleState");
+    }
     if (state == AppLifecycleState.resumed) {
-      print("REsumed");
+      if (kDebugMode) {
+        print("REsumed");
+      }
       fetchAndUpdateListOfNotes();
     }
   }
 
   void searchNote(String query) {
-    final noteSuggestions = _noteList.where((note) {
-      final noteTitle = note.title.toLowerCase();
-      final input = query.toLowerCase();
+    final noteSuggestions = query.isNotEmpty
+        ? _searchList.where((note) {
+            final noteTitle = note.title.toLowerCase();
+            final input = query.toLowerCase();
 
-      return noteTitle.contains(input);
-    }).toList();
+            return noteTitle.contains(input);
+          }).toList()
+        : _searchList;
 
     setState(() {
       _noteList = noteSuggestions;
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -81,12 +83,11 @@ class _NotesListViewState extends State<NotesListView> with WidgetsBindingObserv
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-          backgroundColor: Theme.of(context).primaryColor,
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(
-                builder: (context) => const DevotionalNotePage()));
-          },
+        child: const Icon(Icons.add),
+        backgroundColor: Theme.of(context).primaryColor,
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const DevotionalNotePage()));
+        },
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -128,26 +129,45 @@ class _NotesListViewState extends State<NotesListView> with WidgetsBindingObserv
       children: [
         _noteList.isNotEmpty
             ? ListView.separated(
-                separatorBuilder: (BuildContext context, int index) => Divider(),
+                separatorBuilder: (BuildContext context, int index) => const Divider(),
                 shrinkWrap: true,
                 scrollDirection: Axis.vertical,
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 itemCount: _noteList.length,
                 itemBuilder: (context, index) {
                   return ListTile(
                     title: Text(_noteList[index].title),
                     trailing: Text(_noteList[index].date),
+                    onLongPress: () => showDialog(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                              title: const Text("Delete"),
+                              content: Text("Are you sure you want to delete \"${_noteList[index].title}\"?"),
+                              actions: [
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text("Cancel")),
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text(
+                                      "Delete",
+                                      style: TextStyle(color: Colors.red),
+                                    ))
+                              ],
+                            )),
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DevotionalNotePage(noteId: _noteList[index].id)));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => DevotionalNotePage(noteId: _noteList[index].id)));
                     },
                   );
                 })
             : Text(
                 'No Notes Saved',
-                style: Theme.of(context).textTheme.headline5?.copyWith(
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       color: Theme.of(context).colorScheme.secondary,
                     ),
               ),

@@ -16,11 +16,13 @@ class _BookMarkedDevotionalViewState extends State<BookMarkedDevotionalView> {
   final controller = TextEditingController();
 
   var _devBookmarkedList = List<Devotional>.empty();
+  var _searchList = List<Devotional>.empty();
 
   void fetchAndUpdateListOfBookmarkedDevotionals() async {
     List<Devotional> bookmarkedDevsInDatabase = await DevotionalDBHelper.instance.getBookMarkedDevotionalsFromDB();
     setState(() {
       _devBookmarkedList = bookmarkedDevsInDatabase;
+      _searchList = _devBookmarkedList;
     });
   }
 
@@ -87,12 +89,14 @@ class _BookMarkedDevotionalViewState extends State<BookMarkedDevotionalView> {
   }
 
   void searchBookmark(String query) {
-    final bookmarkSuggestions = _devBookmarkedList.where((bookmark) {
-      final bookmarkTitle = bookmark.title.toLowerCase();
-      final input = query.toLowerCase();
+    final bookmarkSuggestions = query.isNotEmpty
+        ? _searchList.where((bookmark) {
+            final bookmarkTitle = bookmark.title.toLowerCase();
+            final input = query.toLowerCase();
 
-      return bookmarkTitle.contains(input);
-    }).toList();
+            return bookmarkTitle.contains(input);
+          }).toList()
+        : _searchList;
 
     setState(() {
       _devBookmarkedList = bookmarkSuggestions;
