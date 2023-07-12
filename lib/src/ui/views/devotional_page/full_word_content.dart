@@ -1,4 +1,7 @@
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:flutter/foundation.dart';
+
+import '../../../services/shared_pref_manager/shared_pref_manager.dart';
 
 class FullWordContentPage extends StatefulWidget {
   final String mainWriteUp;
@@ -10,7 +13,7 @@ class FullWordContentPage extends StatefulWidget {
 }
 
 class _FullWordContentPageState extends State<FullWordContentPage> {
-  List<bool> isSelected = [];
+  List<bool> isSelected = [false, false, false];
   double fontSize = 21;
 
   double getFontSize(int index) {
@@ -25,7 +28,15 @@ class _FullWordContentPageState extends State<FullWordContentPage> {
 
   @override
   void initState() {
-    isSelected = [false, true, false];
+    String? prefFont =  PrefManager.getFont();
+    if (prefFont == null){
+      PrefManager.setFont("1");
+    } else {
+      isSelected[int.parse(prefFont)] = true;
+      if (kDebugMode) {
+        print(isSelected);
+      }
+    }
     super.initState();
   }
 
@@ -83,6 +94,7 @@ class _FullWordContentPageState extends State<FullWordContentPage> {
                     }
                   }
                   fontSize = getFontSize(index);
+                  PrefManager.setFont(index.toString());
                   setState(() {});
                 },
               ),

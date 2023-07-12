@@ -296,7 +296,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
                           break;
                       }
                     },
-                    initialPage: 1,
+                    initialPage: 0,
                     // optional
                     align: ALIGN.CENTER),
               ),
