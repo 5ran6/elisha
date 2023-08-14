@@ -142,7 +142,7 @@ class _NotesListViewState extends State<NotesListView> with WidgetsBindingObserv
                         context: context,
                         builder: (BuildContext context) => AlertDialog(
                               title: const Text("Delete"),
-                              content: Text("Are you sure you want to delete \"${_noteList[index].title}\"?"),
+                              content: Text("Delete '${_noteList[index].title}'?"),
                               actions: [
                                 TextButton(
                                     onPressed: () {
@@ -151,7 +151,11 @@ class _NotesListViewState extends State<NotesListView> with WidgetsBindingObserv
                                     child: const Text("Cancel")),
                                 TextButton(
                                     onPressed: () {
-                                      Navigator.of(context).pop();
+                                      setState(() {
+                                        DevotionalDBHelper.instance.deleteSelectedNote(_noteList[index]);
+                                        fetchAndUpdateListOfNotes();
+                                        Navigator.of(context).pop();
+                                      });
                                     },
                                     child: const Text(
                                       "Delete",

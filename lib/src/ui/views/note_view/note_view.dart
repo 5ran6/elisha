@@ -5,6 +5,7 @@ import 'package:elisha/src/services/devotionalDB_helper.dart';
 import 'package:elisha/src/ui/views/note_view/note_header_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -70,6 +71,7 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;
+    String? _noteId = widget.noteId;
     DateTime now = DateTime.now();
     String todayDt = DateFormat('dd.MM.yyyy').format(now);
     return SafeArea(
@@ -85,13 +87,13 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                     padding: const EdgeInsets.all(8.0),
                     child: Text('Note', style: Theme.of(context).textTheme.headline3),
                   ),
-                  // Align(
-                  //     alignment: Alignment.centerRight,
-                  //     child: IconButton(
-                  //         onPressed: () {
-                  //           CantonMethods.viewTransition(context, const NotesListView());
-                  //         },
-                  //         icon: Icon(Icons.notes)))
+                  Align(
+                      alignment: Alignment.centerRight,
+                      child: IconButton(
+                          onPressed: () {
+                            CantonMethods.viewTransition(context, const NotesListView());
+                          },
+                          icon: Icon(Icons.notes)))
                 ]),
               ),
               Align(
@@ -181,44 +183,38 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                     final _prefs = await SharedPreferences.getInstance();
                     await _prefs.setString('clearKey', 'clearNoteTitleAndReview');
                     await _prefs.setString('dateSaveKey', todayDt);
+                    Note note;
 
-                    if (widget.noteId != null) {
-                      await _prefs.setString('dateSaveKey', widget.noteId!);
-                      Note note = Note(
-                          title: noteTitleWidget.text, writeUp: noteWidget.text, date: noteDate, id: widget.noteId);
+                    if (_noteId != null) {
+                      await _prefs.setString('dateSaveKey', _noteId!);
+                      note = Note(title: noteTitleWidget.text, writeUp: noteWidget.text, date: noteDate, id: _noteId);
                       DevotionalDBHelper.instance.updateNote(note);
-                      if (user != null) {
-                        await sendNotePutRequest(note);
-                      }
                     } else {
+                      print("Note is null");
                       String noteId = const Uuid().v4().toString();
                       await _prefs.setString('dateSaveKey', noteId);
-                      Note note =
-                          Note(title: noteTitleWidget.text, writeUp: noteWidget.text, date: noteDate, id: noteId);
+                      note = Note(title: noteTitleWidget.text, writeUp: noteWidget.text, date: noteDate, id: noteId);
                       DevotionalDBHelper.instance.insertNote(note);
-                      if (user != null) {
-                        await sendNotePostRequest(note);
-                      }
+                      print("Done with db helper");
+                      print("Updating note id ... ");
+                      _noteId = noteId;
+                      print("Done updating note id");
                     }
-
-                    // List<Note> notes = await DevotionalDBHelper.instance.getNoteWithNoteId(widget.noteId);
-                    // if (notes.isNotEmpty) {
-                    //   DevotionalDBHelper.instance.updateNote(note);
-                    //   if (user != null) {
-                    //     sendNotePutRequest(note);
-                    //   }
-                    // } else {
-                    //   DevotionalDBHelper.instance.insertNote(note);
-                    //   if (user != null) {
-                    //     sendNotePostRequest(note);
-                    //   }
-                    // }
-
                     Fluttertoast.showToast(
                         msg: "Note Saved", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
-
-                    noteTitleWidget.clear();
-                    noteWidget.clear();
+                    try {
+                      if (user != null) {
+                        await sendNotePostRequest(note);
+                        Fluttertoast.showToast(
+                            msg: "Saved to firebase", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
+                      }
+                    } catch (e) {
+                      if (kDebugMode) {
+                        print("Error saving to firebase");
+                        Fluttertoast.showToast(
+                            msg: "Unable to save to firebase", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
+                      }
+                    }
                   },
                   child: Container(
                       width: MediaQuery.of(context).size.width - 40,
