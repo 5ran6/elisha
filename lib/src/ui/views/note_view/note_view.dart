@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:elisha/src/providers/note_list_provider.dart';
 import 'package:elisha/src/services/devotionalDB_helper.dart';
-import 'package:elisha/src/ui/views/note_view/note_header_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:uuid/uuid.dart';
 import '../../../models/note.dart';
-import '../notes_list_view/notes_list_view.dart';
+import '../../../ui/views/notes_list_view/notes_list_view.dart';
 
 class DevotionalNotePage extends StatefulWidget {
   const DevotionalNotePage({Key? key, this.noteId}) : super(key: key);
@@ -87,13 +87,6 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                     padding: const EdgeInsets.all(8.0),
                     child: Text('Note', style: Theme.of(context).textTheme.headline3),
                   ),
-                  Align(
-                      alignment: Alignment.centerRight,
-                      child: IconButton(
-                          onPressed: () {
-                            CantonMethods.viewTransition(context, const NotesListView());
-                          },
-                          icon: Icon(Icons.notes)))
                 ]),
               ),
               Align(
@@ -190,15 +183,12 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                       note = Note(title: noteTitleWidget.text, writeUp: noteWidget.text, date: noteDate, id: _noteId);
                       DevotionalDBHelper.instance.updateNote(note);
                     } else {
-                      print("Note is null");
                       String noteId = const Uuid().v4().toString();
                       await _prefs.setString('dateSaveKey', noteId);
                       note = Note(title: noteTitleWidget.text, writeUp: noteWidget.text, date: noteDate, id: noteId);
                       DevotionalDBHelper.instance.insertNote(note);
-                      print("Done with db helper");
-                      print("Updating note id ... ");
+                      context.read(noteListRepositoryProvider).updateList();
                       _noteId = noteId;
-                      print("Done updating note id");
                     }
                     Fluttertoast.showToast(
                         msg: "Note Saved", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
