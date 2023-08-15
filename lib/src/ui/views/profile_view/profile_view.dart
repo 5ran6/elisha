@@ -28,9 +28,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:elisha/src/ui/views/account_view/account_view.dart';
 import 'package:elisha/src/ui/views/bookmarked_chapters_view/bookmarked_chapters_view.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-import '../notes_list_view/notes_list_view.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({Key? key}) : super(key: key);

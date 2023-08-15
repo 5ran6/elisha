@@ -52,6 +52,12 @@ class _CalendarViewState extends State<CalendarView> {
   }
 
   Widget _body(BuildContext context) {
+    print(MediaQuery.of(context).platformBrightness == Brightness.light);
+    print(PrefManager.getTheme());
+    DateTime _firstDayNextMonth = DateTime.parse("${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + (DateTime.now().month+1).toString() : DateTime.now().month+1}-01");
+    DateTime _firstDayThisMonth = DateTime.parse("${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + DateTime.now().month.toString() : DateTime.now().month}-01");
+    int numOfDays = _firstDayNextMonth.difference(_firstDayThisMonth).inDays;
+    DateTime _lastDayThisMonth = DateTime.parse("${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + DateTime.now().month.toString() : DateTime.now().month}-$numOfDays");
     return Column(
       children: [
         Theme(
@@ -59,16 +65,14 @@ class _CalendarViewState extends State<CalendarView> {
             colorScheme: ColorScheme.light(
               onPrimary: Colors.white,
               primary: Theme.of(context).primaryColor,
-              onSurface: PrefManager.getTheme() == "Light" ? Colors.black : Colors.white,
+              onSurface: PrefManager.getTheme() == "Light"  || ((PrefManager.getTheme() == "System" || PrefManager.getTheme() == null) && MediaQuery.of(context).platformBrightness == Brightness.light) ? Colors.black : Colors.white,
             ),
           ),
           child: CalendarDatePicker(
               initialDate: DateTime.parse(
                   "${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + DateTime.now().month.toString() : DateTime.now().month}-${DateTime.now().day < 10 ? '0' + DateTime.now().day.toString() : DateTime.now().day}"),
-              firstDate: DateTime.parse(
-                  "${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + DateTime.now().month.toString() : DateTime.now().month}-01"),
-              lastDate: DateTime.parse(
-                  "${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + DateTime.now().month.toString() : DateTime.now().month}-30"),
+              firstDate: _firstDayThisMonth,
+              lastDate: _lastDayThisMonth,
               onDateChanged: (date) {
                 if (kDebugMode) {
                   print(date);
