@@ -20,6 +20,7 @@ import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/providers/local_user_repository_provider.dart';
 import 'package:elisha/src/ui/views/about_us_view/about_us_page.dart';
 import 'package:elisha/src/ui/views/bookmarked_devotionals_list_view/bookmarked_devotionals_list_view.dart';
+import 'package:elisha/src/ui/views/calendar_view/calendar_view.dart';
 import 'package:elisha/src/ui/views/profile_view/feedback_dialog.dart';
 import 'package:elisha/src/ui/views/settings_view/settings_view.dart';
 import 'package:elisha/src/ui/views/users_manual/users_manual_view.dart';
@@ -189,33 +190,33 @@ class ProfileView extends StatelessWidget {
         ),
       ),
       const Divider(),
-      // GestureDetector(
-      //   onTap: () {
-      //     CantonMethods.viewTransition(context, const NotesListView());
-      //   },
-      //   child: Card(
-      //     margin: EdgeInsets.zero,
-      //     shape: Border(
-      //       left: BorderSide(
-      //         width: 1.5,
-      //         color: Theme.of(context).colorScheme.onSecondary,
-      //       ),
-      //       right: BorderSide(
-      //         width: 1.5,
-      //         color: Theme.of(context).colorScheme.onSecondary,
-      //       ),
-      //     ),
-      //     child: Container(
-      //       padding: const EdgeInsets.all(15),
-      //       alignment: Alignment.centerLeft,
-      //       child: Text(
-      //         'Notes',
-      //         style: Theme.of(context).textTheme.headline6,
-      //       ),
-      //     ),
-      //   ),
-      // ),
-      // const Divider(),
+      GestureDetector(
+        onTap: () {
+          CantonMethods.viewTransition(context, const CalendarView());
+        },
+        child: Card(
+          margin: EdgeInsets.zero,
+          shape: Border(
+            left: BorderSide(
+              width: 1.5,
+              color: Theme.of(context).colorScheme.onSecondary,
+            ),
+            right: BorderSide(
+              width: 1.5,
+              color: Theme.of(context).colorScheme.onSecondary,
+            ),
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(15),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Month's Devotion",
+              style: Theme.of(context).textTheme.headline6,
+            ),
+          ),
+        ),
+      ),
+      const Divider(),
       GestureDetector(
         onTap: () {
           showDialog(context: context, builder: (_) => FeedbackDialog());

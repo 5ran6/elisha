@@ -1,5 +1,5 @@
 import 'package:canton_design_system/canton_design_system.dart';
-import 'package:elisha/src/providers/note_list_provider.dart';
+
 import 'package:elisha/src/ui/views/note_view/note_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -127,64 +127,57 @@ class _NotesListViewState extends State<NotesListView> with WidgetsBindingObserv
   }
 
   Widget _buildNoteList(BuildContext context) {
-    return Consumer(
-      builder: (context, watch, child) {
-        final noteListWatcher = watch(noteListRepositoryProvider);
-        _noteList = noteListWatcher.notelist.isEmpty || controller.text == '' ? _noteList : noteListWatcher.notelist;
-        return Column(
-          children: [
-            _noteList.isNotEmpty
-                ? ListView.separated(
-                    separatorBuilder: (BuildContext context, int index) => const Divider(),
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: _noteList.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(_noteList[index].title),
-                        trailing: Text(_noteList[index].date),
-                        onLongPress: () => showDialog(
-                            context: context,
-                            builder: (BuildContext context) => AlertDialog(
-                                  title: const Text("Delete"),
-                                  content: Text("Delete '${_noteList[index].title}'?"),
-                                  actions: [
-                                    TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: const Text("Cancel")),
-                                    TextButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            DevotionalDBHelper.instance.deleteSelectedNote(_noteList[index]);
-                                            context.read(noteListRepositoryProvider).updateList();
-                                            fetchAndUpdateListOfNotes();
-                                            Navigator.of(context).pop();
-                                          });
-                                        },
-                                        child: const Text(
-                                          "Delete",
-                                          style: TextStyle(color: Colors.red),
-                                        ))
-                                  ],
-                                )),
-                        onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => DevotionalNotePage(noteId: _noteList[index].id)));
-                        },
-                      );
-                    })
-                : Text(
-                    'No Notes Saved',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                  ),
-          ],
-        );
-      },
+    return Column(
+      children: [
+        _noteList.isNotEmpty
+            ? ListView.separated(
+                separatorBuilder: (BuildContext context, int index) => const Divider(),
+                shrinkWrap: true,
+                scrollDirection: Axis.vertical,
+                physics: const BouncingScrollPhysics(),
+                itemCount: _noteList.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(_noteList[index].title),
+                    trailing: Text(_noteList[index].date),
+                    onLongPress: () => showDialog(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                              title: const Text("Delete"),
+                              content: Text("Delete '${_noteList[index].title}'?"),
+                              actions: [
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text("Cancel")),
+                                TextButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        DevotionalDBHelper.instance.deleteSelectedNote(_noteList[index]);
+                                        fetchAndUpdateListOfNotes();
+                                        Navigator.of(context).pop();
+                                      });
+                                    },
+                                    child: const Text(
+                                      "Delete",
+                                      style: TextStyle(color: Colors.red),
+                                    ))
+                              ],
+                            )),
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => DevotionalNotePage(noteId: _noteList[index].id)));
+                    },
+                  );
+                })
+            : Text(
+                'No Notes Saved',
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+              ),
+      ],
     );
   }
 }

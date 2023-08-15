@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:canton_design_system/canton_design_system.dart';
-import 'package:elisha/src/providers/note_list_provider.dart';
 import 'package:elisha/src/services/devotionalDB_helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -187,7 +186,6 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                       await _prefs.setString('dateSaveKey', noteId);
                       note = Note(title: noteTitleWidget.text, writeUp: noteWidget.text, date: noteDate, id: noteId);
                       DevotionalDBHelper.instance.insertNote(note);
-                      context.read(noteListRepositoryProvider).updateList();
                       _noteId = noteId;
                     }
                     Fluttertoast.showToast(
