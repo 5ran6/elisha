@@ -16,16 +16,19 @@ class CalendarView extends StatefulWidget {
 class _CalendarViewState extends State<CalendarView> {
   String title = "";
   String bibleText = "";
+  List<Devotional> devotionalList = List.empty();
   DateTime storedDate = DateTime.parse(
       "${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + DateTime.now().month.toString() : DateTime.now().month}-${DateTime.now().day < 10 ? '0' + DateTime.now().day.toString() : DateTime.now().day}");
   @override
   void initState() {
     getDevotionalList();
+    title = devotionalList[storedDate.day].title;
+    bibleText = devotionalList[storedDate.day].fullPassage;
     super.initState();
   }
 
   void getDevotionalList() async {
-    List<Devotional> devotionalList = await DevotionalDBHelper.instance.getDevotionalsDBForMonth(
+    devotionalList = await DevotionalDBHelper.instance.getDevotionalsDBForMonth(
         "${DateTime.now().month < 10 ? '0' + DateTime.now().month.toString() : DateTime.now().month}.${DateTime.now().year}");
     print(
         "${DateTime.now().month < 10 ? '0' + DateTime.now().month.toString() : DateTime.now().month}.${DateTime.now().year}");
@@ -52,12 +55,13 @@ class _CalendarViewState extends State<CalendarView> {
   }
 
   Widget _body(BuildContext context) {
-    print(MediaQuery.of(context).platformBrightness == Brightness.light);
-    print(PrefManager.getTheme());
-    DateTime _firstDayNextMonth = DateTime.parse("${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + (DateTime.now().month+1).toString() : DateTime.now().month+1}-01");
-    DateTime _firstDayThisMonth = DateTime.parse("${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + DateTime.now().month.toString() : DateTime.now().month}-01");
+    DateTime _firstDayNextMonth = DateTime.parse(
+        "${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + (DateTime.now().month + 1).toString() : DateTime.now().month + 1}-01");
+    DateTime _firstDayThisMonth = DateTime.parse(
+        "${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + DateTime.now().month.toString() : DateTime.now().month}-01");
     int numOfDays = _firstDayNextMonth.difference(_firstDayThisMonth).inDays;
-    DateTime _lastDayThisMonth = DateTime.parse("${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + DateTime.now().month.toString() : DateTime.now().month}-$numOfDays");
+    DateTime _lastDayThisMonth = DateTime.parse(
+        "${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + DateTime.now().month.toString() : DateTime.now().month}-$numOfDays");
     return Column(
       children: [
         Theme(
@@ -65,7 +69,11 @@ class _CalendarViewState extends State<CalendarView> {
             colorScheme: ColorScheme.light(
               onPrimary: Colors.white,
               primary: Theme.of(context).primaryColor,
-              onSurface: PrefManager.getTheme() == "Light"  || ((PrefManager.getTheme() == "System" || PrefManager.getTheme() == null) && MediaQuery.of(context).platformBrightness == Brightness.light) ? Colors.black : Colors.white,
+              onSurface: PrefManager.getTheme() == "Light" ||
+                      ((PrefManager.getTheme() == "System" || PrefManager.getTheme() == null) &&
+                          MediaQuery.of(context).platformBrightness == Brightness.light)
+                  ? Colors.black
+                  : Colors.white,
             ),
           ),
           child: CalendarDatePicker(
@@ -74,13 +82,7 @@ class _CalendarViewState extends State<CalendarView> {
               firstDate: _firstDayThisMonth,
               lastDate: _lastDayThisMonth,
               onDateChanged: (date) {
-                if (kDebugMode) {
-                  print(date);
-                }
                 checkDoubleClick(date);
-                setState(() {
-                  // Preview title and bible text
-                });
               }),
         ),
         Padding(
@@ -143,16 +145,19 @@ class _CalendarViewState extends State<CalendarView> {
 
   void checkDoubleClick(DateTime date) {
     if (date == storedDate) {
-      print("Double clicked...devotional screen");
       Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => DevotionalPage(devotionalDate: date),
-            ),
-          );
+        context,
+        MaterialPageRoute(
+          builder: (context) => DevotionalPage(devotionalDate: date),
+        ),
+      );
     } else {
       storedDate = date;
-      print("Single click");
+      setState(() {
+        title = devotionalList[date.day].title;
+        print(title);
+        bibleText = devotionalList[date.day].fullPassage;
+      });
     }
   }
 }
