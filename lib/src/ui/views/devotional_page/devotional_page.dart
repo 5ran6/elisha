@@ -4,16 +4,14 @@ import 'package:elisha/src/ui/views/devotional_page/full_prayer_content.dart';
 import 'package:elisha/src/ui/views/devotional_page/full_thougthofday_content.dart';
 import 'package:elisha/src/ui/views/devotional_page/full_topic_memoryverse_page.dart';
 import 'package:elisha/src/ui/views/devotional_page/full_word_content.dart';
-import 'package:elisha/src/ui/views/home_view/home_view.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:vertical_card_pager/vertical_card_pager.dart';
 
 import '../../../../utils/dev_functions.dart';
 
 class DevotionalPage extends StatefulWidget {
-  const DevotionalPage({Key? key}) : super(key: key);
-
+  const DevotionalPage({Key? key, this.devotionalDate}) : super(key: key);
+  final DateTime? devotionalDate;
   @override
   _DevotionalPageState createState() => _DevotionalPageState();
 }
@@ -32,16 +30,17 @@ class _DevotionalPageState extends State<DevotionalPage> {
 
   @override
   void initState() {
-    getTodayTitleAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
-    getVersePassageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
-    getVerseAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
-    getTodayMainWriteUpAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
-    getTodayPrayerAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
-    getTodayThoughtOfTheDayAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
-    getTodayFullPassageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
-    getBibleInYearAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
-    getThoughtOfTheDayImageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
-    getPrayerBurdenImageAsString(DateFormat('dd.MM.yyyy').format(DateTime.now()));
+    getTodayTitleAsString(DateFormat('dd.MM.yyyy').format(widget.devotionalDate != null ? widget.devotionalDate! : DateTime.now()));
+    getVersePassageAsString(DateFormat('dd.MM.yyyy').format(widget.devotionalDate != null ? widget.devotionalDate! : DateTime.now()));
+    getVerseAsString(DateFormat('dd.MM.yyyy').format(widget.devotionalDate != null ? widget.devotionalDate! : DateTime.now()));
+    getTodayMainWriteUpAsString(DateFormat('dd.MM.yyyy').format(widget.devotionalDate != null ? widget.devotionalDate! : DateTime.now()));
+    getTodayPrayerAsString(DateFormat('dd.MM.yyyy').format(widget.devotionalDate != null ? widget.devotionalDate! : DateTime.now()));
+    getTodayThoughtOfTheDayAsString(DateFormat('dd.MM.yyyy').format(widget.devotionalDate != null ? widget.devotionalDate! : DateTime.now()));
+    getTodayFullPassageAsString(DateFormat('dd.MM.yyyy').format(widget.devotionalDate != null ? widget.devotionalDate! : DateTime.now()));
+    getBibleInYearAsString(DateFormat('dd.MM.yyyy').format(widget.devotionalDate != null ? widget.devotionalDate! : DateTime.now()));
+    getThoughtOfTheDayImageAsString(DateFormat('dd.MM.yyyy').format(widget.devotionalDate != null ? widget.devotionalDate! : DateTime.now()));
+    getPrayerBurdenImageAsString(DateFormat('dd.MM.yyyy').format(widget.devotionalDate != null ? widget.devotionalDate! : DateTime.now()));
+    super.initState();
   }
 
   @override
@@ -275,14 +274,17 @@ class _DevotionalPageState extends State<DevotionalPage> {
                           break;
                         case 2:
                           Navigator.of(context).push(PageTransition(
-                              child: FullPrayerPage(prayer: _prayerBurden, prayerBurdenImage: _prayerBurdenImageToShare),
+                              child:
+                                  FullPrayerPage(prayer: _prayerBurden, prayerBurdenImage: _prayerBurdenImageToShare),
                               type: PageTransitionType.scale,
                               alignment: Alignment.center,
                               duration: const Duration(milliseconds: 600)));
                           break;
                         case 3:
                           Navigator.of(context).push(PageTransition(
-                              child: FullThoughtOfTheDayPage(thoughtOfTheDay: _thoughtOfTheDay, thoughtOfTheDayImage: _thoughtOfTheDayImageToShare),
+                              child: FullThoughtOfTheDayPage(
+                                  thoughtOfTheDay: _thoughtOfTheDay,
+                                  thoughtOfTheDayImage: _thoughtOfTheDayImageToShare),
                               type: PageTransitionType.scale,
                               alignment: Alignment.center,
                               duration: const Duration(milliseconds: 600)));
@@ -370,11 +372,11 @@ class _DevotionalPageState extends State<DevotionalPage> {
       _thoughtOfTheDayImageToShare = thoughtOfTheDayImageToShare!;
     });
   }
+
   getPrayerBurdenImageAsString(String dt) async {
     var prayerBurdenImageToShare = await DevotionalItemsRetrieveClass.getPrayerBurdenImage(dt);
     setState(() {
       _prayerBurdenImageToShare = prayerBurdenImageToShare!;
     });
   }
-
 }

@@ -78,7 +78,9 @@ class _CalendarViewState extends State<CalendarView> {
                   print(date);
                 }
                 checkDoubleClick(date);
-                setState(() {});
+                setState(() {
+                  // Preview title and bible text
+                });
               }),
         ),
         Padding(
@@ -145,7 +147,7 @@ class _CalendarViewState extends State<CalendarView> {
       Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const DevotionalPage(),
+              builder: (context) => DevotionalPage(devotionalDate: date),
             ),
           );
     } else {
