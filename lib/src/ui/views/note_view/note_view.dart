@@ -4,7 +4,6 @@ import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/services/devotionalDB_helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:uuid/uuid.dart';
 import '../../../models/note.dart';
-import '../../../ui/views/notes_list_view/notes_list_view.dart';
 
 class DevotionalNotePage extends StatefulWidget {
   const DevotionalNotePage({Key? key, this.noteId}) : super(key: key);
