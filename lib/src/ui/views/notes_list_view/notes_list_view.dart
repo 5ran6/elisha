@@ -2,7 +2,6 @@ import 'package:canton_design_system/canton_design_system.dart';
 
 import 'package:elisha/src/ui/views/note_view/note_view.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../models/note.dart';
 import '../../../services/devotionalDB_helper.dart';
