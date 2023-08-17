@@ -207,7 +207,7 @@ class ProfileView extends StatelessWidget {
             padding: const EdgeInsets.all(15),
             alignment: Alignment.centerLeft,
             child: Text(
-              "Month's Devotion",
+              "Monthly Devotional",
               style: Theme.of(context).textTheme.headline6,
             ),
           ),

@@ -1,8 +1,12 @@
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:intl/intl.dart';
+import '../../../../utils/dev_functions.dart';
 import 'package:elisha/src/models/devotional.dart';
 import 'package:elisha/src/services/shared_pref_manager/shared_pref_manager.dart';
 import 'package:flutter/foundation.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
+import '../../../providers/api_provider.dart';
 import '../../../services/devotionalDB_helper.dart';
 import '../devotional_page/devotional_page.dart';
 
@@ -16,23 +20,21 @@ class CalendarView extends StatefulWidget {
 class _CalendarViewState extends State<CalendarView> {
   String title = "";
   String bibleText = "";
-  List<Devotional> devotionalList = List.empty();
   DateTime storedDate = DateTime.parse(
       "${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + DateTime.now().month.toString() : DateTime.now().month}-${DateTime.now().day < 10 ? '0' + DateTime.now().day.toString() : DateTime.now().day}");
   @override
   void initState() {
     getDevotionalList();
-    title = devotionalList[storedDate.day].title;
-    bibleText = devotionalList[storedDate.day].fullPassage;
     super.initState();
   }
 
   void getDevotionalList() async {
-    devotionalList = await DevotionalDBHelper.instance.getDevotionalsDBForMonth(
-        "${DateTime.now().month < 10 ? '0' + DateTime.now().month.toString() : DateTime.now().month}.${DateTime.now().year}");
     print(
         "${DateTime.now().month < 10 ? '0' + DateTime.now().month.toString() : DateTime.now().month}.${DateTime.now().year}");
-    print(devotionalList);
+    title = (await DevotionalItemsRetrieveClass.getTodayTitle((DateFormat('dd.MM.yyyy').format(DateTime.now()))))!;
+    bibleText =
+        (await DevotionalItemsRetrieveClass.getTodayFullPassage((DateFormat('dd.MM.yyyy').format(DateTime.now()))))!;
+    setState(() {});
   }
 
   @override
@@ -59,9 +61,9 @@ class _CalendarViewState extends State<CalendarView> {
         "${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + (DateTime.now().month + 1).toString() : DateTime.now().month + 1}-01");
     DateTime _firstDayThisMonth = DateTime.parse(
         "${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + DateTime.now().month.toString() : DateTime.now().month}-01");
-    int numOfDays = _firstDayNextMonth.difference(_firstDayThisMonth).inDays;
+    int _lastDate = _firstDayNextMonth.difference(_firstDayThisMonth).inDays;
     DateTime _lastDayThisMonth = DateTime.parse(
-        "${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + DateTime.now().month.toString() : DateTime.now().month}-$numOfDays");
+        "${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + DateTime.now().month.toString() : DateTime.now().month}-${_lastDate < 10 ? '0' + _lastDate.toString() : _lastDate}");
     return Column(
       children: [
         Theme(
@@ -79,7 +81,8 @@ class _CalendarViewState extends State<CalendarView> {
           child: CalendarDatePicker(
               initialDate: DateTime.parse(
                   "${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + DateTime.now().month.toString() : DateTime.now().month}-${DateTime.now().day < 10 ? '0' + DateTime.now().day.toString() : DateTime.now().day}"),
-              firstDate: _firstDayThisMonth,
+              firstDate: _firstDayThisMonth.subtract(_firstDayNextMonth.difference(DateTime.parse(
+                  "${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + (DateTime.now().month - 6).toString() : DateTime.now().month - 6}-01"))),
               lastDate: _lastDayThisMonth,
               onDateChanged: (date) {
                 checkDoubleClick(date);
@@ -93,6 +96,7 @@ class _CalendarViewState extends State<CalendarView> {
                 height: 40,
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Align(
                     alignment: Alignment.centerLeft,
@@ -106,9 +110,14 @@ class _CalendarViewState extends State<CalendarView> {
                   ),
                   Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(
-                      title,
-                      style: const TextStyle(fontSize: 16),
+                    child: SizedBox(
+                      height: 20,
+                      width: MediaQuery.of(context).size.width - 120,
+                      child: Text(
+                        title,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontSize: 16),
+                      ),
                     ),
                   ),
                 ],
@@ -143,7 +152,7 @@ class _CalendarViewState extends State<CalendarView> {
     );
   }
 
-  void checkDoubleClick(DateTime date) {
+  void checkDoubleClick(DateTime date) async {
     if (date == storedDate) {
       Navigator.push(
         context,
@@ -152,11 +161,34 @@ class _CalendarViewState extends State<CalendarView> {
         ),
       );
     } else {
+      if (storedDate.month != date.month) {
+        List<Devotional> lsdv =
+            await DevotionalDBHelper.instance.getDevotionalsDBForMonth(DateFormat('MM.yyyy').format(date));
+        if (lsdv.isEmpty) {
+          Fluttertoast.showToast(
+            msg: "Loading ${DateFormat('MMMM').format(date)}'s devotionals", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+          List<Devotional> listOfDevs = await RemoteAPI.getDevotionalsForMonth(DateFormat('MMMMyyyy').format(date));
+          DevotionalDBHelper.instance.insertDevotionalList(listOfDevs).then((value) {
+            Fluttertoast.showToast(
+                msg: "Done loading ${DateFormat('MMMM').format(date)}'s devotional",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM);
+          });
+        }
+      }
       storedDate = date;
+      try {
+        title = (await DevotionalItemsRetrieveClass.getTodayTitle((DateFormat('dd.MM.yyyy').format(date))))!;
+        }
+      catch (e){
+        Fluttertoast.showToast(
+            msg: "Error: Devotional unavailable", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+        title = '';
+      }
+      bibleText = title == '' ? '' :(await DevotionalItemsRetrieveClass.getTodayFullPassage((DateFormat('dd.MM.yyyy').format(date))))!;
       setState(() {
-        title = devotionalList[date.day].title;
-        print(title);
-        bibleText = devotionalList[date.day].fullPassage;
+        Fluttertoast.showToast(
+            msg: "Tap again to view full devotional", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
       });
     }
   }
