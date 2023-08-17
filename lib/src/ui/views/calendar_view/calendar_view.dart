@@ -162,30 +162,40 @@ class _CalendarViewState extends State<CalendarView> {
       );
     } else {
       if (storedDate.month != date.month) {
-        List<Devotional> lsdv =
-            await DevotionalDBHelper.instance.getDevotionalsDBForMonth(DateFormat('MM.yyyy').format(date));
-        if (lsdv.isEmpty) {
-          Fluttertoast.showToast(
-            msg: "Loading ${DateFormat('MMMM').format(date)}'s devotionals", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
-          List<Devotional> listOfDevs = await RemoteAPI.getDevotionalsForMonth(DateFormat('MMMMyyyy').format(date));
-          DevotionalDBHelper.instance.insertDevotionalList(listOfDevs).then((value) {
+        try {
+          List<Devotional> lsdv =
+              await DevotionalDBHelper.instance.getDevotionalsDBForMonth(DateFormat('MM.yyyy').format(date));
+          if (lsdv.isEmpty) {
             Fluttertoast.showToast(
-                msg: "Done loading ${DateFormat('MMMM').format(date)}'s devotional",
+                msg: "Loading ${DateFormat('MMMM').format(date)}'s devotionals",
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.BOTTOM);
-          });
+            List<Devotional> listOfDevs = await RemoteAPI.getDevotionalsForMonth(DateFormat('MMMMyyyy').format(date));
+            DevotionalDBHelper.instance.insertDevotionalList(listOfDevs).then((value) {
+              Fluttertoast.showToast(
+                  msg: "Done loading ${DateFormat('MMMM').format(date)}'s devotional",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM);
+            });
+          }
+        } catch (e) {
+          Fluttertoast.showToast(
+              msg: "Unable to download ${DateFormat('MMMM').format(date)}'s devotional",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM);
         }
       }
       storedDate = date;
       try {
         title = (await DevotionalItemsRetrieveClass.getTodayTitle((DateFormat('dd.MM.yyyy').format(date))))!;
-        }
-      catch (e){
+      } catch (e) {
         Fluttertoast.showToast(
-            msg: "Error: Devotional unavailable", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
+            msg: "Devotional is unavailable", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
         title = '';
       }
-      bibleText = title == '' ? '' :(await DevotionalItemsRetrieveClass.getTodayFullPassage((DateFormat('dd.MM.yyyy').format(date))))!;
+      bibleText = title == ''
+          ? ''
+          : (await DevotionalItemsRetrieveClass.getTodayFullPassage((DateFormat('dd.MM.yyyy').format(date))))!;
       setState(() {
         Fluttertoast.showToast(
             msg: "Tap again to view full devotional", toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM);
