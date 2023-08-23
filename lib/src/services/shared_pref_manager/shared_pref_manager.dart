@@ -16,6 +16,11 @@ class PrefManager{
 
   static String? getTime() => _preferences?.getString("alarmTime");
 
+  static Future setFont(String fontIndex) async =>
+      await _preferences?.setString("fontIndex", fontIndex);
+
+  static String? getFont() => _preferences?.getString("fontIndex");
+
   static Future setDND(String time) async =>
       await _preferences?.setString("dnd", time);
 

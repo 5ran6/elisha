@@ -21,6 +21,7 @@ class _BibleStudySeriesPageState extends State<BibleStudySeriesPage> {
   final controller = TextEditingController();
 
   var _devPlansList = List<DevotionalPlan>.empty();
+  var _searchList = List<DevotionalPlan>.empty();
   bool _isConnectionSuccessful = false;
 
   Future<List<DevotionalPlan>> get devPlansFuture {
@@ -32,6 +33,7 @@ class _BibleStudySeriesPageState extends State<BibleStudySeriesPage> {
 
     setState(() {
       _devPlansList = devPlans;
+      _searchList = _devPlansList;
     });
   }
 
@@ -72,39 +74,47 @@ class _BibleStudySeriesPageState extends State<BibleStudySeriesPage> {
                 child: TextField(
                   controller: controller,
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.search, color: Theme.of(context).primaryColor),
-                    hintText: 'Plan title',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide(color: Theme.of(context).primaryColor),
-                    )
-                  ),
+                      prefixIcon: Icon(Icons.search, color: Theme.of(context).primaryColor),
+                      hintText: 'Plan title',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: BorderSide(color: Theme.of(context).primaryColor),
+                      )),
                   onChanged: (value) => searchStudyPlan(value),
                 ),
               ),
-
               const SizedBox(height: 20),
-              _isConnectionSuccessful ? Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: StaggeredGridView.countBuilder(
-                  shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
-                  scrollDirection: Axis.vertical,
-                  itemCount: _devPlansList.length,
-                  crossAxisCount: 4,
-                  mainAxisSpacing: 8,
-                  crossAxisSpacing: 8,
-                  staggeredTileBuilder: (index) => StaggeredTile.count(2, 2),
-                  itemBuilder: (context, index) => _devPlansList.length == 1 ?
-                  Center(child: Text('No results found', style: Theme.of(context).textTheme.headline2?.copyWith(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),),)
-                      : buildBibleStudyPlanCardView(index),
-                ),
-              ) : Text(
-                'Enable Internet Connection',
-                style: Theme.of(context).textTheme.headline5?.copyWith(
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
+              _isConnectionSuccessful
+                  ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: StaggeredGridView.countBuilder(
+                        shrinkWrap: true,
+                        physics: BouncingScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        itemCount: _devPlansList.length,
+                        crossAxisCount: 4,
+                        mainAxisSpacing: 8,
+                        crossAxisSpacing: 8,
+                        staggeredTileBuilder: (index) => StaggeredTile.count(2, 2),
+                        itemBuilder: (context, index) => _devPlansList.length == 1
+                            ? Center(
+                                child: Text(
+                                  'No results found',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline2
+                                      ?.copyWith(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
+                                ),
+                              )
+                            : buildBibleStudyPlanCardView(index),
+                      ),
+                    )
+                  : Text(
+                      'Enable Internet Connection',
+                      style: Theme.of(context).textTheme.headline5?.copyWith(
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                    ),
             ],
           ),
         ),
@@ -113,16 +123,17 @@ class _BibleStudySeriesPageState extends State<BibleStudySeriesPage> {
   }
 
   void searchStudyPlan(String query) {
-    final displayList = _devPlansList.where((plan) {
-      final planTitle = plan.title.toLowerCase();
-      final input = query.toLowerCase();
+    final displayList = query.isNotEmpty
+        ? _searchList.where((plan) {
+            final planTitle = plan.title.toLowerCase();
+            final input = query.toLowerCase();
 
-      return planTitle.contains(input);
-    }).toList();
+            return planTitle.contains(input);
+          }).toList()
+        : _searchList;
     setState(() {
       _devPlansList = displayList;
     });
-
   }
 
   buildBibleStudyPlanCardView(int index) => GestureDetector(
@@ -139,7 +150,7 @@ class _BibleStudySeriesPageState extends State<BibleStudySeriesPage> {
               fit: BoxFit.cover,
               imageUrl: _devPlansList[index].imageUrl,
               placeholder: (context, url) => Center(
-                child:  CircularProgressIndicator(
+                child: CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
                 ),
               ),

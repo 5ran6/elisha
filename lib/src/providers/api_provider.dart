@@ -24,6 +24,7 @@ class RemoteAPI {
         followRedirects: false,
         validateStatus: (status) => true,));
     var json = response.data;
+    print(json);
     return devotionsFromJson(json);
   }
 

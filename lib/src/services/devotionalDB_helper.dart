@@ -249,4 +249,10 @@ class DevotionalDBHelper {
 
     return result.map((e) => Note.fromJson(e)).toList()[0];
   }
+
+  Future deleteSelectedNote(Note note) async {
+    Database? db = await instance.database;
+
+    db!.rawDelete('DELETE FROM note_table WHERE id=?', ['${note.id}']);
+  }
 }

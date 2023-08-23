@@ -113,6 +113,11 @@ class _UsersManualViewState extends State<UsersManualView> {
                       style:
                           Theme.of(context).textTheme.bodyText1?.copyWith(fontFamily: "Palatino", fontSize: fontSize),
                     ),
+                    Text(
+                      "If you missed any devotional or you want to go through previous devotionals, Secret place has a calendar view in the 'Monthly Devotionals' section in the profile page where you can read previous devotionals",
+                      style:
+                          Theme.of(context).textTheme.bodyText1?.copyWith(fontFamily: "Palatino", fontSize: fontSize),
+                    ),
                   ],
                 ),
               ),
