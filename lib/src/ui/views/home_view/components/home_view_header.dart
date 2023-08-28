@@ -58,7 +58,7 @@ class HomeViewHeader extends StatelessWidget {
           Text(
             'Good ' + greeting() + ',' + ' ',
             style: Theme.of(context).textTheme.headline5?.copyWith(
-                  color: Theme.of(context).colorScheme.secondaryVariant,
+                  color: Theme.of(context).colorScheme.secondaryContainer,
                 ),
           ),
           dbName != null

@@ -36,9 +36,9 @@ class SignInAnonymouslyButton extends StatelessWidget {
       alignment: MainAxisAlignment.spaceAround,
       prefixIcon: Container(
         padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: Icon(LineAwesomeIcons.user, color: Theme.of(context).colorScheme.secondaryVariant),
+        child: Icon(LineAwesomeIcons.user, color: Theme.of(context).colorScheme.secondaryContainer),
       ),
-      textColor: Theme.of(context).colorScheme.secondaryVariant,
+      textColor: Theme.of(context).colorScheme.secondaryContainer,
       color: Theme.of(context).colorScheme.onSecondary,
       border: BorderSide(
         color: Theme.of(context).colorScheme.secondary,

@@ -101,7 +101,7 @@ class _SignUpViewState extends State<SignUpView> {
                 Text(
                   'Or Sign In',
                   style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                        color: Theme.of(context).colorScheme.secondaryVariant,
+                        color: Theme.of(context).colorScheme.secondaryContainer,
                         fontWeight: FontWeight.w500,
                       ),
                 ),

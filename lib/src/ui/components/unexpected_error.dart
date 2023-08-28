@@ -34,7 +34,7 @@ class UnexpectedError extends StatelessWidget {
             'Oops, something unexpected happened :(',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headline5?.copyWith(
-                  color: Theme.of(context).colorScheme.secondaryVariant,
+                  color: Theme.of(context).colorScheme.secondaryContainer,
                 ),
           ),
           const SizedBox(height: 20),

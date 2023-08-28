@@ -144,7 +144,7 @@ class _BibleViewState extends State<BibleView> {
         TextSpan(
           text: item.verseId.toString() + ' ',
           style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                color: Theme.of(context).colorScheme.secondaryVariant,
+                color: Theme.of(context).colorScheme.secondaryContainer,
               ),
         ),
       );
@@ -204,7 +204,7 @@ class _BibleViewState extends State<BibleView> {
               child: Icon(
                 Iconsax.arrow_left_2,
                 size: 20,
-                color: Theme.of(context).colorScheme.secondaryVariant,
+                color: Theme.of(context).colorScheme.secondaryContainer,
               ),
             ),
           ),
@@ -222,7 +222,7 @@ class _BibleViewState extends State<BibleView> {
               child: Icon(
                 Iconsax.arrow_right_3,
                 size: 20,
-                color: Theme.of(context).colorScheme.secondaryVariant,
+                color: Theme.of(context).colorScheme.secondaryContainer,
               ),
             ),
           ),
@@ -242,7 +242,7 @@ class _BibleViewState extends State<BibleView> {
         child: Icon(
           FeatherIcons.chevronLeft,
           size: 27,
-          color: Theme.of(context).colorScheme.secondaryVariant,
+          color: Theme.of(context).colorScheme.secondaryContainer,
         ),
       );
     }
@@ -261,7 +261,7 @@ class _BibleViewState extends State<BibleView> {
           child: Icon(
             FeatherIcons.chevronRight,
             size: 27,
-            color: Theme.of(context).colorScheme.secondaryVariant,
+            color: Theme.of(context).colorScheme.secondaryContainer,
           ),
         ),
       );
@@ -378,7 +378,7 @@ class _BibleViewState extends State<BibleView> {
           size: 24,
           color: isBookmarked
               ? Theme.of(context).primaryColor
-              : Theme.of(context).colorScheme.secondaryVariant,
+              : Theme.of(context).colorScheme.secondaryContainer,
         ),
       ),
     );
@@ -394,7 +394,7 @@ class _BibleViewState extends State<BibleView> {
         child: Icon(
           FeatherIcons.settings,
           size: 24,
-          color: Theme.of(context).colorScheme.secondaryVariant,
+          color: Theme.of(context).colorScheme.secondaryContainer,
         ),
       ),
     );
@@ -493,7 +493,7 @@ class _BibleViewState extends State<BibleView> {
                         style: Theme.of(context).textTheme.headline6?.copyWith(
                               color: Theme.of(context)
                                   .colorScheme
-                                  .secondaryVariant,
+                                  .secondaryContainer,
                             ),
                       ),
                     ),
@@ -614,7 +614,7 @@ class _BibleViewState extends State<BibleView> {
           trailing: Text(
             translation.language!,
             style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                  color: Theme.of(context).colorScheme.secondaryVariant,
+                  color: Theme.of(context).colorScheme.secondaryContainer,
                 ),
           ),
         ),
@@ -658,7 +658,7 @@ class _BibleViewState extends State<BibleView> {
                         style: Theme.of(context).textTheme.headline6?.copyWith(
                               color: Theme.of(context)
                                   .colorScheme
-                                  .secondaryVariant,
+                                  .secondaryContainer,
                             ),
                       ),
                     ),

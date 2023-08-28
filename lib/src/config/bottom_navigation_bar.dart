@@ -38,7 +38,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
       onTap: widget.onTabTapped,
       backgroundColor: Theme.of(context).colorScheme.onSecondary,
       selectedItemColor: Theme.of(context).colorScheme.primary,
-      unselectedItemColor: Theme.of(context).colorScheme.secondaryVariant,
+      unselectedItemColor: Theme.of(context).colorScheme.secondaryContainer,
       selectedIconTheme: IconThemeData(color: Theme.of(context).primaryColor, size: 24),
       items: const [
         BottomNavigationBarItem(

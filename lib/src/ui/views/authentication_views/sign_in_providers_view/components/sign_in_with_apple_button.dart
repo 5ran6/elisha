@@ -37,7 +37,7 @@ class SignInWithAppleButton extends StatelessWidget {
         child: const FaIcon(FontAwesomeIcons.apple, size: 24),
       ),
       alignment: MainAxisAlignment.spaceAround,
-      textColor: Theme.of(context).colorScheme.secondaryVariant,
+      textColor: Theme.of(context).colorScheme.secondaryContainer,
       color: Theme.of(context).colorScheme.onSecondary,
       border: BorderSide(
         color: Theme.of(context).colorScheme.secondary,

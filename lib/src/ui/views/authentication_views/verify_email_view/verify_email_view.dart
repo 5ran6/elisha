@@ -91,14 +91,14 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
               width: 5,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Theme.of(context).colorScheme.secondaryVariant,
+                color: Theme.of(context).colorScheme.secondaryContainer,
               ),
             ),
             const SizedBox(width: 10),
             FaIcon(
               FontAwesomeIcons.solidEnvelope,
               size: 40,
-              color: Theme.of(context).colorScheme.secondaryVariant,
+              color: Theme.of(context).colorScheme.secondaryContainer,
             )
           ],
         ),

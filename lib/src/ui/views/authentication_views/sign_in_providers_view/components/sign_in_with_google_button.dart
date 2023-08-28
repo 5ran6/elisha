@@ -39,7 +39,7 @@ class SignInWithGoogleButton extends StatelessWidget {
           height: 24,
         ),
       ),
-      textColor: Theme.of(context).colorScheme.secondaryVariant,
+      textColor: Theme.of(context).colorScheme.secondaryContainer,
       color: Theme.of(context).colorScheme.onSecondary,
       border: BorderSide(
         color: Theme.of(context).colorScheme.secondary,

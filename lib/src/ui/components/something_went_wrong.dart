@@ -33,7 +33,7 @@ class SomethingWentWrong extends StatelessWidget {
           Text(
             'Something went wrong',
             style: Theme.of(context).textTheme.headline5!.copyWith(
-                  color: Theme.of(context).colorScheme.secondaryVariant,
+                  color: Theme.of(context).colorScheme.secondaryContainer,
                 ),
           ),
           const SizedBox(height: 20),

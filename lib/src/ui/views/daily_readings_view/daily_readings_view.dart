@@ -86,7 +86,7 @@ class DailyReadingsView extends StatelessWidget {
       Text(
         'Lectionary: ' + dailyReading.lectionary!,
         style: Theme.of(context).textTheme.headline6?.copyWith(
-              color: Theme.of(context).colorScheme.secondaryVariant,
+              color: Theme.of(context).colorScheme.secondaryContainer,
             ),
       ),
       const SizedBox(height: 30),
@@ -118,7 +118,7 @@ class DailyReadingsView extends StatelessWidget {
               child: Text(
                 reading.snippetAddress!,
                 style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                      color: Theme.of(context).colorScheme.secondaryVariant,
+                      color: Theme.of(context).colorScheme.secondaryContainer,
                     ),
               ),
             ),
@@ -171,7 +171,7 @@ class DailyReadingsView extends StatelessWidget {
                         child: Text(
                           'Cancel',
                           style: Theme.of(context).textTheme.headline6?.copyWith(
-                                color: Theme.of(context).colorScheme.secondaryVariant,
+                                color: Theme.of(context).colorScheme.secondaryContainer,
                               ),
                         ),
                       ),

@@ -32,7 +32,7 @@ class DontHaveAnAccountText extends StatelessWidget {
         Text(
           'Don\'t have an account? ',
           style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                color: Theme.of(context).colorScheme.secondaryVariant,
+                color: Theme.of(context).colorScheme.secondaryContainer,
                 fontWeight: FontWeight.w500,
               ),
         ),

@@ -34,7 +34,7 @@ class ErrorBody extends ConsumerWidget {
           child: Text(
             message,
             style: Theme.of(context).textTheme.headline6?.copyWith(
-                  color: Theme.of(context).colorScheme.secondaryVariant,
+                  color: Theme.of(context).colorScheme.secondaryContainer,
                 ),
           ),
         ),
