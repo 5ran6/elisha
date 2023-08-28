@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "208275060327-4ja58htb9525rl0qmd80o0dvljm6auob.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cpai.secretplaceandroidversiontwo",
+            "certificate_hash": "4a76db6f4a862c249b260358114abdefd43b0141"
+          }
+        },
+        {
           "client_id": "208275060327-7vmqq0uqccumtf0ifp1abhbi84a5fgb4.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -28,6 +36,14 @@
           "android_info": {
             "package_name": "com.cpai.secretplaceandroidversiontwo",
             "certificate_hash": "52437c188fc8a81c6faaa2b658f125b5ba848ff7"
+          }
+        },
+        {
+          "client_id": "208275060327-95o5ii2moped6jbes16projeq06mlout.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cpai.secretplaceandroidversiontwo",
+            "certificate_hash": "5e121c8a30646285f4755578874e1ac4d15c1867"
           }
         },
         {
@@ -56,10 +72,10 @@
               "client_type": 3
             },
             {
-              "client_id": "208275060327-f6dqs0adita6t7oitl0hki1msoq0vq03.apps.googleusercontent.com",
+              "client_id": "208275060327-b91m3uf88gssh3rgm8d753r4eec0ms4n.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.elisha.app"
+                "bundle_id": "com.cpai.secretplace"
               }
             }
           ]
@@ -108,10 +124,10 @@
               "client_type": 3
             },
             {
-              "client_id": "208275060327-f6dqs0adita6t7oitl0hki1msoq0vq03.apps.googleusercontent.com",
+              "client_id": "208275060327-b91m3uf88gssh3rgm8d753r4eec0ms4n.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.elisha.app"
+                "bundle_id": "com.cpai.secretplace"
               }
             }
           ]
@@ -152,10 +168,10 @@
               "client_type": 3
             },
             {
-              "client_id": "208275060327-f6dqs0adita6t7oitl0hki1msoq0vq03.apps.googleusercontent.com",
+              "client_id": "208275060327-b91m3uf88gssh3rgm8d753r4eec0ms4n.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.elisha.app"
+                "bundle_id": "com.cpai.secretplace"
               }
             }
           ]
@@ -196,10 +212,10 @@
               "client_type": 3
             },
             {
-              "client_id": "208275060327-f6dqs0adita6t7oitl0hki1msoq0vq03.apps.googleusercontent.com",
+              "client_id": "208275060327-b91m3uf88gssh3rgm8d753r4eec0ms4n.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.elisha.app"
+                "bundle_id": "com.cpai.secretplace"
               }
             }
           ]
