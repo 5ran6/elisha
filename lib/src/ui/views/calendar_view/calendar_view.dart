@@ -58,12 +58,14 @@ class _CalendarViewState extends State<CalendarView> {
 
   Widget _body(BuildContext context) {
     DateTime _firstDayNextMonth = DateTime.parse(
-        "${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + (DateTime.now().month + 1).toString() : DateTime.now().month + 1}-01");
+        "${DateTime.now().year}-${DateTime.now().month+1 < 10 ? '0' + (DateTime.now().month + 1).toString() : DateTime.now().month + 1}-01");
     DateTime _firstDayThisMonth = DateTime.parse(
         "${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + DateTime.now().month.toString() : DateTime.now().month}-01");
     int _lastDate = _firstDayNextMonth.difference(_firstDayThisMonth).inDays;
     DateTime _lastDayThisMonth = DateTime.parse(
         "${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + DateTime.now().month.toString() : DateTime.now().month}-${_lastDate < 10 ? '0' + _lastDate.toString() : _lastDate}");
+    print(_firstDayNextMonth);
+    print(_firstDayThisMonth);
     return Column(
       children: [
         Theme(
