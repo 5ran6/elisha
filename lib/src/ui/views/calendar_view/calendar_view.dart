@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import '../../../../utils/dev_functions.dart';
 import 'package:elisha/src/models/devotional.dart';
 import 'package:elisha/src/services/shared_pref_manager/shared_pref_manager.dart';
-import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../providers/api_provider.dart';
@@ -64,8 +63,6 @@ class _CalendarViewState extends State<CalendarView> {
     int _lastDate = _firstDayNextMonth.difference(_firstDayThisMonth).inDays;
     DateTime _lastDayThisMonth = DateTime.parse(
         "${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + DateTime.now().month.toString() : DateTime.now().month}-${_lastDate < 10 ? '0' + _lastDate.toString() : _lastDate}");
-    print(_firstDayNextMonth);
-    print(_firstDayThisMonth);
     return Column(
       children: [
         Theme(
