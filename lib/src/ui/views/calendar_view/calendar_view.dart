@@ -28,8 +28,6 @@ class _CalendarViewState extends State<CalendarView> {
   }
 
   void getDevotionalList() async {
-    print(
-        "${DateTime.now().month < 10 ? '0' + DateTime.now().month.toString() : DateTime.now().month}.${DateTime.now().year}");
     title = (await DevotionalItemsRetrieveClass.getTodayTitle((DateFormat('dd.MM.yyyy').format(DateTime.now()))))!;
     bibleText =
         (await DevotionalItemsRetrieveClass.getTodayFullPassage((DateFormat('dd.MM.yyyy').format(DateTime.now()))))!;
