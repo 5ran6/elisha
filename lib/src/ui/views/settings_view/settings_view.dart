@@ -157,104 +157,112 @@ class _SettingsPageState extends State<SettingsPage> {
                   const SizedBox(
                     height: 12,
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      if (Platform.isAndroid) {
-                        timeText == "Off" ? showDialogPicker(context) : FlutterAlarmClock.showAlarms();
-                      } else if (Platform.isIOS) {
-                        showDialogPicker(context);
-                      }
-                    },
-                    child: Card(
-                      child: Container(
-                        padding: const EdgeInsets.all(15),
-                        alignment: Alignment.centerLeft,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text('Daily Remainder', style: Theme.of(context).textTheme.headline6),
-                            Text(timeText,
-                                style: TextStyle(color: reminderValue ? Colors.grey[600] : Colors.grey[800])),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                  !Platform.isIOS
+                      ? GestureDetector(
+                          onTap: () {
+                            if (Platform.isAndroid) {
+                              timeText == "Off" ? showDialogPicker(context) : FlutterAlarmClock.showAlarms();
+                            } else if (Platform.isIOS) {
+                              showDialogPicker(context);
+                            }
+                          },
+                          child: Card(
+                            child: Container(
+                              padding: const EdgeInsets.all(15),
+                              alignment: Alignment.centerLeft,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text('Daily Remainder', style: Theme.of(context).textTheme.headline6),
+                                  Text(timeText,
+                                      style: TextStyle(color: reminderValue ? Colors.grey[600] : Colors.grey[800])),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      : const SizedBox(height: 0),
                   const SizedBox(height: 12),
-                  GestureDetector(
-                    onTap: () async {
-                      var isNotificationPolicyAccessGranted = (await FlutterDnd.isNotificationPolicyAccessGranted);
-                      if ((isNotificationPolicyAccessGranted) != null && isNotificationPolicyAccessGranted) {
-                        setState(() {
-                          isDNDPolicyAccessGranted = true;
-                        });
-                        if (isDoNotDisturbFunctionOn == true) {
-                          await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
-                          final prefs = await SharedPreferences.getInstance();
-                          await prefs.setString('dndInit', 'off');
-                          //PrefManager.setDND("off");
+                  !Platform.isIOS
+                      ? GestureDetector(
+                          onTap: () async {
+                            var isNotificationPolicyAccessGranted =
+                                (await FlutterDnd.isNotificationPolicyAccessGranted);
+                            if ((isNotificationPolicyAccessGranted) != null && isNotificationPolicyAccessGranted) {
+                              setState(() {
+                                isDNDPolicyAccessGranted = true;
+                              });
+                              if (isDoNotDisturbFunctionOn == true) {
+                                await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
+                                final prefs = await SharedPreferences.getInstance();
+                                await prefs.setString('dndInit', 'off');
+                                //PrefManager.setDND("off");
 
-                          setState(() {
-                            isDoNotDisturbFunctionOn = false;
-                          });
-                          saveDoNotDisturbStatusToSharedPref();
-                        } else {
-                          await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_NONE);
-                          final prefs = await SharedPreferences.getInstance();
-                          await prefs.setString('dndInit', 'on');
-                          //PrefManager.setDND("on");
+                                setState(() {
+                                  isDoNotDisturbFunctionOn = false;
+                                });
+                                saveDoNotDisturbStatusToSharedPref();
+                              } else {
+                                await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_NONE);
+                                final prefs = await SharedPreferences.getInstance();
+                                await prefs.setString('dndInit', 'on');
+                                //PrefManager.setDND("on");
 
-                          setState(() {
-                            isDoNotDisturbFunctionOn = true;
-                          });
-                          saveDoNotDisturbStatusToSharedPref();
-                        }
-                      } else {
-                        FlutterDnd.gotoPolicySettings();
-                        setState(() {
-                          isDNDPolicyAccessGranted = false;
-                        });
-                      }
-                    },
-                    child: Card(
-                      child: Container(
-                          padding: const EdgeInsets.all(15),
-                          alignment: Alignment.centerLeft,
-                          child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text('Do not disturb(Tap me)', style: Theme.of(context).textTheme.headline6),
-                                Text(isDoNotDisturbFunctionOn ? "On" : "Off", style: TextStyle(color: Colors.grey[600]))
-                              ],
-                            ),
-                            Transform.scale(
-                              scale: 1.2,
-                              child: Switch.adaptive(
-                                  activeColor: Colors.blueGrey,
-                                  activeTrackColor: Colors.blueGrey.withOpacity(0.4),
-                                  inactiveThumbColor: Colors.black87,
-                                  inactiveTrackColor: Colors.black12,
-                                  splashRadius: 50,
-                                  value: isDoNotDisturbFunctionOn,
-                                  onChanged: isDNDPolicyAccessGranted == false
-                                      ? null
-                                      : (value) {
-                                          setState(() {
-                                            isDoNotDisturbFunctionOn = value;
-                                          });
-                                          if (value == true) {
-                                            setDNDon();
-                                          } else {
-                                            setDNDoff();
-                                          }
-                                        }),
-                            ),
-                          ])),
-                    ),
-                  ),
+                                setState(() {
+                                  isDoNotDisturbFunctionOn = true;
+                                });
+                                saveDoNotDisturbStatusToSharedPref();
+                              }
+                            } else {
+                              FlutterDnd.gotoPolicySettings();
+                              setState(() {
+                                isDNDPolicyAccessGranted = false;
+                              });
+                            }
+                          },
+                          child: Card(
+                            child: Container(
+                                padding: const EdgeInsets.all(15),
+                                alignment: Alignment.centerLeft,
+                                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text('Do not disturb(Tap me)', style: Theme.of(context).textTheme.headline6),
+                                      Text(isDoNotDisturbFunctionOn ? "On" : "Off",
+                                          style: TextStyle(color: Colors.grey[600]))
+                                    ],
+                                  ),
+                                  Transform.scale(
+                                    scale: 1.2,
+                                    child: Switch.adaptive(
+                                        activeColor: Colors.blueGrey,
+                                        activeTrackColor: Colors.blueGrey.withOpacity(0.4),
+                                        inactiveThumbColor: Colors.black87,
+                                        inactiveTrackColor: Colors.black12,
+                                        splashRadius: 50,
+                                        value: isDoNotDisturbFunctionOn,
+                                        onChanged: isDNDPolicyAccessGranted == false
+                                            ? null
+                                            : (value) {
+                                                setState(() {
+                                                  isDoNotDisturbFunctionOn = value;
+                                                });
+                                                if (value == true) {
+                                                  setDNDon();
+                                                } else {
+                                                  setDNDoff();
+                                                }
+                                              }),
+                                  ),
+                                ])),
+                          ),
+                        )
+                      : const SizedBox(
+                          height: 0,
+                        ),
                 ],
               ),
             ),
