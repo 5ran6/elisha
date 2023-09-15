@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/ui/views/users_manual/users_manual_header_view.dart';
 
@@ -102,11 +104,17 @@ class _UsersManualViewState extends State<UsersManualView> {
                           Theme.of(context).textTheme.bodyText1?.copyWith(fontFamily: "Palatino", fontSize: fontSize),
                     ),
                     const SizedBox(height: 20),
-                    Text(
-                      'You have the ability to ensure that when Secret Place in on the foreground your device switches the do-not-disturb mode. You can trigger this functionality on the settings page.',
-                      style:
-                          Theme.of(context).textTheme.bodyText1?.copyWith(fontFamily: "Palatino", fontSize: fontSize),
-                    ),
+                    !Platform.isIOS
+                        ? Text(
+                            'You have the ability to ensure that when Secret Place in on the foreground your device switches the do-not-disturb mode. You can trigger this functionality on the settings page.',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1
+                                ?.copyWith(fontFamily: "Palatino", fontSize: fontSize),
+                          )
+                        : const SizedBox(
+                            height: 0,
+                          ),
                     const SizedBox(height: 20),
                     Text(
                       'You have the ability to share the entire devotional for the day as well as certain content like prayer burden and thought of the day via any social media platform on your device.',
