@@ -22,7 +22,7 @@ class _NotesListViewState extends State<NotesListView> with WidgetsBindingObserv
   void fetchAndUpdateListOfNotes() async {
     List<Note> noteInLocalDatabase = await DevotionalDBHelper.instance.getNotesFromDB();
     setState(() {
-      _noteList = noteInLocalDatabase;
+      _noteList = List.from(noteInLocalDatabase.reversed);
       _searchList = _noteList;
     });
   }
