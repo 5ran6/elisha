@@ -1,4 +1,5 @@
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:elisha/src/providers/api_provider.dart';
 
 import 'package:elisha/src/ui/views/note_view/note_view.dart';
 import 'package:flutter/foundation.dart';
@@ -153,7 +154,7 @@ class _NotesListViewState extends State<NotesListView> with WidgetsBindingObserv
                                 TextButton(
                                     onPressed: () {
                                       setState(() {
-                                        Remote
+                                        RemoteAPI.deleteNoteWithID(_noteList[index].id);
                                         DevotionalDBHelper.instance.deleteSelectedNote(_noteList[index]);
                                         fetchAndUpdateListOfNotes();
                                         Navigator.of(context).pop();
