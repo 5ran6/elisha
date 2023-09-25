@@ -79,12 +79,15 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
             children: [
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('Note', style: Theme.of(context).textTheme.headline3),
-                  ),
-                ]),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Note', style: Theme.of(context).textTheme.headline3),
+                    ),
+                  ],
+                ),
               ),
               Align(
                 alignment: Alignment.center,
@@ -95,12 +98,13 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                     width: MediaQuery.of(context).size.width - 15,
                     color: Colors.black87,
                     child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          noteDate,
-                          style: Theme.of(context).textTheme.headline4?.copyWith(
-                              fontWeight: FontWeight.bold, fontFamily: "Palatino", fontSize: 21, color: Colors.white),
-                        )),
+                      alignment: Alignment.center,
+                      child: Text(
+                        noteDate,
+                        style: Theme.of(context).textTheme.headline4?.copyWith(
+                            fontWeight: FontWeight.bold, fontFamily: "Palatino", fontSize: 21, color: Colors.white),
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -169,53 +173,55 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                 height: 5,
               ),
               GestureDetector(
-                  onTap: () async {
-                    final _prefs = await SharedPreferences.getInstance();
-                    await _prefs.setString('clearKey', 'clearNoteTitleAndReview');
-                    await _prefs.setString('dateSaveKey', todayDt);
-                    Note note;
+                onTap: () async {
+                  final _prefs = await SharedPreferences.getInstance();
+                  await _prefs.setString('clearKey', 'clearNoteTitleAndReview');
+                  await _prefs.setString('dateSaveKey', todayDt);
+                  Note note;
 
-                    if (_noteId != null) {
-                      await _prefs.setString('dateSaveKey', _noteId!);
-                      note = Note(title: noteTitleWidget.text, writeUp: noteWidget.text, date: noteDate, id: _noteId);
-                      DevotionalDBHelper.instance.updateNote(note);
-                    } else {
-                      String noteId = const Uuid().v4().toString();
-                      await _prefs.setString('dateSaveKey', noteId);
-                      note = Note(title: noteTitleWidget.text, writeUp: noteWidget.text, date: noteDate, id: noteId);
-                      DevotionalDBHelper.instance.insertNote(note);
-                      _noteId = noteId;
+                  if (_noteId != null) {
+                    await _prefs.setString('dateSaveKey', _noteId!);
+                    note = Note(title: noteTitleWidget.text, writeUp: noteWidget.text, date: noteDate, id: _noteId);
+                    DevotionalDBHelper.instance.updateNote(note);
+                  } else {
+                    String noteId = const Uuid().v4().toString();
+                    await _prefs.setString('dateSaveKey', noteId);
+                    note = Note(title: noteTitleWidget.text, writeUp: noteWidget.text, date: noteDate, id: noteId);
+                    DevotionalDBHelper.instance.insertNote(note);
+                    _noteId = noteId;
+                  }
+                  Fluttertoast.showToast(
+                      msg: "Note Saved", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
+                  try {
+                    if (user != null) {
+                      await sendNotePostRequest(note);
+                      Fluttertoast.showToast(
+                          msg: "Saved to firebase", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
                     }
-                    Fluttertoast.showToast(
-                        msg: "Note Saved", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
-                    try {
-                      if (user != null) {
-                        await sendNotePostRequest(note);
-                        Fluttertoast.showToast(
-                            msg: "Saved to firebase", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
-                      }
-                    } catch (e) {
-                      if (kDebugMode) {
-                        print("Error saving to firebase");
-                        Fluttertoast.showToast(
-                            msg: "Unable to save to firebase", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.BOTTOM);
-                      }
+                  } catch (e) {
+                    if (kDebugMode) {
+                      print("Error saving to firebase");
+                      Fluttertoast.showToast(
+                          msg: "Unable to save to firebase",
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.BOTTOM);
                     }
-                  },
-                  child: Container(
-                      width: MediaQuery.of(context).size.width - 40,
-                      height: 50,
-                      decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(15)),
-                      child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            "Save",
-                            style: Theme.of(context).textTheme.headline4?.copyWith(
-                                fontWeight: FontWeight.normal,
-                                fontFamily: "Palatino",
-                                fontSize: 22,
-                                color: Colors.white),
-                          ))))
+                  }
+                },
+                child: Container(
+                  width: MediaQuery.of(context).size.width - 40,
+                  height: 50,
+                  decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(15)),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Save",
+                      style: Theme.of(context).textTheme.headline4?.copyWith(
+                          fontWeight: FontWeight.normal, fontFamily: "Palatino", fontSize: 22, color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -227,13 +233,15 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
     final user = FirebaseAuth.instance.currentUser;
 
     final idToken = await user?.getIdToken();
-    final response = await http.post(Uri.parse("https://api.cpai-secretplace.com/api-secured/users/notes"),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': 'Bearer $idToken',
-        },
-        body: jsonEncode(note));
+    final response = await http.post(
+      Uri.parse("https://api.cpai-secretplace.com/api-secured/users/notes"),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $idToken',
+      },
+      body: jsonEncode(note),
+    );
 
     print(response.body);
     print(response.statusCode);
@@ -243,13 +251,15 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
     final user = FirebaseAuth.instance.currentUser;
 
     final idToken = await user?.getIdToken();
-    final response = await http.put(Uri.parse("https://api.cpai-secretplace.com/api-secured/users/notes"),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': 'Bearer $idToken',
-        },
-        body: jsonEncode(note));
+    final response = await http.put(
+      Uri.parse("https://api.cpai-secretplace.com/api-secured/users/notes"),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $idToken',
+      },
+      body: jsonEncode(note),
+    );
 
     print(response.body);
     print(response.statusCode);
@@ -282,10 +292,12 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
 
   void _prefillNoteFields(String noteId) async {
     Note note = await DevotionalDBHelper.instance.getNoteWithId(noteId);
-    setState(() {
-      noteWidget.text = note.writeUp;
-      noteTitleWidget.text = note.title;
-      noteDate = note.date;
-    });
+    setState(
+      () {
+        noteWidget.text = note.writeUp;
+        noteTitleWidget.text = note.title;
+        noteDate = note.date;
+      },
+    );
   }
 }

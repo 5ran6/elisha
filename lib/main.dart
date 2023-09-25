@@ -42,6 +42,8 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:elisha/src/config/constants.dart';
+import 'src/services/authentication_handlers/apple_sign_in.dart' as ios_auth_handler;
+import 'package:elisha/src/services/authentication_handlers/google_sign_in.dart' as android_auth_handler;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -61,8 +63,7 @@ Future<void> main() async {
     }
 
     /// Lock screen orientation to vertical
-    await SystemChrome.setPreferredOrientations(
-            [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
+    await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
         .then((_) {
       runApp(const ProviderScope(child: MyApp()));
     });
@@ -85,13 +86,14 @@ class _MyAppState extends State<MyApp> {
     String formattedMYNameAPI = DateFormat('MMMMyyyy').format(now);
     String formattedMYNameDB = DateFormat('MM.yyyy').format(now);
 
-    List<Devotional> lsdv = await DevotionalDBHelper.instance
-        .getDevotionalsDBForMonth(formattedMYNameDB);
+    List<Devotional> lsdv = await DevotionalDBHelper.instance.getDevotionalsDBForMonth(formattedMYNameDB);
     if (lsdv.isEmpty) {
-      List<Devotional> listOfDevs =
-          await RemoteAPI.getDevotionalsForMonth(formattedMYNameAPI);
+      List<Devotional> listOfDevs = await RemoteAPI.getDevotionalsForMonth(formattedMYNameAPI);
       DevotionalDBHelper.instance.insertDevotionalList(listOfDevs);
     }
+    Platform.isIOS
+        ? ios_auth_handler.sendNoteGetRequestAndSaveNotesToDB()
+        : android_auth_handler.sendNoteGetRequestAndSaveNotesToDB();
   }
 
   @override

@@ -153,6 +153,7 @@ class _NotesListViewState extends State<NotesListView> with WidgetsBindingObserv
                                 TextButton(
                                     onPressed: () {
                                       setState(() {
+                                        Remote
                                         DevotionalDBHelper.instance.deleteSelectedNote(_noteList[index]);
                                         fetchAndUpdateListOfNotes();
                                         Navigator.of(context).pop();
