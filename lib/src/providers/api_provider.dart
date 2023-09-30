@@ -65,8 +65,8 @@ class RemoteAPI {
   static Future<bool> deleteNoteWithID(noteID) async {
     try {
       var dio2 = Dio();
-      final response = await dio2.get(
-        'https://api.cpai-secretplace.com//api-secured/users/notes/$noteID',
+      final response = await dio2.delete(
+        'https://api.cpai-secretplace.com/api-secured/users/notes/$noteID',
         options: Options(
           responseType: ResponseType.json,
           followRedirects: false,
