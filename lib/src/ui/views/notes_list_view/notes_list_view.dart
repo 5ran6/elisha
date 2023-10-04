@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:elisha/src/providers/api_provider.dart';
 
 import 'package:elisha/src/ui/views/note_view/note_view.dart';
 import 'package:flutter/foundation.dart';
@@ -22,7 +25,7 @@ class _NotesListViewState extends State<NotesListView> with WidgetsBindingObserv
   void fetchAndUpdateListOfNotes() async {
     List<Note> noteInLocalDatabase = await DevotionalDBHelper.instance.getNotesFromDB();
     setState(() {
-      _noteList = noteInLocalDatabase;
+      _noteList = List.from(noteInLocalDatabase.reversed);
       _searchList = _noteList;
     });
   }
@@ -140,30 +143,53 @@ class _NotesListViewState extends State<NotesListView> with WidgetsBindingObserv
                     title: Text(_noteList[index].title),
                     trailing: Text(_noteList[index].date),
                     onLongPress: () => showDialog(
-                        context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                              title: const Text("Delete"),
-                              content: Text("Delete '${_noteList[index].title}'?"),
-                              actions: [
-                                TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text("Cancel")),
-                                TextButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        DevotionalDBHelper.instance.deleteSelectedNote(_noteList[index]);
-                                        fetchAndUpdateListOfNotes();
-                                        Navigator.of(context).pop();
-                                      });
-                                    },
-                                    child: const Text(
-                                      "Delete",
-                                      style: TextStyle(color: Colors.red),
-                                    ))
-                              ],
-                            )),
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text("Delete"),
+                        content: Text("Delete '${_noteList[index].title}'?"),
+                        actions: [
+                          TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text("Cancel")),
+                          TextButton(
+                            onPressed: () {
+                              try {
+                                RemoteAPI.deleteNoteWithID(_noteList[index].id);
+                                DevotionalDBHelper.instance.deleteSelectedNote(_noteList[index]);
+                                setState(
+                                  () {
+                                    fetchAndUpdateListOfNotes();
+                                    Navigator.of(context).pop();
+                                  },
+                                );
+                              } on SocketException catch (e) {
+                                Navigator.of(context).pop();
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: const Text("Error"),
+                                    content: const Text("No internet!"),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text("Ok"))
+                                    ],
+                                  ),
+                                );
+                              }
+                            },
+                            child: const Text(
+                              "Delete",
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     onTap: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => DevotionalNotePage(noteId: _noteList[index].id)));
