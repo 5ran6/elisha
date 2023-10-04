@@ -54,13 +54,20 @@ class _CalendarViewState extends State<CalendarView> {
   }
 
   Widget _body(BuildContext context) {
+    print(DateTime.now().month);
     DateTime _firstDayNextMonth = DateTime.parse(
-        "${DateTime.now().year}-${(DateTime.now().month+1 < 10 && DateTime.now().month != 12) ? '0' + (DateTime.now().month + 1).toString() : DateTime.now().month + 1}-01");
+      "${DateTime.now().year}-${(DateTime.now().month + 1 < 10 && DateTime.now().month != 12) ? '0' + (DateTime.now().month + 1).toString() : DateTime.now().month + 1}-01",
+    );
+
     DateTime _firstDayThisMonth = DateTime.parse(
-        "${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + DateTime.now().month.toString() : DateTime.now().month}-01");
+      "${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + DateTime.now().month.toString() : DateTime.now().month}-01",
+    );
+
     int _lastDate = _firstDayNextMonth.difference(_firstDayThisMonth).inDays;
     DateTime _lastDayThisMonth = DateTime.parse(
-        "${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + DateTime.now().month.toString() : DateTime.now().month}-${_lastDate < 10 ? '0' + _lastDate.toString() : _lastDate}");
+      "${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + DateTime.now().month.toString() : DateTime.now().month}-${_lastDate < 10 ? '0' + _lastDate.toString() : _lastDate}",
+    );
+    print("Here");
     return Column(
       children: [
         Theme(
@@ -79,7 +86,7 @@ class _CalendarViewState extends State<CalendarView> {
               initialDate: DateTime.parse(
                   "${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + DateTime.now().month.toString() : DateTime.now().month}-${DateTime.now().day < 10 ? '0' + DateTime.now().day.toString() : DateTime.now().day}"),
               firstDate: _firstDayThisMonth.subtract(_firstDayNextMonth.difference(DateTime.parse(
-                  "${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + (DateTime.now().month - 6).toString() : DateTime.now().month - 6}-01"))),
+                  "${DateTime.now().year}-${(DateTime.now().month - 6) < 10 ? '0' + (DateTime.now().month - 6).toString() : DateTime.now().month - 6}-01"))),
               lastDate: _lastDayThisMonth,
               onDateChanged: (date) {
                 checkDoubleClick(date);
