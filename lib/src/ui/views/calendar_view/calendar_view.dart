@@ -4,10 +4,10 @@ import '../../../../utils/dev_functions.dart';
 import 'package:elisha/src/models/devotional.dart';
 import 'package:elisha/src/services/shared_pref_manager/shared_pref_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
 import '../../../providers/api_provider.dart';
 import '../../../services/devotionalDB_helper.dart';
 import '../devotional_page/devotional_page.dart';
+
 
 class CalendarView extends StatefulWidget {
   const CalendarView({Key? key}) : super(key: key);
@@ -31,7 +31,6 @@ class _CalendarViewState extends State<CalendarView> {
     title = (await DevotionalItemsRetrieveClass.getTodayTitle((DateFormat('dd.MM.yyyy').format(DateTime.now()))))!;
     bibleText =
         (await DevotionalItemsRetrieveClass.getTodayFullPassage((DateFormat('dd.MM.yyyy').format(DateTime.now()))))!;
-    setState(() {});
   }
 
   @override
@@ -54,20 +53,9 @@ class _CalendarViewState extends State<CalendarView> {
   }
 
   Widget _body(BuildContext context) {
-    print(DateTime.now().month);
-    DateTime _firstDayNextMonth = DateTime.parse(
-      "${DateTime.now().year}-${(DateTime.now().month + 1 < 10 && DateTime.now().month != 12) ? '0' + (DateTime.now().month + 1).toString() : DateTime.now().month + 1}-01",
-    );
+    DateTime _dayOneNextMonth = DateTime.utc(DateTime.now().year, DateTime.now().month + 1);
+    DateTime _dayOneThisMonth = DateTime.utc(DateTime.now().year, DateTime.now().month);
 
-    DateTime _firstDayThisMonth = DateTime.parse(
-      "${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + DateTime.now().month.toString() : DateTime.now().month}-01",
-    );
-
-    int _lastDate = _firstDayNextMonth.difference(_firstDayThisMonth).inDays;
-    DateTime _lastDayThisMonth = DateTime.parse(
-      "${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + DateTime.now().month.toString() : DateTime.now().month}-${_lastDate < 10 ? '0' + _lastDate.toString() : _lastDate}",
-    );
-    print("Here");
     return Column(
       children: [
         Theme(
@@ -83,11 +71,9 @@ class _CalendarViewState extends State<CalendarView> {
             ),
           ),
           child: CalendarDatePicker(
-              initialDate: DateTime.parse(
-                  "${DateTime.now().year}-${DateTime.now().month < 10 ? '0' + DateTime.now().month.toString() : DateTime.now().month}-${DateTime.now().day < 10 ? '0' + DateTime.now().day.toString() : DateTime.now().day}"),
-              firstDate: _firstDayThisMonth.subtract(_firstDayNextMonth.difference(DateTime.parse(
-                  "${DateTime.now().year}-${(DateTime.now().month - 6) < 10 ? '0' + (DateTime.now().month - 6).toString() : DateTime.now().month - 6}-01"))),
-              lastDate: _lastDayThisMonth,
+              initialDate: null,
+              firstDate: _dayOneThisMonth,
+              lastDate: _dayOneNextMonth.subtract(const Duration(days: 1)),
               onDateChanged: (date) {
                 checkDoubleClick(date);
               }),

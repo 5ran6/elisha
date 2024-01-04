@@ -234,7 +234,7 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
 
     final idToken = await user?.getIdToken();
     final response = await http.post(
-      Uri.parse("https://api.cpai-secretplace.com/api-secured/users/notes"),
+      Uri.parse("https://cpai.guidetryb.com/api-secured/users/notes"),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -252,7 +252,7 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
 
     final idToken = await user?.getIdToken();
     final response = await http.put(
-      Uri.parse("https://api.cpai-secretplace.com/api-secured/users/notes"),
+      Uri.parse("https://cpai.guidetryb.com/api-secured/users/notes"),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',

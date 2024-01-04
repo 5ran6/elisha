@@ -16,7 +16,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-
 import 'package:dio/dio.dart';
 import 'package:elisha/src/models/note.dart';
 import 'package:elisha/src/services/devotionalDB_helper.dart';
@@ -78,7 +77,7 @@ void sendNoteGetRequestAndSaveNotesToDB() async {
 
   final idToken = await user?.getIdToken();
   var dio1 = Dio();
-  final response = await dio1.get('https://api.cpai-secretplace.com/api-secured/users/notes',
+  final response = await dio1.get('https://cpai.guidetryb.com/api-secured/users/notes',
       options: Options(
           responseType: ResponseType.json,
           headers: {"Authorization": "Bearer $idToken"},
@@ -93,5 +92,4 @@ void sendNoteGetRequestAndSaveNotesToDB() async {
   DevotionalDBHelper.instance.insertNoteListFromApiIntoDB(notesFromServer);
 
   print(notesFromServer);
-
 }

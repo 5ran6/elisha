@@ -8,7 +8,7 @@ import '../models/note.dart';
 class RemoteAPI {
   static Future<List<Note>> getUsersNotesFromFirebase() async {
     var dio = Dio();
-    final response = await dio.get('https://api.cpai-secretplace.com/api-secured/users/notes',
+    final response = await dio.get('https://cpai.guidetryb.com/api-secured/users/notes',
         options: Options(
           responseType: ResponseType.json,
           followRedirects: false,
@@ -20,7 +20,7 @@ class RemoteAPI {
 
   static Future<List<Devotional>> getDevotionalsForMonth(monthYearName) async {
     var dio = Dio();
-    final response = await dio.get('https://api.cpai-secretplace.com/api/devotionals?month=$monthYearName',
+    final response = await dio.get('https://cpai.guidetryb.com/api/devotionals?month=$monthYearName',
         options: Options(
           responseType: ResponseType.json,
           followRedirects: false,
@@ -33,7 +33,7 @@ class RemoteAPI {
 
   static Future<List<YouTubeVideoModel>> getYouTubeVideos() async {
     var dio1 = Dio();
-    final response1 = await dio1.get('https://api.cpai-secretplace.com/api/videos',
+    final response1 = await dio1.get('https://cpai.guidetryb.com/api/videos',
         options: Options(responseType: ResponseType.json, followRedirects: false, validateStatus: (status) => true));
 
     var json = response1.data;
@@ -43,7 +43,7 @@ class RemoteAPI {
   static Future<List<DevotionalPlan>> getDevotionalPlans() async {
     try {
       var dio2 = Dio();
-      final response2 = await dio2.get('https://api.cpai-secretplace.com/api/study-plans',
+      final response2 = await dio2.get('https://cpai.guidetryb.com/api/study-plans',
           options: Options(responseType: ResponseType.json, followRedirects: false, validateStatus: (status) => true));
 
       var json = response2.data;
@@ -55,7 +55,7 @@ class RemoteAPI {
 
   static Future<DevotionalPlan> getDevotionalPlanWithID(studyPlanID) async {
     var dio3 = Dio();
-    final response3 = await dio3.get('https://api.cpai-secretplace.com/api/study-plans/$studyPlanID',
+    final response3 = await dio3.get('https://cpai.guidetryb.com/api/study-plans/$studyPlanID',
         options: Options(responseType: ResponseType.json, followRedirects: false, validateStatus: (status) => true));
 
     var json = response3.data;
@@ -66,7 +66,7 @@ class RemoteAPI {
     try {
       var dio2 = Dio();
       final response = await dio2.delete(
-        'https://api.cpai-secretplace.com/api-secured/users/notes/$noteID',
+        'https://cpai.guidetryb.com/api-secured/users/notes/$noteID',
         options: Options(
           responseType: ResponseType.json,
           followRedirects: false,

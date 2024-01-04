@@ -67,18 +67,18 @@ Future<String> handleAppleSignIn(FirebaseAuth firebaseAuth) async {
 
     sendNoteGetRequestAndSaveNotesToDB();
 
-    print ("signed in with apple successfully");
+    print("signed in with apple successfully");
     return 'success';
   } catch (e) {
     await FirebaseCrashlytics.instance.recordError(e, null);
-    print ("sign in firebase error");
+    print("sign in firebase error");
 
     if (e is FirebaseAuthException) {
       return AuthenticationExceptions.fromFirebaseAuthError(e).toString();
     } else if (e is RangeError) {
       return '';
     }
-    print ("sign in with apple unsuccessful");
+    print("sign in with apple unsuccessful");
     return 'failed';
   }
 }
@@ -88,7 +88,7 @@ void sendNoteGetRequestAndSaveNotesToDB() async {
 
   final idToken = await user?.getIdToken();
   var dio1 = Dio();
-  final response = await dio1.get('https://api.cpai-secretplace.com/api-secured/users/notes',
+  final response = await dio1.get('https://cpai.guidetryb.com/api-secured/users/notes',
       options: Options(
           responseType: ResponseType.json,
           headers: {"Authorization": "Bearer $idToken"},
@@ -98,5 +98,4 @@ void sendNoteGetRequestAndSaveNotesToDB() async {
   var json = response.data;
   List<Note> notesFromServer = noteFromJson(json);
   DevotionalDBHelper.instance.insertNoteListFromApiIntoDB(notesFromServer);
-
 }

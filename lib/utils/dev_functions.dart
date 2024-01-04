@@ -2,22 +2,18 @@ import '../src/models/devotional.dart';
 import '../src/services/devotionalDB_helper.dart';
 
 class DevotionalItemsRetrieveClass {
-
   static Future<String?> getTodayVerse(String todayDate) async {
-    List<Devotional> devs = await DevotionalDBHelper.instance
-        .getDevotionalsDB();
+    List<Devotional> devs = await DevotionalDBHelper.instance.getDevotionalsDB();
     for (int i = 0; i < devs.length; i++) {
       if (devs[i].date == todayDate) {
         return devs[i].memoryVerse;
       }
     }
     return null;
-
   }
 
   static Future<String?> getTodayVersePassage(String todayDate) async {
-    List<Devotional> devs = await DevotionalDBHelper.instance
-        .getDevotionalsDB();
+    List<Devotional> devs = await DevotionalDBHelper.instance.getDevotionalsDB();
     for (int i = 0; i < devs.length; i++) {
       if (devs[i].date == todayDate) {
         return devs[i].memoryVersePassage;
@@ -27,8 +23,7 @@ class DevotionalItemsRetrieveClass {
   }
 
   static Future<String?> getTodayTitle(String todayDate) async {
-    List<Devotional> devs = await DevotionalDBHelper.instance
-        .getDevotionalsDB();
+    List<Devotional> devs = await DevotionalDBHelper.instance.getDevotionalsDB();
     for (int i = 0; i < devs.length; i++) {
       if (devs[i].date == todayDate) {
         return devs[i].title;
@@ -38,8 +33,7 @@ class DevotionalItemsRetrieveClass {
   }
 
   static Future<String?> getTodayFullPassage(String todayDate) async {
-    List<Devotional> devs = await DevotionalDBHelper.instance
-        .getDevotionalsDB();
+    List<Devotional> devs = await DevotionalDBHelper.instance.getDevotionalsDB();
     for (int i = 0; i < devs.length; i++) {
       if (devs[i].date == todayDate) {
         return devs[i].fullPassage;
@@ -49,8 +43,7 @@ class DevotionalItemsRetrieveClass {
   }
 
   static Future<String?> getTodayMainWriteUp(String todayDate) async {
-    List<Devotional> devs = await DevotionalDBHelper.instance
-        .getDevotionalsDB();
+    List<Devotional> devs = await DevotionalDBHelper.instance.getDevotionalsDB();
     for (int i = 0; i < devs.length; i++) {
       if (devs[i].date == todayDate) {
         return devs[i].fullText;
@@ -60,8 +53,7 @@ class DevotionalItemsRetrieveClass {
   }
 
   static Future<String?> getTodayPrayer(String todayDate) async {
-    List<Devotional> devs = await DevotionalDBHelper.instance
-        .getDevotionalsDB();
+    List<Devotional> devs = await DevotionalDBHelper.instance.getDevotionalsDB();
     for (int i = 0; i < devs.length; i++) {
       if (devs[i].date == todayDate) {
         return devs[i].prayerBurden;
@@ -71,8 +63,7 @@ class DevotionalItemsRetrieveClass {
   }
 
   static Future<String?> getTodayThoughtOfTheDay(String todayDate) async {
-    List<Devotional> devs = await DevotionalDBHelper.instance
-        .getDevotionalsDB();
+    List<Devotional> devs = await DevotionalDBHelper.instance.getDevotionalsDB();
     for (int i = 0; i < devs.length; i++) {
       if (devs[i].date == todayDate) {
         return devs[i].thoughtOfTheDay;
@@ -82,8 +73,7 @@ class DevotionalItemsRetrieveClass {
   }
 
   static Future<String?> getImage(String todayDate) async {
-    List<Devotional> devs = await DevotionalDBHelper.instance
-        .getDevotionalsDB();
+    List<Devotional> devs = await DevotionalDBHelper.instance.getDevotionalsDB();
     for (int i = 0; i < devs.length; i++) {
       if (devs[i].date == todayDate) {
         return devs[i].image;
@@ -91,9 +81,9 @@ class DevotionalItemsRetrieveClass {
     }
     return null;
   }
+
   static Future<String?> getMemoryVerseImage(String todayDate) async {
-    List<Devotional> devs = await DevotionalDBHelper.instance
-        .getDevotionalsDB();
+    List<Devotional> devs = await DevotionalDBHelper.instance.getDevotionalsDB();
     for (int i = 0; i < devs.length; i++) {
       if (devs[i].date == todayDate) {
         return devs[i].memoryVerseImageToShare;
@@ -101,9 +91,9 @@ class DevotionalItemsRetrieveClass {
     }
     return null;
   }
+
   static Future<String?> getThoughtOfTheDayImage(String todayDate) async {
-    List<Devotional> devs = await DevotionalDBHelper.instance
-        .getDevotionalsDB();
+    List<Devotional> devs = await DevotionalDBHelper.instance.getDevotionalsDB();
     for (int i = 0; i < devs.length; i++) {
       if (devs[i].date == todayDate) {
         return devs[i].thoughtOfTheDayImageToShare;
@@ -111,9 +101,9 @@ class DevotionalItemsRetrieveClass {
     }
     return null;
   }
+
   static Future<String?> getPrayerBurdenImage(String todayDate) async {
-    List<Devotional> devs = await DevotionalDBHelper.instance
-        .getDevotionalsDB();
+    List<Devotional> devs = await DevotionalDBHelper.instance.getDevotionalsDB();
     for (int i = 0; i < devs.length; i++) {
       if (devs[i].date == todayDate) {
         return devs[i].prayerBurdenImageToShare;
@@ -123,8 +113,7 @@ class DevotionalItemsRetrieveClass {
   }
 
   static Future<String?> getBibleInYear(String todayDate) async {
-    List<Devotional> devs = await DevotionalDBHelper.instance
-        .getDevotionalsDB();
+    List<Devotional> devs = await DevotionalDBHelper.instance.getDevotionalsDB();
     for (int i = 0; i < devs.length; i++) {
       if (devs[i].date == todayDate) {
         return devs[i].bibleInAYear;
@@ -132,5 +121,4 @@ class DevotionalItemsRetrieveClass {
     }
     return null;
   }
-
 }
