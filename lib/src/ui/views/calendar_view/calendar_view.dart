@@ -8,7 +8,6 @@ import '../../../providers/api_provider.dart';
 import '../../../services/devotionalDB_helper.dart';
 import '../devotional_page/devotional_page.dart';
 
-
 class CalendarView extends StatefulWidget {
   const CalendarView({Key? key}) : super(key: key);
 
@@ -54,7 +53,7 @@ class _CalendarViewState extends State<CalendarView> {
 
   Widget _body(BuildContext context) {
     DateTime _dayOneNextMonth = DateTime.utc(DateTime.now().year, DateTime.now().month + 1);
-    DateTime _dayOneThisMonth = DateTime.utc(DateTime.now().year, DateTime.now().month);
+    DateTime _firstDate = DateTime.utc(DateTime.now().year - 1);
 
     return Column(
       children: [
@@ -72,7 +71,7 @@ class _CalendarViewState extends State<CalendarView> {
           ),
           child: CalendarDatePicker(
               initialDate: null,
-              firstDate: _dayOneThisMonth,
+              firstDate: _firstDate,
               lastDate: _dayOneNextMonth.subtract(const Duration(days: 1)),
               onDateChanged: (date) {
                 checkDoubleClick(date);
