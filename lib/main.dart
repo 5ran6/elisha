@@ -22,7 +22,6 @@ import 'dart:ui';
 import 'package:elisha/src/providers/theme_manager_provider.dart';
 import 'package:elisha/src/services/shared_pref_manager/shared_pref_manager.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-//import 'package:provider/provider.dart';
 import 'package:elisha/src/models/devotional.dart';
 import 'package:elisha/src/providers/api_provider.dart';
 import 'package:elisha/src/services/devotionalDB_helper.dart';
