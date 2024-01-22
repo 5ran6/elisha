@@ -70,7 +70,7 @@ class _CalendarViewState extends State<CalendarView> {
             ),
           ),
           child: CalendarDatePicker(
-              initialDate: null,
+              initialDate: DateTime.now(),
               firstDate: _firstDate,
               lastDate: _dayOneNextMonth.subtract(const Duration(days: 1)),
               onDateChanged: (date) {
