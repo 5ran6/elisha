@@ -87,7 +87,10 @@ class _NotesListViewState extends State<NotesListView> with WidgetsBindingObserv
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
+        child: Icon(
+          Icons.add,
+          color: Theme.of(context).brightness == Brightness.light ? CantonColors.white : null,
+        ),
         backgroundColor: Theme.of(context).primaryColor,
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) => const DevotionalNotePage()));
@@ -140,7 +143,12 @@ class _NotesListViewState extends State<NotesListView> with WidgetsBindingObserv
                 itemCount: _noteList.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    title: Text(_noteList[index].title),
+                    title: Text(
+                      _noteList[index].title,
+                      style: Theme.of(context).brightness == Brightness.light
+                          ? TextStyle(color: CantonColors.textPrimary)
+                          : null,
+                    ),
                     trailing: Text(_noteList[index].date),
                     onLongPress: () => showDialog(
                       context: context,

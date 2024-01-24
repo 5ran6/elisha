@@ -88,7 +88,7 @@ void sendNoteGetRequestAndSaveNotesToDB() async {
   print('josn..................');
   print(json);
   print(response.statusCode);
-  List<Note> notesFromServer = noteFromJson(json);
+  List<Note> notesFromServer = json == "" ? [] : noteFromJson(json);
   DevotionalDBHelper.instance.insertNoteListFromApiIntoDB(notesFromServer);
 
   print(notesFromServer);
