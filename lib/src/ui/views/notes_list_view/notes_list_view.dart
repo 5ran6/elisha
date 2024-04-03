@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 
 import '../../../models/note.dart';
 import '../../../services/devotionalDB_helper.dart';
+import 'widgets/widgets.dart';
 
 class NotesListView extends StatefulWidget {
   const NotesListView({Key? key}) : super(key: key);
@@ -17,8 +18,6 @@ class NotesListView extends StatefulWidget {
 }
 
 class _NotesListViewState extends State<NotesListView> with WidgetsBindingObserver {
-  final controller = TextEditingController();
-
   var _noteList = List<Note>.empty();
   var _searchList = List<Note>.empty();
 
@@ -98,35 +97,18 @@ class _NotesListViewState extends State<NotesListView> with WidgetsBindingObserv
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: [_header(), _searchBar(), _buildNoteList(context)],
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(top: 17, left: 17, right: 17),
+              child: ViewHeaderTwo(
+                title: 'Notes',
+                backButton: false,
+              ),
+            ),
+            SearchBox(onChanged: searchNote),
+            _buildNoteList(context)
+          ],
         ),
-      ),
-    );
-  }
-
-  Widget _header() {
-    return Container(
-      padding: const EdgeInsets.only(top: 17, left: 17, right: 17),
-      child: const ViewHeaderTwo(
-        title: 'Notes',
-        backButton: false,
-      ),
-    );
-  }
-
-  Widget _searchBar() {
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: TextField(
-        controller: controller,
-        decoration: InputDecoration(
-            prefixIcon: const Icon(Icons.search),
-            hintText: 'Note title',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(30),
-              borderSide: BorderSide(color: Theme.of(context).primaryColor),
-            )),
-        onChanged: searchNote,
       ),
     );
   }
@@ -145,11 +127,14 @@ class _NotesListViewState extends State<NotesListView> with WidgetsBindingObserv
                   return ListTile(
                     title: Text(
                       _noteList[index].title,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                    trailing: Text(
+                      _noteList[index].date,
                       style: Theme.of(context).brightness == Brightness.light
                           ? TextStyle(color: CantonColors.textPrimary)
                           : null,
                     ),
-                    trailing: Text(_noteList[index].date),
                     onLongPress: () => showDialog(
                       context: context,
                       builder: (BuildContext context) => AlertDialog(
@@ -206,9 +191,7 @@ class _NotesListViewState extends State<NotesListView> with WidgetsBindingObserv
                 })
             : Text(
                 'No Notes Saved',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(),
               ),
       ],
     );

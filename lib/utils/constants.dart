@@ -11,7 +11,6 @@ final kDefaultHorizontalPadding = ScreenUtil().setWidth(20);
 final kDefaultVerticalPadding = ScreenUtil().setHeight(10);
 final double kDefaultButtonRadius = ScreenUtil().radius(30);
 final onBoardingButtonStyle = ButtonStyle(
-  // minimumSize: MaterialBorder,
   backgroundColor: MaterialStateProperty.all<Color>(kPrimaryColor),
   shape: MaterialStateProperty.all<OutlinedBorder>(
     const CircleBorder(),
