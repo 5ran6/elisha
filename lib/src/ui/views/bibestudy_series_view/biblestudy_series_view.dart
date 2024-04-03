@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/ui/views/bibestudy_series_view/biblestudy_series_view_header.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import '../../../models/devotional_plans.dart';

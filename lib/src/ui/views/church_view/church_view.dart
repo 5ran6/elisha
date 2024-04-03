@@ -1,25 +1,17 @@
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:collection/collection.dart';
-import 'package:elisha/src/models/daily_reading.dart';
 import 'package:elisha/src/models/youTube_video.dart';
 import 'package:elisha/src/providers/api_provider.dart';
 import 'package:elisha/src/services/shared_pref_manager/shared_pref_manager.dart';
 import 'package:elisha/src/ui/views/church_view/components/church_view_header.dart';
-import 'package:elisha/src/ui/views/church_view/components/daily_readings_card.dart';
-import 'package:elisha/src/ui/views/church_view/components/sunday_mass_card.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_dnd/flutter_dnd.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class ChurchView extends StatefulWidget {
-  //const ChurchView(this.reading, {Key? key}) : super(key: key);
-  const ChurchView();
-
-  //final DailyReading reading;
+  const ChurchView({Key? key}) : super(key: key);
 
   @override
   _ChurchViewState createState() => _ChurchViewState();
@@ -37,23 +29,19 @@ class _ChurchViewState extends State<ChurchView> {
 
     final bool dndStatus = prefs.getBool('sharedPrefStatus') ?? false;
     if (dndStatus) {
-      await FlutterDnd.setInterruptionFilter(
-          FlutterDnd.INTERRUPTION_FILTER_ALL);
+      await FlutterDnd.setInterruptionFilter(FlutterDnd.INTERRUPTION_FILTER_ALL);
     }
   }
 
   void assertLoactionAndSetDND() async {
     final sharedPrefs = await SharedPreferences.getInstance();
-    String? storedLocationOfCurrentView =
-        sharedPrefs.getString('messageClipkey');
+    String? storedLocationOfCurrentView = sharedPrefs.getString('messageClipkey');
 
     if (storedLocationOfCurrentView != null) {
       // String s = PrefManager.getDND() ?? "off";
       // if (s == "on") {}
-      var isNotificationPolicyAccessGranted =
-          (await FlutterDnd.isNotificationPolicyAccessGranted);
-      if ((isNotificationPolicyAccessGranted) != null &&
-          isNotificationPolicyAccessGranted) {
+      var isNotificationPolicyAccessGranted = (await FlutterDnd.isNotificationPolicyAccessGranted);
+      if ((isNotificationPolicyAccessGranted) != null && isNotificationPolicyAccessGranted) {
         setDoNotDisturbOffWIthAppOnMessageClipView();
       }
     }
@@ -71,8 +59,7 @@ class _ChurchViewState extends State<ChurchView> {
 
     List<String> colasi = videGroups.keys.toList();
 
-    List<CollapsibleTile> cola =
-        colasi.map((video) => CollapsibleTile(tileTitle: video)).toList();
+    List<CollapsibleTile> cola = colasi.map((video) => CollapsibleTile(tileTitle: video)).toList();
 
     setState(() {
       _basicTiles = cola;
@@ -102,9 +89,7 @@ class _ChurchViewState extends State<ChurchView> {
         const ChurchViewHeader(),
         const SizedBox(height: 20),
         Column(
-          children: _basicTiles
-              .map((tile) => CollapsibleTileWidget(tile: tile))
-              .toList(),
+          children: _basicTiles.map((tile) => CollapsibleTileWidget(tile: tile)).toList(),
         )
       ],
     );
@@ -161,8 +146,7 @@ class _CollapsibleTileWidgetState extends State<CollapsibleTileWidget> {
             initialVideoId: video.youtubeVideoId,
             params: YoutubePlayerParams(
               startAt: Duration(seconds: video.startAt ?? 2000),
-              endAt:
-                  video.endAt != null ? Duration(seconds: video.endAt!) : null,
+              endAt: video.endAt != null ? Duration(seconds: video.endAt!) : null,
               showControls: false,
               showFullscreenButton: true,
               //desktopMode: true,
@@ -177,8 +161,7 @@ class _CollapsibleTileWidgetState extends State<CollapsibleTileWidget> {
     });
   }
 
-  Future<List<YoutubePlayerController>?> getControllersForGroup(
-      String groupName) async {
+  Future<List<YoutubePlayerController>?> getControllersForGroup(String groupName) async {
     List<YouTubeVideoModel>? messageClips = await getVideosForGroup(groupName);
 
     List<YoutubePlayerController>? controllers = messageClips
@@ -186,8 +169,7 @@ class _CollapsibleTileWidgetState extends State<CollapsibleTileWidget> {
             initialVideoId: video.youtubeVideoId,
             params: YoutubePlayerParams(
               startAt: Duration(seconds: video.startAt ?? 2000),
-              endAt:
-                  video.endAt != null ? Duration(seconds: video.endAt!) : null,
+              endAt: video.endAt != null ? Duration(seconds: video.endAt!) : null,
               showControls: false,
               showFullscreenButton: true,
               //desktopMode: true,
@@ -210,12 +192,19 @@ class _CollapsibleTileWidgetState extends State<CollapsibleTileWidget> {
     final title = widget.tile.tileTitle;
 
     if (_videoClips.isEmpty) {
-      return ListTile(title: Text(title));
+      return ListTile(
+          title: Text(
+        title,
+        style: TextStyle(color: PrefManager.getTheme() == "Dark" ? Colors.white : Colors.black),
+      ));
     } else {
       return Padding(
         padding: const EdgeInsets.all(5.0),
         child: ExpansionTile(
-            title: Text(title),
+            title: Text(
+              title,
+              style: TextStyle(color: PrefManager.getTheme() == "Dark" ? Colors.white : Colors.black),
+            ),
             children: _videoClips.asMap().entries.map((entry) {
               final index = entry.key;
               final video = entry.value;
@@ -225,37 +214,27 @@ class _CollapsibleTileWidgetState extends State<CollapsibleTileWidget> {
                 onTap: () {
                   var startTime = Duration(seconds: video.startAt ?? 2000);
                   controller.load(video.youtubeVideoId,
-                      startAt: startTime,
-                      endAt: video.endAt != null
-                          ? Duration(seconds: video.endAt!)
-                          : null);
+                      startAt: startTime, endAt: video.endAt != null ? Duration(seconds: video.endAt!) : null);
                 },
                 child: Card(
                   color: CantonMethods.alternateCanvasColorType2(context),
                   shape: CantonSmoothBorder.defaultBorder(),
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 17, vertical: 22),
+                    padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 22),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        AspectRatio(
-                          aspectRatio: 16 / 9,
-                          child: controller != null
-                              ? YoutubePlayerIFrame(controller: controller)
-                              : const Center(
-                                  child: CircularProgressIndicator()),
-                        ),
+                        AspectRatio(aspectRatio: 16 / 9, child: YoutubePlayerIFrame(controller: controller)),
                         const SizedBox(height: 15),
                         Text(
                           video.title + ' by ' + video.ministering,
-                          style: Theme.of(context).textTheme.headline4,
+                          style: Theme.of(context).textTheme.headlineMedium,
                         ),
                         const SizedBox(height: 7),
                         Text(
                           video.shortDesc,
-                          style: Theme.of(context).textTheme.overline?.copyWith(
+                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
                                 letterSpacing: 2,
                                 fontWeight: FontWeight.w500,
                                 color: Theme.of(context).primaryColor,
@@ -266,7 +245,7 @@ class _CollapsibleTileWidgetState extends State<CollapsibleTileWidget> {
                           children: [
                             Text(
                               'Get full message ',
-                              style: Theme.of(context).textTheme.bodyText1,
+                              style: Theme.of(context).textTheme.bodyLarge,
                             ),
                             RichText(
                               text: TextSpan(
@@ -277,7 +256,7 @@ class _CollapsibleTileWidgetState extends State<CollapsibleTileWidget> {
                                   ),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () async {
-                                      await launch(video.youtubeVideoUrl);
+                                      await launchUrl(video.youtubeVideoUrl as Uri);
                                     }),
                             ),
                           ],

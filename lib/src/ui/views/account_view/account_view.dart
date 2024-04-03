@@ -1,25 +1,6 @@
-/*
-Elisha iOS & Android App
-Copyright (C) 2021 Elisha
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
- any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
-
 import 'package:canton_design_system/canton_design_system.dart';
 import 'package:elisha/src/ui/views/authentication_views/auth_selection_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:elisha/src/providers/authentication_providers/authentication_repository_provider.dart';
@@ -95,15 +76,14 @@ class AccountView extends StatelessWidget {
       borderRadius: CantonSmoothBorder.smallBorder().borderRadius,
       containerWidth: MediaQuery.of(context).size.width / 2 - 34,
       onPressed: () async {
-        String response =
-            await context.read(authenticationRepositoryProvider).signOut();
-        print("this is response: " + response);
+        String response = await context.read(authenticationRepositoryProvider).signOut();
         if (response == "success") {
-          print("logged out successfully");
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const AuthenticationSelectionScreen()));
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AuthenticationSelectionScreen(),
+            ),
+          );
         } else {
           Fluttertoast.showToast(msg: "Failed signing out. Try again");
         }

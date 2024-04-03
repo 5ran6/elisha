@@ -290,7 +290,12 @@ class _SettingsPageState extends State<SettingsPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 RadioListTile(
-                    title: const Text("System default"),
+                    title: Text(
+                      "System default",
+                      style: TextStyle(
+                        color: themeText == "Dark" ? Colors.white : Colors.black,
+                      ),
+                    ),
                     value: 0,
                     groupValue: radioValue,
                     onChanged: (value) {
@@ -300,7 +305,12 @@ class _SettingsPageState extends State<SettingsPage> {
                       });
                     }),
                 RadioListTile(
-                    title: const Text("Light"),
+                    title: Text(
+                      "Light",
+                      style: TextStyle(
+                        color: themeText == "Dark" ? Colors.white : Colors.black,
+                      ),
+                    ),
                     value: 1,
                     groupValue: radioValue,
                     onChanged: (value) {
@@ -310,7 +320,12 @@ class _SettingsPageState extends State<SettingsPage> {
                       });
                     }),
                 RadioListTile(
-                    title: const Text("Dark"),
+                    title: Text(
+                      "Dark",
+                      style: TextStyle(
+                        color: themeText == "Dark" ? Colors.white : Colors.black,
+                      ),
+                    ),
                     value: 2,
                     groupValue: radioValue,
                     onChanged: (value) {

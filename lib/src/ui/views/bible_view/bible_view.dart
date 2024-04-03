@@ -22,6 +22,7 @@ import 'package:flowder/flowder.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:canton_design_system/canton_design_system.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -41,10 +42,12 @@ import 'package:elisha/src/ui/components/unexpected_error.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
+import 'widgets/widgets.dart';
+
 class BibleView extends StatefulWidget {
   final String? biblePassage;
 
-  const BibleView({this.biblePassage});
+  const BibleView({Key? key, this.biblePassage}) : super(key: key);
 
   @override
   _BibleViewState createState() => _BibleViewState();
@@ -99,9 +102,7 @@ class _BibleViewState extends State<BibleView> {
                   },
                   loading: () => Container(),
                   data: (chapter) {
-                    isBookmarked = context
-                        .read(bookmarkedChaptersProvider)
-                        .contains(chapter);
+                    isBookmarked = context.read(bookmarkedChaptersProvider).contains(chapter);
                     return _content(
                       context,
                       translations,
@@ -118,173 +119,31 @@ class _BibleViewState extends State<BibleView> {
     );
   }
 
-  Widget _content(BuildContext context, List<Translation> translations,
-      List<Book> books, Chapter chapter) {
-    List<Widget> children = [const SizedBox(height: 10)];
-    List<InlineSpan> spans = [];
-    children.add(
-      Container(
-        margin: const EdgeInsets.symmetric(horizontal: 32),
-        child: Text.rich(
-          TextSpan(
-            children: spans,
-          ),
-          style: Theme.of(context).textTheme.headline5!.copyWith(
-                fontWeight: FontWeight.w400,
-                fontSize: 21,
-                height: 1.97,
-              ),
-        ),
-      ),
-    );
-    for (int i = 0; i < chapter.verses!.length; i++) {
-      var item = chapter.verses![i];
-
-      spans.add(
-        TextSpan(
-          text: item.verseId.toString() + ' ',
-          style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                color: Theme.of(context).colorScheme.secondaryContainer,
-              ),
-        ),
-      );
-
-      spans.add(TextSpan(text: item.text));
-
-      if (!(i == chapter.verses!.length - 1)) {
-        spans.add(const TextSpan(text: ' '));
-      }
-    }
-
-    children.add(const SizedBox(height: 40));
-
-    Widget reader() {
-      return SliverToBoxAdapter(
-        child: GestureDetector(
-          onHorizontalDragUpdate: (details) {
-            HapticFeedback.lightImpact();
-
-            setState(() {
-              bool dir = details.delta.dx < 0 ? false : true;
-              context
-                  .read(bibleRepositoryProvider)
-                  .goToNextPreviousChapter(context, dir);
-            });
-          },
-          child: Column(children: children),
-        ),
-      );
-    }
-
+  Widget _content(BuildContext context, List<Translation> translations, List<Book> books, Chapter chapter) {
     return Scrollbar(
       controller: _scrollController,
       child: CustomScrollView(
         controller: _scrollController,
-        slivers: [_header(context, translations, books, chapter), reader()],
+        slivers: [_header(context, translations, books, chapter), BibleReader(chapter: chapter)],
       ),
     );
   }
 
-  Widget _header(BuildContext context, List<Translation> translations,
-      List<Book> books, Chapter chapter) {
-    // ignore: unused_element
-    Widget _quickChapterNavigationControls(BuildContext context) {
-      return Row(
-        children: [
-          GestureDetector(
-            onTap: () {
-              HapticFeedback.lightImpact();
-
-              context
-                  .read(bibleRepositoryProvider)
-                  .goToNextPreviousChapter(context, true);
-            },
-            child: Container(
-              padding: const EdgeInsets.all(8.0),
-              child: Icon(
-                Iconsax.arrow_left_2,
-                size: 20,
-                color: Theme.of(context).colorScheme.secondaryContainer,
-              ),
-            ),
-          ),
-          const SizedBox(width: 7),
-          GestureDetector(
-            onTap: () {
-              HapticFeedback.lightImpact();
-
-              context
-                  .read(bibleRepositoryProvider)
-                  .goToNextPreviousChapter(context, false);
-            },
-            child: Container(
-              padding: const EdgeInsets.all(8.0),
-              child: Icon(
-                Iconsax.arrow_right_3,
-                size: 20,
-                color: Theme.of(context).colorScheme.secondaryContainer,
-              ),
-            ),
-          ),
-        ],
-      );
-    }
-
-    Widget _previousChapterButton(BuildContext context) {
-      return GestureDetector(
-        onTap: () {
-          HapticFeedback.lightImpact();
-
-          context
-              .read(bibleRepositoryProvider)
-              .goToNextPreviousChapter(context, true);
-        },
-        child: Icon(
-          FeatherIcons.chevronLeft,
-          size: 27,
-          color: Theme.of(context).colorScheme.secondaryContainer,
-        ),
-      );
-    }
-
-    Widget _nextChapterButton(BuildContext context) {
-      return GestureDetector(
-        onTap: () {
-          HapticFeedback.lightImpact();
-
-          context
-              .read(bibleRepositoryProvider)
-              .goToNextPreviousChapter(context, false);
-        },
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 17.0),
-          child: Icon(
-            FeatherIcons.chevronRight,
-            size: 27,
-            color: Theme.of(context).colorScheme.secondaryContainer,
-          ),
-        ),
-      );
-    }
-
+  Widget _header(BuildContext context, List<Translation> translations, List<Book> books, Chapter chapter) {
     Widget _chapterVerseTranslationControls(
       BuildContext context,
       List<Translation> translations,
       List<Book> books,
       Chapter chapter,
     ) {
-      var bookChapterTitle =
-          chapter.verses![0].book.name! + ' ' + chapter.number!;
+      var bookChapterTitle = chapter.verses![0].book.name! + ' ' + chapter.number!;
 
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // _readerSettingsButton(context),
-          const SizedBox(width: 40),
           GestureDetector(
             onTap: () async {
               HapticFeedback.lightImpact();
-
               await _showBookAndChapterBottomSheet();
             },
             child: Container(
@@ -297,20 +156,17 @@ class _BibleViewState extends State<BibleView> {
               ),
               child: Text(
                 bookChapterTitle,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText1
-                    ?.copyWith(fontWeight: FontWeight.w600),
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
               ),
             ),
           ),
           const SizedBox(width: 2),
           GestureDetector(
-            // onTap: () async {
-            //   HapticFeedback.lightImpact();
-            //
-            //   await _showTranslationsBottomSheet(translations);
-            // },
+            onTap: () async {
+              HapticFeedback.lightImpact();
+
+              await _showTranslationsBottomSheet(translations);
+            },
             child: Container(
               padding: const EdgeInsets.all(8.0),
               decoration: ShapeDecoration(
@@ -321,15 +177,10 @@ class _BibleViewState extends State<BibleView> {
               ),
               child: Text(
                 translations
-                    .where((element) =>
-                        element.abbreviation.toLowerCase() ==
-                        translationID.toLowerCase())
+                    .where((element) => element.abbreviation.toLowerCase() == translationID.toLowerCase())
                     .first
                     .abbreviation,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText1
-                    ?.copyWith(fontWeight: FontWeight.w600),
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
               ),
             ),
           ),
@@ -343,12 +194,9 @@ class _BibleViewState extends State<BibleView> {
       centerTitle: true,
       floating: true,
       backgroundColor: CantonMethods.alternateCanvasColor(context),
-      title: _chapterVerseTranslationControls(
-          context, translations, books, chapter),
-      leading: _previousChapterButton(context),
-      actions: [
-        _nextChapterButton(context),
-      ],
+      title: _chapterVerseTranslationControls(context, translations, books, chapter),
+      leading: const PreviousChapterButton(),
+      actions: const [NextChapterButton()],
     );
   }
 
@@ -358,13 +206,9 @@ class _BibleViewState extends State<BibleView> {
         HapticFeedback.lightImpact();
 
         if (isBookmarked == false) {
-          context
-              .read(bookmarkedChaptersProvider.notifier)
-              .bookmarkChapter(chapter);
+          context.read(bookmarkedChaptersProvider.notifier).bookmarkChapter(chapter);
         } else {
-          context
-              .read(bookmarkedChaptersProvider.notifier)
-              .removeChapter(chapter);
+          context.read(bookmarkedChaptersProvider.notifier).removeChapter(chapter);
         }
 
         setState(() {
@@ -376,25 +220,7 @@ class _BibleViewState extends State<BibleView> {
         child: Icon(
           isBookmarked ? CupertinoIcons.bookmark_fill : CupertinoIcons.bookmark,
           size: 24,
-          color: isBookmarked
-              ? Theme.of(context).primaryColor
-              : Theme.of(context).colorScheme.secondaryContainer,
-        ),
-      ),
-    );
-  }
-
-  Widget _readerSettingsButton(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        HapticFeedback.lightImpact();
-      },
-      child: Container(
-        color: CantonMethods.alternateCanvasColor(context),
-        child: Icon(
-          FeatherIcons.settings,
-          size: 24,
-          color: Theme.of(context).colorScheme.secondaryContainer,
+          color: isBookmarked ? Theme.of(context).primaryColor : Theme.of(context).colorScheme.secondaryContainer,
         ),
       ),
     );
@@ -407,9 +233,7 @@ class _BibleViewState extends State<BibleView> {
       Widget _chapterCard(ChapterId chapter) {
         return GestureDetector(
           onTap: () {
-            context
-                .read(bibleRepositoryProvider)
-                .changeChapter(context, book.id!, chapter.id!);
+            context.read(bibleRepositoryProvider).changeChapter(context, book.id!, chapter.id!);
             Navigator.of(context, rootNavigator: true).pop();
           },
           child: Container(
@@ -425,7 +249,7 @@ class _BibleViewState extends State<BibleView> {
             child: Center(
               child: Text(
                 chapter.id.toString(),
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
           ),
@@ -434,7 +258,7 @@ class _BibleViewState extends State<BibleView> {
 
       return CantonExpansionTile(
         childrenPadding: const EdgeInsets.symmetric(horizontal: 17),
-        title: Text(book.name!, style: Theme.of(context).textTheme.headline6),
+        title: Text(book.name!, style: Theme.of(context).textTheme.titleLarge),
         children: [
           Container(
             margin: const EdgeInsets.only(bottom: 12),
@@ -448,8 +272,7 @@ class _BibleViewState extends State<BibleView> {
                 crossAxisSpacing: 10.0,
               ),
               itemCount: book.chapters!.length,
-              itemBuilder: (context, index) =>
-                  _chapterCard(book.chapters![index]),
+              itemBuilder: (context, index) => _chapterCard(book.chapters![index]),
             ),
           ),
         ],
@@ -480,8 +303,7 @@ class _BibleViewState extends State<BibleView> {
                 ),
               ),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 27),
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 27),
                 child: Row(
                   children: [
                     GestureDetector(
@@ -490,17 +312,15 @@ class _BibleViewState extends State<BibleView> {
                       },
                       child: Text(
                         'Cancel',
-                        style: Theme.of(context).textTheme.headline6?.copyWith(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .secondaryContainer,
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              color: Theme.of(context).colorScheme.secondaryContainer,
                             ),
                       ),
                     ),
                     const Spacer(flex: 6),
                     Text(
                       'Books',
-                      style: Theme.of(context).textTheme.headline5,
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     const Spacer(flex: 9),
                   ],
@@ -528,57 +348,49 @@ class _BibleViewState extends State<BibleView> {
     );
   }
 
-  Future<void> _showTranslationsBottomSheet(
-      List<Translation> translations) async {
+  Future<void> _showTranslationsBottomSheet(List<Translation> translations) async {
     Widget _translationCard(Translation translation, int index) {
-      Future<bool> _bibleTranslationHasBeenDownloaded(
-          Translation translation) async {
+      Future<bool> _bibleTranslationHasBeenDownloaded(Translation translation) async {
         var _path = (await getExternalStorageDirectory())!.path;
         String _localPath = '$_path/${translation.abbreviation}.json';
         final savedJSON = File(_localPath);
         return await savedJSON.exists();
       }
 
-      Future<void> _downloadBibleTranslation(
-          Translation translation, Function callback) async {
-        print(
-            "started downloading bible translation " + translation.toString());
+      Future<void> _downloadBibleTranslation(Translation translation, Function callback) async {
+        // print("started downloading bible translation " + translation.toString());
 
         var _path = (await getExternalStorageDirectory())!.path;
-        var file = await File('$_path/${translation.abbreviation}.json')
-            .create(recursive: true);
-        print("file TO BE CREATED ");
-        print(file);
+        var file = await File('$_path/${translation.abbreviation}.json').create(recursive: true);
+        // print("file TO BE CREATED ");
+        // print(file);
         var options = DownloaderUtils(
           progressCallback: (current, total) {
-            final progress = (current / total) * 100;
-            print('Downloading: $progress');
+            // final progress = (current / total) * 100;
+            // print('Downloading: $progress');
           },
           file: file,
           progress: ProgressImplementation(),
           onDone: () {
-            print('COMPLETE');
+            // print('COMPLETE');
             callback();
           },
           deleteOnCancel: true,
         );
-        print("about to call dwnload");
-        print(translation);
+        // print("about to call dwnload");
+        // print(translation);
         final core = await Flowder.download(translation.downloadUrl!, options);
         core.resume();
       }
 
       return GestureDetector(
         onTap: () async {
-          var bibleTranslationHasBeenDownloaded =
-              await _bibleTranslationHasBeenDownloaded(translation);
+          var bibleTranslationHasBeenDownloaded = await _bibleTranslationHasBeenDownloaded(translation);
           if (!bibleTranslationHasBeenDownloaded) {
             //setDownloadState true
             await _downloadBibleTranslation(translation, () {
               setState(() {
-                context
-                    .read(localRepositoryProvider.notifier)
-                    .changeBibleTranslation(
+                context.read(localRepositoryProvider.notifier).changeBibleTranslation(
                       index - 1,
                       translation.abbreviation,
                     );
@@ -591,9 +403,7 @@ class _BibleViewState extends State<BibleView> {
             //setDownloadState false
           } else {
             setState(() {
-              context
-                  .read(localRepositoryProvider.notifier)
-                  .changeBibleTranslation(
+              context.read(localRepositoryProvider.notifier).changeBibleTranslation(
                     index - 1,
                     translation.abbreviation,
                   );
@@ -605,15 +415,14 @@ class _BibleViewState extends State<BibleView> {
           }
         },
         child: ListTile(
-          contentPadding:
-              const EdgeInsets.symmetric(vertical: 3, horizontal: 17),
+          contentPadding: const EdgeInsets.symmetric(vertical: 3, horizontal: 17),
           title: Text(
             translation.name!,
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.titleLarge,
           ),
           trailing: Text(
             translation.language!,
-            style: Theme.of(context).textTheme.bodyText1?.copyWith(
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   color: Theme.of(context).colorScheme.secondaryContainer,
                 ),
           ),
@@ -645,8 +454,7 @@ class _BibleViewState extends State<BibleView> {
                 ),
               ),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 27),
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 27),
                 child: Row(
                   children: [
                     GestureDetector(
@@ -655,17 +463,15 @@ class _BibleViewState extends State<BibleView> {
                       },
                       child: Text(
                         'Cancel',
-                        style: Theme.of(context).textTheme.headline6?.copyWith(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .secondaryContainer,
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              color: Theme.of(context).colorScheme.secondaryContainer,
                             ),
                       ),
                     ),
                     const Spacer(flex: 6),
                     Text(
                       'Versions',
-                      style: Theme.of(context).textTheme.headline5,
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     const Spacer(flex: 9),
                   ],
