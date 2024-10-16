@@ -9,7 +9,8 @@ class ListofNotesHeaderView extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Align(alignment: Alignment.centerLeft,child: Text('Notes', style: Theme.of(context).textTheme.headline3)),
+        child: Align(
+            alignment: Alignment.centerLeft, child: Text('Notes', style: Theme.of(context).textTheme.displaySmall)),
       ),
     );
   }

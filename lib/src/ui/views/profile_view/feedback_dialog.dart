@@ -50,13 +50,13 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
                             children: <Widget>[
                               Text(
                                 "Secret Place",
-                                style: Theme.of(context).textTheme.headline5?.copyWith(
+                                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                                     fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.primary),
                               ),
                               Container(height: 5),
                               Text(
                                 "Feedback services",
-                                style: Theme.of(context).textTheme.headline6?.copyWith(
+                                style: Theme.of(context).textTheme.titleLarge?.copyWith(
                                     fontWeight: FontWeight.normal, color: Theme.of(context).colorScheme.primary),
                               ),
                             ],
@@ -121,22 +121,20 @@ class _FeedbackDialogState extends State<FeedbackDialog> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
                   TextButton(
-                    style: TextButton.styleFrom(primary: Colors.transparent),
                     onPressed: () {
                       Navigator.pop(context);
                     },
                     child: Text(
                       "CLOSE",
-                      style: Theme.of(context).textTheme.headline5?.copyWith(
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                             color: Theme.of(context).colorScheme.primary,
                           ),
                     ),
                   ),
                   TextButton(
-                    style: TextButton.styleFrom(primary: Colors.transparent),
                     child: Text(
                       "SUBMIT",
-                      style: Theme.of(context).textTheme.headline5?.copyWith(
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                             color: Theme.of(context).colorScheme.primary,
                           ),
                     ),

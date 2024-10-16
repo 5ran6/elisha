@@ -7,7 +7,7 @@ class UsersManualHeaderView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(0, 50, 0, 20),
-      child: Row(children: [Text('User Manual', style: Theme.of(context).textTheme.headline3)]),
+      child: Row(children: [Text('User Manual', style: Theme.of(context).textTheme.displaySmall)]),
     );
   }
 }

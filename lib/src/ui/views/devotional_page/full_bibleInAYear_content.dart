@@ -31,7 +31,7 @@ class FullBibleInAYearPage extends StatelessWidget {
                 title: Text('Scriptures For Today',
                     style: Theme.of(context)
                         .textTheme
-                        .headline3
+                        .displaySmall
                         ?.copyWith(fontWeight: FontWeight.bold, fontSize: 21, fontFamily: "Palatino")),
                 leading: IconButton(
                   icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary),
@@ -58,7 +58,7 @@ class FullBibleInAYearPage extends StatelessWidget {
                         title: Text(e,
                             style: Theme.of(context)
                                 .textTheme
-                                .headline4
+                                .headlineMedium
                                 ?.copyWith(fontWeight: FontWeight.normal, fontSize: 25, fontFamily: "Palatino")),
                       ))
                 ],

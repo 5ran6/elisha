@@ -106,7 +106,7 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
         Text(
           'An email has been sent to ${user!.email}. Please click the link in the email to verify your email address.',
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.headline5,
+          style: Theme.of(context).textTheme.headlineSmall,
         ),
       ],
     );

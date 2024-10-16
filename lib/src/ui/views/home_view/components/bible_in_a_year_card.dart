@@ -23,7 +23,7 @@ class _BibleInAYearCardState extends State<BibleInAYearCard> {
               ListTile(
                 //trailing: Icon(Icons.share),
                 title: Text('Bible In A Year',
-                    style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold)),
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold)),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -33,30 +33,29 @@ class _BibleInAYearCardState extends State<BibleInAYearCard> {
                     shape: CantonSmoothBorder.defaultBorder(),
                     child: Container(
                       height: 130,
-                      width: MediaQuery.of(context).size.width-250,
+                      width: MediaQuery.of(context).size.width - 250,
                       decoration: BoxDecoration(
-                          image: const DecorationImage(
-                              image: AssetImage('assets/images/app_icon.png'),
-                              fit: BoxFit.fill
-                          ),
-                          borderRadius: BorderRadius.circular(10)
-                      ),
+                          image:
+                              const DecorationImage(image: AssetImage('assets/images/app_icon.png'), fit: BoxFit.fill),
+                          borderRadius: BorderRadius.circular(10)),
                     ),
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Daily Bible Reading', style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.bold)),
+                      Text('Daily Bible Reading',
+                          style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
                       const SizedBox(height: 5),
-                      //Text('You can follow this suitable plan to complete the bible in a year.', style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.normal)),
+                      //Text('You can follow this suitable plan to complete the bible in a year.', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.normal)),
                       const SizedBox(height: 15),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Date', style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.bold)),
+                          Text('Date',
+                              style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
                           const SizedBox(width: 10),
                           Material(
-                            shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(15.0) ),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
                             elevation: 0.0,
                             color: Colors.grey[200],
                             clipBehavior: Clip.antiAlias,
@@ -66,7 +65,8 @@ class _BibleInAYearCardState extends State<BibleInAYearCard> {
                               height: 10,
                               elevation: 0.0,
                               color: Colors.grey[200],
-                              child: Text('Begin', style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.bold)),
+                              child: Text('Begin',
+                                  style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
                             ),
                           ),
                         ],
@@ -75,7 +75,6 @@ class _BibleInAYearCardState extends State<BibleInAYearCard> {
                   ),
                 ],
               )
-              
             ],
           ),
         ),

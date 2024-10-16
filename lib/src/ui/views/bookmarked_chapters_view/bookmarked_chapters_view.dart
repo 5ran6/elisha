@@ -79,7 +79,7 @@ class _BookmarkedChaptersViewState extends State<BookmarkedChaptersView> {
             )
           : Text(
               'No Bookmarked Chapters',
-              style: Theme.of(context).textTheme.headline5?.copyWith(
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     color: Theme.of(context).colorScheme.primary,
                   ),
             ),
@@ -103,7 +103,7 @@ class _BookmarkedChaptersViewState extends State<BookmarkedChaptersView> {
         contentPadding: const EdgeInsets.symmetric(horizontal: 27),
         leading: Text(
           cardTitle(),
-          style: Theme.of(context).textTheme.headline6,
+          style: Theme.of(context).textTheme.titleLarge,
         ),
         trailing: GestureDetector(
           onTap: () {
@@ -149,7 +149,7 @@ class _BookmarkedChaptersViewState extends State<BookmarkedChaptersView> {
                         },
                         child: Text(
                           'Cancel',
-                          style: Theme.of(context).textTheme.headline6?.copyWith(
+                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
                                 color: Theme.of(context).colorScheme.secondary,
                               ),
                         ),
@@ -157,7 +157,7 @@ class _BookmarkedChaptersViewState extends State<BookmarkedChaptersView> {
                       const Spacer(flex: 7),
                       Text(
                         'Options',
-                        style: Theme.of(context).textTheme.headline5,
+                        style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       const Spacer(flex: 10),
                     ],

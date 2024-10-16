@@ -34,17 +34,14 @@ class StreaksCard extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(currentStreak, style: Theme.of(context).textTheme.headline2),
+                            Text(currentStreak, style: Theme.of(context).textTheme.displayMedium),
                             Icon(LineAwesomeIcons.fire, size: 27, color: Theme.of(context).primaryColor),
                           ],
                         ),
                       ),
                       Text(
                         'Streak',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText1
-                            ?.copyWith(color: Theme.of(context).primaryColor),
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Theme.of(context).primaryColor),
                       ),
                     ],
                   ),
@@ -57,17 +54,14 @@ class StreaksCard extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(bestStreak, style: Theme.of(context).textTheme.headline2),
+                            Text(bestStreak, style: Theme.of(context).textTheme.displayMedium),
                             Icon(LineAwesomeIcons.star, size: 27, color: Theme.of(context).primaryColor),
                           ],
                         ),
                       ),
                       Text(
                         'Best Streak',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText1
-                            ?.copyWith(color: Theme.of(context).primaryColor),
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Theme.of(context).primaryColor),
                       ),
                     ],
                   ),
@@ -80,17 +74,14 @@ class StreaksCard extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(perfectWeeks, style: Theme.of(context).textTheme.headline2),
+                            Text(perfectWeeks, style: Theme.of(context).textTheme.displayMedium),
                             Icon(LineAwesomeIcons.calendar, size: 27, color: Theme.of(context).primaryColor),
                           ],
                         ),
                       ),
                       Text(
                         'Perfect Weeks',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText1
-                            ?.copyWith(color: Theme.of(context).primaryColor),
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Theme.of(context).primaryColor),
                       ),
                     ],
                   ),

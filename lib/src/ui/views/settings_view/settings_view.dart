@@ -147,7 +147,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text('Theme', style: Theme.of(context).textTheme.headline6),
+                            Text('Theme', style: Theme.of(context).textTheme.titleLarge),
                             Text(themeText, style: TextStyle(color: Colors.grey[600])),
                           ],
                         ),
@@ -174,7 +174,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Text('Daily Remainder', style: Theme.of(context).textTheme.headline6),
+                                  Text('Daily Remainder', style: Theme.of(context).textTheme.titleLarge),
                                   Text(timeText,
                                       style: TextStyle(color: reminderValue ? Colors.grey[600] : Colors.grey[800])),
                                 ],
@@ -230,7 +230,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      Text('Do not disturb(Tap me)', style: Theme.of(context).textTheme.headline6),
+                                      Text('Do not disturb(Tap me)', style: Theme.of(context).textTheme.titleLarge),
                                       Text(isDoNotDisturbFunctionOn ? "On" : "Off",
                                           style: TextStyle(color: Colors.grey[600]))
                                     ],

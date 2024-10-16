@@ -53,14 +53,14 @@ class AccountView extends StatelessWidget {
         name != null
             ? Text(
                 name,
-                style: Theme.of(context).textTheme.headline5,
+                style: Theme.of(context).textTheme.headlineSmall,
               )
             : Container(),
         const SizedBox(height: 8),
         email != null
             ? Text(
                 email,
-                style: Theme.of(context).textTheme.headline5,
+                style: Theme.of(context).textTheme.headlineSmall,
               )
             : Container(),
         SizedBox(height: 25),

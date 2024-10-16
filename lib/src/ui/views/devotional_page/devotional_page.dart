@@ -30,16 +30,26 @@ class _DevotionalPageState extends State<DevotionalPage> {
 
   @override
   void initState() {
-    getTodayTitleAsString(DateFormat('dd.MM.yyyy').format(widget.devotionalDate != null ? widget.devotionalDate! : DateTime.now()));
-    getVersePassageAsString(DateFormat('dd.MM.yyyy').format(widget.devotionalDate != null ? widget.devotionalDate! : DateTime.now()));
-    getVerseAsString(DateFormat('dd.MM.yyyy').format(widget.devotionalDate != null ? widget.devotionalDate! : DateTime.now()));
-    getTodayMainWriteUpAsString(DateFormat('dd.MM.yyyy').format(widget.devotionalDate != null ? widget.devotionalDate! : DateTime.now()));
-    getTodayPrayerAsString(DateFormat('dd.MM.yyyy').format(widget.devotionalDate != null ? widget.devotionalDate! : DateTime.now()));
-    getTodayThoughtOfTheDayAsString(DateFormat('dd.MM.yyyy').format(widget.devotionalDate != null ? widget.devotionalDate! : DateTime.now()));
-    getTodayFullPassageAsString(DateFormat('dd.MM.yyyy').format(widget.devotionalDate != null ? widget.devotionalDate! : DateTime.now()));
-    getBibleInYearAsString(DateFormat('dd.MM.yyyy').format(widget.devotionalDate != null ? widget.devotionalDate! : DateTime.now()));
-    getThoughtOfTheDayImageAsString(DateFormat('dd.MM.yyyy').format(widget.devotionalDate != null ? widget.devotionalDate! : DateTime.now()));
-    getPrayerBurdenImageAsString(DateFormat('dd.MM.yyyy').format(widget.devotionalDate != null ? widget.devotionalDate! : DateTime.now()));
+    getTodayTitleAsString(
+        DateFormat('dd.MM.yyyy').format(widget.devotionalDate != null ? widget.devotionalDate! : DateTime.now()));
+    getVersePassageAsString(
+        DateFormat('dd.MM.yyyy').format(widget.devotionalDate != null ? widget.devotionalDate! : DateTime.now()));
+    getVerseAsString(
+        DateFormat('dd.MM.yyyy').format(widget.devotionalDate != null ? widget.devotionalDate! : DateTime.now()));
+    getTodayMainWriteUpAsString(
+        DateFormat('dd.MM.yyyy').format(widget.devotionalDate != null ? widget.devotionalDate! : DateTime.now()));
+    getTodayPrayerAsString(
+        DateFormat('dd.MM.yyyy').format(widget.devotionalDate != null ? widget.devotionalDate! : DateTime.now()));
+    getTodayThoughtOfTheDayAsString(
+        DateFormat('dd.MM.yyyy').format(widget.devotionalDate != null ? widget.devotionalDate! : DateTime.now()));
+    getTodayFullPassageAsString(
+        DateFormat('dd.MM.yyyy').format(widget.devotionalDate != null ? widget.devotionalDate! : DateTime.now()));
+    getBibleInYearAsString(
+        DateFormat('dd.MM.yyyy').format(widget.devotionalDate != null ? widget.devotionalDate! : DateTime.now()));
+    getThoughtOfTheDayImageAsString(
+        DateFormat('dd.MM.yyyy').format(widget.devotionalDate != null ? widget.devotionalDate! : DateTime.now()));
+    getPrayerBurdenImageAsString(
+        DateFormat('dd.MM.yyyy').format(widget.devotionalDate != null ? widget.devotionalDate! : DateTime.now()));
     super.initState();
   }
 
@@ -58,11 +68,11 @@ class _DevotionalPageState extends State<DevotionalPage> {
                     title: Text('Topic for today:',
                         style: Theme.of(context)
                             .textTheme
-                            .headline4
+                            .headlineMedium
                             ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino")),
                     trailing: Text(
                       'More',
-                      style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.w100),
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w100),
                     ),
                   ),
                   const SizedBox(height: 5),
@@ -73,7 +83,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
                         child: Text(_title,
                             style: Theme.of(context)
                                 .textTheme
-                                .headline5
+                                .headlineSmall
                                 ?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino"))),
                   ),
                   const SizedBox(height: 15),
@@ -81,7 +91,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
                     title: Text('Memory Verse:',
                         style: Theme.of(context)
                             .textTheme
-                            .headline4
+                            .headlineMedium
                             ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino")),
                   ),
                   const SizedBox(height: 5),
@@ -92,7 +102,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
                         child: Text(_memoryVerse + " " + _memoryVersePassage,
                             style: Theme.of(context)
                                 .textTheme
-                                .headline5
+                                .headlineSmall
                                 ?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino"))),
                   ),
                   const SizedBox(height: 15),
@@ -100,7 +110,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
                     title: Text('Bible passage:',
                         style: Theme.of(context)
                             .textTheme
-                            .headline4
+                            .headlineMedium
                             ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino")),
                   ),
                   const SizedBox(height: 5),
@@ -111,7 +121,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
                         child: Text(_fullPassage,
                             style: Theme.of(context)
                                 .textTheme
-                                .headline5
+                                .headlineSmall
                                 ?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino"))),
                   )
                 ])
@@ -131,11 +141,11 @@ class _DevotionalPageState extends State<DevotionalPage> {
                     title: Text('Word',
                         style: Theme.of(context)
                             .textTheme
-                            .headline3
+                            .displaySmall
                             ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino")),
                     trailing: Text(
                       'More',
-                      style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.w100),
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w100),
                     ),
                   ),
                   const SizedBox(height: 5),
@@ -146,7 +156,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
                         maxLines: 10,
                         style: Theme.of(context)
                             .textTheme
-                            .headline5
+                            .headlineSmall
                             ?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino")),
                   )
                 ],
@@ -168,11 +178,11 @@ class _DevotionalPageState extends State<DevotionalPage> {
                     title: Text('Prayer',
                         style: Theme.of(context)
                             .textTheme
-                            .headline4
+                            .headlineMedium
                             ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino")),
                     trailing: Text(
                       'More',
-                      style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.w100),
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w100),
                     ),
                   ),
                   const SizedBox(height: 5),
@@ -181,7 +191,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
                     child: Text(_prayerBurden,
                         style: Theme.of(context)
                             .textTheme
-                            .headline3
+                            .displaySmall
                             ?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino")),
                   )
                 ],
@@ -203,11 +213,11 @@ class _DevotionalPageState extends State<DevotionalPage> {
                     title: Text('Thought For The Day',
                         style: Theme.of(context)
                             .textTheme
-                            .headline4
+                            .headlineMedium
                             ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino")),
                     trailing: Text(
                       'More',
-                      style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.w100),
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w100),
                     ),
                   ),
                   const SizedBox(height: 5),
@@ -216,7 +226,7 @@ class _DevotionalPageState extends State<DevotionalPage> {
                     child: Text(_thoughtOfTheDay,
                         style: Theme.of(context)
                             .textTheme
-                            .headline3
+                            .displaySmall
                             ?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino")),
                   )
                 ],

@@ -7,7 +7,7 @@ class ChurchViewHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 25),
-      child: Row(children: [Text('Message Clips', style: Theme.of(context).textTheme.headline2)]),
+      child: Row(children: [Text('Message Clips', style: Theme.of(context).textTheme.displayMedium)]),
     );
   }
 }

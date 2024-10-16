@@ -24,12 +24,12 @@ class DailyReadingsCard extends StatelessWidget {
             children: [
               Text(
                 'Daily Readings',
-                style: Theme.of(context).textTheme.headline4,
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
               const SizedBox(height: 7),
               Text(
                 'SCRIPTURES FOR TODAY\'S SERVICE',
-                style: Theme.of(context).textTheme.overline?.copyWith(
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
                       letterSpacing: 2,
                       fontWeight: FontWeight.w500,
                       color: Theme.of(context).primaryColor,
@@ -41,7 +41,7 @@ class DailyReadingsCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       'Join Mass today by reading the scriptures for ${dailyReading.name}.',
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
                   ),
                 ],

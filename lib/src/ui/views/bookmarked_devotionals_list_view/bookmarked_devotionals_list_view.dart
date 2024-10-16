@@ -51,7 +51,7 @@ class _BookMarkedDevotionalViewState extends State<BookMarkedDevotionalView> {
               ? _buildBookmarkedDevotionalList()
               : Text(
                   'No Bookmarked Devotional',
-                  style: Theme.of(context).textTheme.headline5?.copyWith(
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                         color: Theme.of(context).colorScheme.primary,
                       ),
                 ),
@@ -156,17 +156,17 @@ class _BookMarkedDevotionalViewState extends State<BookMarkedDevotionalView> {
                       children: <Widget>[
                         Text(
                           _devBookmarkedList[index].title,
-                          style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.bold),
+                          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
                         ),
                         const Spacer(),
                         Text(_devBookmarkedList[index].date,
-                            style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.normal)),
+                            style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.normal)),
                       ],
                     ),
                     Container(height: 10),
                     Text(
                       _devBookmarkedList[index].fullText,
-                      style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.normal),
+                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.normal),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),

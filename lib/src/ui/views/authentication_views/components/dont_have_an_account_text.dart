@@ -31,7 +31,7 @@ class DontHaveAnAccountText extends StatelessWidget {
       children: [
         Text(
           'Don\'t have an account? ',
-          style: Theme.of(context).textTheme.bodyText1?.copyWith(
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: Theme.of(context).colorScheme.secondaryContainer,
                 fontWeight: FontWeight.w500,
               ),
@@ -48,7 +48,7 @@ class DontHaveAnAccountText extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               'Create Account',
-              style: Theme.of(context).textTheme.headline6?.copyWith(
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: Theme.of(context).primaryColor,
                   ),
             ),

@@ -56,7 +56,7 @@ class _NoteViewFromDBState extends State<NoteViewFromDB> {
                 child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Note', style: Theme.of(context).textTheme.headline3),
+                    child: Text('Note', style: Theme.of(context).textTheme.displaySmall),
                   ),
                   Align(
                       alignment: Alignment.centerRight,
@@ -84,7 +84,7 @@ class _NoteViewFromDBState extends State<NoteViewFromDB> {
                         alignment: Alignment.center,
                         child: Text(
                           widget.dateNoteWasSaved,
-                          style: Theme.of(context).textTheme.headline4?.copyWith(
+                          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                               fontWeight: FontWeight.bold, fontFamily: "Palatino", fontSize: 21, color: Colors.white),
                         )),
                   ),
@@ -100,7 +100,7 @@ class _NoteViewFromDBState extends State<NoteViewFromDB> {
                     child: TextFormField(
                       style: Theme.of(context)
                           .textTheme
-                          .headline4
+                          .headlineMedium
                           ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino", fontSize: 21),
                       //initialValue: _title;
                       controller: noteTitleWidget..text = _title,
@@ -121,7 +121,7 @@ class _NoteViewFromDBState extends State<NoteViewFromDB> {
                     child: TextFormField(
                       style: Theme.of(context)
                           .textTheme
-                          .headline4
+                          .headlineMedium
                           ?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino", fontSize: 17),
                       minLines: 30,
                       keyboardType: TextInputType.text,
@@ -141,7 +141,8 @@ class _NoteViewFromDBState extends State<NoteViewFromDB> {
                   onTap: () async {
                     DateTime now = DateTime.now();
                     String todayDate = DateFormat('dd.MM.yyyy').format(now);
-                    Note note = Note(title: noteTitleWidget.text, writeUp: noteWidget.text, date: widget.dateNoteWasSaved);
+                    Note note =
+                        Note(title: noteTitleWidget.text, writeUp: noteWidget.text, date: widget.dateNoteWasSaved);
 
                     List<Note> notes = await DevotionalDBHelper.instance.getNotewithDate(widget.dateNoteWasSaved);
                     if (notes.isNotEmpty) {
@@ -166,7 +167,7 @@ class _NoteViewFromDBState extends State<NoteViewFromDB> {
                           alignment: Alignment.center,
                           child: Text(
                             "Save",
-                            style: Theme.of(context).textTheme.headline4?.copyWith(
+                            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                                 fontWeight: FontWeight.normal,
                                 fontFamily: "Palatino",
                                 fontSize: 22,

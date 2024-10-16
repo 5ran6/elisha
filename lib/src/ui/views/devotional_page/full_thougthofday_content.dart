@@ -13,7 +13,6 @@ class FullThoughtOfTheDayPage extends StatelessWidget {
   const FullThoughtOfTheDayPage({required this.thoughtOfTheDay, required this.thoughtOfTheDayImage});
 
   Future saveAndShareImage(String thoughtOfTheDayImageUrl, String linkToPlayStore, String linkToAppleStore) async {
-
     //final RenderBox box = context.findRenderObject();
     if (Platform.isAndroid) {
       var response = await get(Uri.parse(thoughtOfTheDayImageUrl));
@@ -21,7 +20,8 @@ class FullThoughtOfTheDayPage extends StatelessWidget {
       File imgFile = File('$documentDirectory/flutter.png');
       imgFile.writeAsBytesSync(response.bodyBytes);
 
-      await Share.shareFiles(['$documentDirectory/flutter.png'],
+      await Share.shareFiles(
+        ['$documentDirectory/flutter.png'],
         subject: 'Secret Place',
         text: 'Get Secret Place, PlayStore: $linkToPlayStore, AppleStore: $linkToAppleStore',
       );
@@ -32,14 +32,13 @@ class FullThoughtOfTheDayPage extends StatelessWidget {
       File imgFile = File('$documentDirectory/flutter.png');
       imgFile.writeAsBytesSync(response.bodyBytes);
 
-      await Share.shareFiles(['$documentDirectory/flutter.png'],
+      await Share.shareFiles(
+        ['$documentDirectory/flutter.png'],
         subject: 'Secret Place',
         text: 'Get Secret Place, Playstore: $linkToPlayStore, AppleStore: $linkToAppleStore',
       );
     }
-
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +72,7 @@ class FullThoughtOfTheDayPage extends StatelessWidget {
                   title: Text('Thought Of The Day',
                       style: Theme.of(context)
                           .textTheme
-                          .headline3
+                          .displaySmall
                           ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino")),
                   leading: IconButton(
                     icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary),
@@ -82,13 +81,11 @@ class FullThoughtOfTheDayPage extends StatelessWidget {
                   trailing: IconButton(
                     icon: const Icon(Icons.share, color: Colors.black),
                     onPressed: () async {
-                      const playStoreUrl =
-                          'https://cpaisecretplacedevotional.page.link/app';
+                      const playStoreUrl = 'https://cpaisecretplacedevotional.page.link/app';
                       const appleStoreUrl =
                           'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
 
-                      await Share.share(
-                          "$thoughtOfTheDay\n\nGet Secret Place App:\nPlay/Apple Store: $playStoreUrl");
+                      await Share.share("$thoughtOfTheDay\n\nGet Secret Place App:\nPlay/Apple Store: $playStoreUrl");
 
                       //saveAndShareImage(thoughtOfTheDayImage, playStoreUrl, appleStoreUrl);
                     },
@@ -100,7 +97,7 @@ class FullThoughtOfTheDayPage extends StatelessWidget {
                   child: Text(thoughtOfTheDay,
                       style: Theme.of(context)
                           .textTheme
-                          .headline3
+                          .displaySmall
                           ?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino")),
                 )
               ],

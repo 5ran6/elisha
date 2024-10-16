@@ -32,8 +32,7 @@ import 'package:elisha/src/ui/views/authentication_views/components/sign_in_view
 enum ButtonState { init, requesting, completed }
 
 class SignInView extends StatefulWidget {
-  const SignInView(this.toggleView, this.toggleEmailSignIn, {Key? key})
-      : super(key: key);
+  const SignInView(this.toggleView, this.toggleEmailSignIn, {Key? key}) : super(key: key);
 
   final void Function() toggleView;
   final void Function() toggleEmailSignIn;
@@ -72,8 +71,7 @@ class _SignInViewState extends State<SignInView> {
             //   const SizedBox(height: 20),
             Row(
               children: [
-                CantonBackButton(
-                    isClear: true, onPressed: widget.toggleEmailSignIn),
+                CantonBackButton(isClear: true, onPressed: widget.toggleEmailSignIn),
               ],
             ),
             const SizedBox(height: 50),
@@ -84,10 +82,7 @@ class _SignInViewState extends State<SignInView> {
             _hasError ? _errorText(context, _errorMessage) : Container(),
             isInit ? _signInButton(context) : circularContainer(isDone),
             DontHaveAnAccountText(toggleView: widget.toggleView),
-            const Expanded(
-                child: Align(
-                    alignment: FractionalOffset.bottomCenter,
-                    child: TermsAndPrivacyPolicyText())),
+            const Expanded(child: Align(alignment: FractionalOffset.bottomCenter, child: TermsAndPrivacyPolicyText())),
           ],
         ),
       ),
@@ -130,9 +125,7 @@ class _SignInViewState extends State<SignInView> {
             state = ButtonState.requesting;
             isAnimating = !isAnimating;
           });
-          var value = await context
-              .read(authenticationRepositoryProvider)
-              .signInWithEmailAndPassword(
+          var value = await context.read(authenticationRepositoryProvider).signInWithEmailAndPassword(
                 email: _emailController.text.trim(),
                 password: _passwordController.text.trim(),
               );
@@ -156,8 +149,8 @@ class _SignInViewState extends State<SignInView> {
   Widget _errorText(BuildContext context, String error) {
     return Text(
       error,
-      style: Theme.of(context).textTheme.bodyText1?.copyWith(
-            color: Theme.of(context).errorColor,
+      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+            color: Colors.red,
           ),
     );
   }

@@ -16,7 +16,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
@@ -90,8 +89,7 @@ class _SignUpViewState extends State<SignUpView> {
             ),
             EmailTextInput(emailController: _emailController),
             PasswordTextInput(passwordController: _passwordController),
-            ConfirmPasswordTextInput(
-                confirmPasswordController: _passwordConfirmationController),
+            ConfirmPasswordTextInput(confirmPasswordController: _passwordConfirmationController),
             _hasError ? const SizedBox(height: 15) : Container(),
             _hasError ? _errorText(context, _errorMessage) : Container(),
             isInit ? _signUpButton(context) : circularContainer(isDone),
@@ -100,7 +98,7 @@ class _SignUpViewState extends State<SignUpView> {
               children: [
                 Text(
                   'Or Sign In',
-                  style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: Theme.of(context).colorScheme.secondaryContainer,
                         fontWeight: FontWeight.w500,
                       ),
@@ -114,7 +112,7 @@ class _SignUpViewState extends State<SignUpView> {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       'Here',
-                      style: Theme.of(context).textTheme.headline6?.copyWith(
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
                             color: Theme.of(context).primaryColor,
                           ),
                     ),
@@ -159,8 +157,7 @@ class _SignUpViewState extends State<SignUpView> {
               _hasError = true;
               _errorMessage = 'Missing fields';
             });
-          } else if (_passwordController.text !=
-              _passwordConfirmationController.text) {
+          } else if (_passwordController.text != _passwordConfirmationController.text) {
             setState(() {
               state = ButtonState.completed;
               isAnimating = !isAnimating;
@@ -168,14 +165,13 @@ class _SignUpViewState extends State<SignUpView> {
               _errorMessage = 'Password Mismatch';
             });
           } else {
-            var res =
-                await context.read(authenticationRepositoryProvider).signUp(
-                      context: context,
-                      email: _emailController.text.trim(),
-                      password: _passwordController.text.trim(),
-                      firstName: _firstNameController.text.trim(),
-                      lastName: _lastNameController.text.trim(),
-                    );
+            var res = await context.read(authenticationRepositoryProvider).signUp(
+                  context: context,
+                  email: _emailController.text.trim(),
+                  password: _passwordController.text.trim(),
+                  firstName: _firstNameController.text.trim(),
+                  lastName: _lastNameController.text.trim(),
+                );
             setState(() {
               state = ButtonState.completed;
               isAnimating = !isAnimating;
@@ -209,8 +205,8 @@ class _SignUpViewState extends State<SignUpView> {
   Widget _errorText(BuildContext context, String error) {
     return Text(
       error,
-      style: Theme.of(context).textTheme.bodyText1?.copyWith(
-            color: Theme.of(context).errorColor,
+      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+            color: Colors.red,
           ),
     );
   }
@@ -248,7 +244,7 @@ class _SignUpViewState extends State<SignUpView> {
 //               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 27),
 //               child: Text(
 //                 'Select Your Birthday',
-//                 style: Theme.of(context).textTheme.headline5,
+//                 style: Theme.of(context).textTheme.headlineSmall,
 //               ),
 //             ),
 //             const Divider(),
@@ -296,7 +292,7 @@ class _SignUpViewState extends State<SignUpView> {
 //               child: Center(
 //                 child: Text(
 //                   'Save',
-//                   style: Theme.of(context).textTheme.headline6?.copyWith(
+//                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
 //                         color: Theme.of(context).primaryColor,
 //                       ),
 //                 ),

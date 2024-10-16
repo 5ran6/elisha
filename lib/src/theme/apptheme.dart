@@ -8,9 +8,9 @@ class AppTheme {
   final whiteColor = const Color(0XFFFFFFFF);
   static const greyColor1 = Color(0XFF5B5B5B);
   static const greyColor2 = Color(0XFF6B6B6B);
-  static final kHeadline1 =
+  static final kdisplayLarge =
       TextStyle(color: kBlackColor, fontSize: ScreenUtil().setSp(24), fontWeight: FontWeight.w700);
-  static final kHeadline2 = TextStyle(
+  static final kdisplayMedium = TextStyle(
     color: Colors.white,
     fontSize: ScreenUtil().setSp(20),
   );
@@ -68,7 +68,6 @@ class AppTheme {
     //textSelectionColor: Colors.black,
     shadowColor: Colors.black12,
     splashColor: Colors.transparent,
-    bottomAppBarColor: kWhiteColor,
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       selectedIconTheme: const IconThemeData(),
       unselectedIconTheme: const IconThemeData(),
@@ -88,11 +87,10 @@ class AppTheme {
       ),
     ),
     textTheme: TextTheme(
-      headline1: kHeadline1,
-      headline2: kHeadline2,
-      bodyText1: kBodyTextStyle,
-      bodyText2: kBodyTextStyle.copyWith(fontSize: ScreenUtil().setSp(12)),
-      button: kButtonTextStyle,
+      displayLarge: kdisplayLarge,
+      displayMedium: kdisplayMedium,
+      bodyLarge: kBodyTextStyle,
+      bodyMedium: kBodyTextStyle.copyWith(fontSize: ScreenUtil().setSp(12)),
     ),
     cardColor: kWhiteColor,
     highlightColor: Colors.transparent,
@@ -113,7 +111,7 @@ class AppTheme {
     //textSelectionColor: Colors.grey[200],
     shadowColor: Colors.black12,
     splashColor: Colors.transparent,
-    bottomAppBarColor: const Color(0xFF24174D),
+
     cardColor: const Color(0xFF24174D),
     splashFactory: InkRipple.splashFactory,
     highlightColor: Colors.transparent,

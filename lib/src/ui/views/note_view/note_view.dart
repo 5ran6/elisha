@@ -84,7 +84,7 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text('Note', style: Theme.of(context).textTheme.headline3),
+                      child: Text('Note', style: Theme.of(context).textTheme.displaySmall),
                     ),
                   ],
                 ),
@@ -101,7 +101,7 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                       alignment: Alignment.center,
                       child: Text(
                         noteDate,
-                        style: Theme.of(context).textTheme.headline4?.copyWith(
+                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                             fontWeight: FontWeight.bold, fontFamily: "Palatino", fontSize: 21, color: Colors.white),
                       ),
                     ),
@@ -118,7 +118,7 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                     child: TextFormField(
                       style: Theme.of(context)
                           .textTheme
-                          .headline4
+                          .headlineMedium
                           ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino", fontSize: 21),
                       onChanged: (String str) async {
                         final _prefs = await SharedPreferences.getInstance();
@@ -146,7 +146,7 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                           textCapitalization: TextCapitalization.sentences,
                           style: Theme.of(context)
                               .textTheme
-                              .headline4
+                              .headlineMedium
                               ?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino", fontSize: 17),
                           onChanged: (String str) async {
                             final _prefs = await SharedPreferences.getInstance();
@@ -216,7 +216,7 @@ class _DevotionalNotePageState extends State<DevotionalNotePage> {
                     alignment: Alignment.center,
                     child: Text(
                       "Save",
-                      style: Theme.of(context).textTheme.headline4?.copyWith(
+                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.normal, fontFamily: "Palatino", fontSize: 22, color: Colors.white),
                     ),
                   ),

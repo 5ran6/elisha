@@ -17,8 +17,8 @@ class VerseOfTheDayCard extends StatelessWidget {
   final String memoryVerseImageUrl;
   const VerseOfTheDayCard({required this.verse, required this.versePassage, required this.memoryVerseImageUrl});
 
-  Future saveAndShareImage(String memoryVerseImage, String linkToPlayStore, String linkToAppleStore, String verseOfDay) async {
-
+  Future saveAndShareImage(
+      String memoryVerseImage, String linkToPlayStore, String linkToAppleStore, String verseOfDay) async {
     //final RenderBox box = context.findRenderObject();
     if (Platform.isAndroid) {
       var response = await get(Uri.parse(memoryVerseImage));
@@ -26,7 +26,8 @@ class VerseOfTheDayCard extends StatelessWidget {
       File imgFile = File('$documentDirectory/flutter.png');
       imgFile.writeAsBytesSync(response.bodyBytes);
 
-      await Share.shareFiles(['$documentDirectory/flutter.png'],
+      await Share.shareFiles(
+        ['$documentDirectory/flutter.png'],
         subject: 'Secret Place',
         text: 'Get Secret Place, Playstore: $linkToPlayStore, AppleStore: $linkToAppleStore',
       );
@@ -37,12 +38,12 @@ class VerseOfTheDayCard extends StatelessWidget {
       File imgFile = File('$documentDirectory/flutter.png');
       imgFile.writeAsBytesSync(response.bodyBytes);
 
-      await Share.shareFiles(['$documentDirectory/flutter.png'],
+      await Share.shareFiles(
+        ['$documentDirectory/flutter.png'],
         subject: 'Secret Place',
         text: 'Get Secret Place, Playstore: $linkToPlayStore, AppleStore: $linkToAppleStore',
       );
     }
-
   }
 
   @override
@@ -88,7 +89,7 @@ class VerseOfTheDayCard extends StatelessWidget {
   Widget _header(BuildContext context, Color bgColor) {
     return Text(
       'Verse of the Day',
-      style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino"),
+      style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino"),
     );
   }
 
@@ -104,12 +105,12 @@ class VerseOfTheDayCard extends StatelessWidget {
       onTap: () async {
         const playStoreUrl = 'https://cpaisecretplacedevotional.page.link/app';
         const appleStoreUrl = 'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
-        String verseOfDay = "$verse\n$versePassage\n\nGet Secret Place App:\nPlayStore: $playStoreUrl\n AppleStore: $appleStoreUrl";
+        String verseOfDay =
+            "$verse\n$versePassage\n\nGet Secret Place App:\nPlayStore: $playStoreUrl\n AppleStore: $appleStoreUrl";
 
-        await Share.share(
-            "$verse\n$versePassage\n\nGet Secret Place App:\nPlay/Apple Store: $playStoreUrl");
+        await Share.share("$verse\n$versePassage\n\nGet Secret Place App:\nPlay/Apple Store: $playStoreUrl");
 
-          //saveAndShareImage(memoryVerseImageUrl, playStoreUrl, appleStoreUrl, verseOfDay);
+        //saveAndShareImage(memoryVerseImageUrl, playStoreUrl, appleStoreUrl, verseOfDay);
       },
       child: Container(
         height: 35,
@@ -147,7 +148,10 @@ class VerseOfTheDayCard extends StatelessWidget {
           Expanded(
             child: Text(
               verse,
-              style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.w500, fontFamily: "Palatino"),
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineMedium
+                  ?.copyWith(fontWeight: FontWeight.w500, fontFamily: "Palatino"),
             ),
           ),
         ],
@@ -161,7 +165,7 @@ class VerseOfTheDayCard extends StatelessWidget {
 
     return Text(
       versePassage,
-      style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.w500, fontFamily: "Palatino"),
+      style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w500, fontFamily: "Palatino"),
     );
   }
 }

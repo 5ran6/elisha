@@ -16,15 +16,14 @@ class DevotionalPageFromBookmark extends StatefulWidget {
 }
 
 class _DevotionalPageFromBookmarkState extends State<DevotionalPageFromBookmark> {
-
   var _title = '';
   var _memoryVerse = '';
   var _memoryVersePassage = '';
   var _mainWriteUp = '';
   var _prayerBurden = '';
   var _thoughtOfTheDay = '';
-  var _fullPassage='';
-  var _bibleInAYear='';
+  var _fullPassage = '';
+  var _bibleInAYear = '';
   var _thoughtOfTheDayImageToShare = '';
   var _prayerBurdenImageToShare = '';
 
@@ -42,6 +41,7 @@ class _DevotionalPageFromBookmarkState extends State<DevotionalPageFromBookmark>
     getPrayerBurdenImageAsString(widget.bookmarkedDevotionalDate);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> devotionalCards = [
@@ -55,16 +55,10 @@ class _DevotionalPageFromBookmarkState extends State<DevotionalPageFromBookmark>
                 Column(children: [
                   ListTile(
                     title: Text('Topic for today:',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline4
-                            ?.copyWith(fontWeight: FontWeight.bold)),
+                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold)),
                     trailing: Text(
                       'More',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6
-                          ?.copyWith(fontWeight: FontWeight.w100),
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w100),
                     ),
                   ),
                   const SizedBox(height: 5),
@@ -73,19 +67,12 @@ class _DevotionalPageFromBookmarkState extends State<DevotionalPageFromBookmark>
                     child: Align(
                         alignment: Alignment.topLeft,
                         child: Text(_title,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline5
-                                ?.copyWith(fontWeight: FontWeight.normal))),
+                            style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.normal))),
                   ),
                   const SizedBox(height: 15),
                   ListTile(
                     title: Text('Memory Verse:',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline4
-                            ?.copyWith(fontWeight: FontWeight.bold)),
-
+                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold)),
                   ),
                   const SizedBox(height: 5),
                   Padding(
@@ -93,19 +80,12 @@ class _DevotionalPageFromBookmarkState extends State<DevotionalPageFromBookmark>
                     child: Align(
                         alignment: Alignment.topLeft,
                         child: Text(_memoryVerse + " " + _memoryVersePassage,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline5
-                                ?.copyWith(fontWeight: FontWeight.normal))),
+                            style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.normal))),
                   ),
                   const SizedBox(height: 15),
                   ListTile(
                     title: Text('Bible passage:',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline4
-                            ?.copyWith(fontWeight: FontWeight.bold)),
-
+                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold)),
                   ),
                   const SizedBox(height: 5),
                   Padding(
@@ -113,16 +93,12 @@ class _DevotionalPageFromBookmarkState extends State<DevotionalPageFromBookmark>
                     child: Align(
                         alignment: Alignment.topLeft,
                         child: Text(_fullPassage,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline5
-                                ?.copyWith(fontWeight: FontWeight.normal))),
+                            style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.normal))),
                   )
                 ])
               ],
             )),
       ),
-
       Card(
         color: CantonMethods.alternateCanvasColorType2(context),
         shape: CantonSmoothBorder.defaultBorder(),
@@ -134,16 +110,10 @@ class _DevotionalPageFromBookmarkState extends State<DevotionalPageFromBookmark>
                 children: [
                   ListTile(
                     title: Text('Word',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline4
-                            ?.copyWith(fontWeight: FontWeight.bold)),
+                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold)),
                     trailing: Text(
                       'More',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6
-                          ?.copyWith(fontWeight: FontWeight.w100),
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w100),
                     ),
                   ),
                   const SizedBox(height: 5),
@@ -152,10 +122,7 @@ class _DevotionalPageFromBookmarkState extends State<DevotionalPageFromBookmark>
                     child: Text(_mainWriteUp,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 10,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline5
-                            ?.copyWith(fontWeight: FontWeight.normal)),
+                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.normal)),
                   )
                 ],
               )
@@ -174,26 +141,17 @@ class _DevotionalPageFromBookmarkState extends State<DevotionalPageFromBookmark>
                 children: [
                   ListTile(
                     title: Text('Prayer',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline5
-                            ?.copyWith(fontWeight: FontWeight.bold)),
+                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
                     trailing: Text(
                       'More',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6
-                          ?.copyWith(fontWeight: FontWeight.w100),
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w100),
                     ),
                   ),
                   const SizedBox(height: 5),
                   Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: Text(_prayerBurden,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline3
-                            ?.copyWith(fontWeight: FontWeight.normal)),
+                        style: Theme.of(context).textTheme.displaySmall?.copyWith(fontWeight: FontWeight.normal)),
                   )
                 ],
               )
@@ -212,26 +170,17 @@ class _DevotionalPageFromBookmarkState extends State<DevotionalPageFromBookmark>
                 children: [
                   ListTile(
                     title: Text('Thought for The Day',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline5
-                            ?.copyWith(fontWeight: FontWeight.bold)),
+                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
                     trailing: Text(
                       'More',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline6
-                          ?.copyWith(fontWeight: FontWeight.w100),
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w100),
                     ),
                   ),
                   const SizedBox(height: 5),
                   Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: Text(_thoughtOfTheDay,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline3
-                            ?.copyWith(fontWeight: FontWeight.normal)),
+                        style: Theme.of(context).textTheme.displaySmall?.copyWith(fontWeight: FontWeight.normal)),
                   )
                 ],
               )
@@ -248,8 +197,7 @@ class _DevotionalPageFromBookmarkState extends State<DevotionalPageFromBookmark>
               child: VerticalCardPager(
                   images: devotionalCards,
                   titles: const ['', '', '', ''],
-                  onPageChanged: (page) {
-                  },
+                  onPageChanged: (page) {},
                   onSelectedItem: (index) {
                     switch (index) {
                       case 0:
@@ -258,15 +206,15 @@ class _DevotionalPageFromBookmarkState extends State<DevotionalPageFromBookmark>
                               title: _title,
                               memoryVerse: _memoryVerse,
                               memoryVersePassage: _memoryVersePassage,
-                              fullPassage: _mainWriteUp,),
+                              fullPassage: _mainWriteUp,
+                            ),
                             type: PageTransitionType.scale,
                             alignment: Alignment.center,
                             duration: const Duration(milliseconds: 600)));
                         break;
                       case 1:
                         Navigator.of(context).push(PageTransition(
-                            child:
-                            FullWordContentPage(mainWriteUp: _mainWriteUp),
+                            child: FullWordContentPage(mainWriteUp: _mainWriteUp),
                             type: PageTransitionType.scale,
                             alignment: Alignment.center,
                             duration: const Duration(milliseconds: 600)));
@@ -313,7 +261,7 @@ class _DevotionalPageFromBookmarkState extends State<DevotionalPageFromBookmark>
   }
 
   getBibleInYearAsString(String dt) async {
-    var bibleInYearString =   await DevotionalItemsRetrieveClass.getBibleInYear(dt);
+    var bibleInYearString = await DevotionalItemsRetrieveClass.getBibleInYear(dt);
     setState(() {
       _bibleInAYear = bibleInYearString!;
     });
@@ -328,16 +276,14 @@ class _DevotionalPageFromBookmarkState extends State<DevotionalPageFromBookmark>
   }
 
   getVersePassageAsString(String dt) async {
-    var versePassage =
-    await DevotionalItemsRetrieveClass.getTodayVersePassage(dt);
+    var versePassage = await DevotionalItemsRetrieveClass.getTodayVersePassage(dt);
     setState(() {
       _memoryVersePassage = versePassage!;
     });
   }
 
   getTodayMainWriteUpAsString(String dt) async {
-    var mainWriteUp =
-    await DevotionalItemsRetrieveClass.getTodayMainWriteUp(dt);
+    var mainWriteUp = await DevotionalItemsRetrieveClass.getTodayMainWriteUp(dt);
     setState(() {
       _mainWriteUp = mainWriteUp!;
     });
@@ -351,8 +297,7 @@ class _DevotionalPageFromBookmarkState extends State<DevotionalPageFromBookmark>
   }
 
   getTodayThoughtOfTheDayAsString(String dt) async {
-    var thoughtOfTheDay =
-    await DevotionalItemsRetrieveClass.getTodayThoughtOfTheDay(dt);
+    var thoughtOfTheDay = await DevotionalItemsRetrieveClass.getTodayThoughtOfTheDay(dt);
     setState(() {
       _thoughtOfTheDay = thoughtOfTheDay!;
     });
@@ -364,6 +309,7 @@ class _DevotionalPageFromBookmarkState extends State<DevotionalPageFromBookmark>
       _thoughtOfTheDayImageToShare = thoughtOfTheDayImageToShare!;
     });
   }
+
   getPrayerBurdenImageAsString(String dt) async {
     var prayerBurdenImageToShare = await DevotionalItemsRetrieveClass.getPrayerBurdenImage(dt);
     setState(() {
