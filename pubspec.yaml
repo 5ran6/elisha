@@ -75,7 +75,7 @@ dependencies:
   crypto: ^3.0.1
   url_launcher: ^6.0.9
   youtube_player_flutter: ^8.0.0
-  flutter_linkify: ^5.0.2
+  flutter_linkify: 
   flutter_launcher_icons: ^0.9.1
   flutter_phoenix: ^1.0.0
   page_transition: ^2.0.2
