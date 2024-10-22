@@ -1,0 +1,1 @@
+export 'bible/models.dart';

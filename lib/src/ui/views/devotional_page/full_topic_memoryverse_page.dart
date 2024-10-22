@@ -1,5 +1,5 @@
 import 'package:canton_design_system/canton_design_system.dart';
-import 'package:elisha/src/ui/views/bible_view/bible_view.dart';
+import 'package:elisha/src/ui/views/bible/bible_view/bible.dart';
 
 class FullTopicMemoryVerseVersePage extends StatefulWidget {
   final String title;
@@ -138,10 +138,9 @@ class _FullTopicMemoryVerseVersePageState extends State<FullTopicMemoryVerseVers
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => BibleView(biblePassage: widget.fullPassage),
+                      builder: (context) => const BibleView(),
                     ),
                   );
-                  print(widget.fullPassage);
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(left: 15.0),

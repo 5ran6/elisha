@@ -59,6 +59,7 @@ dependencies:
   firebase_crashlytics: ^3.0.1
   firebase_performance: ^0.9.0+1
   firebase_dynamic_links: ^5.0.1
+  get:
 
   # Ads
 

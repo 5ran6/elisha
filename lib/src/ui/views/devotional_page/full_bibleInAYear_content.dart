@@ -1,9 +1,7 @@
 import 'dart:convert';
 
 import 'package:canton_design_system/canton_design_system.dart';
-import 'package:flutter/cupertino.dart';
-
-import '../bible_view/bible_view.dart';
+import 'package:elisha/src/ui/views/bible/bible_view/bible.dart';
 
 class FullBibleInAYearPage extends StatelessWidget {
   final String bibleInAYear;
@@ -48,7 +46,7 @@ class FullBibleInAYearPage extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => BibleView(biblePassage: e),
+                              builder: (context) => const BibleView(),
                             ),
                           );
                         },
