@@ -18,13 +18,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import 'dart:async';
 import 'dart:io';
-import 'dart:ui';
 import 'package:elisha/src/providers/theme_manager_provider.dart';
 import 'package:elisha/src/services/shared_pref_manager/shared_pref_manager.dart';
-import 'package:elisha/src/ui/views/account_view/account_view.dart';
-import 'package:elisha/src/ui/views/current_view.dart';
-import 'package:elisha/src/ui/views/devotional_page/devotional_page.dart';
-import 'package:elisha/src/ui/views/home_view/home_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:elisha/src/models/devotional.dart';
 import 'package:elisha/src/providers/api_provider.dart';
@@ -91,7 +86,6 @@ class _MyAppState extends State<MyApp> {
 
     List<Devotional> lsdv = await DevotionalDBHelper.instance.getDevotionalsDBForMonth(formattedMYNameDB);
     if (lsdv.isEmpty) {
-      print('here');
       List<Devotional> listOfDevs = await RemoteAPI.getDevotionalsForMonth(formattedMYNameAPI);
       DevotionalDBHelper.instance.insertDevotionalList(listOfDevs);
     }

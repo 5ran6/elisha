@@ -33,7 +33,7 @@ class UnexpectedError extends StatelessWidget {
           Text(
             'Oops, something unexpected happened :(',
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headline5?.copyWith(
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   color: Theme.of(context).colorScheme.secondaryContainer,
                 ),
           ),

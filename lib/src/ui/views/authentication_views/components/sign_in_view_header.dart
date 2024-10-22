@@ -36,7 +36,7 @@ class SignInViewHeader extends StatelessWidget {
             children: [
               Text(
                 'Sign in to Secret Place',
-                style: Theme.of(context).textTheme.headline4?.copyWith(
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                     ),
               ),

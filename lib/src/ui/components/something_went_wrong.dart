@@ -14,7 +14,7 @@ class SomethingWentWrong extends StatelessWidget {
         children: [
           Text(
             'Something went wrong',
-            style: Theme.of(context).textTheme.headline5!.copyWith(
+            style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                   color: Theme.of(context).colorScheme.secondaryContainer,
                 ),
           ),

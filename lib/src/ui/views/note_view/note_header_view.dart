@@ -6,7 +6,7 @@ StreamController<bool> streamController = StreamController<bool>();
 class NoteHeaderView extends StatefulWidget {
   NoteHeaderView({Key? key}) : super(key: key);
   bool isRecording = false;
-  bool testRecording(){
+  bool testRecording() {
     return false;
   }
 
@@ -22,7 +22,7 @@ class _NoteHeaderViewState extends State<NoteHeaderView> {
       child: Row(children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text('Note', style: Theme.of(context).textTheme.headline3),
+          child: Text('Note', style: Theme.of(context).textTheme.displaySmall),
         ),
         Expanded(
             child: Align(

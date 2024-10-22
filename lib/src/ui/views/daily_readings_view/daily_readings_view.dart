@@ -80,12 +80,12 @@ class DailyReadingsView extends StatelessWidget {
     List<Widget> children = [
       Text(
         dailyReading.name!,
-        style: Theme.of(context).textTheme.headline4,
+        style: Theme.of(context).textTheme.headlineMedium,
       ),
       const SizedBox(height: 5),
       Text(
         'Lectionary: ' + dailyReading.lectionary!,
-        style: Theme.of(context).textTheme.headline6?.copyWith(
+        style: Theme.of(context).textTheme.titleLarge?.copyWith(
               color: Theme.of(context).colorScheme.secondaryContainer,
             ),
       ),
@@ -112,12 +112,12 @@ class DailyReadingsView extends StatelessWidget {
       children: [
         Row(
           children: [
-            Text(reading.name!, style: Theme.of(context).textTheme.headline5),
+            Text(reading.name!, style: Theme.of(context).textTheme.headlineSmall),
             const SizedBox(width: 10),
             Expanded(
               child: Text(
                 reading.snippetAddress!,
-                style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: Theme.of(context).colorScheme.secondaryContainer,
                     ),
               ),
@@ -127,7 +127,7 @@ class DailyReadingsView extends StatelessWidget {
         const Divider(height: 20),
         Text(
           reading.text!,
-          style: Theme.of(context).textTheme.headline5?.copyWith(
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                 fontWeight: FontWeight.w400,
                 fontSize: 20,
                 height: 1.65,
@@ -170,7 +170,7 @@ class DailyReadingsView extends StatelessWidget {
                         },
                         child: Text(
                           'Cancel',
-                          style: Theme.of(context).textTheme.headline6?.copyWith(
+                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
                                 color: Theme.of(context).colorScheme.secondaryContainer,
                               ),
                         ),
@@ -178,7 +178,7 @@ class DailyReadingsView extends StatelessWidget {
                       const Spacer(flex: 7),
                       Text(
                         'Info',
-                        style: Theme.of(context).textTheme.headline5,
+                        style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       const Spacer(flex: 10),
                     ],
@@ -197,8 +197,8 @@ class DailyReadingsView extends StatelessWidget {
                     },
                     text:
                         'Daily Readings is courtesy of the United States Conference of Catholic Bishops © 2021. Their Website is located at https://bible.usccb.org',
-                    style: Theme.of(context).textTheme.headline6,
-                    linkStyle: Theme.of(context).textTheme.headline6?.copyWith(
+                    style: Theme.of(context).textTheme.titleLarge,
+                    linkStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
                           color: Theme.of(context).colorScheme.onPrimary,
                           decoration: TextDecoration.underline,
                         ),

@@ -44,21 +44,21 @@ class _AboutUsPageState extends State<AboutUsPage> {
                   'A',
                   style: Theme.of(context)
                       .textTheme
-                      .headline4
+                      .headlineMedium
                       ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino", fontSize: 17),
                 ),
                 Text(
                   'A',
                   style: Theme.of(context)
                       .textTheme
-                      .headline4
+                      .headlineMedium
                       ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino", fontSize: 21),
                 ),
                 Text(
                   'A',
                   style: Theme.of(context)
                       .textTheme
-                      .headline4
+                      .headlineMedium
                       ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino", fontSize: 25),
                 )
               ],
@@ -88,7 +88,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
                       'CPAI(CACAF Professional Advancement Initiative) is a project-based learning initiative to equip the CACAF(Calvary Arrows College Alumni Family) with the relevant skills and exposure necessary to thrive in our ever-changing digital age.',
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText1
+                          .bodyLarge
                           ?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino", fontSize: fontSize),
                     ),
                     const SizedBox(height: 20),
@@ -96,7 +96,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
                       'Secret Place attempts to create a virtual digital private environment for young people to have their morning devotions undisturbed and thus build a vibrant relationship with God',
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText1
+                          .bodyLarge
                           ?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino", fontSize: fontSize),
                     ),
                   ],

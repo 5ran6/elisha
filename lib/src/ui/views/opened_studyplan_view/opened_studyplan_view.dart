@@ -74,7 +74,7 @@ class _OpenedStudyPlanScreenState extends State<OpenedStudyPlanScreen> {
                     padding: const EdgeInsets.all(15.0),
                     child: Text(
                       _devPlanWithFullDevotionals?.description ?? '',
-                      style: Theme.of(context).textTheme.headline4?.copyWith(fontFamily: "Palatino"),
+                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontFamily: "Palatino"),
                     ),
                   ),
                   const SizedBox(height: 5),
@@ -115,7 +115,7 @@ class _OpenedStudyPlanScreenState extends State<OpenedStudyPlanScreen> {
               margin: EdgeInsets.all(5),
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: Center(child: Text('Day ${index + 1}', style: Theme.of(context).textTheme.headline5)))),
+                  child: Center(child: Text('Day ${index + 1}', style: Theme.of(context).textTheme.headlineSmall)))),
         ),
       );
 }

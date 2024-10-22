@@ -101,7 +101,7 @@ class _BibleStudySeriesPageState extends State<BibleStudySeriesPage> {
                                   'No results found',
                                   style: Theme.of(context)
                                       .textTheme
-                                      .headline2
+                                      .displayMedium
                                       ?.copyWith(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold),
                                 ),
                               )
@@ -110,7 +110,7 @@ class _BibleStudySeriesPageState extends State<BibleStudySeriesPage> {
                     )
                   : Text(
                       'Enable Internet Connection',
-                      style: Theme.of(context).textTheme.headline5?.copyWith(
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                             color: Theme.of(context).colorScheme.secondary,
                           ),
                     ),

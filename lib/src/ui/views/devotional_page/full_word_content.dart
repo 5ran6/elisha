@@ -28,8 +28,8 @@ class _FullWordContentPageState extends State<FullWordContentPage> {
 
   @override
   void initState() {
-    String? prefFont =  PrefManager.getFont();
-    if (prefFont == null){
+    String? prefFont = PrefManager.getFont();
+    if (prefFont == null) {
       PrefManager.setFont("1");
     } else {
       isSelected[int.parse(prefFont)] = true;
@@ -53,8 +53,10 @@ class _FullWordContentPageState extends State<FullWordContentPage> {
               ),
               ListTile(
                   title: Text('Word',
-                      style:
-                          Theme.of(context).textTheme.headline3?.copyWith(fontWeight: FontWeight.bold, fontSize: 24)),
+                      style: Theme.of(context)
+                          .textTheme
+                          .displaySmall
+                          ?.copyWith(fontWeight: FontWeight.bold, fontSize: 24)),
                   leading: IconButton(
                     icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary),
                     onPressed: () => Navigator.of(context).pop(),
@@ -66,21 +68,21 @@ class _FullWordContentPageState extends State<FullWordContentPage> {
                     'A',
                     style: Theme.of(context)
                         .textTheme
-                        .headline4
+                        .headlineMedium
                         ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino", fontSize: 17),
                   ),
                   Text(
                     'A',
                     style: Theme.of(context)
                         .textTheme
-                        .headline4
+                        .headlineMedium
                         ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino", fontSize: 21),
                   ),
                   Text(
                     'A',
                     style: Theme.of(context)
                         .textTheme
-                        .headline4
+                        .headlineMedium
                         ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino", fontSize: 25),
                   )
                 ],
@@ -104,7 +106,7 @@ class _FullWordContentPageState extends State<FullWordContentPage> {
                 child: Text(widget.mainWriteUp,
                     style: Theme.of(context)
                         .textTheme
-                        .headline5
+                        .headlineSmall
                         ?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino", fontSize: fontSize)),
               )
             ],

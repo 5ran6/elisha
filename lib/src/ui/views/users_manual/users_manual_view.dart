@@ -54,21 +54,21 @@ class _UsersManualViewState extends State<UsersManualView> {
                           'A',
                           style: Theme.of(context)
                               .textTheme
-                              .headline4
+                              .headlineMedium
                               ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino", fontSize: 17),
                         ),
                         Text(
                           'A',
                           style: Theme.of(context)
                               .textTheme
-                              .headline4
+                              .headlineMedium
                               ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino", fontSize: 21),
                         ),
                         Text(
                           'A',
                           style: Theme.of(context)
                               .textTheme
-                              .headline4
+                              .headlineMedium
                               ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino", fontSize: 25),
                         )
                       ],
@@ -89,19 +89,19 @@ class _UsersManualViewState extends State<UsersManualView> {
                     Text(
                       'Welcome to Secret Place Devotional App. Here are a few tips that will make your use of the application smooth.\n\n Secret Place has an authentication system which you would have encountered when launcing the app for the first time. Choosing to sign in anonymously will deprive you the opportunity of saving your notes to the cloud hence I would advice you use any of the providers to log in. By signing in you can have access to your saved notes when you log in on any other device in the case of device theft or damage.',
                       style:
-                          Theme.of(context).textTheme.bodyText1?.copyWith(fontFamily: "Palatino", fontSize: fontSize),
+                          Theme.of(context).textTheme.bodyLarge?.copyWith(fontFamily: "Palatino", fontSize: fontSize),
                     ),
                     const SizedBox(height: 20),
                     Text(
                       'Secret Place makes provision for you to have access to all devotionals for the month without internet connectivity but you will have to download it on any day of the current month to have access. So whenever you want to use the app for the first time in a given month ensure that you have internet connectivity.',
                       style:
-                          Theme.of(context).textTheme.bodyText1?.copyWith(fontFamily: "Palatino", fontSize: fontSize),
+                          Theme.of(context).textTheme.bodyLarge?.copyWith(fontFamily: "Palatino", fontSize: fontSize),
                     ),
                     const SizedBox(height: 20),
                     Text(
                       'Secret Place has provision for you to bookmark daily devotionals and chapters of the bible read at will. You can use the bookmark icon to do so and check the Extras page for your bookmarked items.',
                       style:
-                          Theme.of(context).textTheme.bodyText1?.copyWith(fontFamily: "Palatino", fontSize: fontSize),
+                          Theme.of(context).textTheme.bodyLarge?.copyWith(fontFamily: "Palatino", fontSize: fontSize),
                     ),
                     const SizedBox(height: 20),
                     !Platform.isIOS
@@ -109,7 +109,7 @@ class _UsersManualViewState extends State<UsersManualView> {
                             'You have the ability to ensure that when Secret Place in on the foreground your device switches the do-not-disturb mode. You can trigger this functionality on the settings page.',
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyText1
+                                .bodyLarge
                                 ?.copyWith(fontFamily: "Palatino", fontSize: fontSize),
                           )
                         : const SizedBox(
@@ -119,12 +119,12 @@ class _UsersManualViewState extends State<UsersManualView> {
                     Text(
                       'You have the ability to share the entire devotional for the day as well as certain content like prayer burden and thought of the day via any social media platform on your device.',
                       style:
-                          Theme.of(context).textTheme.bodyText1?.copyWith(fontFamily: "Palatino", fontSize: fontSize),
+                          Theme.of(context).textTheme.bodyLarge?.copyWith(fontFamily: "Palatino", fontSize: fontSize),
                     ),
                     Text(
                       "If you missed any devotional or you want to go through previous devotionals, Secret place has a calendar view in the 'Monthly Devotionals' section in the profile page where you can read previous devotionals",
                       style:
-                          Theme.of(context).textTheme.bodyText1?.copyWith(fontFamily: "Palatino", fontSize: fontSize),
+                          Theme.of(context).textTheme.bodyLarge?.copyWith(fontFamily: "Palatino", fontSize: fontSize),
                     ),
                   ],
                 ),

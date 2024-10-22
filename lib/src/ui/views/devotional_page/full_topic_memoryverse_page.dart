@@ -55,21 +55,21 @@ class _FullTopicMemoryVerseVersePageState extends State<FullTopicMemoryVerseVers
                     'A',
                     style: Theme.of(context)
                         .textTheme
-                        .headline4
+                        .headlineMedium
                         ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino", fontSize: 17),
                   ),
                   Text(
                     'A',
                     style: Theme.of(context)
                         .textTheme
-                        .headline4
+                        .headlineMedium
                         ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino", fontSize: 21),
                   ),
                   Text(
                     'A',
                     style: Theme.of(context)
                         .textTheme
-                        .headline4
+                        .headlineMedium
                         ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino", fontSize: 25),
                   )
                 ],
@@ -91,7 +91,7 @@ class _FullTopicMemoryVerseVersePageState extends State<FullTopicMemoryVerseVers
                 title: Text('Topic for today:',
                     style: Theme.of(context)
                         .textTheme
-                        .headline4
+                        .headlineMedium
                         ?.copyWith(fontWeight: FontWeight.bold, fontSize: fontSize, fontFamily: 'Palatino')),
               ),
               const SizedBox(height: 5),
@@ -102,7 +102,7 @@ class _FullTopicMemoryVerseVersePageState extends State<FullTopicMemoryVerseVers
                     child: Text(widget.title,
                         style: Theme.of(context)
                             .textTheme
-                            .headline5
+                            .headlineSmall
                             ?.copyWith(fontWeight: FontWeight.normal, fontSize: fontSize, fontFamily: 'Palatino'))),
               ),
               const SizedBox(height: 15),
@@ -110,7 +110,7 @@ class _FullTopicMemoryVerseVersePageState extends State<FullTopicMemoryVerseVers
                 title: Text('Memory Verse:',
                     style: Theme.of(context)
                         .textTheme
-                        .headline4
+                        .headlineMedium
                         ?.copyWith(fontWeight: FontWeight.bold, fontSize: fontSize, fontFamily: 'Palatino')),
               ),
               const SizedBox(height: 5),
@@ -121,7 +121,7 @@ class _FullTopicMemoryVerseVersePageState extends State<FullTopicMemoryVerseVers
                     child: Text(widget.memoryVerse + ' ' + widget.memoryVersePassage,
                         style: Theme.of(context)
                             .textTheme
-                            .headline5
+                            .headlineSmall
                             ?.copyWith(fontWeight: FontWeight.normal, fontSize: fontSize, fontFamily: 'Palatino'))),
               ),
               const SizedBox(height: 15),
@@ -129,7 +129,7 @@ class _FullTopicMemoryVerseVersePageState extends State<FullTopicMemoryVerseVers
                 title: Text('Bible Passage:',
                     style: Theme.of(context)
                         .textTheme
-                        .headline4
+                        .headlineMedium
                         ?.copyWith(fontWeight: FontWeight.bold, fontSize: fontSize, fontFamily: 'Palatino')),
               ),
               const SizedBox(height: 5),
@@ -150,7 +150,7 @@ class _FullTopicMemoryVerseVersePageState extends State<FullTopicMemoryVerseVers
                       child: Text(widget.fullPassage,
                           style: Theme.of(context)
                               .textTheme
-                              .headline5
+                              .headlineSmall
                               ?.copyWith(fontWeight: FontWeight.normal, fontSize: fontSize, fontFamily: 'Palatino'))),
                 ),
               ),

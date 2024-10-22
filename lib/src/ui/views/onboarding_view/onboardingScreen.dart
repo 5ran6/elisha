@@ -60,7 +60,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       "Skip",
                       style: Theme.of(context)
                           .textTheme
-                          .bodyText1
+                          .bodyLarge
                           ?.copyWith(color: AppTheme.kPrimaryColor, fontWeight: FontWeight.w500),
                     ),
                   )
@@ -116,10 +116,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                 padding: EdgeInsets.all(ScreenUtil().setWidth(6)),
                                 child: Text(
                                   _currentPage != _numberOfPages ? "Next" : "Get Started",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .button
-                                      ?.copyWith(fontWeight: FontWeight.normal, fontSize: ScreenUtil().setSp(13), color: Theme.of(context).primaryColorLight),
+                                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: ScreenUtil().setSp(13),
+                                      color: Theme.of(context).primaryColorLight),
                                 ),
                               ),
                             ),

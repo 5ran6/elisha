@@ -17,8 +17,11 @@ class DevotionalPlansHomePageListView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         ListTile(
-          title:
-              Text('Study Plans', style: Theme.of(context).textTheme.headline4?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino")),
+          title: Text('Study Plans',
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineMedium
+                  ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino")),
           trailing: GestureDetector(
             onTap: () {
               Navigator.push(
@@ -28,8 +31,11 @@ class DevotionalPlansHomePageListView extends StatelessWidget {
                 ),
               );
             },
-            child:
-                Text('View All', style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino")),
+            child: Text('View All',
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineSmall
+                    ?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino")),
           ),
         ),
         SizedBox(

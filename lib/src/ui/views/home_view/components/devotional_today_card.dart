@@ -36,10 +36,9 @@ class DevotionalTodayCard extends StatefulWidget {
       required this.memoryVerse,
       required this.memoryVersePassage,
       required this.bibleInAYear,
-        required this.thoughtOfTheDayImage,
-        required this.prayerBurdenImage,
-        required this.memoryVerseImage
-      })
+      required this.thoughtOfTheDayImage,
+      required this.prayerBurdenImage,
+      required this.memoryVerseImage})
       : super(key: key);
 
   @override
@@ -80,12 +79,18 @@ class _DevotionalTodayCardState extends State<DevotionalTodayCard> {
               ListTile(
                 //trailing: Icon(Icons.share),
                 title: Text(widget.title,
-                    style: Theme.of(context).textTheme.headline3?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino")),
+                    style: Theme.of(context)
+                        .textTheme
+                        .displaySmall
+                        ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino")),
                 subtitle: Text(
                   widget.mainWriteUp,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.headline6?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino"),
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge
+                      ?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino"),
                 ),
               ),
               //const SizedBox(height: 5),
@@ -146,10 +151,9 @@ class _DevotionalTodayCardState extends State<DevotionalTodayCard> {
                                 image: widget.image,
                                 prayerBurden: widget.prayer,
                                 thoughtOfTheDay: widget.thought,
-                              memoryVerseImageToShare: widget.memoryVerseImage,
-                              thoughtOfTheDayImageToShare: widget.thoughtOfTheDayImage,
-                              prayerBurdenImageToShare: widget.prayerBurdenImage
-                            );
+                                memoryVerseImageToShare: widget.memoryVerseImage,
+                                thoughtOfTheDayImageToShare: widget.thoughtOfTheDayImage,
+                                prayerBurdenImageToShare: widget.prayerBurdenImage);
 
                             await DevotionalDBHelper.instance.insertBookMarkedDevotional(dev);
                             List bms = await DevotionalDBHelper.instance.getBookMarkedDevotionalsFromDB();
@@ -158,8 +162,7 @@ class _DevotionalTodayCardState extends State<DevotionalTodayCard> {
                   IconButton(
                     icon: const Icon(Icons.share),
                     onPressed: () async {
-                      const playStoreUrl =
-                          'https://cpaisecretplacedevotional.page.link/app';
+                      const playStoreUrl = 'https://cpaisecretplacedevotional.page.link/app';
                       const appleStoreUrl =
                           'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
 

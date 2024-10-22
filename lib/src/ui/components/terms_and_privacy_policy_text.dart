@@ -31,7 +31,7 @@ class TermsAndPrivacyPolicyText extends StatelessWidget {
       children: [
         Text(
           'We prioritize your privacy',
-          style: Theme.of(context).textTheme.bodyText2,
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
         Linkify(
           onOpen: (link) async {
@@ -42,9 +42,9 @@ class TermsAndPrivacyPolicyText extends StatelessWidget {
             }
           },
           text: 'By signing up, you agree to our Terms and Privacy Policy.',
-          style: Theme.of(context).textTheme.bodyText2,
+          style: Theme.of(context).textTheme.bodyMedium,
           textAlign: TextAlign.center,
-          linkStyle: Theme.of(context).textTheme.bodyText2?.copyWith(decoration: TextDecoration.underline),
+          linkStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(decoration: TextDecoration.underline),
         )
       ],
     );

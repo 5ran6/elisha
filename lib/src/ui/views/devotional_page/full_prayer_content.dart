@@ -11,7 +11,6 @@ class FullPrayerPage extends StatelessWidget {
   const FullPrayerPage({required this.prayer, required this.prayerBurdenImage});
 
   Future saveAndShareImage(String prayerBurdenImageUrl, String linkToPlayStore, String linkToAppleStore) async {
-
     //final RenderBox box = context.findRenderObject();
     if (Platform.isAndroid) {
       var response = await get(Uri.parse(prayerBurdenImageUrl));
@@ -19,7 +18,8 @@ class FullPrayerPage extends StatelessWidget {
       File imgFile = File('$documentDirectory/flutter.png');
       imgFile.writeAsBytesSync(response.bodyBytes);
 
-      await Share.shareFiles(['$documentDirectory/flutter.png'],
+      await Share.shareFiles(
+        ['$documentDirectory/flutter.png'],
         subject: 'Secret Place',
         text: 'Get Secret Place, PlayStore: $linkToPlayStore, AppleStore: $linkToAppleStore',
       );
@@ -30,14 +30,13 @@ class FullPrayerPage extends StatelessWidget {
       File imgFile = File('$documentDirectory/flutter.png');
       imgFile.writeAsBytesSync(response.bodyBytes);
 
-      await Share.shareFiles(['$documentDirectory/flutter.png'],
+      await Share.shareFiles(
+        ['$documentDirectory/flutter.png'],
         subject: 'Secret Place',
         text: 'Get Secret Place, Playstore: $linkToPlayStore, AppleStore: $linkToAppleStore',
       );
     }
-
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +53,7 @@ class FullPrayerPage extends StatelessWidget {
                 title: Text('Prayer',
                     style: Theme.of(context)
                         .textTheme
-                        .headline3
+                        .displaySmall
                         ?.copyWith(fontWeight: FontWeight.bold, fontFamily: "Palatino")),
                 leading: IconButton(
                   icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary),
@@ -63,13 +62,11 @@ class FullPrayerPage extends StatelessWidget {
                 trailing: IconButton(
                   icon: const Icon(Icons.share, color: Colors.black),
                   onPressed: () async {
-                    const playStoreUrl =
-                        'https://cpaisecretplacedevotional.page.link/app';
+                    const playStoreUrl = 'https://cpaisecretplacedevotional.page.link/app';
                     const appleStoreUrl =
                         'https://play.google.com/store/apps/details?id=com.cpaii.secretplaceversiontwo';
 
-                    await Share.share(
-                        "$prayer\n\nGet Secret Place App:\nPlay/Apple Store: $playStoreUrl");
+                    await Share.share("$prayer\n\nGet Secret Place App:\nPlay/Apple Store: $playStoreUrl");
 
                     //saveAndShareImage(prayerBurdenImage, playStoreUrl, appleStoreUrl);
                   },
@@ -81,7 +78,7 @@ class FullPrayerPage extends StatelessWidget {
                 child: Text(prayer,
                     style: Theme.of(context)
                         .textTheme
-                        .headline3
+                        .displaySmall
                         ?.copyWith(fontWeight: FontWeight.normal, fontFamily: "Palatino")),
               )
             ],

@@ -51,7 +51,7 @@ class _BookmarkedChapterViewState extends State<BookmarkedChapterView> {
           TextSpan(
             children: spans,
           ),
-          style: Theme.of(context).textTheme.headline5!.copyWith(
+          style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                 fontWeight: FontWeight.w400,
                 fontSize: 21,
                 height: 1.97,
@@ -65,7 +65,7 @@ class _BookmarkedChapterViewState extends State<BookmarkedChapterView> {
       spans.add(
         TextSpan(
           text: item.verseId.toString() + ' ',
-          style: Theme.of(context).textTheme.bodyText1?.copyWith(
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: Theme.of(context).colorScheme.primary,
               ),
         ),
@@ -121,7 +121,7 @@ class _BookmarkedChapterViewState extends State<BookmarkedChapterView> {
                         },
                         child: Text(
                           'Cancel',
-                          style: Theme.of(context).textTheme.headline6?.copyWith(
+                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
                                 color: Theme.of(context).colorScheme.secondary,
                               ),
                         ),
@@ -129,7 +129,7 @@ class _BookmarkedChapterViewState extends State<BookmarkedChapterView> {
                       const Spacer(flex: 7),
                       Text(
                         'Options',
-                        style: Theme.of(context).textTheme.headline5,
+                        style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       const Spacer(flex: 10),
                     ],

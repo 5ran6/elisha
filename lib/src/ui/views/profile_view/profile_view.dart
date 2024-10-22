@@ -68,7 +68,7 @@ class ProfileView extends StatelessWidget {
     return Column(
       children: [
         dbName != ''
-            ? Text(name(dbName), style: Theme.of(context).textTheme.headline3?.copyWith(fontWeight: FontWeight.w600))
+            ? Text(name(dbName), style: Theme.of(context).textTheme.displaySmall?.copyWith(fontWeight: FontWeight.w600))
             : Container(),
         const SizedBox(height: 10),
         // ..._statCards(context),
@@ -95,7 +95,7 @@ class ProfileView extends StatelessWidget {
               children: [
                 Text(
                   'Bookmarked Chapters',
-                  style: Theme.of(context).textTheme.headline6,
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
                 Icon(
                   Iconsax.arrow_right_3,
@@ -119,7 +119,7 @@ class ProfileView extends StatelessWidget {
               children: [
                 Text(
                   'Bookmarked Devotionals',
-                  style: Theme.of(context).textTheme.headline6,
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
                 Icon(
                   Iconsax.arrow_right_3,
@@ -155,7 +155,7 @@ class ProfileView extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: Text(
               'Account',
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
         ),
@@ -181,7 +181,7 @@ class ProfileView extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: Text(
               'Settings',
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
         ),
@@ -208,7 +208,7 @@ class ProfileView extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: Text(
               "Monthly Devotional",
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
         ),
@@ -235,7 +235,7 @@ class ProfileView extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: Text(
               'Feedback',
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
         ),
@@ -262,7 +262,7 @@ class ProfileView extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: Text(
               'About us',
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
         ),
@@ -289,7 +289,7 @@ class ProfileView extends StatelessWidget {
             alignment: Alignment.centerLeft,
             child: Text(
               'User Manual',
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
           ),
         ),
